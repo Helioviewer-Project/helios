@@ -42,9 +42,11 @@ class Helioviewer {
      *
      * @param {number} id The ID of the image to get
      * @param {number} scale The image scale to request in the URL
+     * @returns {string} URL of the image
      */
     GetImageURL(id, scale) {
-        return this.api_url + "downloadImage/?id="+id"&scale="+scale;
+        let url = this.api_url + "downloadImage/?id=" + id + "&scale=" + scale;
+        return url;
     }
 }
 
