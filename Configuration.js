@@ -25,7 +25,7 @@ class Config {
 
         // Geometry service URL used to query position information
         // Requires trailing /
-        this.geometry_service_url = "http://swhv.oma.be/";
+        this.geometry_service_url = "http://swhv.oma.be/position";
     }
 
     /**

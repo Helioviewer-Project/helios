@@ -1,5 +1,6 @@
 import Config from './Configuration.js';
 import Helioviewer from './API/helioviewer.js';
+import GeometryService from './API/geometry_service.js';
 
 
 /**
@@ -25,8 +26,9 @@ class Helios {
             helioviewer_url: configuration.backEnd,
         });
 
-        // Initialize the API module
+        // Initialize the API modules
         Helioviewer.SetApiUrl(this.configuration.helioviewer_url);
+        GeometryService.SetApiUrl(this.configuration.geometry_service_url);
     }
 }
 
