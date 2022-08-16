@@ -1,0 +1,17 @@
+{
+  "name": "helios",
+  "version": "0.0.1",
+  "description": "3D Model application for Helioviewer",
+  "main": "Launcher.js",
+  "scripts": {
+    "test": "jest",
+    "docs": "jsdoc -r -c .jsdoc.conf.json && open out/index.html"
+  },
+  "author": "Daniel Garcia-Briseno",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.18.6",
+    "jest": "^28.1.3",
+    "jsdoc": "^3.6.11"
+  }
+}
