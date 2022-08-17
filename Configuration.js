@@ -11,14 +11,15 @@ class Config {
      *                      to override a default setting
      */
     constructor() {
-        this.InitializeDefaults();
+        this._InitializeDefaults();
     }
 
     /**
      * Default configuration initialization. All default values
      * should be specified and documented here.
+     * @private
      */
-    InitializeDefaults() {
+    _InitializeDefaults() {
         /**
          * Helioviewer base API Url. Requires trailing /
          */
@@ -73,7 +74,7 @@ class Config {
      * @param[in] overrides Object containing specific configuration values
      *                      to override
      */
-    UpdateConfiguration(overrides) {
+    Update(overrides) {
         for (const key of Object.keys(overrides)) {
             this[key] = overrides[key];
         }

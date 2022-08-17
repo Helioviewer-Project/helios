@@ -4,11 +4,6 @@ import GeometryService from './API/geometry_service.js';
 
 
 /**
- * Helios is the sun god.
- * Usually he can be seen riding his chariot from east
- * to west during the day, but here he is responsible for bootstrapping
- * the application
- *
  * This class is the glue between Helioviewer.org and the Helios
  * application. It manages passing along the helioviewer application's
  * configuraiton and creating instances of all the necessary
@@ -22,13 +17,9 @@ class Helios {
      */
     constructor(configuration) {
         // Initialize the configuration using settings from Helioviewer
-        this.configuration = new Config({
+        this.configuration = Config.Update({
             helioviewer_url: configuration.backEnd,
         });
-
-        // Initialize the API modules
-        Helioviewer.SetApiUrl(this.configuration.helioviewer_url);
-        GeometryService.SetApiUrl(this.configuration.geometry_service_url);
     }
 }
 

@@ -1,3 +1,5 @@
+import Config from '../Configuration.js';
+
 /**
  * This module is used for interfacing with the Helioviewer API
  * The goal of this module is to create a javascript interface
@@ -10,18 +12,17 @@
  * Allows making API calls to the helioviewer server
  */
 class Helioviewer {
-    constructor() {
-        this.api_url = "https://api.helioviewer.org/v2/";
-    }
-
     /**
-     * Updates the API URL used for making requests
+     * Gets the API URL used for making requests
      *
-     * @param {string} url The Helioviewer API URL i.e. "https://api.helioviewer.org"
-     *                     with no training slash.
+     * @returns {string} URL
      */
-    SetApiUrl(url) {
-        this.api_url = url + "/v2/";
+    GetApiUrl() {
+        let url = Config.helioviewer_url;
+        if (!url.endsWith('/')) {
+            url = url + "/";
+        }
+        return url + "v2/";
     }
 
     /**
@@ -62,5 +63,4 @@ class Helioviewer {
 }
 
 let SingletonAPI = new Helioviewer();
-
 export default SingletonAPI;
