@@ -53,6 +53,16 @@ class Config {
          * HTML ID of the resolution input selector
          */
         this.resolution_selector_id = "js-resolution-selector";
+
+        /**
+         * HTML ID of the play button for animation controls
+         */
+        this.play_btn_id = 'js-play-btn';
+
+        /**
+         * HTML ID of the pause button for animation controls
+         */
+        this.pause_btn_id = 'js-pause-btn';
     }
 
     /**
