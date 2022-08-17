@@ -1,4 +1,4 @@
-import Database from '../Image/database.js';
+import Database from '../Images/database.js';
 import Sun from './sun.js';
 
 /**

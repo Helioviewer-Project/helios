@@ -2,3 +2,4 @@ out
 node_modules
 *.swp
 *.swo
+helios_bundle.js

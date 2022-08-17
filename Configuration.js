@@ -71,6 +71,8 @@ class Config {
      * For example, to override helioviewer_url, pass in an object with
      * {helioviewer_url: "your url"}
      *
+     * @note Currently only functional for API urls
+     *
      * @param[in] overrides Object containing specific configuration values
      *                      to override
      */

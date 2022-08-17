@@ -1,7 +1,7 @@
 import Config from './Configuration.js';
-import Helioviewer from './API/helioviewer.js';
-import GeometryService from './API/geometry_service.js';
-
+import './UI/source_controls.js';
+import './UI/camera_controls.js';
+import './UI/animation_controls.js';
 
 /**
  * This class is the glue between Helioviewer.org and the Helios
