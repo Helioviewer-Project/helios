@@ -48,6 +48,11 @@ class Config {
          * HTML ID of the source id input selector
          */
         this.source_selector_id = "js-source-selector";
+
+        /**
+         * HTML ID of the resolution input selector
+         */
+        this.resolution_selector_id = "js-resolution-selector";
     }
 
     /**
