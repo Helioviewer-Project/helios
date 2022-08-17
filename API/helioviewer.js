@@ -25,16 +25,27 @@ class Helioviewer {
     }
 
     /**
+     * @typedef {Object} ImageInfo
+     * @property {number} id Image ID
+     * @property {Date} timestamp Timestamp for this image
+     */
+    /**
      * Returns a list of Image IDs for the specified time range
      *
      * @param {number} source The desired telescope's source Id
      * @param {Date} start Beginning of time range to get images for
      * @param {Date} end End of time range to get images for
      * @param {number} cadence Number of seconds between each image
+     * @returns {ImageInfo[]}
      */
     QueryImages(source, start, end, cadence) {
         // TODO Implement real query
-        return [61,62,64];
+        return [
+            {id: 61, timestamp: new Date()},
+            {id: 62, timestamp: new Date()},
+            {id: 63, timestamp: new Date()},
+            {id: 64, timestamp: new Date()}
+        ];
     }
 
     /**
