@@ -43,6 +43,11 @@ class Config {
          * HTML ID of the cadence input date range chooser
          */
         this.date_range_cadence_id = "js-date-range-cadence";
+
+        /**
+         * HTML ID of the source id input selector
+         */
+        this.source_selector_id = "js-source-selector";
     }
 
     /**
