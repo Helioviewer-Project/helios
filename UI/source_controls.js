@@ -1,4 +1,4 @@
-import DateRangePicker from './date_range_picker.js'';
+import DateRangePicker from './date_range_picker.js';
 import DatasourcePicker from './datasource_picker.js';
 import ResolutionPicker from './resolution_picker.js';
 import Scene from '../Scene/scene.js';
