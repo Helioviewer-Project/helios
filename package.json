@@ -5,7 +5,7 @@
   "main": "Launcher.js",
   "scripts": {
     "test": "jest",
-    "docs": "jsdoc -r -c .jsdoc.conf.json",
+    "docs": "jsdoc -r -c .jsdoc.conf.json -R README.md",
     "view-docs": "open out/index.html"
   },
   "author": "Daniel Garcia-Briseno",
