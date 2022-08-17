@@ -10,9 +10,8 @@ class Config {
      * @param[in] overrides Object where each key-value pair is meant
      *                      to override a default setting
      */
-    constructor(overrides) {
+    constructor() {
         this.InitializeDefaults();
-        this._ApplyOverrides(overrides);
     }
 
     /**
@@ -20,26 +19,47 @@ class Config {
      * should be specified and documented here.
      */
     InitializeDefaults() {
-        // Helioviewer base API Url. Requires trailing /
+        /**
+         * Helioviewer base API Url. Requires trailing /
+         */
         this.helioviewer_url = "https://api.helioviewer.org/v2/";
 
-        // Geometry service URL used to query position information
-        // Requires trailing /
+        /**
+         * Geometry service URL used to query position information
+         */
         this.geometry_service_url = "http://swhv.oma.be/position";
+
+        /**
+         * HTML ID of the start time picker for the date range chooser
+         */
+        this.date_range_start_id = "js-date-range-start";
+
+        /**
+         * HTML ID of the end time picker for the date range chooser
+         */
+        this.date_range_end_id = "js-date-range-end";
+
+        /**
+         * HTML ID of the cadence input date range chooser
+         */
+        this.date_range_cadence_id = "js-date-range-cadence";
     }
 
     /**
-     * Overrides any default values with data specfied in the given object
+     * Overrides any member values with data specfied in the given object
+     * For example, to override helioviewer_url, pass in an object with
+     * {helioviewer_url: "your url"}
      *
      * @param[in] overrides Object containing specific configuration values
      *                      to override
      */
-    _ApplyOverrides(overrides) {
+    UpdateConfiguration(overrides) {
         for (const key of Object.keys(overrides)) {
             this[key] = overrides[key];
         }
     }
 }
 
-// Using this syntax for export to support jsdoc
-export default Config;
+let config = new Config();
+export default config;
+
