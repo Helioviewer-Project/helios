@@ -1,3 +1,5 @@
+import Config from '../Configuration.js';
+import ThreeScene from './three_scene.js';
 import ModelFactory from './model_factory.js';
 
 /**
@@ -5,7 +7,11 @@ import ModelFactory from './model_factory.js';
  */
 class Scene {
     constructor() {
-        // TODO: 3js initialization
+        /**
+         * Threejs implementation of the scene
+         */
+        this._scene = new ThreeScene(Config.viewport_id);
+
         /**
          * Mapping of ids to models for the UI to reference scene objects
          * @private

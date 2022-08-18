@@ -64,6 +64,29 @@ class Config {
          * HTML ID of the pause button for animation controls
          */
         this.pause_btn_id = 'js-pause-btn';
+
+        /**
+         * HTML ID of the element to use for the 3js viewport
+         */
+        this.viewport_id = "js-helios-viewport";
+
+        /**
+         * HTML class attached to elements that should be hidden
+         * when helios is enabled
+         */
+        this.hidden_class = "helios-hidden";
+
+        /**
+         * HTML class attached to elements that should be displayed
+         * when helios is enabled
+         */
+        this.show_class = "helios-visible";
+
+        /**
+         * HTML ID for the button that will display/hide the Helios viewport
+         * when clicked.
+         */
+        this.toggle_button_id = "js-enable-helios";
     }
 
     /**

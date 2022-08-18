@@ -20,6 +20,56 @@ class Helios {
         this.configuration = Config.Update({
             helioviewer_url: configuration.backEnd,
         });
+
+        /**
+         * Tracks whether helios is currently enabled or disabled
+         * @private
+         */
+        this._enabled = false;
+
+        this._InitializeButton();
+    }
+
+    /**
+     * Attaches enable/disable event listeners to the button that
+     * enables helios
+     * @private
+     */
+    _InitializeButton() {
+        this._button = document.getElementById(Config.toggle_button_id);
+        let Helios = this;
+        this._button.addEventListener('click', () => {
+            Helios.Toggle();
+        });
+    }
+
+    /**
+     * Toggles Helios in the viewport
+     */
+    Toggle() {
+        if (this._enabled) {
+            this.Disable();
+        } else {
+            this.Enable();
+        }
+    }
+
+    /**
+     * Enables Helios in the viewport
+     */
+    Enable() {
+        this._enabled = true;
+        this._button.classList.add('active');
+        document.getElementsByTagName('body')[0].classList.add('helios-enabled');
+    }
+
+    /**
+     * Disables Helios in the viewport to go back to traditional Helioviewer
+     */
+    Disable() {
+        this._enabled = false;
+        this._button.classList.remove('active');
+        document.getElementsByTagName('body')[0].classList.remove('helios-enabled');
     }
 }
 
