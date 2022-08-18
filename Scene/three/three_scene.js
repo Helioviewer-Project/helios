@@ -1,7 +1,12 @@
 import {
     Scene,
     PerspectiveCamera,
-    WebGLRenderer
+    WebGLRenderer,
+    // Remove imports below this line
+    BoxGeometry,
+    MeshBasicMaterial,
+    Mesh
+
 } from 'three';
 
 /**
@@ -36,6 +41,20 @@ class ThreeScene {
 
         let target = document.getElementById(viewport_id);
         target.appendChild(this._renderer.domElement);
+
+        // Demo, remove me
+        const geometry = new BoxGeometry( 1, 1, 1 );
+        const material = new MeshBasicMaterial( { color: 0x00ff00 } );
+        const cube = new Mesh( geometry, material );
+        this._scene.add( cube );
+        this._camera.position.z = 5;
+
+        let scene_info = this;
+        function animate() {
+            requestAnimationFrame(animate);
+            scene_info._renderer.render(scene_info._scene, scene_info._camera);
+        }
+        animate();
     }
 }
 

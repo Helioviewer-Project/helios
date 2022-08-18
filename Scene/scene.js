@@ -1,5 +1,5 @@
 import Config from '../Configuration.js';
-import ThreeScene from './three_scene.js';
+import ThreeScene from './three/three_scene.js';
 import ModelFactory from './model_factory.js';
 
 /**
