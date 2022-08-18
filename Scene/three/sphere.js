@@ -7,7 +7,6 @@ import {
 
 // See this fiddle for details
 // https://jsfiddle.net/31o0zn2c/
-/** @private */
 let vertex_shader = `
 varying vec3 vNormal;
 
@@ -19,7 +18,6 @@ void main() {
 
 }`;
 
-/** @private */
 let fragment_shader = `
 uniform sampler2D tex;
 
@@ -35,15 +33,21 @@ void main() {
 
 }`;
 
-/**
- * Returns a hemisphere with the given image applied as a texture
- * @param {Texture} texture 3js texture to apply to the hemisphere
- */
+
+
 function CreateHemisphereWithTexture(texture) {
-    const geometry = new SphereGeometry(1, 32, 32, 0, 2*Math.PI, 0, Math.PI/2);
-    const material = new MeshBasicMaterial({
-        map: texture
-    });
+    const geometry = new SphereGeometry(1, 32, 32, 0, Math.PI);
+
+    let uniforms = {
+		"tex": { value: texture }
+	};
+
+	// material
+	let material = new ShaderMaterial( {
+		uniforms		: uniforms,
+		vertexShader	: vertex_shader,
+		fragmentShader	: fragment_shader
+	} );
     const sphere = new Mesh( geometry, material );
     return sphere;
 }
