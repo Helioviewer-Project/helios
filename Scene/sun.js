@@ -57,9 +57,9 @@ class Sun {
      * TODO: Update with 3js model for return type
      * @returns {Object}
      */
-    GetModel() {
+    async GetModel() {
         // TODO: Return 3js model
-        return this._model;
+        return await this._model;
     }
 };
 

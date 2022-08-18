@@ -5,6 +5,8 @@ import {
     ShaderMaterial
 } from 'three';
 
+import {LoadMesh} from './mesh_loader.js';
+
 // See this fiddle for details
 // https://jsfiddle.net/31o0zn2c/
 let vertex_shader = `
@@ -35,8 +37,8 @@ void main() {
 
 
 
-function CreateHemisphereWithTexture(texture) {
-    const geometry = new SphereGeometry(1, 32, 32, 0, Math.PI);
+async function CreateHemisphereWithTexture(texture) {
+    const geometry = await LoadMesh('./resources/models/sun_model.stl');
 
     let uniforms = {
 		"tex": { value: texture }

@@ -43,7 +43,7 @@ class Scene {
      */
     async AddToScene(source, start, end, cadence, scale) {
         let sun = await ModelFactory.CreateSolarModel(source, start, end, cadence, scale);
-        let model = sun.GetModel();
+        let model = await sun.GetModel();
         this._scene.AddModel(model);
 
         let id = this._count++;
