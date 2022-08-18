@@ -41,8 +41,8 @@ class Scene {
      * @param {number} scale Image scale that will be requested
      * @returns {number} identifier for model in the scene
      */
-    AddToScene(source, start, end, cadence, scale) {
-        let sun = ModelFactory.CreateSolarModel(source, start, end, cadence, scale);
+    async AddToScene(source, start, end, cadence, scale) {
+        let sun = await ModelFactory.CreateSolarModel(source, start, end, cadence, scale);
         let model = sun.GetModel();
         // TODO: Add model to 3js scene
 

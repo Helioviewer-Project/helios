@@ -35,11 +35,11 @@ class SourceManager {
     /**
      * Adds a source to the scene
      */
-    AddSource() {
+    async AddSource() {
         let range = DateRangePicker.GetDateRange();
         let source = DatasourcePicker.GetDatasource();
         let resolution = ResolutionPicker.GetResolution();
-        let id = Scene.AddToScene(source, range.start, range.end, range.cadence, resolution);
+        let id = await Scene.AddToScene(source, range.start, range.end, range.cadence, resolution);
         this._layers.push(id);
     }
 

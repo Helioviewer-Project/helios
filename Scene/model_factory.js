@@ -1,5 +1,6 @@
 import Database from '../Images/database.js';
 import Sun from './sun.js';
+import { LoadTexture } from './three/texture_loader.js';
 
 /**
  * The model factory is used to build 3D models that can be added
@@ -15,12 +16,18 @@ class ModelFactory {
      * @param {number} cadence Number of seconds between each image
      * @param {number} scale Image scale that will be requested
      */
-    CreateSolarModel(source, start, end, cadence, scale) {
+    async CreateSolarModel(source, start, end, cadence, scale) {
         let images = Database.GetImages(source, start, end, cadence, scale);
-        let textures = this._CreateTextures(images);
+        let textures = await this._CreateTextures(images);
         return new Sun(textures);
     }
 
+    /**
+     * @typedef {Object} HeliosTexture
+     * @property {Date} date Date of the image
+     * @property {Texture} texture Threejs texture
+     * @property {Coordinates} observer_position Position of the observer of the image
+     */
     /**
      * Uses 3js to create textures out of image data
      * @private
@@ -28,10 +35,19 @@ class ModelFactory {
      * @param {HeliosImage[]} Image data to create textures from
      * @returns {HeliosTexture[]} Texture data for models to use
      */
-    _CreateTextures(images) {
+    async _CreateTextures(images) {
         // TODO: iterate over images and use 3js to create texture
         //       data
-        // Then return a list of objects with {date: Date, texture: Texture, observer_position: Coordinates}
+        let result = [];
+        for (const image of images) {
+            let texture = await LoadTexture(image.url);
+            result.push({
+                date: image.date,
+                texture: texture,
+                observer_position: image.observer_position
+            });
+        }
+        return result;
     }
 }
 
