@@ -35,8 +35,10 @@ void main() {
 
 }`;
 
-
-
+/**
+ * Creates a hemisphere with the given texture applied
+ * @param {Texture} texture
+ */
 async function CreateHemisphereWithTexture(texture) {
     // TODO: Get pimple mesh
     // const geometry = await LoadMesh('./resources/models/sun_model.stl');
