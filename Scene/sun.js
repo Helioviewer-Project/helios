@@ -1,3 +1,5 @@
+import {CreateHemisphereWithTexture} from './three/sphere.js';
+
 /**
  * Representation of an animatable sun created from image and
  * positional information
@@ -21,6 +23,7 @@ class Sun {
     _InitializeModel() {
         // TODO: Implement 3js model creation for hemisphere, and apply
         //       the texture to it.
+        this._model = CreateHemisphereWithTexture(this.data[0].texture);
 
         // Update the texture/rotational position
         this._Update();
@@ -54,7 +57,7 @@ class Sun {
      */
     GetModel() {
         // TODO: Return 3js model
-        return {};
+        return this._model;
     }
 };
 
