@@ -2,6 +2,6 @@
   "source": {
     "include": ["."],
     "includePattern": ".+\\.js(doc|x)?$",
-    "excludePattern": "(node_modules|test)"
+    "excludePattern": "(node_modules|test|helios_bundle.js)"
   }
 }
