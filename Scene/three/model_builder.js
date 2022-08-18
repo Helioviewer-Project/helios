@@ -56,6 +56,16 @@ async function CreateHemisphereWithTexture(texture) {
     return sphere;
 }
 
+/**
+ * Updates a model's texture on the fly
+ * @param {Model} model 3js object model
+ * @param {Texture} texture New texture to apply
+ */
+function UpdateModelTexture(model, texture) {
+    model.material.uniforms.tex.value = texture;
+}
+
 export {
-    CreateHemisphereWithTexture
+    CreateHemisphereWithTexture,
+    UpdateModelTexture
 };

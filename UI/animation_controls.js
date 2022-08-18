@@ -16,19 +16,19 @@ class AnimationControls {
     constructor(play_btn_id, pause_btn_id) {
         this._play_btn = document.getElementById(play_btn_id);
         this._pause_btn = document.getElementById(pause_btn_id);
+        this._InitializeClickListeners();
 
         /**
          * Start time for the animation range
          * @private
          */
-        this._start_time = new Date();
-        this._start_time.setDate(this._start_time.getDate() - 1);
+        this._start_time = new Date("2022-08-13 10:05:22");
 
         /**
          * End time for the animation range
          * @private
          */
-        this._end_time = new Date();
+        this._end_time = new Date("2022-08-13 10:09:58");
 
         /**
          * Current animation time
@@ -40,13 +40,29 @@ class AnimationControls {
          * Time between each animation frame in seconds
          * @private
          */
-        this._cadence = 3600;
+        this._cadence = 35;
 
         /**
          * Delay between each frame in milliseconds
          * @private
          */
         this._frame_delay = 1000;
+
+        /**
+         * Interval for the animation thread
+         * @private
+         */
+        this._interval = 0;
+    }
+
+    /**
+     * Add click listeners for play/pause buttons
+     * @private
+     */
+    _InitializeClickListeners() {
+        let animator = this;
+        this._play_btn.addEventListener('click', () => {animator.Play();});
+        this._pause_btn.addEventListener('click', () => {animator.Pause();});
     }
 
     /**

@@ -76,6 +76,11 @@ class Config {
         this.add_source_btn_id = "js-add-source";
 
         /**
+         * HTML ID of the element that will display the current time
+         */
+        this.current_time_id = "js-current-time";
+
+        /**
          * HTML class attached to elements that should be hidden
          * when helios is enabled
          */

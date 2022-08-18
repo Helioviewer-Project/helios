@@ -27,6 +27,14 @@
                 margin-bottom: 15px;
             }
 
+            #js-current-time {
+                position: fixed;
+                left: 50%;
+                transform: translateX(-50%);
+                top: 20px;
+                color: white;
+            }
+
         </style>
     </head>
     <body>
@@ -57,6 +65,7 @@
             <button id="js-play-btn">Play</button>
             <button id="js-pause-btn">Pause</button>
         </div>
+        <h1 id="js-current-time"></h1>
         <div id="js-helios-viewport"></div>
         <script src="helios_bundle.js" type="module"></script>
         <script>

@@ -13,6 +13,11 @@ class Scene {
         this._scene = new ThreeScene(Config.viewport_id);
 
         /**
+         * List of callback functions waiting for the time to update
+         */
+        this._time_listeners = [];
+
+        /**
          * Mapping of ids to models for the UI to reference scene objects
          * @private
          */
@@ -78,11 +83,16 @@ class Scene {
      * @param {Date} date New scene time
      */
     SetTime(date) {
+        this._current_time = date;
+
         let ids = Object.keys(this._models);
         for (const id of ids) {
             this._models[id].SetTime(date);
         }
-        this._current_time = date;
+
+        for (const callback of this._time_listeners) {
+            callback(this._current_time);
+        }
     }
 
     /**
@@ -91,6 +101,15 @@ class Scene {
      */
     GetCurrentTime() {
         return this._current_time;
+    }
+
+    /**
+     * Registers a callback to be executed when the scene time is updated
+     * @param {Function} fn Callback function that takes a date as a parameter
+     */
+    RegisterTimeUpdateListener(fn) {
+        this._time_listeners.push(fn);
+        fn(this._current_time);
     }
 }
 

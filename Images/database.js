@@ -24,7 +24,7 @@ class Database {
      */
     GetImages(source, start, end, cadence, scale) {
         return [
-            {date: new Date("2022-08-13 10:05:22"), url: "http://localhost:8081/v2/downloadImage/?id=87&scale=8", observer_position: new Coordinates(1, 1, 1)},
+            {date: new Date("2022-08-13 10:05:22"), url: "http://localhost:8081/v2/downloadImage/?id=64&scale=8", observer_position: new Coordinates(1, 1, 1)},
             {date: new Date("2022-08-13 10:05:58"), url: "http://localhost:8081/v2/downloadImage/?id=86&scale=8", observer_position: new Coordinates(1, 1, 1)},
             {date: new Date("2022-08-13 10:06:34"), url: "http://localhost:8081/v2/downloadImage/?id=85&scale=8", observer_position: new Coordinates(1, 1, 1)},
             {date: new Date("2022-08-13 10:07:10"), url: "http://localhost:8081/v2/downloadImage/?id=84&scale=8", observer_position: new Coordinates(1, 1, 1)},
