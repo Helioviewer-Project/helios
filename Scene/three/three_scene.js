@@ -9,6 +9,8 @@ import {
 
 } from 'three';
 
+import { OrbitControls } from './OrbitControls.js';
+
 /**
  * Wrapper for the 3js scene to keep Helios scene logic
  * separate from 3js scene logic
@@ -38,6 +40,13 @@ class ThreeScene {
          */
         this._renderer = new WebGLRenderer();
         this._renderer.setSize(window.innerWidth, window.innerHeight);
+
+        /**
+         * Camera controls plugin for user camera movement
+         * @private
+         */
+        this._orbit_controls = new OrbitControls(this._camera, this._renderer.domElement);
+        this._orbit_controls.update();
 
         let target = document.getElementById(viewport_id);
         target.appendChild(this._renderer.domElement);
