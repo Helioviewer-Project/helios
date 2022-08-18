@@ -27,7 +27,7 @@ varying vec3 vNormal;
 
 void main() {
 
-	vec2 uv = normalize( vNormal ).xy * 0.41 + 0.5;
+	vec2 uv = normalize( vNormal ).xy * 0.4 + 0.5;
 
 	vec3 color = texture2D( tex, uv ).rgb;
 
@@ -38,7 +38,9 @@ void main() {
 
 
 async function CreateHemisphereWithTexture(texture) {
-    const geometry = await LoadMesh('./resources/models/sun_model.stl');
+    // TODO: Get pimple mesh
+    // const geometry = await LoadMesh('./resources/models/sun_model.stl');
+    const geometry = new SphereGeometry(1, 32, 32, 0, Math.PI);
 
     let uniforms = {
 		"tex": { value: texture }
