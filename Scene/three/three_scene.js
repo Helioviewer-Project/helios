@@ -33,6 +33,7 @@ class ThreeScene {
          * @private
          */
         this._camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        this._camera.position.z = 5;
 
         /**
          * Renderer instance
@@ -51,19 +52,20 @@ class ThreeScene {
         let target = document.getElementById(viewport_id);
         target.appendChild(this._renderer.domElement);
 
-        // Demo, remove me
-        const geometry = new BoxGeometry( 1, 1, 1 );
-        const material = new MeshBasicMaterial( { color: 0x00ff00 } );
-        const cube = new Mesh( geometry, material );
-        this._scene.add( cube );
-        this._camera.position.z = 5;
-
         let scene_info = this;
         function animate() {
             requestAnimationFrame(animate);
             scene_info._renderer.render(scene_info._scene, scene_info._camera);
         }
         animate();
+    }
+
+    /**
+     * Adds a model to the scene
+     * @param {Mesh} 3js mesh to add to the scene
+     */
+    AddModel(model) {
+        this._scene.add(model);
     }
 }
 

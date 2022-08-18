@@ -1,4 +1,6 @@
-import {CreateHemisphereWithTexture} from './three/sphere.js';
+import {
+    CreateHemisphereWithTexture,
+} from './three/sphere.js';
 
 /**
  * Representation of an animatable sun created from image and

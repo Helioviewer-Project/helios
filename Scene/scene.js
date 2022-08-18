@@ -44,7 +44,7 @@ class Scene {
     async AddToScene(source, start, end, cadence, scale) {
         let sun = await ModelFactory.CreateSolarModel(source, start, end, cadence, scale);
         let model = sun.GetModel();
-        // TODO: Add model to 3js scene
+        this._scene.AddModel(model);
 
         let id = this._count++;
         this._models[id] = sun;
