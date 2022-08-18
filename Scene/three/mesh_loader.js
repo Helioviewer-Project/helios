@@ -1,10 +1,12 @@
 import {STLLoader} from 'three/examples/jsm/loaders/STLLoader.js';
+import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 /**
  * Keep one loader initialized.
  * @private
  */
-let loader = new STLLoader();
+let stlloader = new STLLoader();
+let gltfloader = new GLTFLoader();
 
 /**
  * Cache for meshes so that the same ones aren't reloaded
@@ -12,6 +14,22 @@ let loader = new STLLoader();
  * @private
  */
 let cache = {};
+
+/**
+ * Searches a gltf for a mesh to use.
+ * @param {GLTF} gltf object loaded with the GLTFLoader
+ * @returns {Geometry} the geometry to use
+ */
+function _ExtractMeshFromGLTF(gltf) {
+    let mesh;
+    gltf.scene.traverse( function ( child ) {
+        if ( child.isMesh ) {
+            //Setting the buffer geometry
+            mesh = child.geometry;
+        }
+    } );
+    return mesh;
+}
 
 /**
  * Loads an STL mesh from the given path
@@ -22,10 +40,19 @@ function LoadMesh(path) {
     if (cache.hasOwnProperty(path)) {
         return cache[path];
     } else {
+        // Choose loader to use
+        let loader = gltfloader;
+        if (path.endsWith("stl")) {
+            loader = stlloader;
+        }
+
         return new Promise((resolve, reject) => {
             loader.load(path,
             // on success
             (geometry) => {
+                if (loader == gltfloader) {
+                    geometry = _ExtractMeshFromGLTF(geometry);
+                }
                 cache[path] = geometry;
                 resolve(geometry);
             },

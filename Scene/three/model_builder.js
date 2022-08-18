@@ -2,7 +2,8 @@ import {
     SphereGeometry,
     MeshBasicMaterial,
     Mesh,
-    ShaderMaterial
+    ShaderMaterial,
+    Vector2
 } from 'three';
 
 import {LoadMesh} from './mesh_loader.js';
@@ -27,7 +28,7 @@ varying vec3 vNormal;
 
 void main() {
 
-	vec2 uv = normalize( vNormal ).xy * 0.4 + 0.5;
+	vec2 uv = normalize( vNormal ).xy;
 
 	vec3 color = texture2D( tex, uv ).rgb;
 
@@ -41,20 +42,12 @@ void main() {
  */
 async function CreateHemisphereWithTexture(texture) {
     // TODO: Get pimple mesh
-    // const geometry = await LoadMesh('./resources/models/sun_model.stl');
-    const geometry = new SphereGeometry(1, 32, 32, 0, Math.PI);
+    let geometry = await LoadMesh('./resources/models/sun_model.gltf');
 
-    let uniforms = {
-		"tex": { value: texture }
-	};
-
-	// material
-	let material = new ShaderMaterial( {
-		uniforms		: uniforms,
-		vertexShader	: vertex_shader,
-		fragmentShader	: fragment_shader
-	} );
-    const sphere = new Mesh( geometry, material );
+    texture.center = new Vector2(0.5, 0.5);
+    texture.repeat.set(1.49, 1.49);
+    let basicmaterial = new MeshBasicMaterial({map: texture});
+    const sphere = new Mesh( geometry, basicmaterial );
     return sphere;
 }
 
@@ -64,7 +57,9 @@ async function CreateHemisphereWithTexture(texture) {
  * @param {Texture} texture New texture to apply
  */
 function UpdateModelTexture(model, texture) {
-    model.material.uniforms.tex.value = texture;
+    texture.center = new Vector2(0.5, 0.5);
+    texture.repeat.set(1.49, 1.49);
+    model.material.map = texture;
 }
 
 export {

@@ -33,7 +33,9 @@ class ThreeScene {
          * @private
          */
         this._camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        this._camera.position.z = 5;
+        this._camera.position.x = 60;
+        this._camera.position.y = 64;
+        this._camera.position.z = -144;
 
         /**
          * Renderer instance
@@ -56,6 +58,11 @@ class ThreeScene {
         function animate() {
             requestAnimationFrame(animate);
             scene_info._renderer.render(scene_info._scene, scene_info._camera);
+            if (scene_info._camera) {
+                let camera_position = document.getElementById('js-camera-position');
+                let pos = scene_info._camera.position;
+                camera_position.textContent = "(" + pos.x + ", " + pos.y + ", " + pos.z + ")";
+            }
         }
         animate();
     }
