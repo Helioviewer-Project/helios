@@ -58,3 +58,5 @@ class Sun {
     }
 };
 
+export default Sun;
+
