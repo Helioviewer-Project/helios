@@ -9,7 +9,7 @@ import {
 
 } from 'three';
 
-import { OrbitControls } from './OrbitControls.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 /**
  * Wrapper for the 3js scene to keep Helios scene logic
