@@ -24,16 +24,15 @@ class Database {
      */
     GetImages(source, start, end, cadence, scale) {
         return [
-            {date: new Date("2022-08-13 10:05:22"), url: "http://localhost:8081/v2/downloadImage/?id=64&scale=8", observer_position: new Coordinates(1, 1, 1)},
-            {date: new Date("2022-08-13 10:05:58"), url: "http://localhost:8081/v2/downloadImage/?id=86&scale=8", observer_position: new Coordinates(1, 1, 1)},
-            {date: new Date("2022-08-13 10:06:34"), url: "http://localhost:8081/v2/downloadImage/?id=85&scale=8", observer_position: new Coordinates(1, 1, 1)},
-            {date: new Date("2022-08-13 10:07:10"), url: "http://localhost:8081/v2/downloadImage/?id=84&scale=8", observer_position: new Coordinates(1, 1, 1)},
-            {date: new Date("2022-08-13 10:07:46"), url: "http://localhost:8081/v2/downloadImage/?id=83&scale=8", observer_position: new Coordinates(1, 1, 1)},
-            {date: new Date("2022-08-13 10:08:10"), url: "http://localhost:8081/v2/downloadImage/?id=82&scale=8", observer_position: new Coordinates(1, 1, 1)},
-            {date: new Date("2022-08-13 10:08:22"), url: "http://localhost:8081/v2/downloadImage/?id=81&scale=8", observer_position: new Coordinates(1, 1, 1)},
-            {date: new Date("2022-08-13 10:08:46"), url: "http://localhost:8081/v2/downloadImage/?id=80&scale=8", observer_position: new Coordinates(1, 1, 1)},
-            {date: new Date("2022-08-13 10:09:22"), url: "http://localhost:8081/v2/downloadImage/?id=79&scale=8", observer_position: new Coordinates(1, 1, 1)},
-            {date: new Date("2022-08-13 10:09:58"), url: "http://localhost:8081/v2/downloadImage/?id=78&scale=8", observer_position: new Coordinates(1, 1, 1)}
+            {date: new Date("2022-08-13 00:00:22"), url: "http://localhost:8081/v2/downloadImage/?id=117&scale=8", observer_position: new Coordinates(1, 1, 1)},
+            {date: new Date("2022-08-13 01:00:22"), url: "http://localhost:8081/v2/downloadImage/?id=121&scale=8", observer_position: new Coordinates(1, 1, 1)},
+            {date: new Date("2022-08-13 02:00:22"), url: "http://localhost:8081/v2/downloadImage/?id=125&scale=8", observer_position: new Coordinates(1, 1, 1)},
+            {date: new Date("2022-08-13 03:00:22"), url: "http://localhost:8081/v2/downloadImage/?id=129&scale=8", observer_position: new Coordinates(1, 1, 1)},
+            {date: new Date("2022-08-13 04:00:34"), url: "http://localhost:8081/v2/downloadImage/?id=130&scale=8", observer_position: new Coordinates(1, 1, 1)},
+            {date: new Date("2022-08-13 05:00:22"), url: "http://localhost:8081/v2/downloadImage/?id=158&scale=8", observer_position: new Coordinates(1, 1, 1)},
+            {date: new Date("2022-08-13 06:00:34"), url: "http://localhost:8081/v2/downloadImage/?id=113&scale=8", observer_position: new Coordinates(1, 1, 1)},
+            {date: new Date("2022-08-13 08:00:22"), url: "http://localhost:8081/v2/downloadImage/?id=152&scale=8", observer_position: new Coordinates(1, 1, 1)},
+            {date: new Date("2022-08-13 09:00:10"), url: "http://localhost:8081/v2/downloadImage/?id=144&scale=8", observer_position: new Coordinates(1, 1, 1)}
         ];
     }
 }

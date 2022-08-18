@@ -22,13 +22,13 @@ class AnimationControls {
          * Start time for the animation range
          * @private
          */
-        this._start_time = new Date("2022-08-13 10:05:22");
+        this._start_time = new Date("2022-08-13 00:00:00");
 
         /**
          * End time for the animation range
          * @private
          */
-        this._end_time = new Date("2022-08-13 10:09:58");
+        this._end_time = new Date("2022-08-13 09:00:00");
 
         /**
          * Current animation time
@@ -40,13 +40,13 @@ class AnimationControls {
          * Time between each animation frame in seconds
          * @private
          */
-        this._cadence = 35;
+        this._cadence = 3600;
 
         /**
          * Delay between each frame in milliseconds
          * @private
          */
-        this._frame_delay = 1000;
+        this._frame_delay = 100;
 
         /**
          * Interval for the animation thread
