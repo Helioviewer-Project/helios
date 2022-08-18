@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Minimal Helios Implementation</title>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            #js-helios-viewport {
+                margin: 0;
+                padding: 0;
+            }
+
+            .demo-sidebar {
+                position: absolute;
+                display: inline-grid;
+                top: 15px;
+                left: 10px;
+            }
+
+            .demo-sidebar label {
+                color: white;
+            }
+
+            input, button, select {
+                margin-bottom: 15px;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div class="helios-visible demo-sidebar">
+            <!-- TODO: add CSS -->
+            <label for="js-date-range-start">Start Date</label>
+            <input id="js-date-range-start" type="text"/>
+
+            <label for="js-date-range-end">End Date</label>
+            <input id="js-date-range-end" type="text"/>
+
+            <label for="js-date-range-cadence">Cadence (seconds)</label>
+            <input id="js-date-range-cadence" type="number"/>
+
+            <label for="js-source-selector">Observatory</label>
+            <select id="js-source-selector">
+                <!-- TODO: Fill this in with javascript -->
+                <option value="12">AIA 211</option>
+            </select>
+
+            <button id="js-add-source">Add Source</button>
+
+            <label for="js-resolution-selector">Texture Resolution</label>
+            <select id="js-resolution-selector">
+                <option value="8">Average (512x512)</option>
+            </select>
+
+            <button id="js-play-btn">Play</button>
+            <button id="js-pause-btn">Pause</button>
+        </div>
+        <div id="js-helios-viewport"></div>
+        <script src="helios_bundle.js" type="module"></script>
+        <script>
+			let launch = new CustomEvent('InitializeHelios', {
+			    detail: {
+				    configuration: {backEnd: 'http://localhost:8081' }
+			    }
+			});
+			document.dispatchEvent(launch);
+        </script>
+    </body>
+</html>
