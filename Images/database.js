@@ -24,7 +24,16 @@ class Database {
      */
     GetImages(source, start, end, cadence, scale) {
         return [
-            {date: new Date(), url: "http://localhost:8081/v2/downloadImage/?id=64&scale=8", observer_position: new Coordinates(1, 1, 1)}
+            {date: new Date(), url: "http://localhost:8081/v2/downloadImage/?id=87&scale=8", observer_position: new Coordinates(1, 1, 1)},
+            {date: new Date(), url: "http://localhost:8081/v2/downloadImage/?id=86&scale=8", observer_position: new Coordinates(1, 1, 1)},
+            {date: new Date(), url: "http://localhost:8081/v2/downloadImage/?id=85&scale=8", observer_position: new Coordinates(1, 1, 1)},
+            {date: new Date(), url: "http://localhost:8081/v2/downloadImage/?id=84&scale=8", observer_position: new Coordinates(1, 1, 1)},
+            {date: new Date(), url: "http://localhost:8081/v2/downloadImage/?id=83&scale=8", observer_position: new Coordinates(1, 1, 1)},
+            {date: new Date(), url: "http://localhost:8081/v2/downloadImage/?id=82&scale=8", observer_position: new Coordinates(1, 1, 1)},
+            {date: new Date(), url: "http://localhost:8081/v2/downloadImage/?id=81&scale=8", observer_position: new Coordinates(1, 1, 1)},
+            {date: new Date(), url: "http://localhost:8081/v2/downloadImage/?id=80&scale=8", observer_position: new Coordinates(1, 1, 1)},
+            {date: new Date(), url: "http://localhost:8081/v2/downloadImage/?id=79&scale=8", observer_position: new Coordinates(1, 1, 1)},
+            {date: new Date(), url: "http://localhost:8081/v2/downloadImage/?id=78&scale=8", observer_position: new Coordinates(1, 1, 1)}
         ];
     }
 }

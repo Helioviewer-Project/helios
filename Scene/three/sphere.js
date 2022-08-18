@@ -25,7 +25,7 @@ varying vec3 vNormal;
 
 void main() {
 
-	vec2 uv = normalize( vNormal ).xy * 0.402 + 0.5;
+	vec2 uv = normalize( vNormal ).xy * 0.41 + 0.5;
 
 	vec3 color = texture2D( tex, uv ).rgb;
 
