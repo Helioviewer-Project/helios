@@ -71,6 +71,11 @@ class Config {
         this.viewport_id = "js-helios-viewport";
 
         /**
+         * HTML ID of the button that triggers adding data to the scene
+         */
+        this.add_source_btn_id = "js-add-source";
+
+        /**
          * HTML class attached to elements that should be hidden
          * when helios is enabled
          */
