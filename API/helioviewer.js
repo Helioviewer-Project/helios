@@ -61,9 +61,9 @@ class Helioviewer {
         // Iterate over the time range, adding "cadence" for each iteration
         while (query_time < end) {
             // Query Helioviewer for the closest image to the given time.
-            let result = await this._GetClosestImage(source, query_time);
+            let image = await this._GetClosestImage(source, query_time);
             // Add the result to the output array
-            result.push(result);
+            results.push(image);
             // Add cadence to the query time
             // A neat trick for setSeconds is if seconds > 60, it proceeds to update
             // the minutes, hours, etc.
