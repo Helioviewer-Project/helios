@@ -13,8 +13,8 @@ class PositionFinder {
      * @param {string} observer The object to get the position of
      * @returns {Coordinates} Scene coordinates
      */
-    GetPosition(time, observer) {
-        let coordinates = GeometryService.GetPosition(time, observer);
+    async GetPosition(time, observer) {
+        let coordinates = await GeometryService.GetPosition(time, observer);
         return this._ToSceneCoordinates(coordinates);
     }
 
@@ -22,8 +22,14 @@ class PositionFinder {
      * Converts HEEQ coordinates into scene coordinates
      */
     _ToSceneCoordinates(coordinates) {
-        // TODO: Convert coordinates into scene coordinates
-        return new Coordinates(100, 100, 100);
+        // Subject to change, but for now use a factor of 10^6.
+        // Chosen because Daniel's gut says it feels right.
+        let divider = Math.pow(10, 6);
+        return new Coordinates(
+            coordinates.x / divider,
+            coordinates.y / divider,
+            coordinates.z / divider
+        );
     }
 }
 
