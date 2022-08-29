@@ -37,7 +37,9 @@ class Helioviewer {
         let api_url = this.GetApiUrl() + "getClosestImage/?sourceId=" + source + "&date=" + ToAPIDate(time);
         let result = await fetch(api_url);
         let image = await result.json();
-        return {id: image.id, timestamp: new Date(image.date)};
+        // Add the Z to indicate the date is a UTC date. Helioviewer works in UTC
+        // but doesn't use the formal specification for it.
+        return {id: image.id, timestamp: new Date(image.date + "Z")};
     }
 
     /**
