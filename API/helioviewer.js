@@ -1,4 +1,5 @@
 import Config from '../Configuration.js';
+import {ToAPIDate} from "../common/dates.js";
 
 /**
  * This module is used for interfacing with the Helioviewer API
@@ -26,6 +27,20 @@ class Helioviewer {
     }
 
     /**
+     * Queries the helioviewer API for the image nearest to the given time.
+     * @param {number} source Telescope source ID
+     * @param {Date} time Timestamp to query
+     * @returns {ImageInfo}
+     * @private
+     */
+    async _GetClosestImage(source, time) {
+        let api_url = this.GetApiUrl() + "getClosestImage/?sourceId=" + source + "&date=" + ToAPIDate(time);
+        let result = await fetch(api_url);
+        let image = await result.json();
+        return {id: image.id, timestamp: new Date(image.date)};
+    }
+
+    /**
      * @typedef {Object} ImageInfo
      * @property {number} id Image ID
      * @property {Date} timestamp Timestamp for this image
@@ -39,14 +54,23 @@ class Helioviewer {
      * @param {number} cadence Number of seconds between each image
      * @returns {ImageInfo[]}
      */
-    QueryImages(source, start, end, cadence) {
-        // TODO Implement real query
-        return [
-            {id: 61, timestamp: new Date()},
-            {id: 62, timestamp: new Date()},
-            {id: 63, timestamp: new Date()},
-            {id: 64, timestamp: new Date()}
-        ];
+    async QueryImages(source, start, end, cadence) {
+        let results = [];
+        let query_time = new Date(start);
+
+        // Iterate over the time range, adding "cadence" for each iteration
+        while (query_time < end) {
+            // Query Helioviewer for the closest image to the given time.
+            let result = await this._GetClosestImage(source, query_time);
+            // Add the result to the output array
+            result.push(result);
+            // Add cadence to the query time
+            // A neat trick for setSeconds is if seconds > 60, it proceeds to update
+            // the minutes, hours, etc.
+            query_time.setSeconds(query_time.getSeconds() + cadence);
+        }
+
+        return results;
     }
 
     /**
