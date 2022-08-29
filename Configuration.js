@@ -23,7 +23,7 @@ class Config {
         /**
          * Helioviewer base API Url. Requires trailing /
          */
-        this.helioviewer_url = "https://api.helioviewer.org/v2/";
+        this.helioviewer_url = "https://api.helioviewer.org/";
 
         /**
          * Geometry service URL used to query position information
