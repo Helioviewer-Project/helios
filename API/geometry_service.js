@@ -1,4 +1,5 @@
 import Coordinates from '../common/coordinates.js';
+import {ToAPIDate} from '../common/dates.js';
 
 /**
  * Interface for interacting with the Geometry Service used for
@@ -26,13 +27,19 @@ class GeometryService {
      * @returns Coordinates
      */
     async GetPosition(time, observer) {
-        // TODO
         // convert time to a string
+        let date_str = time.toISOString();
         // Construct URL
+        let api_url = this.api_url + "?utc=" + date_str + "&observer=" + observer + "&target=SUN&ref=HEEQ";
         // Perform Get Request
+        let result = await fetch(api_url);
+        // Extract the data from the results
+        // Result has a wonky format of { result: [ {ISO String w/o Z}: [x, y, z] ] 
+        let json = await result.json();
+        let key = date_str.substr(0, 23);
+        let data = json.result[0][key];
         // Translate results into coordinates
-        // return
-        return new Coordinates(0, 0, 0);
+        return new Coordinates(data[0], data[1], data[2]);
     }
 }
 
