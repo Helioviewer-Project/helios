@@ -4,7 +4,7 @@
  * @returns {string} Date that can be used in an API request
  */
 function ToAPIDate(date) {
-    return date.toISOString().substr(0, 19) + "Z";
+    return date.toISOString();
 }
 
 export { ToAPIDate };
