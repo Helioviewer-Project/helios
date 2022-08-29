@@ -61,13 +61,20 @@ class Helioviewer {
         // Iterate over the time range, adding "cadence" for each iteration
         while (query_time < end) {
             // Query Helioviewer for the closest image to the given time.
-            let image = await this._GetClosestImage(source, query_time);
+            // Sends the request off and store the promise
+            let image_promise = this._GetClosestImage(source, query_time);
             // Add the result to the output array
-            results.push(image);
+            results.push(image_promise);
             // Add cadence to the query time
             // A neat trick for setSeconds is if seconds > 60, it proceeds to update
             // the minutes, hours, etc.
             query_time.setSeconds(query_time.getSeconds() + cadence);
+        }
+
+        // Iterate over the promise array, and update the values with the actual
+        // queried values
+        for (let i = 0; i < results.length; i++) {
+            results[i] = await results[i];
         }
 
         return results;
