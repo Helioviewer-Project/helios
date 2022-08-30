@@ -9,3 +9,11 @@ test('Getting a known position with millisecond precision', async () => {
     let position = await GeometryService.GetPosition(new Date("2021-12-08T10:00:00.555Z"), "SDO");
     expect(JSON.stringify(position)).toBe(`{"x":-147394243.23615438,"y":-25047.277186552063,"z":173289.07114257663}`);
 });
+
+test('No data available', async () => {
+    try {
+        let position = await GeometryService.GetPosition(new Date("2022-12-08T10:00:00.555Z"), "SDO");
+    } catch (e) {
+        expect(e).toBe("Could not load position data");
+    }
+});

@@ -35,11 +35,15 @@ class GeometryService {
         let result = await fetch(api_url);
         // Extract the data from the results
         // Result has a wonky format of { result: [ {ISO String w/o Z}: [x, y, z] ] 
-        let json = await result.json();
-        let key = date_str.substr(0, 23);
-        let data = json.result[0][key];
-        // Translate results into coordinates
-        return new Coordinates(data[0], data[1], data[2]);
+        if (result.ok) {
+            let json = await result.json();
+            let key = date_str.substr(0, 23);
+            let data = json.result[0][key];
+            // Translate results into coordinates
+            return new Coordinates(data[0], data[1], data[2]);
+        } else {
+            throw "Could not load position data";
+        }
     }
 }
 
