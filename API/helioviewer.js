@@ -61,7 +61,7 @@ class Helioviewer {
         let query_time = new Date(start);
 
         // Iterate over the time range, adding "cadence" for each iteration
-        while (query_time < end) {
+        while (query_time <= end) {
             // Query Helioviewer for the closest image to the given time.
             // Sends the request off and store the promise
             let image_promise = this._GetClosestImage(source, query_time);

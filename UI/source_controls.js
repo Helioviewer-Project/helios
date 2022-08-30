@@ -39,7 +39,20 @@ class SourceManager {
         let range = DateRangePicker.GetDateRange();
         let source = DatasourcePicker.GetDatasource();
         let resolution = ResolutionPicker.GetResolution();
-        let id = await Scene.AddToScene(source, range.start, range.end, range.cadence, resolution);
+        // TODO: Validate range, source, and resolution.
+        //       validation can be done in the respective modules.
+        source = 13;
+        range.start = new Date("2023-01-01T00:00:00Z");
+        range.end = new Date("2023-01-01T00:00:00Z");
+        range.cadence = 3600 * 24;
+        resolution = 8;
+        try {
+            let id = await Scene.AddToScene(source, range.start, range.end, range.cadence, resolution);
+        } catch (e) {
+            // TODO: Use a nicer error method than alert
+            alert("Couldn't load images for the given time range");
+            return;
+        }
         this._layers.push(id);
     }
 

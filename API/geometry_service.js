@@ -31,8 +31,13 @@ class GeometryService {
         let date_str = time.toISOString();
         // Construct URL
         let api_url = this.api_url + "?utc=" + date_str + "&observer=" + observer + "&target=SUN&ref=HEEQ";
-        // Perform Get Request
-        let result = await fetch(api_url);
+        try {
+            // Perform Get Request
+            let result = await fetch(api_url, {mode: 'no-cors'});
+        } catch (e) {
+            throw "Could not load position data";
+        }
+
         // Extract the data from the results
         // Result has a wonky format of { result: [ {ISO String w/o Z}: [x, y, z] ] 
         if (result.ok) {
