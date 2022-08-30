@@ -27,25 +27,29 @@ class Database {
         // Initialize array of objects that will be returned
         let results = [];
 
-        // Query the images for the given time range
-        let images = await ImageFinder.GetImages(source, start, end, cadence, scale);
+        try {
+            // Query the images for the given time range
+            let images = await ImageFinder.GetImages(source, start, end, cadence, scale);
 
-        // For each image, get their observer's position in space
-        for (const image of images) {
-            // By storing the promise for now, we can blast out all the requests at once
-            // Hopefully this doesn't get us rate limited...
-            let observer_position_promise = PositionFinder.GetPosition(image.timestamp, GetObserverFromSource(source));
-            let helios_image = {
-                date: image.timestamp,
-                url: image.url,
-                position: observer_position_promise
-            };
-            results.push(helios_image);
-        }
+            // For each image, get their observer's position in space
+            for (const image of images) {
+                // By storing the promise for now, we can blast out all the requests at once
+                // Hopefully this doesn't get us rate limited...
+                let observer_position_promise = PositionFinder.GetPosition(image.timestamp, GetObserverFromSource(source));
+                let helios_image = {
+                    date: image.timestamp,
+                    url: image.url,
+                    position: observer_position_promise
+                };
+                results.push(helios_image);
+            }
 
-        // Now wait for the results of the queries
-        for (const image of results) {
-            image.position = await image.position;
+            // Now wait for the results of the queries
+            for (const image of results) {
+                image.position = await image.position;
+            }
+        } catch (e) {
+            throw 'Failed to load images from database';
         }
 
         return results;

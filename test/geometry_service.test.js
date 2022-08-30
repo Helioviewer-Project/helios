@@ -11,6 +11,7 @@ test('Getting a known position with millisecond precision', async () => {
 });
 
 test('No data available', async () => {
+    expect.assertions(1);
     try {
         let position = await GeometryService.GetPosition(new Date("2022-12-08T10:00:00.555Z"), "SDO");
     } catch (e) {
