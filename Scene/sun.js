@@ -47,24 +47,34 @@ class Sun {
      * @private
      */
     async _Update() {
+        let data = this._GetDataFromDate(this.current_time);
         // Get the texture to use from the current time.
-        let texture = this._GetTextureFromDate(this.current_time);
+        let texture = data.texture;
 
         // Update the texture on the model to the date's texture
         let model = await this._model;
         UpdateModelTexture(model, texture);
 
         // Update the rotation of the model to the date's observer position
-        // TODO: Update rotation of model to point towards observer
+        this._PointToObserver(model, data.position);
     }
 
     /**
-     * Searches the object's data for a texture nearing the given date
+     * Rotats the given model to face the observer position
+     * @param {Object} model threejs model
+     * @param {Coordinates} observer Position of the observer in scene coordinates
+     */
+    _PointToObserver(model, observer) {
+        console.log(observer);
+    }
+
+    /**
+     * Searches the object's data for the data point closest to the given date
      * @param {Date} date The date to find in the image list
-     * @returns {Texture}
+     * @returns {HeliosImage}
      * @private
      */
-    _GetTextureFromDate(date) {
+    _GetDataFromDate(date) {
         let chosen_index = 0;
         let dt = Math.abs(date - this.data[0].date);
         // To choose the nearest date, iterate over all dates and select
@@ -81,7 +91,7 @@ class Sun {
                 dt = delta;
             }
         }
-        return this.data[chosen_index].texture;
+        return this.data[chosen_index];
     }
 
     /**
@@ -96,11 +106,9 @@ class Sun {
 
     /**
      * Returns the 3js model that can be added to the Scene.
-     * TODO: Update with 3js model for return type
      * @returns {Object}
      */
     async GetModel() {
-        // TODO: Return 3js model
         return await this._model;
     }
 };

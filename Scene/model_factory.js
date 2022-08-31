@@ -28,7 +28,7 @@ class ModelFactory {
         */
         console.log(source, start, end, cadence, scale);
         try {
-            let images = await Database.GetImages(source, start, end, cadence, scale);
+            var images = await Database.GetImages(source, start, end, cadence, scale);
         } catch (e) {
             throw 'Failed to create model: ' + e
         }
