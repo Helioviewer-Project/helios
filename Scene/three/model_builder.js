@@ -43,18 +43,24 @@ void main() {
  */
 let fragment_shader = `
 /* uniforms are global variables that can be passed to this shader program via 3js. */
+
 // tex is the 3D texture, in this case the image of the sun we are mapping to the model
 uniform sampler2D tex;
+
 // scale is used to define the scale of the mesh in relation to the texture. Used to get
 // the image of the sun to fit "just right" onto the hemisphere
 uniform float scale;
+
 // currently unused, can be used to shift the texture in the x axis
 uniform float x_offset;
+
 // currently unused, can be used to shift the texture in the y axis
 uniform float y_offset;
+
 // If red/green/blue values are all below this threshold, then the pixel
 // will become transparent
 uniform float transparent_threshold;
+
 // flag to determine if the model we're mapping onto is the front or back side of the model
 // (this application technically loads 2 models, one for front and one for back, this shader
 //  treats each slightly different)
