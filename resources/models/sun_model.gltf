@@ -28,9 +28,12 @@
             "doubleSided" : true,
             "name" : "Material.001",
             "pbrMetallicRoughness" : {
-                "baseColorTexture" : {
-                    "index" : 0
-                },
+                "baseColorFactor" : [
+                    0.800000011920929,
+                    0.800000011920929,
+                    0.800000011920929,
+                    1
+                ],
                 "metallicFactor" : 0,
                 "roughnessFactor" : 0.5
             }
@@ -50,19 +53,6 @@
                     "material" : 0
                 }
             ]
-        }
-    ],
-    "textures" : [
-        {
-            "sampler" : 0,
-            "source" : 0
-        }
-    ],
-    "images" : [
-        {
-            "mimeType" : "image/png",
-            "name" : "2020_12_31__23_59_53_13__SDO_AIA_AIA_304_full_image_8",
-            "uri" : "2020_12_31__23_59_53_13__SDO_AIA_AIA_304_full_image_8.png"
         }
     ],
     "accessors" : [
@@ -121,12 +111,6 @@
             "buffer" : 0,
             "byteLength" : 12048,
             "byteOffset" : 189856
-        }
-    ],
-    "samplers" : [
-        {
-            "magFilter" : 9729,
-            "minFilter" : 9987
         }
     ],
     "buffers" : [
