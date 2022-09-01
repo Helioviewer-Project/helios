@@ -12,6 +12,7 @@ class Database {
      * @property {Date} date Timestamp for this image
      * @property {string} url URL of the image
      * @property {Coordinates} position Position of the observer in scene coordinates
+     * @property {JP2info} jp2info Metadata about this image
      */
     /**
      * Query data sources for a list of image information
@@ -39,6 +40,7 @@ class Database {
                 let helios_image = {
                     date: image.timestamp,
                     url: image.url,
+                    jp2info: image.jp2info,
                     position: observer_position_promise
                 };
                 results.push(helios_image);
