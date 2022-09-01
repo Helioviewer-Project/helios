@@ -114,7 +114,7 @@ void main() {
  * @param {Texture} texture Sun image texture
  * @returns {Mesh}
  */
-async function _GetBackside(texture) {
+async function _GetBackside(texture, scale) {
     // Load the mesh
     let geometry = await LoadMesh('./resources/models/sun_model.gltf');
 
@@ -123,7 +123,7 @@ async function _GetBackside(texture) {
     let shader = new ShaderMaterial({
         uniforms: {
             tex: {value: texture},
-            scale: {value: 1.6},
+            scale: {value: scale},
             x_offset: {value: 0.0},
             y_offset: {value: 0.0},
             backside: {value: true},
@@ -147,7 +147,9 @@ async function _GetBackside(texture) {
  * Creates a hemisphere with the given texture applied
  * @param {Texture} texture
  */
-async function CreateHemisphereWithTexture(texture) {
+async function CreateHemisphereWithTexture(texture, scale) {
+    // Load the backside of the mesh in parallel
+    let backside = _GetBackside(texture, scale);
     // Load the model
     let geometry = await LoadMesh('./resources/models/sun_model.gltf');
 
@@ -156,7 +158,7 @@ async function CreateHemisphereWithTexture(texture) {
     let shader = new ShaderMaterial({
         uniforms: {
             tex: {value: texture},
-            scale: {value: 1.6},
+            scale: {value: scale},
             x_offset: {value: 0.0},
             y_offset: {value: 0.0},
             backside: {value: false},
@@ -171,7 +173,7 @@ async function CreateHemisphereWithTexture(texture) {
     // Construct the 3js mesh
     const sphere = new Mesh( geometry, shader );
     // Construct the backside of the mesh
-    const backside = await _GetBackside(texture);
+    backside = await backside;
     // Add both sphere and backside models to a group, so all operations
     // to the group apply to everything inside.
     const sphere_group = new Group();
@@ -189,10 +191,11 @@ async function CreateHemisphereWithTexture(texture) {
  * @param {Group} group 3js object group containing the sun models
  * @param {Texture} texture New texture to apply
  */
-function UpdateModelTexture(group, texture) {
+function UpdateModelTexture(group, texture, scale) {
     // Iterate through the group and update the texture uniform.
     for (const model of group.children) {
         model.material.uniforms.tex.value = texture;
+        model.material.uniforms.scale.value = scale;
     }
 }
 
