@@ -71,14 +71,16 @@
         </div>
         <h1 id="js-current-time"></h1>
         <div id="js-helios-viewport"></div>
-        <script src="helios_bundle.js" type="module"></script>
+        <script src="helios_bundle.js" type="module" onload="updateHeliosConfiguration();"></script>
         <script>
-			let launch = new CustomEvent('InitializeHelios', {
-			    detail: {
-				    configuration: {backEnd: 'http://localhost:8081' }
-			    }
-			});
-			document.dispatchEvent(launch);
+            function updateHeliosConfiguration() {
+                let launch = new CustomEvent('InitializeHelios', {
+                    detail: {
+                        configuration: {backEnd: 'http://localhost:8081' }
+                    }
+                });
+                document.dispatchEvent(launch);
+            }
         </script>
     </body>
 </html>

@@ -38,10 +38,12 @@ class Helios {
      */
     _InitializeButton() {
         this._button = document.getElementById(Config.toggle_button_id);
-        let Helios = this;
-        this._button.addEventListener('click', () => {
-            Helios.Toggle();
-        });
+        if (this._button) {
+            let Helios = this;
+            this._button.addEventListener('click', () => {
+                Helios.Toggle();
+            });
+        }
     }
 
     /**
