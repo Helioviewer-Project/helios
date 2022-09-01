@@ -22,6 +22,7 @@ class ImageFinder {
      * @typedef {Object} UrlInfo
      * @property {string} url URL to an image
      * @property {Date} timestamp Timestamp associated with the image
+     * @property {JP2Info} jp2info metadata about the image
      */
     /**
      * Queries helioviewer for a list of images
@@ -46,9 +47,15 @@ class ImageFinder {
             if (this._isNewUrl(url_info, url)) {
                 url_info.push({
                     url: url,
-                    timestamp: image.timestamp
+                    timestamp: image.timestamp,
+                    jp2info: Helioviewer.GetJP2Info(image.id)
                 });
             }
+        }
+
+        // Wait for async query to finish on the list
+        for (const info of url_info) {
+            info.jp2info = await info.jp2info;
         }
         // Return url list
         return url_info;
