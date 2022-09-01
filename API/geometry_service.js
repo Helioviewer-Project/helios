@@ -33,7 +33,7 @@ class GeometryService {
         let api_url = this.api_url + "?utc=" + date_str + "&observer=" + observer + "&target=SUN&ref=HEEQ";
         try {
             // Perform Get Request
-            let result = await fetch(api_url, {mode: 'no-cors'});
+            var result = await fetch(api_url);
         } catch (e) {
             throw "Could not load position data";
         }
@@ -47,6 +47,7 @@ class GeometryService {
             // Translate results into coordinates
             return new Coordinates(data[0], data[1], data[2]);
         } else {
+            console.error(result);
             throw "Could not load position data";
         }
     }
