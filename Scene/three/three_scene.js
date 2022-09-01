@@ -1,6 +1,6 @@
 import {
     Scene,
-    PerspectiveCamera,
+    OrthographicCamera,
     WebGLRenderer,
     AxesHelper,
     BoxGeometry,
@@ -33,10 +33,12 @@ class ThreeScene {
          * Camera instance
          * @private
          */
-        this._camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        this._camera = new OrthographicCamera(window.innerWidth / -2,  window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / -2, 0, 1000);
         this._camera.position.x = 0;
         this._camera.position.y = 0;
-        this._camera.position.z = -10;
+        this._camera.position.z = -8;
+        this._camera.zoom = 49;
+        this._camera.updateProjectionMatrix();
 
         /**
          * Renderer instance
@@ -62,7 +64,7 @@ class ThreeScene {
             if (scene_info._camera) {
                 let camera_position = document.getElementById('js-camera-position');
                 let pos = scene_info._camera.position;
-                camera_position.textContent = "(" + pos.x + ", " + pos.y + ", " + pos.z + ")";
+                camera_position.textContent = "(" + pos.x + ", " + pos.y + ", " + pos.z + "). Zoom: " + scene_info._camera.zoom;
             }
         }
         animate();
