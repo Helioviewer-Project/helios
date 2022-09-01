@@ -4,6 +4,20 @@ import Helioviewer from '../API/helioviewer.js';
  * Searches helioviewer for images to use
  */
 class ImageFinder {
+
+    /**
+     * Checks if the given url is new to the list
+     * @param {UrlInfo[]} urls Array of url objects
+     * @param {string} url_to_check The URL to search for in the list
+     * @returns true if url_to_check is not in urls
+     */
+    _isNewUrl(urls, url_to_check) {
+        // Check if the url is in the list
+        const found = urls.find(el => el.url == url_to_check);
+        // If found is undefined, then the url is a new url
+        return found == undefined;
+    }
+
     /**
      * @typedef {Object} UrlInfo
      * @property {string} url URL to an image
@@ -26,10 +40,15 @@ class ImageFinder {
         // a list of URLs.
         let url_info = [];
         for (const image of images) {
-            url_info.push({
-                url: Helioviewer.GetImageURL(image.id, scale),
-                timestamp: image.timestamp
-            });
+            let url = Helioviewer.GetImageURL(image.id, scale);
+
+            // ignore duplicates
+            if (this._isNewUrl(url_info, url)) {
+                url_info.push({
+                    url: url,
+                    timestamp: image.timestamp
+                });
+            }
         }
         // Return url list
         return url_info;
