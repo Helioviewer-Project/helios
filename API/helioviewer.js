@@ -83,6 +83,43 @@ class Helioviewer {
     }
 
     /**
+     * @typedef {Object} JP2Info
+     * @property {number} width Original jp2 image width
+     * @property {number} height Original jp2 image height
+     * @property {number} solar_center_x x coordinate of the center of the sun within the jp2
+     * @property {number} solar_center_y y coordinate of the center of the sun within the jp2
+     * @property {number} solar_radius Radius of the sun in pixels
+     */
+    /**
+     * Extracts relevant jp2 header information for a given image ID
+     * @param {number} id ID of image
+     * @returns {JP2Info}
+     */
+    async GetJP2Info(id) {
+        let api_url = this.GetApiUrl() + "getJP2Header/?id=" + id;
+        let result = await fetch(api_url);
+        let header_info = await result.text();
+        return this._extractJP2InfoFromXML(header_info);
+    }
+
+    /**
+     * Extracts relevant helios information from the given jp2 header
+     * @param {string} jp2_header_xml XML received via the getJP2Header API
+     * @returns {JP2Info}
+     */
+    _extractJP2InfoFromXML(jp2_header_xml) {
+        let parser = new DOMParser();
+        let xml = parser.parseFromString(jp2_header_xml, "text/xml");
+        return {
+            width: parseFloat(xml.getElementsByTagName('NAXIS1')[0].textContent),
+            height: parseFloat(xml.getElementsByTagName('NAXIS2')[0].textContent),
+            solar_center_x: parseFloat(xml.getElementsByTagName('CRPIX1')[0].textContent),
+            solar_center_y: parseFloat(xml.getElementsByTagName('CRPIX2')[0].textContent),
+            solar_radius: parseFloat(xml.getElementsByTagName('R_SUN')[0].textContent)
+        };
+    }
+
+    /**
      * Returns a URL that will return a PNG of the given image
      *
      * @param {number} id The ID of the image to get
