@@ -2,6 +2,9 @@ import {
     CreateHemisphereWithTexture,
     UpdateModelTexture
 } from './three/model_builder.js';
+import {
+    Vector3
+} from 'three';
 
 /**
  * Representation of an animatable sun created from image and
@@ -63,7 +66,7 @@ class Sun {
      * @param {Coordinates} observer Position of the observer in scene coordinates
      */
     _PointToObserver(model, observer) {
-        console.log(observer);
+        model.lookAt(new Vector3(observer.x, observer.y, observer.z));
     }
 
     /**

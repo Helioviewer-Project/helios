@@ -44,7 +44,7 @@ class ModelFactory {
      * @typedef {Object} HeliosTexture
      * @property {Date} date Date of the image
      * @property {Texture} texture Threejs texture
-     * @property {Coordinates} observer_position Position of the observer of the image
+     * @property {Coordinates} position Position of the observer of the image
      * @property {JP2info} jp2info Metadta about the source of this texture
      */
     /**
@@ -64,7 +64,7 @@ class ModelFactory {
                 date: image.date,
                 texture: texture,
                 jp2info: image.jp2info,
-                observer_position: image.observer_position
+                position: image.position
             });
         }
 
