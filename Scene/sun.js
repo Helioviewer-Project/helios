@@ -33,9 +33,7 @@ class Sun {
      * @private
      */
     _InitializeModel() {
-        // TODO: Implement 3js model creation for hemisphere, and apply
-        //       the texture to it.
-        this._model = CreateHemisphereWithTexture(this.data[0].texture);
+        this._model = CreateHemisphereWithTexture(this.data[0].texture, this.data[0].jp2info);
 
         // Update the texture/rotational position
         this._Update();
@@ -53,7 +51,7 @@ class Sun {
 
         // Update the texture on the model to the date's texture
         let model = await this._model;
-        UpdateModelTexture(model, texture);
+        UpdateModelTexture(model, texture, this.data[0].jp2info);
 
         // Update the rotation of the model to the date's observer position
         this._PointToObserver(model, data.position);

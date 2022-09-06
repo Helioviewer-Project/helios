@@ -106,6 +106,9 @@ void main() {
 
     // Uncomment this line below to visualize the UVs
     // gl_FragColor = vec4(v_uv.x, v_uv.y, 0, 1);
+
+    // Uncomment this line to see the texture unmodified
+	// gl_FragColor = vec4(texture2D(tex, scaled_uv).rgb, 1.0);
 }`;
 
 /**
@@ -146,10 +149,11 @@ async function _GetBackside(texture, scale) {
 /**
  * Creates a hemisphere with the given texture applied
  * @param {Texture} texture
+ * @param {JP2info} jp2 metadata about this texture for positioning
  */
-async function CreateHemisphereWithTexture(texture, scale) {
+async function CreateHemisphereWithTexture(texture, jp2info) {
+    let scale = _ComputeMeshScale(jp2info);
     // Load the backside of the mesh in parallel
-    let backside = _GetBackside(texture, scale);
     // Load the model
     let geometry = await LoadMesh('./resources/models/sun_model.gltf');
 
@@ -172,13 +176,13 @@ async function CreateHemisphereWithTexture(texture, scale) {
     shader.transparent = true;
     // Construct the 3js mesh
     const sphere = new Mesh( geometry, shader );
+    const backside = await _GetBackside(texture, scale);
     // Construct the backside of the mesh
-    backside = await backside;
     // Add both sphere and backside models to a group, so all operations
     // to the group apply to everything inside.
     const sphere_group = new Group();
     sphere_group.add(sphere);
-    sphere_group.add(backside);
+    sphere_group.add(await backside);
     // Set the scale, this isn't strictly necessary, but keeps our camera position
     // closer to the origin. Something something about render distance consuming more
     // compute cycles. I don't know if this actually improves performance or not
@@ -190,13 +194,34 @@ async function CreateHemisphereWithTexture(texture, scale) {
  * Updates a model's texture on the fly
  * @param {Group} group 3js object group containing the sun models
  * @param {Texture} texture New texture to apply
+ * @param {JP2info} jp2info
  */
-function UpdateModelTexture(group, texture, scale) {
+function UpdateModelTexture(group, texture, jp2info) {
     // Iterate through the group and update the texture uniform.
     for (const model of group.children) {
         model.material.uniforms.tex.value = texture;
-        model.material.uniforms.scale.value = scale;
+        model.material.uniforms.scale.value = _ComputeMeshScale(jp2info);
     }
+}
+
+/**
+ * Computes the scale of the mesh to pass into the fragment shader
+ * so that the texture fits in the correct spot on the mesh.
+ * @param {JP2info} jp2info
+ * @returns {number}
+ */
+function _ComputeMeshScale(jp2info) {
+    // Currently assumes the sun is always centered in the image.
+    // if it's not, this code will need to be updated to handle those offsets
+    let diameter = jp2info.solar_radius * 2;
+    let sun_image_ratio = diameter / jp2info.width;
+    let target_width_ratio = 0.5;
+    // We need the hemisphere on the mesh (which is 50% (0.5) of the width)
+    // to be the same as the width of the sun in the texture so that it fits perfectly
+    // To achieve this we take the width of the sun relative to the width of the image, and create
+    // a multiplier so that the with of the hemisphere matches the width of the sun relative to
+    // the width of the mesh.
+    return sun_image_ratio / target_width_ratio;
 }
 
 export {
