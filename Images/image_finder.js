@@ -20,6 +20,7 @@ class ImageFinder {
 
     /**
      * @typedef {Object} UrlInfo
+     * @property {number} id Image ID
      * @property {string} url URL to an image
      * @property {Date} timestamp Timestamp associated with the image
      * @property {JP2Info} jp2info metadata about the image
@@ -46,6 +47,7 @@ class ImageFinder {
             // ignore duplicates
             if (this._isNewUrl(url_info, url)) {
                 url_info.push({
+                    id: image.id,
                     url: url,
                     timestamp: image.timestamp,
                     jp2info: Helioviewer.GetJP2Info(image.id)

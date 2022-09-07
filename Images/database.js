@@ -36,7 +36,7 @@ class Database {
             for (const image of images) {
                 // By storing the promise for now, we can blast out all the requests at once
                 // Hopefully this doesn't get us rate limited...
-                let observer_position_promise = PositionFinder.GetPosition(image.timestamp, GetObserverFromSource(source));
+                let observer_position_promise = PositionFinder.GetPosition(image.id);
                 let helios_image = {
                     date: image.timestamp,
                     url: image.url,
