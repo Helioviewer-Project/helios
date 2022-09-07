@@ -1,4 +1,4 @@
-import GeometryService from '../API/geometry_service.js';
+import Helioviewer from '../API/helioviewer.js';
 import Coordinates from '../common/coordinates.js'
 
 /**
@@ -9,12 +9,11 @@ class PositionFinder {
     /**
      * Gets coordinates for the given observer at the specified time
      *
-     * @param {Date} time Point in time to query
-     * @param {string} observer The object to get the position of
+     * @param {number} id ID of the jp2 image to get information about
      * @returns {Coordinates} Scene coordinates
      */
-    async GetPosition(time, observer) {
-        let coordinates = await GeometryService.GetPosition(time, observer);
+    async GetPosition(id) {
+        let coordinates = await Helioviewer.GetJp2Observer(id);
         return this._ToSceneCoordinates(coordinates);
     }
 
