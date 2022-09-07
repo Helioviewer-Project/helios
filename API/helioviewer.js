@@ -1,5 +1,6 @@
 import Config from '../Configuration.js';
 import {ToAPIDate} from "../common/dates.js";
+import Coordinates from '../common/coordinates.js';
 
 /**
  * This module is used for interfacing with the Helioviewer API
@@ -100,6 +101,29 @@ class Helioviewer {
         let result = await fetch(api_url);
         let header_info = await result.text();
         return this._extractJP2InfoFromXML(header_info);
+    }
+
+    /**
+     * Converts the GetJp2Observer response to our Coordinate object
+     * @returns Coordinates
+     */
+    _toCoordinates(response) {
+        let x = response["heeq"]['x'];
+        let y = response["heeq"]['y'];
+        let z = response["heeq"]['z'];
+        return new Coordinates(x, y, z);
+    }
+
+    /**
+     * Returns the observer position of a jp2 image
+     * @param {number} id ID of the jp2 image
+     * @returns Coordinates
+     */
+    async GetJp2Observer(id) {
+        let api_url = this.GetApiUrl() + "getObserverPosition/?id=" + id;
+        let result = await fetch(api_url);
+        let data = await result.json();
+        return this._toCoordinates(data);
     }
 
     /**
