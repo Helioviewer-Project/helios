@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "docs": "jsdoc -r -c .jsdoc.conf.json -R README.md -d docs",
-    "view-docs": "open docs/index.html"
+    "view-docs": "open docs/index.html",
+    "build": "./build.sh"
   },
   "author": "Daniel Garcia-Briseno",
   "license": "MIT",

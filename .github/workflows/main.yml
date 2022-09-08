@@ -38,11 +38,11 @@ jobs:
       - name: Deploy
         uses: Reggionick/s3-deploy@5ed8934a7499373b51337042f7e11b5f7599d7dc
         with:
-            folder: .
+            folder: dist
             bucket: ${{ secrets.S3_BUCKET }}
             bucket-region: ${{ secrets.S3_BUCKET_REGION }}
             delete-removed: true
             no-cache: true
             private: true
-            filesToInclude: "docs,resources,index.html,helios_bundle.js"
+            filesToInclude: ".*/*,*/*,**"
 

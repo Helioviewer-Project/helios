@@ -4,3 +4,4 @@ node_modules
 *.swo
 helios_bundle.js
 docs
+dist

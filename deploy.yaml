@@ -1,0 +1,28 @@
+name: Deploy to S3 Dev Site
+on: [push]
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    steps:
+        - uses: actions/checkout@v3
+
+        - name: Install dependencies
+          run: npm install
+
+        - name: Build
+          run: npx webpack
+          run: npm run docs
+
+        - name: Deploy
+          uses: reggionick/s3-deploy@v3
+          with:
+            folder: .
+            bucket: ${{ secrets.S3_BUCKET }}
+            bucket-region: ${{ secrets.S3_BUCKET_REGION }}
+            delete-removed: true
+            no-cache: true
+            private: true
+            filesToInclude: "docs,resources,index.html,helios_bundle.js"
