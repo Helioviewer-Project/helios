@@ -34,9 +34,6 @@ jobs:
       - name: Compile and minify javascript
         run: npm run build
       
-      - name: Generate documentation
-        run: npm run docs
-      
       # Deploy to S3
       - name: Deploy
         uses: Reggionick/s3-deploy@5ed8934a7499373b51337042f7e11b5f7599d7dc
