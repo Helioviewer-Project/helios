@@ -67,7 +67,7 @@ class SourceManager {
         let dt = (range.end - range.start);
         // If the date is negative, it means end is before start, this is bad.
         if (dt < 0) {
-            alert("End time must be before start.");
+            alert("Start time must be before end time.");
             return false;
         }
         // Get the number of dates that will be queried
