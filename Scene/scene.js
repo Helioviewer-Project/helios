@@ -54,6 +54,10 @@ class Scene {
         let id = this._count++;
         this._models[id] = sun;
         sun.SetTime(this._current_time);
+        if (this._count == 1) {
+            this._scene.MoveCamera(sun.GetObserverPosition());
+            this._scene.PointCamera(await sun.GetPosition());
+        }
         return id;
     }
 

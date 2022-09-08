@@ -82,10 +82,29 @@ class ThreeScene {
         this._scene.add(model);
     }
 
+    /**
+     * Moves the camera to the given position
+     * @param {Coordinates} position
+     */
+    MoveCamera(position) {
+        this._camera.position.x = position.x;
+        this._camera.position.y = position.y;
+        this._camera.position.z = position.z;
+    }
+
+    /**
+     * Points the camera to the given position
+     * @param {Vector3}
+     */
+    PointCamera(position) {
+        this._camera.lookAt(position);
+    }
+
     _EnableDebug() {
         const axesHelper = new AxesHelper( 5 );
         this._scene.add( axesHelper );
 
+        /* Uncomment to enable reference cubes
         const geometry = new BoxGeometry(1, 1, 1);
         const material = new MeshBasicMaterial({color: 0x00FF00});
         // material.depthWrite = false;
@@ -108,6 +127,7 @@ class ThreeScene {
         const cube3 = new Mesh(geometry, material);
         cube3.position.z = -6;
         this._scene.add(cube3);
+        */
     }
 }
 

@@ -70,6 +70,23 @@ class Sun {
     }
 
     /**
+     * Returns the current observer's position
+     * @returns Coordinates
+     */
+    GetObserverPosition() {
+        let data = this._GetDataFromDate(this.current_time);
+        return data.position;
+    }
+
+    /**
+     * Returns the model's position in the 3D scene
+     * @returns {Vector3}
+     */
+    async GetPosition() {
+        return (await this.GetModel()).position;
+    }
+
+    /**
      * Searches the object's data for the data point closest to the given date
      * @param {Date} date The date to find in the image list
      * @returns {HeliosImage}
