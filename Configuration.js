@@ -107,6 +107,11 @@ class Config {
          * when clicked.
          */
         this.toggle_button_id = "js-enable-helios";
+
+        /**
+         * Limits the maximum images to be queried from helioviewer for a single date range.
+         */
+        this.max_dates_in_query = 60;
     }
 
     /**

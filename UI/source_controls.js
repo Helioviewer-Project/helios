@@ -42,17 +42,39 @@ class SourceManager {
         let resolution = ResolutionPicker.GetResolution();
         // TODO: Validate range, source, and resolution.
         //       Make sure that the number of images that are going to be searched for is less than some value set in the configuration
-        try {
-            let id = await Scene.AddToScene(source, range.start, range.end, range.cadence, resolution);
-            // TODO: if source is already being displayed, then this should replace it, rather than just being added on.
-            //       Use RemoveFromScene to remove the existing layer before adding it to _layers
-            this._layers.push({source: source, id: id});
-        } catch (e) {
-            console.error(e);
-            // TODO: Use a nicer error method than alert
-            alert("Couldn't load images for the given time range");
-            return;
+        if (this._ValidateDateRange(range)) {
+            try {
+                let id = await Scene.AddToScene(source, range.start, range.end, range.cadence, resolution);
+                // TODO: if source is already being displayed, then this should replace it, rather than just being added on.
+                //       Use RemoveFromScene to remove the existing layer before adding it to _layers
+                this._layers.push({source: source, id: id});
+            } catch (e) {
+                console.error(e);
+                // TODO: Use a nicer error method than alert
+                alert("Couldn't load images for the given time range");
+                return;
+            }
         }
+    }
+
+    /**
+     * Checks if the date range is a valid query
+     * @param {TimeRange} range
+     * @returns {bool}
+     */
+    _ValidateDateRange(range) {
+        // Subtracting dates returns the time between them in milliseconds
+        let dt = (range.end - range.start);
+        // If the date is negative, it means end is before start, this is bad.
+        if (dt < 0) {
+            alert("End time must be before start.");
+            return false;
+        }
+        // Get the number of dates that will be queried
+        // dt is in milliseconds, divide by 1000 to get the result in seconds. Then divide by the cadence
+        // to see how many dates will be queried.
+        let num_dates = (dt / 1000) / range.cadence;
+        return num_dates < Config.max_dates_in_query;
     }
 
     /**
