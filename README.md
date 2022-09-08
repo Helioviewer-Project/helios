@@ -15,6 +15,30 @@ getting positional information of objects in space.
 Using these APIs, which provide images and positional information, we can
 render this data in 3D space.
 
+## How To Run It
+1. clone the repository
+```
+git clone https://github.com/dgarciabriseno/helios.git
+```
+
+2. Install npm modules
+```
+cd helios
+npm install
+```
+
+3. Build the javascript bundle
+```
+npx webpack
+```
+
+4. Run a local webserver to host index.html. I use python, but any webserver will work.
+```
+python3 -m http.server # runs on port 8000 by default
+```
+
+5. See it in browser by going to [http://localhost:8000](http://localhost:8000)
+
 ## Organization
 Helios is made up of 6 major components
 
