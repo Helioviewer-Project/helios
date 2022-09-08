@@ -33,8 +33,8 @@ class DateRangePicker {
         //       something like every 1 second over 5 years
         // TODO: Make sure these dates have the correct UTC time. (Right now they most likely map to the user's local time)
         //       You can make them UTC time by forcing the string to be in the format "YYYY-MM-DDTHH:MM:SSZ"
-        let start = new Date(this._start.value);
-        let end = new Date(this._end.value);
+        let start = new Date(this._start.value + "Z");
+        let end = new Date(this._end.value + "Z");
         let cadence = this._cadence.value;
         return {
             start: start,
