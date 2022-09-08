@@ -56,6 +56,11 @@ class Config {
         this.resolution_selector_id = "js-resolution-selector";
 
         /**
+         * HTML ID of the animation fps input
+         */
+        this.animation_fps_id = 'js-animation-speed';
+
+        /**
          * HTML ID of the play button for animation controls
          */
         this.play_btn_id = 'js-play-btn';

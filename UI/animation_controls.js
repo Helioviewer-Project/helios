@@ -16,6 +16,7 @@ class AnimationControls {
     constructor(play_btn_id, pause_btn_id) {
         this._play_btn = document.getElementById(play_btn_id);
         this._pause_btn = document.getElementById(pause_btn_id);
+        this._fps_input = document.getElementById(Config.animation_fps_id);
         this._InitializeClickListeners();
 
         /**
@@ -46,7 +47,7 @@ class AnimationControls {
          * Delay between each frame in milliseconds
          * @private
          */
-        this._frame_delay = 100;
+        this._frame_delay = 1000;
 
         /**
          * Interval for the animation thread
@@ -72,6 +73,10 @@ class AnimationControls {
         this._current_time = Scene.GetTime();
         this._start_time = new Date(document.getElementById(Config.date_range_start_id).value + "Z");
         this._end_time = new Date(document.getElementById(Config.date_range_end_id).value + "Z");
+        // 1 frame / Frames per second = Seconds per frame
+        // Seconds per frame * 1000 ms/s = milliseconds per frame
+        // This can be reduced to 1000 / fps;
+        this._frame_delay = (1000 / parseFloat(this._fps_input.value) );
         this._cadence = parseInt(document.getElementById(Config.date_range_cadence_id).value);
     }
 
@@ -79,6 +84,9 @@ class AnimationControls {
      * Begins the animation
      */
     Play() {
+        // If play is clicked again, then stop the animation first, then re-initialize
+        // so that new input values are picked up.
+        this.Pause();
         this._InitializeAnimationRangeFromInputs();
         // Only start the animation if it's not already running
         if (this._interval == 0) {
