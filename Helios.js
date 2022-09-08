@@ -2,7 +2,7 @@ import Config from './Configuration.js';
 import './UI/source_controls.js';
 import './UI/camera_controls.js';
 import './UI/animation_controls.js';
-import './UI/time_display.js';
+import './UI/scene_time.js';
 
 /**
  * This class is the glue between Helioviewer.org and the Helios
