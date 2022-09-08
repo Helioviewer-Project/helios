@@ -10,7 +10,7 @@ import {
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
-let enable_debug = true;
+let enable_debug = false;
 
 /**
  * Wrapper for the 3js scene to keep Helios scene logic
@@ -61,10 +61,12 @@ class ThreeScene {
         function animate() {
             requestAnimationFrame(animate);
             scene_info._renderer.render(scene_info._scene, scene_info._camera);
-            if (scene_info._camera) {
-                let camera_position = document.getElementById('js-camera-position');
-                let pos = scene_info._camera.position;
-                camera_position.textContent = "(" + pos.x + ", " + pos.y + ", " + pos.z + "). Zoom: " + scene_info._camera.zoom;
+            if (enable_debug) {
+                if (scene_info._camera) {
+                    let camera_position = document.getElementById('js-camera-position');
+                    let pos = scene_info._camera.position;
+                    camera_position.textContent = "(" + pos.x + ", " + pos.y + ", " + pos.z + "). Zoom: " + scene_info._camera.zoom;
+                }
             }
         }
         animate();
