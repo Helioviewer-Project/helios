@@ -3,6 +3,7 @@ import DateRangePicker from './date_range_picker.js';
 import DatasourcePicker from './datasource_picker.js';
 import ResolutionPicker from './resolution_picker.js';
 import Scene from '../Scene/scene.js';
+import {ToAPIDate} from '../common/dates.js';
 
 /**
  * Manages current sources displayed in the scene
@@ -42,19 +43,21 @@ class SourceManager {
         // TODO: Validate range, source, and resolution.
         //       validation can be done in the respective modules.
         source = 13;
-        range.start = new Date("2021-01-01T00:00:00Z");
-        range.end = new Date("2021-01-03T00:00:00Z");
-        range.cadence = 3600 * 24;
+        range.start = new Date("2021-01-06T00:01:29Z");
+        range.end = new Date("2021-01-06T00:01:30Z");
+        range.cadence = 1;
         resolution = 8;
         try {
             let id = await Scene.AddToScene(source, range.start, range.end, range.cadence, resolution);
+            // TODO: if source is already being displayed, then this should replace it, rather than just being added on.
+            //       Use RemoveFromScene to remove the existing layer before adding it to _layers
+            this._layers.push({source: source, id: id});
         } catch (e) {
             console.error(e);
             // TODO: Use a nicer error method than alert
             alert("Couldn't load images for the given time range");
             return;
         }
-        this._layers.push(id);
     }
 
     /**
@@ -65,6 +68,11 @@ class SourceManager {
      */
     RemoveSource(id) {
         Scene.RemoveFromScene(id);
+        // Use filter to get all elements where id does not match the id we just removed from the scene.
+        // This effectively deletes it from the layer list, though it's probably a slow solution.
+        // The layer list should ever have more than a few layers in it though, so it's not a big deal.
+        // The max number of layers it can have is the max number of datasources we have.
+        this._layers = this._layers.filter((el) => el.id != id);
     }
 }
 
