@@ -1,5 +1,6 @@
 import {STLLoader} from 'three/examples/jsm/loaders/STLLoader.js';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
+import {Matrix4} from 'three';
 
 /**
  * Keep one loader initialized.
@@ -28,6 +29,10 @@ function _ExtractMeshFromGLTF(gltf) {
             mesh = child.geometry;
         }
     } );
+
+    // Flip the geometry so the front of the sun is the front.
+    // Without this, threejs thinks the flat side is the front.
+    mesh.applyMatrix4( new Matrix4().makeRotationX( Math.PI ) );
     return mesh;
 }
 

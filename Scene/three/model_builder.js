@@ -163,9 +163,6 @@ async function CreateHemisphereWithTexture(texture, jp2info) {
     // Load the backside of the mesh in parallel
     // Load the model
     let geometry = await LoadMesh('./resources/models/sun_model.gltf');
-    // Flip the geometry so the front of the sun is the front.
-    // Without this, threejs thinks the flat side is the front.
-    geometry.applyMatrix4( new Matrix4().makeRotationX( Math.PI ) );
 
     // Create the shader, this is where the uniforms that appear
     // in the shader are set.
