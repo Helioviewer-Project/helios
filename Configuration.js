@@ -81,6 +81,11 @@ class Config {
         this.current_time_id = "js-current-time";
 
         /**
+         * HTML ID of the input element used to change the current time.
+         */
+        this.scene_time_input = "js-current-scene-time";
+
+        /**
          * HTML class attached to elements that should be hidden
          * when helios is enabled
          */

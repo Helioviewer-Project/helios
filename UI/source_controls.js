@@ -41,12 +41,7 @@ class SourceManager {
         let source = DatasourcePicker.GetDatasource();
         let resolution = ResolutionPicker.GetResolution();
         // TODO: Validate range, source, and resolution.
-        //       validation can be done in the respective modules.
-        source = 13;
-        range.start = new Date("2021-01-06T00:01:29Z");
-        range.end = new Date("2021-01-06T00:01:30Z");
-        range.cadence = 1;
-        resolution = 8;
+        //       Make sure that the number of images that are going to be searched for is less than some value set in the configuration
         try {
             let id = await Scene.AddToScene(source, range.start, range.end, range.cadence, resolution);
             // TODO: if source is already being displayed, then this should replace it, rather than just being added on.

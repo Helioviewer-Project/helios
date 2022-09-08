@@ -10,11 +10,22 @@ class TimeDisplay {
      */
     constructor(html_id) {
         this._el = document.getElementById(html_id);
+        this._input = document.getElementById(Config.scene_time_input);
 
         let time = this;
         let el = this._el;
         Scene.RegisterTimeUpdateListener((date) => {
             el.textContent = time.GetFormattedTime(date);
+        });
+
+        this._RegisterInputListener();
+    }
+
+    _RegisterInputListener() {
+        this._input.addEventListener('change', (e) => {
+            // Add the "Z" to parse the date as UTC time.
+            let date = new Date(e.target.value + "Z");
+            Scene.SetTime(date);
         });
     }
 
@@ -23,19 +34,10 @@ class TimeDisplay {
      * @param {Date} date Date to format
      */
     GetFormattedTime(date) {
-        let year = date.getFullYear();
-        let month = date.getMonth() + 1;
-        month = month < 10 ? '0' + month : month;
-        let day = date.getDate();
-        day = day < 10 ? '0' + day : day;
-        let hours = date.getHours();
-        hours = hours < 10 ? '0' + hours : hours;
-        let minutes = date.getMinutes();
-        minutes = minutes < 10 ? '0' + minutes : minutes;
-        let seconds = date.getSeconds();
-        seconds = seconds < 10 ? '0' + seconds : seconds;
-
-        return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+        let date_str = date.toISOString();
+        date_str = date_str.replace("T", " ");
+        date_str = date_str.replace("Z", " ");
+        return date_str.substr(0, 19);
     }
 }
 
