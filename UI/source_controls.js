@@ -74,7 +74,12 @@ class SourceManager {
         // dt is in milliseconds, divide by 1000 to get the result in seconds. Then divide by the cadence
         // to see how many dates will be queried.
         let num_dates = (dt / 1000) / range.cadence;
-        return num_dates < Config.max_dates_in_query;
+        let is_valid = num_dates < Config.max_dates_in_query;
+        if (!is_valid) {
+            alert("This request would result in downloading " + num_dates + " images. The maximum allowed for one query is " + Config.max_dates_in_query + ". Try increasing the cadence.");
+            return false;
+        }
+        return true;
     }
 
     /**
