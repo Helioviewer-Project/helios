@@ -99,7 +99,7 @@ class Scene {
      * Returns the current time of the scene
      * @returns {Date} scene time
      */
-    GetCurrentTime() {
+    GetTime() {
         return this._current_time;
     }
 
@@ -110,6 +110,15 @@ class Scene {
     RegisterTimeUpdateListener(fn) {
         this._time_listeners.push(fn);
         fn(this._current_time);
+    }
+
+    /**
+     * Returns the timestamp of a given model
+     * @param {number} id ID of the model returned by AddToScene
+     * @return {Date}
+     */
+    GetModelTime(id) {
+        return this._models[id].current_time;
     }
 }
 

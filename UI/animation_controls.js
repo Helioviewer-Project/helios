@@ -22,13 +22,13 @@ class AnimationControls {
          * Start time for the animation range
          * @private
          */
-        this._start_time = new Date("2022-08-13 00:00:00");
+        this._start_time = new Date("2021-01-01T00:00:00Z");
 
         /**
          * End time for the animation range
          * @private
          */
-        this._end_time = new Date("2022-08-13 09:00:00");
+        this._end_time = new Date("2021-01-30T00:00:00Z");
 
         /**
          * Current animation time
@@ -40,7 +40,7 @@ class AnimationControls {
          * Time between each animation frame in seconds
          * @private
          */
-        this._cadence = 3600;
+        this._cadence = 3600 * 24;
 
         /**
          * Delay between each frame in milliseconds
@@ -66,9 +66,20 @@ class AnimationControls {
     }
 
     /**
+     * Sets the start/end animation times and the current time.
+     */
+    _InitializeAnimationRangeFromInputs() {
+        this._current_time = Scene.GetTime();
+        this._start_time = new Date(document.getElementById(Config.date_range_start_id).value + "Z");
+        this._end_time = new Date(document.getElementById(Config.date_range_end_id).value + "Z");
+        this._cadence = parseInt(document.getElementById(Config.date_range_cadence_id).value);
+    }
+
+    /**
      * Begins the animation
      */
     Play() {
+        this._InitializeAnimationRangeFromInputs();
         // Only start the animation if it's not already running
         if (this._interval == 0) {
             let animator = this;

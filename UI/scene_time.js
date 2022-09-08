@@ -16,6 +16,7 @@ class TimeDisplay {
         let el = this._el;
         Scene.RegisterTimeUpdateListener((date) => {
             el.textContent = time.GetFormattedTime(date);
+            this._input.value = time.GetFormattedTime(date).substr(0, 16);
         });
 
         this._RegisterInputListener();
