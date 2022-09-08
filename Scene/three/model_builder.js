@@ -77,6 +77,10 @@ void main() {
     // of the mesh, as if it was scaled.
     vec2 scaled_uv = (vec2(v_uv.x + x_offset, v_uv.y + y_offset) - vec2(0.5)) * scale + vec2(0.5);
 
+    if (scaled_uv.x > 1.0 || scaled_uv.y > 1.0 || scaled_uv.x < 0.0 || scaled_uv.y < 0.0) {
+        discard;
+    }
+
     // Get the color of this coordinate in the texture
 	vec4 color = vec4(texture2D(tex, scaled_uv).rgb, 1.0);
 
