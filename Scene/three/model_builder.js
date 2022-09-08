@@ -4,6 +4,7 @@ import {
     Mesh,
     ShaderMaterial,
     Vector2,
+    Matrix4,
     Group,
     BackSide
 } from 'three';
@@ -76,6 +77,8 @@ void main() {
     // the mesh against the texture coordinates so that the uv coordinates map to a different part
     // of the mesh, as if it was scaled.
     vec2 scaled_uv = (vec2(v_uv.x + x_offset, v_uv.y + y_offset) - vec2(0.5)) * scale + vec2(0.5);
+    // For reasons unknown (probably blender) the x is flipped, so flip it back here.
+    scaled_uv.x = 1.0 - scaled_uv.x;
 
     if (scaled_uv.x > 1.0 || scaled_uv.y > 1.0 || scaled_uv.x < 0.0 || scaled_uv.y < 0.0) {
         discard;
@@ -160,6 +163,9 @@ async function CreateHemisphereWithTexture(texture, jp2info) {
     // Load the backside of the mesh in parallel
     // Load the model
     let geometry = await LoadMesh('./resources/models/sun_model.gltf');
+    // Flip the geometry so the front of the sun is the front.
+    // Without this, threejs thinks the flat side is the front.
+    geometry.applyMatrix4( new Matrix4().makeRotationX( Math.PI ) );
 
     // Create the shader, this is where the uniforms that appear
     // in the shader are set.
@@ -191,6 +197,7 @@ async function CreateHemisphereWithTexture(texture, jp2info) {
     // closer to the origin. Something something about render distance consuming more
     // compute cycles. I don't know if this actually improves performance or not
     sphere_group.scale.set(0.20, 0.20, 0.20);
+
     return sphere_group;
 }
 
