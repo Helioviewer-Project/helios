@@ -41,10 +41,10 @@
         <div class="helios-visible demo-sidebar">
             <!-- TODO: add CSS -->
             <label for="js-date-range-start">Start Date</label>
-            <input id="js-date-range-start" type="text"/>
+            <input id="js-date-range-start" type="datetime-local"/>
 
             <label for="js-date-range-end">End Date</label>
-            <input id="js-date-range-end" type="text"/>
+            <input id="js-date-range-end" type="datetime-local"/>
 
             <label for="js-date-range-cadence">Cadence (seconds)</label>
             <input id="js-date-range-cadence" type="number"/>
@@ -79,7 +79,7 @@
                         configuration: {backEnd: 'http://localhost:8081' }
                     }
                 });
-                document.dispatchEvent(launch);
+                // document.dispatchEvent(launch);
             }
         </script>
     </body>
