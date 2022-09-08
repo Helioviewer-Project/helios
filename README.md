@@ -39,6 +39,9 @@ python3 -m http.server # runs on port 8000 by default
 
 5. See it in browser by going to [http://localhost:8000](http://localhost:8000)
 
+### Making Changes
+Make sure to re-run `npx webpack` to update the js bundle whenever making javascript changes.
+
 ## Organization
 Helios is made up of 6 major components
 
