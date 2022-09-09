@@ -1,27 +1,36 @@
 import {
     CreateHemisphereWithTexture,
+    CreatePlaneWithTexture,
     UpdateModelTexture,
     UpdateModelOpacity
 } from './three/model_builder.js';
+
 import {
     Vector3
 } from 'three';
+
+import Config from '../Configuration.js';
 
 /**
  * Representation of an animatable sun created from image and
  * positional information
  */
-class Sun {
+class Model {
     /**
      * Construct a sun model from a dataset
      *
      * @param {HeliosTexture[]} data Array of objects containing a date, texture, and observer position
      */
-    constructor(data) {
+    constructor(data, source) {
         /**
          * Texture data used on this model
          */
         this.data = data;
+
+        /**
+         * ID of the model's source
+         */
+        this.source = source;
 
         /**
          * The current time being displayed on this model
@@ -37,7 +46,11 @@ class Sun {
      * @private
      */
     _InitializeModel() {
-        this._model = CreateHemisphereWithTexture(this.data[0].texture, this.data[0].jp2info);
+        if (Config.plane_sources.indexOf(this.source) != -1) {
+            this._model = CreatePlaneWithTexture(this.data[0].texture, this.data[0].jp2info);
+        } else {
+            this._model = CreateHemisphereWithTexture(this.data[0].texture, this.data[0].jp2info);
+        }
 
         // Update the texture/rotational position
         this._Update();
@@ -55,7 +68,7 @@ class Sun {
 
         // Update the texture on the model to the date's texture
         let model = await this._model;
-        UpdateModelTexture(model, texture, this.data[0].jp2info);
+        UpdateModelTexture(model, texture, this.data[0].jp2info, this.source);
 
         // Update the rotation of the model to the date's observer position
         this._PointToObserver(model, data.position);
@@ -141,5 +154,5 @@ class Sun {
     }
 };
 
-export default Sun;
+export default Model;
 

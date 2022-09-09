@@ -112,6 +112,11 @@ class Config {
          * Limits the maximum images to be queried from helioviewer for a single date range.
          */
         this.max_dates_in_query = 60;
+
+        /**
+         * Sources IDs that should be rendered on a plane rather than a hemisphere
+         */
+        this.plane_sources = [4, 5];
     }
 
     /**

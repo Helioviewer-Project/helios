@@ -1,5 +1,5 @@
 import Database from '../Images/database.js';
-import Sun from './sun.js';
+import Model from './model.js';
 import { LoadTexture } from './three/texture_loader.js';
 
 /**
@@ -16,7 +16,7 @@ class ModelFactory {
      * @param {Date} end End of time range to query
      * @param {number} cadence Number of seconds between each image
      * @param {number} scale Image scale that will be requested
-     * @returns {Sun} Model representing the sun, or null if no data is available
+     * @returns {Model} Model representing the sun, or null if no data is available
      */
     async CreateSolarModel(source, start, end, cadence, scale) {
         /*
@@ -37,7 +37,7 @@ class ModelFactory {
         // that their search returned nothing.
 
         let textures = await this._CreateTextures(images);
-        return new Sun(textures);
+        return new Model(textures, source);
     }
 
     /**
