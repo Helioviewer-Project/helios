@@ -64,7 +64,7 @@ Each component has a set of classes which are meant to interface
 with certain other classes. As shown in the following diagram.
 The configuration has been excluded from this diagram.
 
-![Diagram of sub components](https://bit.ly/3d20rJC)
+![Diagram of sub components](https://bit.ly/3RvdIte)
 
 Select any class on the right sidebar to see a description
 of the class's responsibilities.
