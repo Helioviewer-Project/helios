@@ -20,6 +20,7 @@ let cache = {};
  * Searches a gltf for a mesh to use.
  * @param {GLTF} gltf object loaded with the GLTFLoader
  * @returns {Geometry} the geometry to use
+ * @private
  */
 function _ExtractMeshFromGLTF(gltf) {
     let mesh;
