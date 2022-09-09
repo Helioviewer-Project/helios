@@ -50,15 +50,11 @@ class ImageFinder {
                     id: image.id,
                     url: url,
                     timestamp: image.timestamp,
-                    jp2info: Helioviewer.GetJP2Info(image.id)
+                    jp2info: image.jp2_info
                 });
             }
         }
 
-        // Wait for async query to finish on the list
-        for (const info of url_info) {
-            info.jp2info = await info.jp2info;
-        }
         // Return url list
         return url_info;
     }

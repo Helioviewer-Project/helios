@@ -40,13 +40,32 @@ class Helioviewer {
         let image = await result.json();
         // Add the Z to indicate the date is a UTC date. Helioviewer works in UTC
         // but doesn't use the formal specification for it.
-        return {id: image.id, timestamp: new Date(image.date + "Z")};
+        return {
+            id: image.id,
+            timestamp: new Date(image.date + "Z"),
+            jp2_info: {
+                width: image.width,
+                height: image.height,
+                solar_center_x: image.refPixelX,
+                solar_center_y: image.refPixelY,
+                solar_radius: image.rsun
+            }
+        };
     }
 
+    /**
+     * @typedef {Object} JP2Info
+     * @property {number} width Original jp2 image width
+     * @property {number} height Original jp2 image height
+     * @property {number} solar_center_x x coordinate of the center of the sun within the jp2
+     * @property {number} solar_center_y y coordinate of the center of the sun within the jp2
+     * @property {number} solar_radius Radius of the sun in pixels
+     */
     /**
      * @typedef {Object} ImageInfo
      * @property {number} id Image ID
      * @property {Date} timestamp Timestamp for this image
+     * @property {JP2Info} jp2_info
      */
     /**
      * Returns a list of Image IDs for the specified time range
@@ -81,26 +100,6 @@ class Helioviewer {
         }
 
         return results;
-    }
-
-    /**
-     * @typedef {Object} JP2Info
-     * @property {number} width Original jp2 image width
-     * @property {number} height Original jp2 image height
-     * @property {number} solar_center_x x coordinate of the center of the sun within the jp2
-     * @property {number} solar_center_y y coordinate of the center of the sun within the jp2
-     * @property {number} solar_radius Radius of the sun in pixels
-     */
-    /**
-     * Extracts relevant jp2 header information for a given image ID
-     * @param {number} id ID of image
-     * @returns {JP2Info}
-     */
-    async GetJP2Info(id) {
-        let api_url = this.GetApiUrl() + "getJP2Header/?id=" + id;
-        let result = await fetch(api_url);
-        let header_info = await result.text();
-        return this._extractJP2InfoFromXML(header_info);
     }
 
     /**
