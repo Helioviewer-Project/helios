@@ -90,7 +90,7 @@ void main() {
     }
 
     // Get the color of this coordinate in the texture
-	vec4 color = vec4(texture2D(tex, scaled_uv).rgb, opacity);
+    vec4 color = vec4(texture2D(tex, scaled_uv).rgb, opacity);
 
     // Using the equation of a circle here with an origin at (0.5, 0.5) i.e. center of the mesh
     // and a radius of 0.25 (quarter of the mesh, see resources/models/dimensions.png). Any
