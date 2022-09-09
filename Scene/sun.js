@@ -1,6 +1,7 @@
 import {
     CreateHemisphereWithTexture,
-    UpdateModelTexture
+    UpdateModelTexture,
+    UpdateModelOpacity
 } from './three/model_builder.js';
 import {
     Vector3
@@ -128,6 +129,15 @@ class Sun {
      */
     async GetModel() {
         return await this._model;
+    }
+
+    /**
+     * Sets the opacity/transparency of the mesh
+     * @param {float} opacity Value between 0 and 1.0. 0 is fully transparent, 1.0 is fully opaque
+     */
+    async SetOpacity(opacity) {
+        let model = await this.GetModel();
+        UpdateModelOpacity(model, opacity);
     }
 };
 

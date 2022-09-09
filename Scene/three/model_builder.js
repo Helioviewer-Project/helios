@@ -20,6 +20,7 @@ import {LoadMesh} from './mesh_loader.js';
  * This is the default function to position the mesh in the scene.
  * The projectionMatrix and modelViewMatrix are defined by 3js and this formula
  * positions the mesh in the scene wherever it's supposed to be according to the camera position.
+ * @private
  */
 let vertex_shader = `
 // v_uv is used to pass the vertex information on to the fragment shader
@@ -41,6 +42,7 @@ void main() {
  * UV coordinates are passed in a range from 0 to 1. (0,0) being the bottom left corner and (1,1)
  * being the uppermost right corner. The 3D model itself defines how these coordinates map to 3D space.
  * See uv_map.png in the resources/models folder.
+ * @private
  */
 let fragment_shader = `
 /* uniforms are global variables that can be passed to this shader program via 3js. */
@@ -67,6 +69,9 @@ uniform float transparent_threshold;
 //  treats each slightly different)
 uniform bool backside;
 
+// Sets the opacity of the texture
+uniform float opacity;
+
 // v_uv is the uv we're working on, received from the vertex shader.
 // varying means it is a variable coming from the vertex shader.
 // as opposed to uniform, which means it is a global constant.
@@ -85,7 +90,7 @@ void main() {
     }
 
     // Get the color of this coordinate in the texture
-	vec4 color = vec4(texture2D(tex, scaled_uv).rgb, 1.0);
+    vec4 color = vec4(texture2D(tex, scaled_uv).rgb, opacity);
 
     // Using the equation of a circle here with an origin at (0.5, 0.5) i.e. center of the mesh
     // and a radius of 0.25 (quarter of the mesh, see resources/models/dimensions.png). Any
@@ -123,6 +128,7 @@ void main() {
  * This side will have only the energy coming off of the sun rendered on it.
  * @param {Texture} texture Sun image texture
  * @returns {Mesh}
+ * @private
  */
 async function _GetBackside(texture, scale) {
     // Load the mesh
@@ -137,6 +143,7 @@ async function _GetBackside(texture, scale) {
             x_offset: {value: 0.0},
             y_offset: {value: 0.0},
             backside: {value: true},
+            opacity: {value: 1},
             transparent_threshold: {value: 0.15}
         },
         vertexShader: vertex_shader,
@@ -173,6 +180,7 @@ async function CreateHemisphereWithTexture(texture, jp2info) {
             x_offset: {value: 0.0},
             y_offset: {value: 0.0},
             backside: {value: false},
+            opacity: {value: 1},
             transparent_threshold: {value: 0.15}
         },
         vertexShader: vertex_shader,
@@ -217,6 +225,7 @@ function UpdateModelTexture(group, texture, jp2info) {
  * so that the texture fits in the correct spot on the mesh.
  * @param {JP2info} jp2info
  * @returns {number}
+ * @private
  */
 function _ComputeMeshScale(jp2info) {
     // Currently assumes the sun is always centered in the image.
@@ -232,7 +241,18 @@ function _ComputeMeshScale(jp2info) {
     return sun_image_ratio / target_width_ratio;
 }
 
+/**
+ * Sets the opacity on all model groups
+ * @param {Group} model Model group returned by CreateHemisphereWithTexture
+ */
+function UpdateModelOpacity(model, opacity) {
+    for (const sub_model of model.children) {
+        sub_model.material.uniforms.opacity.value = opacity;
+    }
+}
+
 export {
     CreateHemisphereWithTexture,
-    UpdateModelTexture
+    UpdateModelTexture,
+    UpdateModelOpacity
 };
