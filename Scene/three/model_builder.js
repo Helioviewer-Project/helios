@@ -193,9 +193,21 @@ function UpdateModelOpacity(model, opacity) {
     }
 }
 
+/**
+ * Updates the layering order of the given model
+ * @param {number} order Effectize "Z-index" of the model
+ */
+function UpdateModelLayeringOrder(model, order) {
+    for (const child of model.children) {
+        child.material.polygonOffset = true;
+        child.material.polygonOffsetUnits = -order * 10;
+    }
+}
+
 export {
     CreateHemisphereWithTexture,
     CreatePlaneWithTexture,
     UpdateModelTexture,
-    UpdateModelOpacity
+    UpdateModelOpacity,
+    UpdateModelLayeringOrder
 };

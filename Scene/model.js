@@ -2,7 +2,8 @@ import {
     CreateHemisphereWithTexture,
     CreatePlaneWithTexture,
     UpdateModelTexture,
-    UpdateModelOpacity
+    UpdateModelOpacity,
+    UpdateModelLayeringOrder
 } from './three/model_builder.js';
 
 import {
@@ -156,15 +157,9 @@ class Model {
     /**
      * Sets the layer order of this object
      * @param {number} index The index of this item in the scene
-     * @param {number} num_layers Total number of layers, required to compute render offsets
      */
-    async SetLayerOrder(index, num_layers) {
-        let model = await this.GetModel();
-        // model.renderOrder = index;
-        model.children[0].material.polygonOffset = true;
-        model.children[0].material.polygonOffsetUnits = -index * 10;
-        model.children[1].material.polygonOffset = true;
-        model.children[1].material.polygonOffsetUnits = -index * 10;
+    async SetLayerOrder(index) {
+        UpdateModelLayeringOrder(await this.GetModel(), index);
     }
 };
 
