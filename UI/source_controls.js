@@ -21,6 +21,7 @@ class SourceManager {
 
         this._add_btn = document.getElementById(add_source_btn_id);
         this._InitializeAddListener();
+        this._layer_count = 0;
     }
 
     /**
@@ -44,7 +45,9 @@ class SourceManager {
         //       Make sure that the number of images that are going to be searched for is less than some value set in the configuration
         if (this._ValidateDateRange(range)) {
             try {
-                let id = await Scene.AddToScene(source, range.start, range.end, range.cadence, resolution);
+                // Get the index for this layer.
+                this._layer_count += 1;
+                let id = await Scene.AddToScene(source, range.start, range.end, range.cadence, resolution, this._layer_count);
                 // TODO: if source is already being displayed, then this should replace it, rather than just being added on.
                 //       Use RemoveFromScene to remove the existing layer before adding it to _layers
                 this._layers.push({source: source, id: id});
