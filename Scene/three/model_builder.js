@@ -2,7 +2,6 @@ import {
     SphereGeometry,
     PlaneGeometry,
     MeshBasicMaterial,
-    AdditiveBlending,
     Mesh,
     ShaderMaterial,
     Vector2,
@@ -88,7 +87,6 @@ async function CreateHemisphereWithTexture(texture, jp2info) {
     // Enable transparency, without this, making pixels transparent will
     // just make them white.
     shader.transparent = true;
-    shader.blending = AdditiveBlending;
     // Construct the 3js mesh
     const sphere = new Mesh( geometry, shader );
     const backside = await _GetBackside(texture, scale);
