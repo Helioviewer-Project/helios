@@ -44,21 +44,36 @@ class Scene {
      * @param {Date} end End of time range to query
      * @param {number} cadence Number of seconds between each image
      * @param {number} scale Image scale that will be requested
+     * @param {number} layer_order Layer order of the image in the scene.
      * @returns {number} identifier for model in the scene
      */
-    async AddToScene(source, start, end, cadence, scale) {
+    async AddToScene(source, start, end, cadence, scale, layer_order) {
         let sun = await ModelFactory.CreateSolarModel(source, start, end, cadence, scale);
         let model = await sun.GetModel();
         this._scene.AddModel(model);
 
         let id = this._count++;
-        this._models[id] = sun;
+        this._models[id] = {
+            model: sun,
+            order: layer_order
+        };
         sun.SetTime(this._current_time);
         if (this._count == 1) {
             this._scene.MoveCamera(sun.GetObserverPosition());
             this._scene.PointCamera(await sun.GetPosition());
         }
+        this._SortLayers();
         return id;
+    }
+
+    /**
+     * Set the model's layering order so they appear correctly in the scene.
+     */
+    _SortLayers() {
+        let keys = Object.keys(this._models);
+        for (const id of keys) {
+            this._models[id].model.SetLayerOrder(this._models[id].order, keys.length);
+        }
     }
 
     /**
