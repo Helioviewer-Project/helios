@@ -4,6 +4,7 @@ import DatasourcePicker from './datasource_picker.js';
 import ResolutionPicker from './resolution_picker.js';
 import Scene from '../Scene/scene.js';
 import {ToAPIDate} from '../common/dates.js';
+import {GetImageScaleForResolution} from '../common/resolution_lookup.js';
 
 /**
  * Manages current sources displayed in the scene
@@ -47,7 +48,8 @@ class SourceManager {
             try {
                 // Get the index for this layer.
                 this._layer_count += 1;
-                let id = await Scene.AddToScene(source, range.start, range.end, range.cadence, resolution, this._layer_count);
+                let image_scale = GetImageScaleForResolution(resolution, source);
+                let id = await Scene.AddToScene(source, range.start, range.end, range.cadence, image_scale, this._layer_count);
                 // TODO: if source is already being displayed, then this should replace it, rather than just being added on.
                 //       Use RemoveFromScene to remove the existing layer before adding it to _layers
                 this._layers.push({source: source, id: id});

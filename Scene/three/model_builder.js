@@ -200,7 +200,7 @@ function UpdateModelOpacity(model, opacity) {
 function UpdateModelLayeringOrder(model, order) {
     for (const child of model.children) {
         child.material.polygonOffset = true;
-        child.material.polygonOffsetUnits = -order * 1000;
+        child.material.polygonOffsetUnits = -order * 1000000;
     }
 }
 
