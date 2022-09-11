@@ -54,13 +54,6 @@
             "source" : 0
         }
     ],
-    "images" : [
-        {
-            "mimeType" : "image/png",
-            "name" : "2020_12_31__23_59_53_13__SDO_AIA_AIA_304_full_image_8",
-            "uri" : "2020_12_31__23_59_53_13__SDO_AIA_AIA_304_full_image_8.png"
-        }
-    ],
     "accessors" : [
         {
             "bufferView" : 0,
