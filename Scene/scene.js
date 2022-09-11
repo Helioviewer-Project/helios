@@ -106,7 +106,7 @@ class Scene {
 
         let ids = Object.keys(this._models);
         for (const id of ids) {
-            this._models[id].SetTime(date);
+            this._models[id].model.SetTime(date);
         }
 
         for (const callback of this._time_listeners) {
@@ -137,7 +137,7 @@ class Scene {
      * @return {Date}
      */
     GetModelTime(id) {
-        return this._models[id].current_time;
+        return this._models[id].model.current_time;
     }
 }
 
