@@ -17,9 +17,9 @@
             "mesh" : 0,
             "name" : "sun model",
             "translation" : [
-                48.67063522338867,
-                46.5802116394043,
-                -11.340060234069824
+                50,
+                -50,
+                0
             ]
         }
     ],
@@ -59,29 +59,29 @@
         {
             "bufferView" : 0,
             "componentType" : 5126,
-            "count" : 5933,
+            "count" : 5808,
             "max" : [
-                50.57035446166992,
-                50.00002670288086,
-                11.340060234069824
+                49.99998474121094,
+                50,
+                2
             ],
             "min" : [
-                -49.42963409423828,
-                -50.0000114440918,
-                -15.595806121826172
+                -50,
+                -50.000038146972656,
+                -24.935867309570312
             ],
             "type" : "VEC3"
         },
         {
             "bufferView" : 1,
             "componentType" : 5126,
-            "count" : 5933,
+            "count" : 5808,
             "type" : "VEC3"
         },
         {
             "bufferView" : 2,
             "componentType" : 5126,
-            "count" : 5933,
+            "count" : 5808,
             "type" : "VEC2"
         },
         {
@@ -94,28 +94,28 @@
     "bufferViews" : [
         {
             "buffer" : 0,
-            "byteLength" : 71196,
+            "byteLength" : 69696,
             "byteOffset" : 0
         },
         {
             "buffer" : 0,
-            "byteLength" : 71196,
-            "byteOffset" : 71196
+            "byteLength" : 69696,
+            "byteOffset" : 69696
         },
         {
             "buffer" : 0,
-            "byteLength" : 47464,
-            "byteOffset" : 142392
+            "byteLength" : 46464,
+            "byteOffset" : 139392
         },
         {
             "buffer" : 0,
             "byteLength" : 12048,
-            "byteOffset" : 189856
+            "byteOffset" : 185856
         }
     ],
     "buffers" : [
         {
-            "byteLength" : 201904,
+            "byteLength" : 197904,
             "uri" : "sun_model.bin"
         }
     ]
