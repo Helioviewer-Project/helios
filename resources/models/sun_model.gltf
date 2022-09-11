@@ -15,7 +15,12 @@
     "nodes" : [
         {
             "mesh" : 0,
-            "name" : "sun model"
+            "name" : "sun model",
+            "translation" : [
+                48.67063522338867,
+                46.5802116394043,
+                -11.340060234069824
+            ]
         }
     ],
     "materials" : [
@@ -23,9 +28,12 @@
             "doubleSided" : true,
             "name" : "Material.001",
             "pbrMetallicRoughness" : {
-                "baseColorTexture" : {
-                    "index" : 0
-                },
+                "baseColorFactor" : [
+                    0.800000011920929,
+                    0.800000011920929,
+                    0.800000011920929,
+                    1
+                ],
                 "metallicFactor" : 0,
                 "roughnessFactor" : 0.5
             }
@@ -39,59 +47,45 @@
                     "attributes" : {
                         "POSITION" : 0,
                         "NORMAL" : 1,
-                        "TEXCOORD_0" : 2,
-                        "COLOR_0" : 3
+                        "TEXCOORD_0" : 2
                     },
-                    "indices" : 4,
+                    "indices" : 3,
                     "material" : 0
                 }
             ]
-        }
-    ],
-    "textures" : [
-        {
-            "sampler" : 0,
-            "source" : 0
         }
     ],
     "accessors" : [
         {
             "bufferView" : 0,
             "componentType" : 5126,
-            "count" : 5806,
+            "count" : 5933,
             "max" : [
-                49.99998474121094,
-                50,
-                2
+                50.57035446166992,
+                50.00002670288086,
+                11.340060234069824
             ],
             "min" : [
-                -50,
-                -50.000038146972656,
-                -24.935867309570312
+                -49.42963409423828,
+                -50.0000114440918,
+                -15.595806121826172
             ],
             "type" : "VEC3"
         },
         {
             "bufferView" : 1,
             "componentType" : 5126,
-            "count" : 5806,
+            "count" : 5933,
             "type" : "VEC3"
         },
         {
             "bufferView" : 2,
             "componentType" : 5126,
-            "count" : 5806,
+            "count" : 5933,
             "type" : "VEC2"
         },
         {
             "bufferView" : 3,
-            "componentType" : 5123,
-            "count" : 5806,
-            "normalized" : true,
-            "type" : "VEC4"
-        },
-        {
-            "bufferView" : 4,
             "componentType" : 5123,
             "count" : 6024,
             "type" : "SCALAR"
@@ -100,39 +94,28 @@
     "bufferViews" : [
         {
             "buffer" : 0,
-            "byteLength" : 69672,
+            "byteLength" : 71196,
             "byteOffset" : 0
         },
         {
             "buffer" : 0,
-            "byteLength" : 69672,
-            "byteOffset" : 69672
+            "byteLength" : 71196,
+            "byteOffset" : 71196
         },
         {
             "buffer" : 0,
-            "byteLength" : 46448,
-            "byteOffset" : 139344
-        },
-        {
-            "buffer" : 0,
-            "byteLength" : 46448,
-            "byteOffset" : 185792
+            "byteLength" : 47464,
+            "byteOffset" : 142392
         },
         {
             "buffer" : 0,
             "byteLength" : 12048,
-            "byteOffset" : 232240
-        }
-    ],
-    "samplers" : [
-        {
-            "magFilter" : 9729,
-            "minFilter" : 9987
+            "byteOffset" : 189856
         }
     ],
     "buffers" : [
         {
-            "byteLength" : 244288,
+            "byteLength" : 201904,
             "uri" : "sun_model.bin"
         }
     ]
