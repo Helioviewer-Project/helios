@@ -35,7 +35,7 @@ class DateRangePicker {
         //       You can make them UTC time by forcing the string to be in the format "YYYY-MM-DDTHH:MM:SSZ"
         let start = new Date(this._start.value + "Z");
         let end = new Date(this._end.value + "Z");
-        let cadence = this._cadence.value;
+        let cadence = parseFloat(this._cadence.value);
         return {
             start: start,
             end: end,
