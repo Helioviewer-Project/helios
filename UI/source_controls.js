@@ -3,6 +3,7 @@ import DateRangePicker from './date_range_picker.js';
 import DatasourcePicker from './datasource_picker.js';
 import ResolutionPicker from './resolution_picker.js';
 import Scene from '../Scene/scene.js';
+import Loader from './loader.js';
 import {ToAPIDate} from '../common/dates.js';
 import {GetImageScaleForResolution} from '../common/resolution_lookup.js';
 
@@ -49,11 +50,14 @@ class SourceManager {
                 // Get the index for this layer.
                 this._layer_count += 1;
                 let image_scale = GetImageScaleForResolution(resolution, source);
+                Loader.start();
                 let id = await Scene.AddToScene(source, range.start, range.end, range.cadence, image_scale, this._layer_count);
+                Loader.stop();
                 // TODO: if source is already being displayed, then this should replace it, rather than just being added on.
                 //       Use RemoveFromScene to remove the existing layer before adding it to _layers
                 this._layers.push({source: source, id: id});
             } catch (e) {
+                Loader.stop();
                 console.error(e);
                 // TODO: Use a nicer error method than alert
                 alert("Couldn't load images for the given time range");
