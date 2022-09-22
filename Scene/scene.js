@@ -48,7 +48,6 @@ class Scene {
      * @returns {number} identifier for model in the scene
      */
     async AddToScene(source, start, end, cadence, scale, layer_order) {
-        // Loads the data and add a model to the scene
         let sun = await ModelFactory.CreateSolarModel(source, start, end, cadence, scale);
         let model = await sun.GetModel();
         this._scene.AddModel(model);
