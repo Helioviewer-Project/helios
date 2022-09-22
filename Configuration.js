@@ -109,6 +109,16 @@ class Config {
         this.toggle_button_id = "js-enable-helios";
 
         /**
+         * HTML ID for the "loader" element that gets animated when there are outstanding ajax requests
+         */
+        this.loader_id = "loader";
+
+        /**
+         * CSS Class to apply to the loader when an ajax request is outstanding
+         */
+        this.loader_class = "loading";
+
+        /**
          * Limits the maximum images to be queried from helioviewer for a single date range.
          */
         this.max_dates_in_query = 60;
