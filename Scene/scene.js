@@ -80,8 +80,8 @@ class Scene {
      * Removes a model from the scene
      * @param {number} id Identifier of model to remove
      */
-    RemoveFromScene(id) {
-        this._scene.RemoveModel(this._models[id].model.GetModel());
+    async RemoveFromScene(id) {
+        this._scene.RemoveModel(await this._models[id].model.GetModel());
         delete this._models[id];
     }
 
