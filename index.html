@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>Minimal Helios Implementation</title>
+        <link rel="stylesheet" href="resources/css/hv_loader.css"/>
         <style>
             body {
                 margin: 0;
@@ -27,12 +28,18 @@
                 margin-bottom: 15px;
             }
 
-            #js-current-time {
+            h1.time-label {
+                margin: 0;
                 position: fixed;
                 left: 50%;
                 transform: translateX(-50%);
                 top: 20px;
                 color: white;
+            }
+
+            #loader {
+                margin-top: -8px;
+                vertical-align: middle;
             }
 
         </style>
@@ -92,7 +99,10 @@
         <div class="demo-sidebar" style="left: 230px">
             <!-- <label>Camera Position: <span id="js-camera-position"></span></label> -->
         </div>
-        <h1 id="js-current-time"></h1>
+        <h1 class="time-label">
+            <img id="loader" src="resources/images/hv_sun.png"/>
+            <span id="js-current-time"></span>
+        </h1>
         <div id="js-helios-viewport"></div>
         <script src="helios_bundle.js" type="module" onload="updateHeliosConfiguration();"></script>
         <script>

@@ -34,6 +34,7 @@ npx webpack
 
 4. Run a local webserver to host index.html. I use python, but any webserver will work.
 ```
+# Run this in the root directory of the repository. The folder that contains index.html.
 python3 -m http.server # runs on port 8000 by default
 ```
 
