@@ -5,3 +5,4 @@ node_modules
 helios_bundle.js
 docs
 dist
+.vscode

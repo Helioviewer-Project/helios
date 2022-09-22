@@ -1,6 +1,6 @@
-import Config from '../Configuration.js';
-import ThreeScene from './three/three_scene.js';
-import ModelFactory from './model_factory.js';
+import Config from "../Configuration.js";
+import ThreeScene from "./three/three_scene.js";
+import ModelFactory from "./model_factory.js";
 
 /**
  * Manages the full 3js scene that is rendered.
@@ -55,7 +55,7 @@ class Scene {
         let id = this._count++;
         this._models[id] = {
             model: sun,
-            order: layer_order
+            order: layer_order,
         };
         sun.SetTime(this._current_time);
         if (this._count == 1) {
@@ -80,22 +80,21 @@ class Scene {
      * Removes a model from the scene
      * @param {number} id Identifier of model to remove
      */
-    RemoveFromScene(id) {
-        // TODO: Remove model matching the given id from the scene
+    async RemoveFromScene(id) {
+        this._scene.RemoveModel(await this._models[id].model.GetModel());
+        delete this._models[id];
     }
 
     /**
      * Locks the camera to a specific model's observer
      * @param {number} id Identifier of model to track the camera to.
      */
-    LockCamera(id) {
-    }
+    LockCamera(id) {}
 
     /**
      * Unlocks the camera position from whichever model it is locked to.
      */
-    UnlockCamera() {
-    }
+    UnlockCamera() {}
 
     /**
      * Update the scene to the specified time
@@ -144,4 +143,3 @@ class Scene {
 // There is only one scene in the application
 let scene = new Scene();
 export default scene;
-

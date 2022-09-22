@@ -1,14 +1,6 @@
-import {
-    Scene,
-    OrthographicCamera,
-    WebGLRenderer,
-    AxesHelper,
-    BoxGeometry,
-    MeshBasicMaterial,
-    Mesh
-} from 'three';
+import { Scene, OrthographicCamera, WebGLRenderer, AxesHelper, BoxGeometry, MeshBasicMaterial, Mesh } from "three";
 
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 let enable_debug = false;
 
@@ -33,7 +25,7 @@ class ThreeScene {
          * Camera instance
          * @private
          */
-        this._camera = new OrthographicCamera(window.innerWidth / -2,  window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / -2, 0, 1000);
+        this._camera = new OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / -2, 0, 1000);
         this._camera.position.x = 0;
         this._camera.position.y = 0;
         this._camera.position.z = -8;
@@ -63,7 +55,7 @@ class ThreeScene {
             scene_info._renderer.render(scene_info._scene, scene_info._camera);
             if (enable_debug) {
                 if (scene_info._camera) {
-                    let camera_position = document.getElementById('js-camera-position');
+                    let camera_position = document.getElementById("js-camera-position");
                     let pos = scene_info._camera.position;
                     camera_position.textContent = "(" + pos.x + ", " + pos.y + ", " + pos.z + "). Zoom: " + scene_info._camera.zoom;
                 }
@@ -102,9 +94,17 @@ class ThreeScene {
         this._camera.lookAt(position);
     }
 
+    /**
+     * Removes the given model from the scene
+     * @param {model} model to remove
+     */
+    RemoveModel(model) {
+        this._scene.remove(model);
+    }
+
     _EnableDebug() {
-        const axesHelper = new AxesHelper( 5 );
-        this._scene.add( axesHelper );
+        const axesHelper = new AxesHelper(5);
+        this._scene.add(axesHelper);
 
         /* Uncomment to enable reference cubes
         const geometry = new BoxGeometry(1, 1, 1);
