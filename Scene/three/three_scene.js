@@ -9,104 +9,104 @@ let enable_debug = false;
  * separate from 3js scene logic
  */
 class ThreeScene {
-  /**
-   * Initializes the scene into the given element
-   *
-   * @param {string} viewport_id HTML ID of the element to use for the viewport
-   */
-  constructor(viewport_id) {
     /**
-     * 3js scene
-     * @private
+     * Initializes the scene into the given element
+     *
+     * @param {string} viewport_id HTML ID of the element to use for the viewport
      */
-    this._scene = new Scene();
+    constructor(viewport_id) {
+        /**
+         * 3js scene
+         * @private
+         */
+        this._scene = new Scene();
 
-    /**
-     * Camera instance
-     * @private
-     */
-    this._camera = new OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / -2, 0, 1000);
-    this._camera.position.x = 0;
-    this._camera.position.y = 0;
-    this._camera.position.z = -8;
-    this._camera.zoom = 49;
-    this._camera.updateProjectionMatrix();
+        /**
+         * Camera instance
+         * @private
+         */
+        this._camera = new OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / -2, 0, 1000);
+        this._camera.position.x = 0;
+        this._camera.position.y = 0;
+        this._camera.position.z = -8;
+        this._camera.zoom = 49;
+        this._camera.updateProjectionMatrix();
 
-    /**
-     * Renderer instance
-     * @private
-     */
-    this._renderer = new WebGLRenderer();
-    this._renderer.setSize(window.innerWidth, window.innerHeight);
+        /**
+         * Renderer instance
+         * @private
+         */
+        this._renderer = new WebGLRenderer();
+        this._renderer.setSize(window.innerWidth, window.innerHeight);
 
-    /**
-     * Camera controls plugin for user camera movement
-     * @private
-     */
-    this._orbit_controls = new OrbitControls(this._camera, this._renderer.domElement);
-    this._orbit_controls.update();
+        /**
+         * Camera controls plugin for user camera movement
+         * @private
+         */
+        this._orbit_controls = new OrbitControls(this._camera, this._renderer.domElement);
+        this._orbit_controls.update();
 
-    let target = document.getElementById(viewport_id);
-    target.appendChild(this._renderer.domElement);
+        let target = document.getElementById(viewport_id);
+        target.appendChild(this._renderer.domElement);
 
-    let scene_info = this;
-    function animate() {
-      requestAnimationFrame(animate);
-      scene_info._renderer.render(scene_info._scene, scene_info._camera);
-      if (enable_debug) {
-        if (scene_info._camera) {
-          let camera_position = document.getElementById("js-camera-position");
-          let pos = scene_info._camera.position;
-          camera_position.textContent = "(" + pos.x + ", " + pos.y + ", " + pos.z + "). Zoom: " + scene_info._camera.zoom;
+        let scene_info = this;
+        function animate() {
+            requestAnimationFrame(animate);
+            scene_info._renderer.render(scene_info._scene, scene_info._camera);
+            if (enable_debug) {
+                if (scene_info._camera) {
+                    let camera_position = document.getElementById("js-camera-position");
+                    let pos = scene_info._camera.position;
+                    camera_position.textContent = "(" + pos.x + ", " + pos.y + ", " + pos.z + "). Zoom: " + scene_info._camera.zoom;
+                }
+            }
         }
-      }
+        animate();
+
+        if (enable_debug) {
+            this._EnableDebug();
+        }
     }
-    animate();
 
-    if (enable_debug) {
-      this._EnableDebug();
+    /**
+     * Adds a model to the scene
+     * @param {Mesh} 3js mesh to add to the scene
+     */
+    AddModel(model) {
+        this._scene.add(model);
     }
-  }
 
-  /**
-   * Adds a model to the scene
-   * @param {Mesh} 3js mesh to add to the scene
-   */
-  AddModel(model) {
-    this._scene.add(model);
-  }
+    /**
+     * Moves the camera to the given position
+     * @param {Coordinates} position
+     */
+    MoveCamera(position) {
+        this._camera.position.x = position.x;
+        this._camera.position.y = position.y;
+        this._camera.position.z = position.z;
+    }
 
-  /**
-   * Moves the camera to the given position
-   * @param {Coordinates} position
-   */
-  MoveCamera(position) {
-    this._camera.position.x = position.x;
-    this._camera.position.y = position.y;
-    this._camera.position.z = position.z;
-  }
+    /**
+     * Points the camera to the given position
+     * @param {Vector3}
+     */
+    PointCamera(position) {
+        this._camera.lookAt(position);
+    }
 
-  /**
-   * Points the camera to the given position
-   * @param {Vector3}
-   */
-  PointCamera(position) {
-    this._camera.lookAt(position);
-  }
+    /**
+     * Removes the given model from the scene
+     * @param {model} model to remove
+     */
+    RemoveModel(model) {
+        this._scene.remove(model);
+    }
 
-  /**
-   * Removes the given model from the scene
-   * @param {model} model to remove
-   */
-  RemoveModel(model) {
-    this._scene.remove(model);
-  }
+    _EnableDebug() {
+        const axesHelper = new AxesHelper(5);
+        this._scene.add(axesHelper);
 
-  _EnableDebug() {
-    const axesHelper = new AxesHelper(5);
-    this._scene.add(axesHelper);
-
-    /* Uncomment to enable reference cubes
+        /* Uncomment to enable reference cubes
         const geometry = new BoxGeometry(1, 1, 1);
         const material = new MeshBasicMaterial({color: 0x00FF00});
         // material.depthWrite = false;
@@ -130,7 +130,7 @@ class ThreeScene {
         cube3.position.z = -6;
         this._scene.add(cube3);
         */
-  }
+    }
 }
 
 export default ThreeScene;
