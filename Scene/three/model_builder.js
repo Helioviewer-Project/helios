@@ -7,7 +7,8 @@ import {
     Vector2,
     Matrix4,
     Group,
-    BackSide
+    BackSide,
+    AdditiveBlending
 } from 'three';
 
 import {LoadMesh} from './mesh_loader.js';
@@ -42,7 +43,7 @@ async function _GetBackside(texture, scale) {
             y_offset: {value: 0.0},
             backside: {value: true},
             opacity: {value: 1},
-            transparent_threshold: {value: 0.15}
+            transparent_threshold: {value: 0.01}
         },
         vertexShader: SolarVertexShader,
         fragmentShader: SolarFragmentShader
@@ -53,6 +54,7 @@ async function _GetBackside(texture, scale) {
     // Set the shader to apply to the backside, by default it only applies
     // to the front side.
     shader.side = BackSide;
+    //shader.blending = AdditiveBlending;
     // Construct the mesh and return it.
     const backside = new Mesh( geometry, shader );
     return backside;
@@ -79,7 +81,7 @@ async function CreateHemisphereWithTexture(texture, jp2info) {
             y_offset: {value: 0.0},
             backside: {value: false},
             opacity: {value: 1},
-            transparent_threshold: {value: 0.15}
+            transparent_threshold: {value: 0.01}
         },
         vertexShader: SolarVertexShader,
         fragmentShader: SolarFragmentShader
@@ -87,6 +89,7 @@ async function CreateHemisphereWithTexture(texture, jp2info) {
     // Enable transparency, without this, making pixels transparent will
     // just make them white.
     shader.transparent = true;
+    //shader.blending = AdditiveBlending;
     // Construct the 3js mesh
     const sphere = new Mesh( geometry, shader );
     const backside = await _GetBackside(texture, scale);
@@ -198,9 +201,14 @@ function UpdateModelOpacity(model, opacity) {
  * @param {number} order Effectize "Z-index" of the model
  */
 function UpdateModelLayeringOrder(model, order) {
-    for (const child of model.children) {
+    for (var i = 0; i < model.children.length; i++) {
+        let child = model.children[i];
         child.material.polygonOffset = true;
-        child.material.polygonOffsetUnits = -order * 1000000;
+        if (i == 0) {
+            child.material.polygonOffsetUnits = -order * 1000000;
+        } else {
+            child.material.polygonOffsetUnits = order * 1000000;
+        }
     }
 }
 
