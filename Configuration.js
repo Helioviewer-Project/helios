@@ -119,6 +119,11 @@ class Config {
         this.loader_class = "loading";
 
         /**
+         * HTML ID for the element that will contain controls for the current sources in the scene.
+         */
+        this.ui_sources_id = "current-sources";
+
+        /**
          * Limits the maximum images to be queried from helioviewer for a single date range.
          */
         this.max_dates_in_query = 60;

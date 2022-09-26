@@ -1,0 +1,76 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+#js-helios-viewport {
+    margin: 0;
+    padding: 0;
+}
+
+.demo-sidebar {
+    position: absolute;
+    display: inline-grid;
+    top: 15px;
+    left: 10px;
+}
+
+label, p {
+    color: white;
+}
+
+input, button, select {
+    margin-bottom: 15px;
+}
+
+h1.time-label {
+    margin: 0;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 20px;
+    color: white;
+}
+
+#loader {
+    margin-top: -8px;
+    vertical-align: middle;
+}
+
+#current-sources.hidden {
+    display: none;
+}
+
+#current-sources h1 {
+    color: white;
+    margin: 0;
+    font-size: 1.5em;
+}
+
+#current-sources .data-source .source-label {
+    margin-top: 0;
+    margin-left: 5px;
+    display: inline-block;
+}
+
+#current-sources .data-source .source-time {
+    margin-top: 0;
+    display: inline-block;
+}
+
+#current-sources .data-source .source-remove {
+    cursor: pointer;
+    background: transparent;
+    color: white;
+    border: 1px solid white;
+    margin: 0;
+    margin-left: 15px;
+    padding: 5px;
+    padding-left: 7.6px;
+    padding-right: 7.6px;
+    border-radius: 5px;
+}
+
+.template {
+    display: none;
+}
+

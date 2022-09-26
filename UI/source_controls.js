@@ -6,6 +6,7 @@ import Scene from '../Scene/scene.js';
 import Loader from './loader.js';
 import {ToAPIDate} from '../common/dates.js';
 import {GetImageScaleForResolution} from '../common/resolution_lookup.js';
+import {GetObserverFromSource} from "../common/observers.js";
 
 /**
  * Manages current sources displayed in the scene
@@ -14,16 +15,53 @@ class SourceManager {
     /**
      * @param {string} add_source_btn_id ID of element that will trigger
                                          AddSource when clicked.
+     * @param {string} ui_div_id ID of element that will store controls for the scene
      */
-    constructor(add_source_btn_id) {
+    constructor(add_source_btn_id, ui_div_id) {
         /**
          * Stores the IDs of layers that have been added to the scene
          */
         this._layers = [];
-
         this._add_btn = document.getElementById(add_source_btn_id);
         this._InitializeAddListener();
         this._layer_count = 0;
+        this._ui_div = document.getElementById(ui_div_id);
+        this._InitUITemplate();
+    }
+
+    /**
+     * Stores the HTML template for data to be rendered.
+     */
+    _InitUITemplate() {
+        this._template = this._ui_div.getElementsByClassName("template")[0];
+        this._template.classList.remove("template");
+        // Remove template from DOM, but keep it cached in this._template
+        this._template.remove();
+    }
+
+    /**
+     * Adds a control element to the UI for the given model ID
+     * @param {number} id The model ID returned by the scene when a model is added.
+     */
+    async _AddUIControl(id, source) {
+        // Clone the template
+        let control_element = this._template.cloneNode(true);
+        // Update label info
+        control_element.getElementsByClassName("source-label")[0].textContent = source;
+        control_element.getElementsByClassName("source-time")[0].textContent = await Scene.GetModelTime(id).toISOString();
+        // Use a closure to capture the ID, so that when this button is clicked, the correct ID is removed
+        let controller = this;
+        control_element.getElementsByClassName("source-remove")[0].addEventListener('click', () => {
+            controller.RemoveSource(id);
+            control_element.remove();
+            // If there's nothing in the Scene, then hide this UI control.
+            if (document.getElementsByClassName('data-source').length == 0) {
+                this._ui_div.classList.add("hidden");
+            }
+        });
+        // Add to the DOM
+        this._ui_div.appendChild(control_element);
+        this._ui_div.classList.remove("hidden");
     }
 
     /**
@@ -50,8 +88,12 @@ class SourceManager {
                 // Get the index for this layer.
                 this._layer_count += 1;
                 let image_scale = GetImageScaleForResolution(resolution, source);
+                // Start the loading animation
                 Loader.start();
                 let id = await Scene.AddToScene(source, range.start, range.end, range.cadence, image_scale, this._layer_count);
+                // Add the control element for interacting with this model to the UI
+                this._AddUIControl(id, GetObserverFromSource(source));
+                // End the loading animation
                 Loader.stop();
                 // TODO: if source is already being displayed, then this should replace it, rather than just being added on.
                 //       Use RemoveFromScene to remove the existing layer before adding it to _layers
@@ -107,6 +149,6 @@ class SourceManager {
     }
 }
 
-let manager = new SourceManager(Config.add_source_btn_id);
+let manager = new SourceManager(Config.add_source_btn_id, Config.ui_sources_id);
 export default manager;
 
