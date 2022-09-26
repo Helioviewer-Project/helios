@@ -3,46 +3,7 @@
     <head>
         <title>Minimal Helios Implementation</title>
         <link rel="stylesheet" href="resources/css/hv_loader.css"/>
-        <style>
-            body {
-                margin: 0;
-                padding: 0;
-            }
-            #js-helios-viewport {
-                margin: 0;
-                padding: 0;
-            }
-
-            .demo-sidebar {
-                position: absolute;
-                display: inline-grid;
-                top: 15px;
-                left: 10px;
-            }
-
-            label, p {
-                color: white;
-            }
-
-            input, button, select {
-                margin-bottom: 15px;
-            }
-
-            h1.time-label {
-                margin: 0;
-                position: fixed;
-                left: 50%;
-                transform: translateX(-50%);
-                top: 20px;
-                color: white;
-            }
-
-            #loader {
-                margin-top: -8px;
-                vertical-align: middle;
-            }
-
-        </style>
+        <link rel="stylesheet" href="resources/css/main.css"/>
     </head>
     <body>
         <div class="helios-visible demo-sidebar">
@@ -75,8 +36,6 @@
                 <option value="5">SOHO LASCO C3</option>
             </select>
 
-            <button id="js-add-source">Add Source</button>
-
             <label for="js-resolution-selector">Texture Resolution</label>
             <select id="js-resolution-selector">
                 <option value="256">Low (256x256)</option>
@@ -85,6 +44,17 @@
                 <option value="2048">2K (2048x2048)</option>
                 <option value="4096">4K (4096x4096)</option>
             </select>
+
+            <button id="js-add-source">Add Source</button>
+
+            <div id="current-sources" class="hidden">
+                <h1>Scene:</h1>
+                <div class="template data-source">
+                    <button class="source-remove">&#215;</button>
+                    <label class="source-label">Label: </label>
+                    <p class="source-time">2022-08-11 00:00:00</p>
+                </div>
+            </div>
 
             <label for="js-animation-speed">Animation FPS</label>
             <input id="js-animation-speed" type="number" value="6"/>
