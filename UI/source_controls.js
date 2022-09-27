@@ -48,7 +48,12 @@ class SourceManager {
         let control_element = this._template.cloneNode(true);
         // Update label info
         control_element.getElementsByClassName("source-label")[0].textContent = source;
+
+        // Set a listener to update this model's timestamp in the UI.
         control_element.getElementsByClassName("source-time")[0].textContent = await Scene.GetModelTime(id).toISOString();
+        Scene.RegisterTimeUpdateListener(async () => {
+            control_element.getElementsByClassName("source-time")[0].textContent = await Scene.GetModelTime(id).toISOString();
+        });
 
         // Use a closure to capture the ID, so that when this button is clicked, the correct ID is removed
         let controller = this;
@@ -61,6 +66,7 @@ class SourceManager {
             }
         });
 
+        // Use a closure to capture the ID, so when the opacity slider is moved, this model is updated.
         control_element.getElementsByClassName("source-opacity")[0].addEventListener('input', (e) => {
             let opacity = parseFloat(e.target.value);
             if (!isNaN(opacity)) {
