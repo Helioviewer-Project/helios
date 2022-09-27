@@ -138,6 +138,15 @@ class Scene {
     GetModelTime(id) {
         return this._models[id].model.current_time;
     }
+
+    /**
+     * Updates the opacity of the model associated with the given ID
+     * @param {number} id ID returned from AddToScene
+     * @param {number} opacity New opacity to apply to the model
+     */
+    SetModelOpacity(id, opacity) {
+        this._models[id].model.SetOpacity(opacity);
+    }
 }
 
 // There is only one scene in the application

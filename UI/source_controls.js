@@ -49,6 +49,7 @@ class SourceManager {
         // Update label info
         control_element.getElementsByClassName("source-label")[0].textContent = source;
         control_element.getElementsByClassName("source-time")[0].textContent = await Scene.GetModelTime(id).toISOString();
+
         // Use a closure to capture the ID, so that when this button is clicked, the correct ID is removed
         let controller = this;
         control_element.getElementsByClassName("source-remove")[0].addEventListener('click', () => {
@@ -59,6 +60,14 @@ class SourceManager {
                 this._ui_div.classList.add("hidden");
             }
         });
+
+        control_element.getElementsByClassName("source-opacity")[0].addEventListener('input', (e) => {
+            let opacity = parseFloat(e.target.value);
+            if (!isNaN(opacity)) {
+                controller.UpdateOpacity(id, opacity);
+            }
+        });
+
         // Add to the DOM
         this._ui_div.appendChild(control_element);
         this._ui_div.classList.remove("hidden");
@@ -146,6 +155,15 @@ class SourceManager {
         // The layer list should ever have more than a few layers in it though, so it's not a big deal.
         // The max number of layers it can have is the max number of datasources we have.
         this._layers = this._layers.filter((el) => el.id != id);
+    }
+
+    /**
+     * Updates the opacity of the model associated with the given ID
+     * @param {number} id ID returned from AddToScene
+     * @param {number} opacity New opacity to apply to the model
+     */
+    UpdateOpacity(id, opacity) {
+        Scene.SetModelOpacity(id, opacity);
     }
 }
 

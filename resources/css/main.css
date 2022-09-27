@@ -9,9 +9,13 @@ body {
 
 .demo-sidebar {
     position: absolute;
-    display: inline-grid;
+    display: flex;
+    flex-direction: column;
+    flex: none;
     top: 15px;
     left: 10px;
+    overflow-y: scroll;
+    height: 100vh;
 }
 
 label, p {
@@ -19,7 +23,8 @@ label, p {
 }
 
 input, button, select {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    flex: none;
 }
 
 h1.time-label {
@@ -34,43 +39,5 @@ h1.time-label {
 #loader {
     margin-top: -8px;
     vertical-align: middle;
-}
-
-#current-sources.hidden {
-    display: none;
-}
-
-#current-sources h1 {
-    color: white;
-    margin: 0;
-    font-size: 1.5em;
-}
-
-#current-sources .data-source .source-label {
-    margin-top: 0;
-    margin-left: 5px;
-    display: inline-block;
-}
-
-#current-sources .data-source .source-time {
-    margin-top: 0;
-    display: inline-block;
-}
-
-#current-sources .data-source .source-remove {
-    cursor: pointer;
-    background: transparent;
-    color: white;
-    border: 1px solid white;
-    margin: 0;
-    margin-left: 15px;
-    padding: 5px;
-    padding-left: 7.6px;
-    padding-right: 7.6px;
-    border-radius: 5px;
-}
-
-.template {
-    display: none;
 }
 

@@ -4,6 +4,7 @@
         <title>Minimal Helios Implementation</title>
         <link rel="stylesheet" href="resources/css/hv_loader.css"/>
         <link rel="stylesheet" href="resources/css/main.css"/>
+        <link rel="stylesheet" href="resources/css/source_controls.css"/>
     </head>
     <body>
         <div class="helios-visible demo-sidebar">
@@ -48,11 +49,15 @@
             <button id="js-add-source">Add Source</button>
 
             <div id="current-sources" class="hidden">
-                <h1>Scene:</h1>
+                <h1>Display:</h1>
                 <div class="template data-source">
-                    <button class="source-remove">&#215;</button>
-                    <label class="source-label">Label: </label>
+                    <p class="source-label"></p>
                     <p class="source-time">2022-08-11 00:00:00</p>
+                    <div class="source-opacity-block">
+                        <label>Opacity:</label>
+                        <input class="source-opacity" type="range" min="0" max="1" step="0.01" value="1"/>
+                    </div>
+                    <button type="button" class="source-remove">Remove</button>
                 </div>
             </div>
 
