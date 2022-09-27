@@ -23,7 +23,13 @@ function _GetBaseImageResolution(source_id) {
  * @param {number} source Data source ID
  */
 function GetImageScaleForResolution(resolution, source) {
-    return _GetBaseImageResolution(source) / resolution;
+    let scale = _GetBaseImageResolution(source) / resolution;
+    // Clamp scale to 1. Less than 1 will apply artificial "upscaling" to the image
+    // This wastes by returning a larger image with no quality improvement
+    if (scale < 1) {
+        scale = 1;
+    }
+    return scale;
 }
 
 export {GetImageScaleForResolution};
