@@ -9,11 +9,13 @@ class Scene {
     constructor() {
         /**
          * Threejs implementation of the scene
+         * @private
          */
         this._scene = new ThreeScene(Config.viewport_id);
 
         /**
          * List of callback functions waiting for the time to update
+         * @private
          */
         this._time_listeners = [];
 
@@ -34,6 +36,12 @@ class Scene {
          * @private
          */
         this._current_time = new Date();
+
+        /**
+         * Model that camera is locked on to.
+         * @private
+         */
+        this._camera_lock = null;
     }
 
     /**
@@ -89,23 +97,35 @@ class Scene {
      * Locks the camera to a specific model's observer
      * @param {number} id Identifier of model to track the camera to.
      */
-    LockCamera(id) {}
+    LockCamera(id) {
+        this._camera_lock = this._models[id];
+    }
 
     /**
      * Unlocks the camera position from whichever model it is locked to.
      */
-    UnlockCamera() {}
+    UnlockCamera() {
+        this._camera_lock = null;
+    }
 
     /**
      * Update the scene to the specified time
      * @param {Date} date New scene time
      */
-    SetTime(date) {
+    async SetTime(date) {
         this._current_time = date;
+
 
         let ids = Object.keys(this._models);
         for (const id of ids) {
-            this._models[id].model.SetTime(date);
+            await this._models[id].model.SetTime(date);
+        }
+
+        // If camera is locked on to a specific model, then update its position.
+        // This must happen after the model time updates have completed.
+        if (this._camera_lock) {
+            this._scene.MoveCamera(this._camera_lock.model.GetObserverPosition());
+            this._scene.PointCamera(await this._camera_lock.model.GetPosition());
         }
 
         for (const callback of this._time_listeners) {
@@ -146,6 +166,13 @@ class Scene {
      */
     SetModelOpacity(id, opacity) {
         this._models[id].model.SetOpacity(opacity);
+    }
+
+    /**
+     * Notifies objects in the scene to reset to the current time.
+     */
+    Refresh() {
+        this.SetTime(this.GetTime());
     }
 }
 

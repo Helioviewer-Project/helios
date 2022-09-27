@@ -74,6 +74,25 @@ class SourceManager {
             }
         });
 
+        //
+        control_element.getElementsByClassName("source-camera-lock")[0].addEventListener('input', (e) => {
+            if (e.target.checked) {
+                // Uncheck all other elements
+                let locks = document.getElementsByClassName("source-camera-lock");
+                for (const checkbox of locks) {
+                    if (checkbox != e.target) {
+                        checkbox.checked = false;
+                    }
+                }
+
+                // Lock the camera to this model
+                Scene.LockCamera(id);
+                Scene.Refresh();
+            } else {
+                Scene.UnlockCamera();
+            }
+        });
+
         // Add to the DOM
         this._ui_div.appendChild(control_element);
         this._ui_div.classList.remove("hidden");

@@ -26,7 +26,6 @@ class ModelFactory {
         cadence = 3600 * 24;
         scale = 8;
         */
-        console.log(source, start, end, cadence, scale);
         try {
             var images = await Database.GetImages(source, start, end, cadence, scale);
         } catch (e) {
