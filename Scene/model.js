@@ -132,9 +132,9 @@ class Model {
      *
      * @param {Date} date New time to display
      */
-    SetTime(date) {
+    async SetTime(date) {
         this.current_time = date;
-        this._Update();
+        await this._Update();
     }
 
     /**
