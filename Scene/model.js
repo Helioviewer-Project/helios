@@ -38,6 +38,12 @@ class Model {
          */
         this.current_time = this.data[0].date;
 
+        /**
+         * Current time in the scene that this model is trying to match.
+         * @private
+         */
+        this._scene_time = this.current_time;
+
         // Initialize the 3js model
         this._InitializeModel();
     }
@@ -63,7 +69,8 @@ class Model {
      * @private
      */
     async _Update() {
-        let data = this._GetDataFromDate(this.current_time);
+        let data = this._GetDataFromDate(this._scene_time);
+        this.current_time = data.date;
         // Get the texture to use from the current time.
         let texture = data.texture;
 
@@ -89,7 +96,7 @@ class Model {
      * @returns Coordinates
      */
     GetObserverPosition() {
-        let data = this._GetDataFromDate(this.current_time);
+        let data = this._GetDataFromDate(this._scene_time);
         return data.position;
     }
 
@@ -133,7 +140,7 @@ class Model {
      * @param {Date} date New time to display
      */
     async SetTime(date) {
-        this.current_time = date;
+        this._scene_time = date;
         await this._Update();
     }
 

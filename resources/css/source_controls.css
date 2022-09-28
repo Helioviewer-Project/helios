@@ -18,6 +18,18 @@
     display: inline-block;
 }
 
+.data-source .source-time.normal {
+    color: white;
+}
+
+.data-source .source-time.warn {
+    color: orange;
+}
+
+.data-source .source-time.error {
+    color: red;
+}
+
 .data-source .source-camera {
     margin-top: 0;
 }
