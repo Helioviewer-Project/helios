@@ -39,24 +39,48 @@ class SourceManager {
         this._template.remove();
     }
 
+    async _UpdateModelTime(id, element) {
+        // Update the text in the UI
+        let time = await Scene.GetModelTime(id);
+        element.textContent = time.toISOString();
+
+        this._ApplyTextColorForTimeDelta(element, time);
+    }
+
+    _ApplyTextColorForTimeDelta(element, model_time) {
+        // Get the delta between the scene and model time, and update the color accordingly.
+        let scene_time = Scene.GetTime();
+        let diff = Math.abs(scene_time - model_time);
+        element.classList.remove('normal', 'warn', 'error');
+        if (diff < Config.time_warn_threshold) {
+            element.classList.add('normal');
+        } else if (diff < Config.time_off_threshold) {
+            element.classList.add('warn');
+        } else {
+            element.classList.add('error');
+        }
+    }
+
     /**
      * Adds a control element to the UI for the given model ID
      * @param {number} id The model ID returned by the scene when a model is added.
      */
     async _AddUIControl(id, source) {
+        let controller = this;
         // Clone the template
         let control_element = this._template.cloneNode(true);
         // Update label info
         control_element.getElementsByClassName("source-label")[0].textContent = source;
 
         // Set a listener to update this model's timestamp in the UI.
-        control_element.getElementsByClassName("source-time")[0].textContent = await Scene.GetModelTime(id).toISOString();
+        let time_element = control_element.getElementsByClassName("source-time")[0];
+        controller._UpdateModelTime(id, time_element);
+
         Scene.RegisterTimeUpdateListener(async () => {
-            control_element.getElementsByClassName("source-time")[0].textContent = await Scene.GetModelTime(id).toISOString();
+            controller._UpdateModelTime(id, time_element);
         });
 
         // Use a closure to capture the ID, so that when this button is clicked, the correct ID is removed
-        let controller = this;
         control_element.getElementsByClassName("source-remove")[0].addEventListener('click', () => {
             controller.RemoveSource(id);
             control_element.remove();
@@ -74,7 +98,6 @@ class SourceManager {
             }
         });
 
-        //
         control_element.getElementsByClassName("source-camera-lock")[0].addEventListener('input', (e) => {
             if (e.target.checked) {
                 // Uncheck all other elements

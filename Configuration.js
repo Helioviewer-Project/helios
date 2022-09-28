@@ -124,6 +124,16 @@ class Config {
         this.ui_sources_id = "current-sources";
 
         /**
+         * Number of milliseconds away from the scene time that causes the model timestamp to turn orange.
+         */
+        this.time_warn_threshold = 60000;
+
+        /**
+         * Number of milliseconds away from the scene time that causes the model timestamp to turn red.
+         */
+        this.time_off_threshold = 300000;
+
+        /**
          * Limits the maximum images to be queried from helioviewer for a single date range.
          */
         this.max_dates_in_query = 60;
