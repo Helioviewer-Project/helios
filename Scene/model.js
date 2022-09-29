@@ -64,6 +64,10 @@ class Model {
         this._Update();
     }
 
+    async GetScale() {
+        return (await this.GetModel()).scale;
+    }
+
     /**
      * Updates the current texture and rotational direction based
      * on the current time
@@ -180,6 +184,15 @@ class Model {
         for (const datum of this.data) {
             datum.texture.dispose();
         }
+    }
+
+    /**
+     * Adds a marker to this model
+     */
+    AddMarker(marker) {
+        this.GetModel().then((model) => {
+            model.add(marker);
+        });
     }
 };
 
