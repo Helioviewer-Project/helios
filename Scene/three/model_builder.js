@@ -7,7 +7,8 @@ import {
     Vector2,
     Matrix4,
     Group,
-    BackSide
+    BackSide,
+    DoubleSide
 } from 'three';
 
 import {LoadMesh} from './mesh_loader.js';
@@ -141,6 +142,22 @@ async function CreatePlaneWithTexture(texture, jp2info) {
     return group;
 }
 
+function CreateMarkerModel(texture) {
+    // TODO: make this more generic.
+    // The 78/46 are the dimensions of the active region marker, this makes the plane that's created
+    // the correct size so that the active region image is shown in the correct dimenions (no scaling to fit the mesh).
+    const geometry = new PlaneGeometry( 2, 78/46 * 2 );
+    const material = new MeshBasicMaterial( {map: texture, side: DoubleSide} );
+    material.transparent = true;
+    // TODO: Investigate if these can be removed.
+    // Since polygon offsets are used to make sure certain images show up on top of others, this is here so that the
+    // marker is always in front of everything.
+    material.polygonOffset = true;
+    material.polygonOffsetUnits = -999 * 1000000;
+    const plane = new Mesh( geometry, material );
+    return plane;
+}
+
 /**
  * Updates a model's texture on the fly
  * @param {Group} group 3js object group containing the sun models
@@ -189,7 +206,9 @@ function _ComputeMeshScale(jp2info) {
  */
 function UpdateModelOpacity(model, opacity) {
     for (const sub_model of model.children) {
-        sub_model.material.uniforms.opacity.value = opacity;
+        if (sub_model.material.hasOwnProperty("uniforms")) {
+            sub_model.material.uniforms.opacity.value = opacity;
+        }
     }
 }
 
@@ -239,6 +258,7 @@ function FreeModel(object) {
 export {
     CreateHemisphereWithTexture,
     CreatePlaneWithTexture,
+    CreateMarkerModel,
     UpdateModelTexture,
     UpdateModelOpacity,
     UpdateModelLayeringOrder,
