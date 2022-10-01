@@ -1,4 +1,4 @@
-import Config from '../Configuration.js';
+import Config from "../Configuration.js";
 
 /**
  * UI component for choosing the resolution
@@ -11,6 +11,11 @@ class ResolutionPicker {
      */
     constructor(resolution_select_id) {
         this._selector = document.getElementById(resolution_select_id);
+        addEventListener("change", (e) => {
+            // Run UpdateResolution on the scene
+            let res = this.GetResolution();
+            Config.scene.UpdateResolution(res);
+        });
     }
 
     /**
@@ -26,4 +31,3 @@ class ResolutionPicker {
 
 let picker = new ResolutionPicker(Config.resolution_selector_id);
 export default picker;
-

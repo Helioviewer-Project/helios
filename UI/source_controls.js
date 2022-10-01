@@ -1,12 +1,12 @@
-import Config from '../Configuration.js';
-import DateRangePicker from './date_range_picker.js';
-import DatasourcePicker from './datasource_picker.js';
-import ResolutionPicker from './resolution_picker.js';
-import Scene from '../Scene/scene.js';
-import Loader from './loader.js';
-import {ToAPIDate} from '../common/dates.js';
-import {GetImageScaleForResolution} from '../common/resolution_lookup.js';
-import {GetObserverFromSource} from "../common/observers.js";
+import Config from "../Configuration.js";
+import DateRangePicker from "./date_range_picker.js";
+import DatasourcePicker from "./datasource_picker.js";
+import ResolutionPicker from "./resolution_picker.js";
+import Scene from "../Scene/scene.js";
+import Loader from "./loader.js";
+import { ToAPIDate } from "../common/dates.js";
+import { GetImageScaleForResolution } from "../common/resolution_lookup.js";
+import { GetObserverFromSource } from "../common/observers.js";
 
 /**
  * Manages current sources displayed in the scene
@@ -51,13 +51,13 @@ class SourceManager {
         // Get the delta between the scene and model time, and update the color accordingly.
         let scene_time = Scene.GetTime();
         let diff = Math.abs(scene_time - model_time);
-        element.classList.remove('normal', 'warn', 'error');
+        element.classList.remove("normal", "warn", "error");
         if (diff < Config.time_warn_threshold) {
-            element.classList.add('normal');
+            element.classList.add("normal");
         } else if (diff < Config.time_off_threshold) {
-            element.classList.add('warn');
+            element.classList.add("warn");
         } else {
-            element.classList.add('error');
+            element.classList.add("error");
         }
     }
 
@@ -81,24 +81,24 @@ class SourceManager {
         });
 
         // Use a closure to capture the ID, so that when this button is clicked, the correct ID is removed
-        control_element.getElementsByClassName("source-remove")[0].addEventListener('click', () => {
+        control_element.getElementsByClassName("source-remove")[0].addEventListener("click", () => {
             controller.RemoveSource(id);
             control_element.remove();
             // If there's nothing in the Scene, then hide this UI control.
-            if (document.getElementsByClassName('data-source').length == 0) {
+            if (document.getElementsByClassName("data-source").length == 0) {
                 this._ui_div.classList.add("hidden");
             }
         });
 
         // Use a closure to capture the ID, so when the opacity slider is moved, this model is updated.
-        control_element.getElementsByClassName("source-opacity")[0].addEventListener('input', (e) => {
+        control_element.getElementsByClassName("source-opacity")[0].addEventListener("input", (e) => {
             let opacity = parseFloat(e.target.value);
             if (!isNaN(opacity)) {
                 controller.UpdateOpacity(id, opacity);
             }
         });
 
-        control_element.getElementsByClassName("source-camera-lock")[0].addEventListener('input', (e) => {
+        control_element.getElementsByClassName("source-camera-lock")[0].addEventListener("input", (e) => {
             if (e.target.checked) {
                 // Uncheck all other elements
                 let locks = document.getElementsByClassName("source-camera-lock");
@@ -128,7 +128,9 @@ class SourceManager {
      */
     _InitializeAddListener() {
         let manager = this;
-        this._add_btn.addEventListener('click', () => {manager.AddSource();});
+        this._add_btn.addEventListener("click", () => {
+            manager.AddSource();
+        });
     }
 
     /**
@@ -154,7 +156,7 @@ class SourceManager {
                 Loader.stop();
                 // TODO: if source is already being displayed, then this should replace it, rather than just being added on.
                 //       Use RemoveFromScene to remove the existing layer before adding it to _layers
-                this._layers.push({source: source, id: id});
+                this._layers.push({ source: source, id: id });
             } catch (e) {
                 Loader.stop();
                 console.error(e);
@@ -172,7 +174,7 @@ class SourceManager {
      */
     _ValidateDateRange(range) {
         // Subtracting dates returns the time between them in milliseconds
-        let dt = (range.end - range.start);
+        let dt = range.end - range.start;
         // If the date is negative, it means end is before start, this is bad.
         if (dt < 0) {
             alert("Start time must be before end time.");
@@ -181,7 +183,7 @@ class SourceManager {
         // Get the number of dates that will be queried
         // dt is in milliseconds, divide by 1000 to get the result in seconds. Then divide by the cadence
         // to see how many dates will be queried.
-        let num_dates = (dt / 1000) / range.cadence;
+        let num_dates = dt / 1000 / range.cadence;
         let is_valid = num_dates < Config.max_dates_in_query;
         if (!is_valid) {
             alert("This request would result in downloading " + num_dates + " images. The maximum allowed for one query is " + Config.max_dates_in_query + ". Try increasing the cadence.");
@@ -217,4 +219,3 @@ class SourceManager {
 
 let manager = new SourceManager(Config.add_source_btn_id, Config.ui_sources_id);
 export default manager;
-

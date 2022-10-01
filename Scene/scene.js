@@ -74,6 +74,13 @@ class Scene {
         return id;
     }
 
+    async UpdateResolution(resolution) {
+        // get the current scene id
+        // if the id is same and the resolution is the same, do nothing
+        // if the id is same and the resolution is different, update the resolution
+        console.log("Updating resolution to " + resolution);
+    }
+
     /**
      * Set the model's layering order so they appear correctly in the scene.
      */
@@ -114,7 +121,6 @@ class Scene {
      */
     async SetTime(date) {
         this._current_time = date;
-
 
         let ids = Object.keys(this._models);
         for (const id of ids) {
