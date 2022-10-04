@@ -131,6 +131,18 @@ class Helioviewer {
     }
 
     /**
+     * Returns solar events for the given time
+     * @param {Date} time Time to query events
+     */
+    async GetEvents(time) {
+        // TODO: Results for this can be cached
+        let api_url = this.GetApiUrl() + "getEvents/?startTime=" + ToAPIDate(time) + "&eventType=**";
+        let result = await fetch(api_url);
+        let data = await result.json();
+        return data;
+    }
+
+    /**
      * Extracts relevant helios information from the given jp2 header
      * @param {string} jp2_header_xml XML received via the getJP2Header API
      * @returns {JP2Info}
@@ -176,4 +188,5 @@ class Helioviewer {
 }
 
 let SingletonAPI = new Helioviewer();
+console.log(SingletonAPI);
 export default SingletonAPI;
