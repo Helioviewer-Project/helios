@@ -41,9 +41,9 @@ class Config {
         this.date_range_end_id = "js-date-range-end";
 
         /**
-         * HTML ID of the cadence input date range chooser
+         * HTML ID of the frame count input date range chooser
          */
-        this.date_range_cadence_id = "js-date-range-cadence";
+        this.date_range_frames_id = "js-date-range-frames";
 
         /**
          * HTML ID of the source id input selector
