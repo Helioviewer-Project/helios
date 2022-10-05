@@ -141,7 +141,7 @@ class Config {
         /**
          * Sources IDs that should be rendered on a plane rather than a hemisphere
          */
-        this.plane_sources = [4, 5];
+        this.plane_sources = [4, 5, 28, 29];
     }
 
     /**
