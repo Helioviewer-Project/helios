@@ -141,7 +141,7 @@ class Config {
         /**
          * Sources IDs that should be rendered on a plane rather than a hemisphere
          */
-        this.plane_sources = [4, 5, 28, 29, 30, 31];
+        this.plane_sources = [4, 5, 28, 29, 30, 31, 83];
 
         /**
          * Base image sizes, needed to make sure we query the correct resolution
@@ -158,7 +158,7 @@ class Config {
             33: 512,  // 33-35
             75: 1024, // 75-76
             77: 512,  // 77
-            78: 1024, // 78-82
+            78: 1024, // 78-83
         };
     }
 
