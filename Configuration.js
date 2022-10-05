@@ -148,13 +148,16 @@ class Config {
          * If a source is not specified, then the next source going down is used. For example, 9 through 19 are not listed because they all use the same source as 8.
          */
         this.source_resolutions = {
-            0: 1024,  // 0 - 7   are 1024
-            8: 4096,  // 8 - 19  are 4096
-            20: 2048, // 20 - 27 are 2048
-            28: 512,  // 28       is 512 
-            29: 2048, // 29       is 2048
-            30: 512,  // 30       is 512
-            31: 2048, // 30       is 2048
+            0: 1024,  // 0 - 7
+            8: 4096,  // 8 - 19
+            20: 2048, // 20 - 27
+            28: 512,  // 28
+            29: 2048, // 29
+            30: 512,  // 30
+            31: 2048, // 31
+            75: 1024, // 75-76
+            77: 512,  // 77
+            78: 1024, // 78-82
         };
     }
 
