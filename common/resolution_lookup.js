@@ -10,8 +10,10 @@ function _GetBaseImageResolution(source_id) {
     } else if (_inclusive_between(source_id, 4, 5)) {
         // SOHO LASCO images are 1024x1024 in size. These IDs are 4 and 5
         return 1024;
-    } else if (_inclusive_between(source_id, 20, 23)) {
+    } else if (_inclusive_between(source_id, 20, 23) || (source_id == 29)) {
         return 2048;
+    } else if (_inclusive_between(source_id, 28, 29)) {
+        return 512;
     } else {
         // By default assume 4096. This may result in bad scaling if it's not correct.
         console.log("Source ID " + source_id + " not defined in resolution lookup table, please notify the developers to add it.");
