@@ -1,24 +1,17 @@
-function _inclusive_between(value, min, max) {
-    return (min <= value) && (value <= max);
+import Config from "../Configuration.js";
+
+function _GetResolutionIndex(source_id) {
+    if (Config.source_resolutions.hasOwnProperty(source_id)) {
+        return source_id;
+    } else {
+        // Get the index for the ID below this one.
+        return _GetResolutionIndex(source_id - 1);
+    }
 }
 
 function _GetBaseImageResolution(source_id) {
-    if (_inclusive_between(source_id, 8, 19)) {
-        // SDO Images are between source IDs 8 to 19.
-        // These images are 4k in size
-        return 4096;
-    } else if (_inclusive_between(source_id, 4, 5)) {
-        // SOHO LASCO images are 1024x1024 in size. These IDs are 4 and 5
-        return 1024;
-    } else if (_inclusive_between(source_id, 20, 23) || (source_id == 29)) {
-        return 2048;
-    } else if (_inclusive_between(source_id, 28, 29)) {
-        return 512;
-    } else {
-        // By default assume 4096. This may result in bad scaling if it's not correct.
-        console.log("Source ID " + source_id + " not defined in resolution lookup table, please notify the developers to add it.");
-        return 4096;
-    }
+    let idx = _GetResolutionIndex(source_id);
+    return Config.source_resolutions[idx];
 }
 
 /**
