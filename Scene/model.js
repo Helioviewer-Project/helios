@@ -11,6 +11,8 @@ import {
     Vector3
 } from 'three';
 
+import Marker from "./markers.js";
+
 import Config from '../Configuration.js';
 
 /**
@@ -33,6 +35,11 @@ class Model {
          * ID of the model's source
          */
         this.source = source;
+
+        /**
+         * Store references to event pins that have been added to this model.
+         */
+        this._event_models = [];
 
         /**
          * The current time being displayed on this model
@@ -83,12 +90,38 @@ class Model {
         let model = await this._model;
         UpdateModelTexture(model, texture, this.data[0].jp2info, this.source);
 
+        // Update event data
+        this._UpdateEvents(await data.events);
+
         // Update the rotation of the model to the date's observer position
         this._PointToObserver(model, data.position);
     }
 
     /**
-     * Rotats the given model to face the observer position
+     * Displays the given set of events on the model.
+     */
+    _UpdateEvents(events) {
+        // Remove old events
+        this._RemoveOldEvents();
+        // Add new events
+        this._AddCurrentEvents(events);
+    }
+
+    async _RemoveOldEvents() {
+        let model = await this.GetModel();
+        for (const e of this._event_models) {
+            model.remove(e);
+        }
+    }
+
+    _AddCurrentEvents(events) {
+        for (const e of events) {
+            this.AddMarker(Marker.fromEventData(e));
+        }
+    }
+
+    /**
+     * Rotates the given model to face the observer position
      * @param {Object} model threejs model
      * @param {Coordinates} observer Position of the observer in scene coordinates
      */
@@ -189,10 +222,10 @@ class Model {
     /**
      * Adds a marker to this model
      */
-    AddMarker(marker) {
-        this.GetModel().then((model) => {
-            model.add(marker);
-        });
+    async AddMarker(marker) {
+        let marker_model = await marker.GetModel();
+        let sun_model = await this.GetModel();
+        sun_model.add(marker_model);
     }
 };
 

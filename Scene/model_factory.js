@@ -45,6 +45,7 @@ class ModelFactory {
      * @property {Texture} texture Threejs texture
      * @property {Coordinates} position Position of the observer of the image
      * @property {JP2info} jp2info Metadta about the source of this texture
+     * @property {Promise<Object[]} events
      */
     /**
      * Uses 3js to create textures out of image data
@@ -63,7 +64,8 @@ class ModelFactory {
                 date: image.date,
                 texture: texture,
                 jp2info: image.jp2info,
-                position: image.position
+                position: image.position,
+                events: image.events
             });
         }
 
