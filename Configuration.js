@@ -41,9 +41,9 @@ class Config {
         this.date_range_end_id = "js-date-range-end";
 
         /**
-         * HTML ID of the cadence input date range chooser
+         * HTML ID of the frame count input date range chooser
          */
-        this.date_range_cadence_id = "js-date-range-cadence";
+        this.date_range_frames_id = "js-date-range-frames";
 
         /**
          * HTML ID of the source id input selector
@@ -141,7 +141,25 @@ class Config {
         /**
          * Sources IDs that should be rendered on a plane rather than a hemisphere
          */
-        this.plane_sources = [4, 5];
+        this.plane_sources = [4, 5, 28, 29, 30, 31, 83];
+
+        /**
+         * Base image sizes, needed to make sure we query the correct resolution
+         * If a source is not specified, then the next source going down is used. For example, 9 through 19 are not listed because they all use the same source as 8.
+         */
+        this.source_resolutions = {
+            0: 1024,  // 0 - 7
+            8: 4096,  // 8 - 19
+            20: 2048, // 20 - 27
+            28: 512,  // 28
+            29: 2048, // 29
+            30: 512,  // 30
+            31: 2048, // 31
+            33: 512,  // 33-35
+            75: 1024, // 75-76
+            77: 512,  // 77
+            78: 1024, // 78-83
+        };
     }
 
     /**
