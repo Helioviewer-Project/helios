@@ -83,10 +83,10 @@ class Scene {
         let models = [];
         for (const id of ids) {
             models.push(this._models[id]);
-            this.RemoveFromScene(id);
         }
         for (const model of models) {
             await this.AddToScene(model.model.source, model.startTime, model.endTime, model.cadence, GetImageScaleForResolution(resolution, model.model.source), model.order);
+            this.RemoveFromScene(model.model.source);
         }
     }
 
