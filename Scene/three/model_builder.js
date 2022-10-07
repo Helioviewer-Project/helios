@@ -42,7 +42,7 @@ async function _GetBackside(texture, scale) {
             y_offset: {value: 0.0},
             backside: {value: true},
             opacity: {value: 1},
-            transparent_threshold: {value: 0.15}
+            transparent_threshold: {value: 0.05}
         },
         vertexShader: SolarVertexShader,
         fragmentShader: SolarFragmentShader
@@ -79,7 +79,7 @@ async function CreateHemisphereWithTexture(texture, jp2info) {
             y_offset: {value: 0.0},
             backside: {value: false},
             opacity: {value: 1},
-            transparent_threshold: {value: 0.15}
+            transparent_threshold: {value: 0.05}
         },
         vertexShader: SolarVertexShader,
         fragmentShader: SolarFragmentShader

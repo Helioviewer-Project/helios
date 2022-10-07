@@ -43,6 +43,15 @@ python3 -m http.server # runs on port 8000 by default
 ### Making Changes
 Make sure to re-run `npx webpack` to update the js bundle whenever making javascript changes.
 
+#### Adding a new Data Source
+It *should* be easy to add a new data source. Just follow these 3 easy steps.
+
+1. Add the new source as an option to the dropdown in index.html
+2. Add the resolution of the base image size to `common/resolution_lookup.js`
+3. If the image doesn't include the solar disk, but should be rendered on a plane, then add the source id to `Configuration.js`'s plane\_sources array.
+
+If this doesn't work, please create a GitHub issue for assistance.
+
 ## Organization
 Helios is made up of 6 major components
 

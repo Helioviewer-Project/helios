@@ -77,7 +77,7 @@ class AnimationControls {
         // Seconds per frame * 1000 ms/s = milliseconds per frame
         // This can be reduced to 1000 / fps;
         this._frame_delay = (1000 / parseFloat(this._fps_input.value) );
-        this._cadence = parseInt(document.getElementById(Config.date_range_cadence_id).value);
+        this._cadence = ((this._end_time - this._start_time) / parseFloat(document.getElementById(Config.date_range_frames_id).value)) / 1000;
     }
 
     /**

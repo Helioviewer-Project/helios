@@ -15,8 +15,8 @@
             <label for="js-date-range-end">End Date</label>
             <input id="js-date-range-end" type="datetime-local"/>
 
-            <label for="js-date-range-cadence">Cadence (seconds)</label>
-            <input id="js-date-range-cadence" type="number"/>
+            <label for="js-date-range-frames" name="Number of images to download in this time range">Number of Frames</label>
+            <input id="js-date-range-frames" type="number"/>
 
             <label for="js-source-selector">Observatory</label>
             <select id="js-source-selector">
@@ -35,6 +35,41 @@
                 <option value="19">SDO HMI Mag</option>
                 <option value="4">SOHO LASCO C2</option>
                 <option value="5">SOHO LASCO C3</option>
+                <option value="0">SOHO EIT 171</option>
+                <option value="1">SOHO EIT 195</option>
+                <option value="2">SOHO EIT 284</option>
+                <option value="3">SOHO EIT 304</option>
+                <option value="7">SOHO MDI Continuum</option>
+                <option value="6">SOHO MDI Magnetogram</option>
+                <option value="20">STEREO-A EUVI-A 171</option>
+                <option value="21">STEREO-A EUVI-A 195</option>
+                <option value="22">STEREO-A EUVI-A 284</option>
+                <option value="23">STEREO-A EUVI-A 304</option>
+                <option value="28">STEREO-A COR1-A</option>
+                <option value="29">STEREO-A COR2-A</option>
+                <option value="24">STEREO-B EUVI-B 171</option>
+                <option value="25">STEREO-B EUVI-B 195</option>
+                <option value="26">STEREO-B EUVI-B 284</option>
+                <option value="27">STEREO-B EUVI-B 304</option>
+                <option value="30">STEREO-B COR1-B</option>
+                <option value="31">STEREO-B COR2-B</option>
+
+                <!-- TRACE is currently not supported. Use at your own risk (you'll just get an error).
+                <option value="75">TRACE 171</option>
+                <option value="76">TRACE 195</option>
+                <option value="77">TRACE 284</option>
+                <option value="78">TRACE 1216</option>
+                <option value="79">TRACE 1550</option>
+                <option value="80">TRACE 1600</option>
+                <option value="81">TRACE 1700</option>
+                <option value="82">TRACE white-light</option>
+                -->
+
+                <!--<option value="33">Yohkoh SXT AlMgMn</option>-->
+                <option value="34">Yohkoh SXT thin-Al</option>
+                <option value="35">Yohkoh SXT white-light</option>
+
+                <!-- <option value="83">MLSO COSMO KCor</option>-->
             </select>
 
             <label for="js-resolution-selector">Texture Resolution</label>
