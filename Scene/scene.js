@@ -1,6 +1,7 @@
 import Config from "../Configuration.js";
 import ThreeScene from "./three/three_scene.js";
 import ModelFactory from "./model_factory.js";
+import { GetImageScaleForResolution } from "../common/resolution_lookup.js";
 
 /**
  * Manages the full 3js scene that is rendered.
@@ -62,8 +63,11 @@ class Scene {
 
         let id = this._count++;
         this._models[id] = {
+            startTime: start,
+            endTime: end,
             model: sun,
             order: layer_order,
+            cadence: cadence,
         };
         sun.SetTime(this._current_time);
         if (this._count == 1) {
@@ -75,10 +79,15 @@ class Scene {
     }
 
     async UpdateResolution(resolution) {
-        // get the current scene id
-        // if the id is same and the resolution is the same, do nothing
-        // if the id is same and the resolution is different, update the resolution
-        console.log("Updating resolution to " + resolution);
+        let ids = Object.keys(this._models);
+        let models = [];
+        for (const id of ids) {
+            models.push(this._models[id]);
+            this.RemoveFromScene(id);
+        }
+        for (const model of models) {
+            await this.AddToScene(model.model.source, model.startTime, model.endTime, model.cadence, GetImageScaleForResolution(resolution, model.model.source), model.order);
+        }
     }
 
     /**

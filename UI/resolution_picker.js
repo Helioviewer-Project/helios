@@ -1,3 +1,4 @@
+import Scene from "../Scene/scene.js";
 import Config from "../Configuration.js";
 
 /**
@@ -11,10 +12,10 @@ class ResolutionPicker {
      */
     constructor(resolution_select_id) {
         this._selector = document.getElementById(resolution_select_id);
+        // We capture when the user changes the resolution so we can update the scene
         addEventListener("change", (e) => {
-            // Run UpdateResolution on the scene
             let res = this.GetResolution();
-            Config.scene.UpdateResolution(res);
+            Scene.UpdateResolution(res);
         });
     }
 
