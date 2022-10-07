@@ -139,6 +139,11 @@ class Config {
         this.max_dates_in_query = 60;
 
         /**
+         * The length of time to use for animation durations with moving the camera around.
+         */
+        this.camera_tween_time = 1000;
+
+        /**
          * Sources IDs that should be rendered on a plane rather than a hemisphere
          */
         this.plane_sources = [4, 5, 28, 29, 30, 31, 83];

@@ -1,6 +1,10 @@
-import { Scene, OrthographicCamera, WebGLRenderer, AxesHelper, BoxGeometry, MeshBasicMaterial, Mesh } from "three";
+import { Scene, OrthographicCamera, WebGLRenderer, AxesHelper, BoxGeometry, MeshBasicMaterial, Mesh, Vector3 } from "three";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+
+import {Tween, Easing, update as TweenUpdate} from "@tweenjs/tween.js";
+
+import Config from "../../Configuration.js";
 
 let enable_debug = false;
 
@@ -44,20 +48,26 @@ class ThreeScene {
          * @private
          */
         this._orbit_controls = new OrbitControls(this._camera, this._renderer.domElement);
+        this._orbit_controls.minPolarAngle = 0;
+        this._orbit_controls.maxPolarAngle = 2 * Math.PI;
         this._orbit_controls.update();
 
         let target = document.getElementById(viewport_id);
         target.appendChild(this._renderer.domElement);
 
         let scene_info = this;
-        function animate() {
+        function animate(time) {
             requestAnimationFrame(animate);
+            TweenUpdate(time);
+
             scene_info._renderer.render(scene_info._scene, scene_info._camera);
             if (enable_debug) {
                 if (scene_info._camera) {
                     let camera_position = document.getElementById("js-camera-position");
-                    let pos = scene_info._camera.position;
-                    camera_position.textContent = "(" + pos.x + ", " + pos.y + ", " + pos.z + "). Zoom: " + scene_info._camera.zoom;
+                    if (camera_position) {
+                        let pos = scene_info._camera.position;
+                        camera_position.textContent = "(" + pos.x + ", " + pos.y + ", " + pos.z + "). Zoom: " + scene_info._camera.zoom;
+                    }
                 }
             }
         }
@@ -81,9 +91,14 @@ class ThreeScene {
      * @param {Coordinates} position
      */
     MoveCamera(position) {
-        this._camera.position.x = position.x;
-        this._camera.position.y = position.y;
-        this._camera.position.z = position.z;
+        let camera = this._camera;
+        const tween = new Tween(this._camera.position)
+            .to(position, Config.camera_tween_time)
+            .easing(Easing.Cubic.InOut)
+            .onUpdate(() => {
+                camera.lookAt(new Vector3(0, 0, 0));
+            })
+            .start();
     }
 
     /**
