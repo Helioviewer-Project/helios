@@ -10,6 +10,11 @@ import Coordinates from '../common/coordinates.js';
  */
 
 /**
+ * Cache of events so we don't duplicate queries
+ */
+let _event_cache = {};
+
+/**
  * Helioviewer API Client.
  * Allows making API calls to the helioviewer server
  */
@@ -35,6 +40,8 @@ class Helioviewer {
      * @private
      */
     async _GetClosestImage(source, time) {
+        console.log("Getting closest image for time: ", time);
+        let time_copy = new Date(time);
         let api_url = this.GetApiUrl() + "getClosestImage/?sourceId=" + source + "&date=" + ToAPIDate(time);
         let result = await fetch(api_url);
         let image = await result.json();
@@ -49,7 +56,8 @@ class Helioviewer {
                 solar_center_x: image.refPixelX,
                 solar_center_y: image.refPixelY,
                 solar_radius: image.rsun
-            }
+            },
+            events: this.GetEvents(time_copy)
         };
     }
 
@@ -66,6 +74,7 @@ class Helioviewer {
      * @property {number} id Image ID
      * @property {Date} timestamp Timestamp for this image
      * @property {JP2Info} jp2_info
+     * @property {Promise<Object[]>} events
      */
     /**
      * Returns a list of Image IDs for the specified time range
@@ -135,11 +144,17 @@ class Helioviewer {
      * @param {Date} time Time to query events
      */
     async GetEvents(time) {
-        // TODO: Results for this can be cached
-        let api_url = this.GetApiUrl() + "getEvents/?startTime=" + ToAPIDate(time) + "&eventType=**";
-        let result = await fetch(api_url);
-        let data = await result.json();
-        return data;
+        let api_time = ToAPIDate(time);
+        console.log("Getting events for time: ", api_time);
+        if (_event_cache.hasOwnProperty(api_time)) {
+            return _event_cache[api_time];
+        } else {
+            let api_url = this.GetApiUrl() + "getEvents/?startTime=" + api_time + "&eventType=**";
+            let result = await fetch(api_url);
+            let data = await result.json();
+            _event_cache[api_time] = data;
+            return data;
+        }
     }
 
     /**

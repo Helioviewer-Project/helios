@@ -24,6 +24,7 @@ class ImageFinder {
      * @property {string} url URL to an image
      * @property {Date} timestamp Timestamp associated with the image
      * @property {JP2Info} jp2info metadata about the image
+     * @property {Promise<Object[]>} events
      */
     /**
      * Queries helioviewer for a list of images
@@ -50,7 +51,8 @@ class ImageFinder {
                     id: image.id,
                     url: url,
                     timestamp: image.timestamp,
-                    jp2info: image.jp2_info
+                    jp2info: image.jp2_info,
+                    events: image.events
                 });
             }
         }

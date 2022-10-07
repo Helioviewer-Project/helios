@@ -1,5 +1,6 @@
 import {CreateMarkerModel} from "./three/model_builder.js";
 import {LoadTexture} from "./three/texture_loader.js";
+import {Vector3} from "three";
 
 let _active_region = LoadTexture("resources/images/active_region.png");
 
@@ -7,6 +8,14 @@ let _active_region = LoadTexture("resources/images/active_region.png");
  * Encapsulates information about a feature/event marker
  */
 class Marker {
+    /**
+     * Constructs a marker from the given event data
+     * @param {Object} e Event data queried from the HEK
+     */
+    static fromEventData(e) {
+        return new Marker(e.hgs_x, e.hgs_y);
+    }
+
     /**
      * Creates a marker at the given latitude, longitude position relative to the given model.
      * @param {number} lat Heliographic Stonyhurst Latitude
@@ -44,9 +53,16 @@ class Marker {
         let lon_rad = lon * Math.PI / 180;
         // Formulas for converting lat/lon/radius (i.e. Heliographic Stonyhurst) to
         // xyz coordinates are given in W. T. Thompson, 2006, Coordinate systems for solar image data,
-        model.position.z = r * Math.cos(lat_rad) * Math.cos(lon_rad);
-        model.position.y = r * Math.cos(lat_rad) * Math.sin(lon_rad);
         model.position.x = r * Math.sin(lat_rad);
+        model.position.y = r * Math.cos(lat_rad) * Math.sin(lon_rad);
+        model.position.z = r * Math.cos(lat_rad) * Math.cos(lon_rad);
+
+        let target = new Vector3(
+            (r + 1) * Math.sin(lat_rad),
+            (r + 1) * Math.cos(lat_rad) * Math.sin(lon_rad),
+            (r + 1) * Math.cos(lat_rad) * Math.cos(lon_rad)
+        );
+        model.lookAt(target);
     }
 
     /**
