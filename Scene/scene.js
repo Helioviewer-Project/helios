@@ -1,6 +1,7 @@
 import Config from "../Configuration.js";
 import ThreeScene from "./three/three_scene.js";
 import ModelFactory from "./model_factory.js";
+import Loader from './loader.js';
 
 /**
  * Manages the full 3js scene that is rendered.
@@ -55,6 +56,8 @@ class Scene {
      * @param {number} layer_order Layer order of the image in the scene.
      * @returns {number} identifier for model in the scene
      */
+    // Start the loading animation
+    Loader.start();
     async AddToScene(source, start, end, cadence, scale, layer_order) {
         let sun = await ModelFactory.CreateSolarModel(source, start, end, cadence, scale);
         let model = await sun.GetModel();
@@ -73,6 +76,8 @@ class Scene {
         this._SortLayers();
         return id;
     }
+    // End the loading animation
+    Loader.stop();
 
     /**
      * Set the model's layering order so they appear correctly in the scene.
