@@ -113,9 +113,9 @@ class Helioviewer {
      */
     _toCoordinates(response) {
         let x = response["heeq"]['x'];
-        let y = response["heeq"]['y'];
-        let z = response["heeq"]['z'];
-        return new Coordinates(x, y, z);
+        let y = response["heeq"]['z'];
+        let z = response["heeq"]['y'];
+        return new Coordinates(-x, y, z);
     }
 
     /**
