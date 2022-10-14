@@ -15,7 +15,7 @@ body {
     top: 15px;
     left: 10px;
     overflow-y: scroll;
-    height: 100vh;
+    max-height: 100vh;
 }
 
 label, p {
