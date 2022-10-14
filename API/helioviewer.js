@@ -91,6 +91,11 @@ class Helioviewer {
             // A neat trick for setSeconds is if seconds > 60, it proceeds to update
             // the minutes, hours, etc.
             query_time.setSeconds(query_time.getSeconds() + cadence);
+            // Prevent an infinite loop in the case that cadence is 0.
+            // This occurs when start time = end time
+            if (cadence == 0) {
+                break;
+            }
         }
 
         // Iterate over the promise array, and update the values with the actual
