@@ -1,7 +1,7 @@
 import Config from "../Configuration.js";
 import ThreeScene from "./three/three_scene.js";
 import ModelFactory from "./model_factory.js";
-
+import Loader from '../UI/loader.js';
 /**
  * Manages the full 3js scene that is rendered.
  */
@@ -56,22 +56,31 @@ class Scene {
      * @returns {number} identifier for model in the scene
      */
     async AddToScene(source, start, end, cadence, scale, layer_order) {
-        let sun = await ModelFactory.CreateSolarModel(source, start, end, cadence, scale);
-        let model = await sun.GetModel();
-        this._scene.AddModel(model);
-
-        let id = this._count++;
-        this._models[id] = {
-            model: sun,
-            order: layer_order,
-        };
-        sun.SetTime(this._current_time);
-        if (this._count == 1) {
-            this._scene.MoveCamera(sun.GetObserverPosition());
-            this._scene.PointCamera(await sun.GetPosition());
+        try {
+            // Start the loading animation
+            Loader.start();
+            let sun = await ModelFactory.CreateSolarModel(source, start, end, cadence, scale);
+            let model = await sun.GetModel();
+            this._scene.AddModel(model);
+    
+            let id = this._count++;
+            this._models[id] = {
+                model: sun,
+                order: layer_order,
+            };
+            sun.SetTime(this._current_time);
+            if (this._count == 1) {
+                this._scene.MoveCamera(sun.GetObserverPosition());
+                this._scene.PointCamera(await sun.GetPosition());
+            }
+            this._SortLayers();
+            // End the loading animation
+            Loader.stop();
+            return id;
+        } catch (e) {
+            Loader.stop();
+            throw e;
         }
-        this._SortLayers();
-        return id;
     }
 
     /**
