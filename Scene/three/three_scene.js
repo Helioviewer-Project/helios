@@ -101,6 +101,11 @@ class ThreeScene {
                 camera.lookAt(new Vector3(0, 0, 0));
             })
             .start();
+        const up_tween = new Tween(this._camera.up)
+            .to(new Vector3(0, 1, 0), Config.camera_tween_time)
+            .easing(Easing.Cubic.InOut)
+            .start();
+
     }
 
     /**
