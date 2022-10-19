@@ -13,7 +13,7 @@ class ResolutionPicker {
     constructor(resolution_select_id) {
         this._selector = document.getElementById(resolution_select_id);
         // We capture when the user changes the resolution so we can update the scene
-        addEventListener("change", (e) => {
+        this._selector.addEventListener("change", (e) => {
             let res = this.GetResolution();
             Scene.UpdateResolution(res);
         });
