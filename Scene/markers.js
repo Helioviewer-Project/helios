@@ -13,7 +13,12 @@ class Marker {
      * @param {Object} e Event data queried from the HEK
      */
     static fromEventData(e) {
-        return new Marker(e.hgs_x, e.hgs_y);
+        if (e.hasOwnProperty('hgs_x') && e.hasOwnProperty('hgs_y')) {
+            var marker = new Marker(e.hgs_x, e.hgs_y);
+            return marker
+        } else {
+            throw ["Event uses unsupported coordinates", e];
+        }
     }
 
     /**
@@ -46,21 +51,22 @@ class Marker {
      * @param {number} lat Heliographic Stonyhurst Latitude
      * @param {number} lon Heliographic Stonyhurst Longitude
      */
-    async _PositionModel(model, lat, lon) {
+    async _PositionModel(model, lon, lat) {
         // Radius of the sun mesh is 25 units
         let r = 25;
         let lat_rad = lat * Math.PI / 180;
         let lon_rad = lon * Math.PI / 180;
         // Formulas for converting lat/lon/radius (i.e. Heliographic Stonyhurst) to
         // xyz coordinates are given in W. T. Thompson, 2006, Coordinate systems for solar image data,
-        model.position.x = r * Math.sin(lat_rad);
-        model.position.y = r * Math.cos(lat_rad) * Math.sin(lon_rad);
+        // In 3js, y is the vertical axis (north pole)
+        model.position.y = r * Math.sin(lat_rad);
+        model.position.x = r * Math.cos(lat_rad) * Math.sin(lon_rad);
         model.position.z = r * Math.cos(lat_rad) * Math.cos(lon_rad);
 
         let target = new Vector3(
-            (r + 1) * Math.sin(lat_rad),
-            (r + 1) * Math.cos(lat_rad) * Math.sin(lon_rad),
-            (r + 1) * Math.cos(lat_rad) * Math.cos(lon_rad)
+            (r + 1)/r * model.position.x,
+            (r + 1)/r * model.position.y,
+            (r + 1)/r * model.position.z
         );
         model.lookAt(target);
     }

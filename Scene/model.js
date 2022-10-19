@@ -52,6 +52,12 @@ class Model {
          */
         this._scene_time = this.current_time;
 
+        /**
+         * Layering order, determines which mesh gets rendered in front of others
+         * @private
+         */
+        this._layer_order = 0;
+
         // Initialize the 3js model
         this._InitializeModel();
     }
@@ -116,7 +122,12 @@ class Model {
 
     _AddCurrentEvents(events) {
         for (const e of events) {
-            this.AddMarker(Marker.fromEventData(e));
+            try {
+                this.AddMarker(Marker.fromEventData(e));
+            } catch (e) {
+                console.warn("Not rendering event: ", e);
+                continue;
+            }
         }
     }
 
@@ -205,6 +216,7 @@ class Model {
      */
     async SetLayerOrder(index) {
         UpdateModelLayeringOrder(await this.GetModel(), index);
+        this._layer_order = index;
     }
 
     /**
@@ -224,6 +236,7 @@ class Model {
      */
     async AddMarker(marker) {
         let marker_model = await marker.GetModel();
+        UpdateModelLayeringOrder(marker_model, this._layer_order);
         let sun_model = await this.GetModel();
         sun_model.add(marker_model);
     }
