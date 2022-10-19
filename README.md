@@ -7,13 +7,9 @@ It includes the dependencies between each class.
 
 ## Overview
 
-Helios is a plugin for Helioviewer which uses 3js to render solar data
-onto 3D meshes. It works using the typical Helioviewer API, and also
-the Geometry Service provided by the Royal Observatory of Belgium for
-getting positional information of objects in space.
-
-Using these APIs, which provide images and positional information, we can
-render this data in 3D space.
+Helios is an adaptation of [Helioviewer](https://helioviewer.org) which uses 3js to render solar images in 3D.
+It works by getting image and positional data from the Helioviewer API, and rendering them in a 3D scene.
+You can interact with a demo [here](https://gl.helioviewer.org).
 
 ## How To Run It
 1. clone the repository
