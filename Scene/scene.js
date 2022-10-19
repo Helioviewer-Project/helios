@@ -1,7 +1,9 @@
 import Config from "../Configuration.js";
 import ThreeScene from "./three/three_scene.js";
 import ModelFactory from "./model_factory.js";
-import Loader from '../UI/loader.js';
+import { GetImageScaleForResolution } from "../common/resolution_lookup.js";
+import Loader from "../UI/loader.js";
+
 /**
  * Manages the full 3js scene that is rendered.
  */
@@ -62,11 +64,14 @@ class Scene {
             let sun = await ModelFactory.CreateSolarModel(source, start, end, cadence, scale);
             let model = await sun.GetModel();
             this._scene.AddModel(model);
-    
+
             let id = this._count++;
             this._models[id] = {
+                startTime: start,
+                endTime: end,
                 model: sun,
                 order: layer_order,
+                cadence: cadence,
             };
             sun.SetTime(this._current_time);
             if (this._count == 1) {
@@ -80,6 +85,24 @@ class Scene {
         } catch (e) {
             Loader.stop();
             throw e;
+        }
+    }
+
+    /**
+     * Updates the current scene with new resolution
+     *
+     * @param {number} resolution
+     */
+    async UpdateResolution(resolution) {
+        for (let id in this._models) {
+            const model = this._models[id];
+            // get the id of new scene
+            let new_id = await this.AddToScene(model.model.source, model.startTime, model.endTime, model.cadence, GetImageScaleForResolution(resolution, model.model.source), model.order);
+            await this.RemoveFromScene(id);
+            // overwrite the original with the new_id
+            this._models[id] = this._models[new_id];
+            // remove the new scene
+            delete this._models[new_id];
         }
     }
 
@@ -123,7 +146,6 @@ class Scene {
      */
     async SetTime(date) {
         this._current_time = date;
-
 
         let ids = Object.keys(this._models);
         for (const id of ids) {
