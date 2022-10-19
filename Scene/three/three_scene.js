@@ -1,8 +1,12 @@
-import { Scene, OrthographicCamera, WebGLRenderer, AxesHelper, BoxGeometry, MeshBasicMaterial, Mesh } from "three";
+import { Scene, OrthographicCamera, WebGLRenderer, AxesHelper, BoxGeometry, MeshBasicMaterial, Mesh, Vector3 } from "three";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { TrackballControls } from "three/examples/jsm/controls/TrackballControls.js";
 
-let enable_debug = false;
+import {Tween, Easing, update as TweenUpdate} from "@tweenjs/tween.js";
+
+import Config from "../../Configuration.js";
+
+let enable_debug = true;
 
 /**
  * Wrapper for the 3js scene to keep Helios scene logic
@@ -28,7 +32,7 @@ class ThreeScene {
         this._camera = new OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / -2, 0, 1000);
         this._camera.position.x = 0;
         this._camera.position.y = 0;
-        this._camera.position.z = -8;
+        this._camera.position.z = -100;
         this._camera.zoom = 49;
         this._camera.updateProjectionMatrix();
 
@@ -39,25 +43,33 @@ class ThreeScene {
         this._renderer = new WebGLRenderer();
         this._renderer.setSize(window.innerWidth, window.innerHeight);
 
-        /**
-         * Camera controls plugin for user camera movement
-         * @private
-         */
-        this._orbit_controls = new OrbitControls(this._camera, this._renderer.domElement);
-        this._orbit_controls.update();
 
         let target = document.getElementById(viewport_id);
         target.appendChild(this._renderer.domElement);
 
+        /**
+         * Camera controls plugin for user camera movement
+         * @private
+         */
+        this._controls = new TrackballControls(this._camera, this._renderer.domElement);
+        this._controls.enabled = true;
+        this._controls.rotateSpeed = 2.3;
+        this._controls.update();
+
         let scene_info = this;
-        function animate() {
+        function animate(time) {
             requestAnimationFrame(animate);
+            TweenUpdate(time);
+
+            scene_info._controls.update();
             scene_info._renderer.render(scene_info._scene, scene_info._camera);
             if (enable_debug) {
                 if (scene_info._camera) {
                     let camera_position = document.getElementById("js-camera-position");
-                    let pos = scene_info._camera.position;
-                    camera_position.textContent = "(" + pos.x + ", " + pos.y + ", " + pos.z + "). Zoom: " + scene_info._camera.zoom;
+                    if (camera_position) {
+                        let pos = scene_info._camera.position;
+                        camera_position.textContent = "(" + pos.x + ", " + pos.y + ", " + pos.z + "). Zoom: " + scene_info._camera.zoom;
+                    }
                 }
             }
         }
@@ -81,9 +93,19 @@ class ThreeScene {
      * @param {Coordinates} position
      */
     MoveCamera(position) {
-        this._camera.position.x = position.x;
-        this._camera.position.y = position.y;
-        this._camera.position.z = position.z;
+        let camera = this._camera;
+        const tween = new Tween(this._camera.position)
+            .to(position, Config.camera_tween_time)
+            .easing(Easing.Cubic.InOut)
+            .onUpdate(() => {
+                camera.lookAt(new Vector3(0, 0, 0));
+            })
+            .start();
+        const up_tween = new Tween(this._camera.up)
+            .to(new Vector3(0, 1, 0), Config.camera_tween_time)
+            .easing(Easing.Cubic.InOut)
+            .start();
+
     }
 
     /**
