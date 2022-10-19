@@ -167,14 +167,16 @@ function CreateMarkerModel(texture) {
 function UpdateModelTexture(group, texture, jp2info, source) {
     // Iterate through the group and update the texture uniform.
     for (const model of group.children) {
-        model.material.uniforms.tex.value = texture;
-        if (Config.plane_sources.indexOf(source) != -1) {
-            let dimensions = _getPlaneDimensionsFromJp2Info(jp2info);
-            model.geometry.width = dimensions.width;
-            model.geometry.height = dimensions.height;
-            model.updateMatrix();
-        } else {
-            model.material.uniforms.scale.value = _ComputeMeshScale(jp2info);
+        if (model.material.hasOwnProperty('uniforms')) {
+            model.material.uniforms.tex.value = texture;
+            if (Config.plane_sources.indexOf(source) != -1) {
+                let dimensions = _getPlaneDimensionsFromJp2Info(jp2info);
+                model.geometry.width = dimensions.width;
+                model.geometry.height = dimensions.height;
+                model.updateMatrix();
+            } else {
+                model.material.uniforms.scale.value = _ComputeMeshScale(jp2info);
+            }
         }
     }
 }
@@ -212,17 +214,31 @@ function UpdateModelOpacity(model, opacity) {
     }
 }
 
+function _IsSolarModel(model) {
+    return model.children.length > 0;
+}
+
+function _IsMarkerModel(model) {
+    return model.children.length == 0;
+}
+
 /**
  * Updates the layering order of the given model
  * @param {number} order Effectize "Z-index" of the model
  */
 function UpdateModelLayeringOrder(model, order) {
-    model.children[0].material.polygonOffset = true;
-    model.children[0].material.polygonOffsetUnits = (order - 1) * -1000;
-    model.children[0].material.polygonOffsetFactor = (order - 1) * -1;
-    model.children[1].material.polygonOffset = true;
-    model.children[1].material.polygonOffsetFactor = (order - 1) * 2;
-    model.children[1].material.polygonOffsetUnits = (order - 1) * 1000;
+    if (_IsSolarModel(model)) {
+        model.children[0].material.polygonOffset = true;
+        model.children[0].material.polygonOffsetUnits = (order - 1) * -1000;
+        model.children[0].material.polygonOffsetFactor = (order - 1) * -1;
+        model.children[1].material.polygonOffset = true;
+        model.children[1].material.polygonOffsetFactor = (order - 1) * 2;
+        model.children[1].material.polygonOffsetUnits = (order - 1) * 1000;
+    } else if (_IsMarkerModel(model)) {
+        model.material.polygonOffset = true;
+        model.material.polygonOffsetUnits = (order - 1) * 1000;
+        model.material.polygonOffsetFactor = (order - 1) * 1;
+    }
 }
 
 /**
