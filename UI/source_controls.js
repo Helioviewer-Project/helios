@@ -40,9 +40,10 @@ class SourceManager {
 
     async _UpdateModelTime(id, element) {
         // Update the text in the UI
-        let time = await Scene.GetModelTime(id);
-        let date = time.toISOString().split("T")[0];
-        let time_str = time.toISOString().split("T")[1].split("Z")[0];
+        let time = await Scene.GetModelTime(id).toISOString();
+        let timeString = time.split("T");
+        let date = timeString[0];
+        let time_str = timeString[1].split("Z")[0];
         element.textContent = `${date} ${time_str}`;
         this._ApplyTextColorForTimeDelta(element, time);
     }
