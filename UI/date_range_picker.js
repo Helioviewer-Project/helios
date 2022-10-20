@@ -1,4 +1,16 @@
 import Config from '../Configuration.js';
+import flatpickr from "flatpickr";
+
+
+/**
+ * Configuration for flatpickr datepickers.
+ * See https://flatpickr.js.org/options/
+ */
+const DatePickerConfig = {
+    enableTime: true,
+    enableSeconds: true,
+    mode: "range"
+}
 
 /**
  * UI component for selecting date range and cadence
@@ -7,14 +19,27 @@ class DateRangePicker {
     /**
      * Constructs the date range picker
      *
-     * @param {string} start_input_id ID of HTML element for the start input
-     * @param {string} end_input_id ID of HTML element for the end input
+     * @param {string} range_input_id ID of HTML element for the start input
      * @param {string} frame_input_id ID of HTML element for frame count picker
      */
-    constructor(start_input_id, end_input_id, frame_input_id) {
-        this._start = document.getElementById(start_input_id);
-        this._end = document.getElementById(end_input_id);
+    constructor(range_input_id, frame_input_id) {
+        this._range = flatpickr(document.getElementById(range_input_id), DatePickerConfig);
         this._frames = document.getElementById(frame_input_id);
+    }
+
+    /**
+     * Converts a localized date (From flatpickr) to a UTC time.
+     * Dates are returned in local time, but the datepicker is meant for UTC time.
+     * So for example when I (US/Eastern) choose 12:00PM UTC, I am returned 12:00PM Eastern (which is 8am UTC, which is not what I intended to select);
+     * This function applies the time zome offset to convert that 12:00PM Eastern into 12:00PM UTC.
+     * The function is generic and works for all time zones.
+     * @param {Date} date
+     * @private
+     */
+    _toUTC(date) {
+        let date_copy = new Date(date);
+        date_copy.setMinutes(date_copy.getMinutes() - date.getTimezoneOffset());
+        return date_copy;
     }
 
     /**
@@ -29,12 +54,8 @@ class DateRangePicker {
      * @returns {TimeRange}
      */
     GetDateRange() {
-        // TODO: Implement some validation so users can't specify
-        //       something like every 1 second over 5 years
-        // TODO: Make sure these dates have the correct UTC time. (Right now they most likely map to the user's local time)
-        //       You can make them UTC time by forcing the string to be in the format "YYYY-MM-DDTHH:MM:SSZ"
-        let start = new Date(this._start.value + "Z");
-        let end = new Date(this._end.value + "Z");
+        let start = this._toUTC(this._range.selectedDates[0]);
+        let end = this._toUTC(this._range.selectedDates[1]);
         let frames = parseFloat(this._frames.value);
         return {
             start: start,
@@ -45,8 +66,7 @@ class DateRangePicker {
 }
 
 let datepicker = new DateRangePicker(
-    Config.date_range_start_id,
-    Config.date_range_end_id,
+    Config.date_range_id,
     Config.date_range_frames_id
 );
 export default datepicker;

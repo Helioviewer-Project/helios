@@ -33,12 +33,7 @@ class Config {
         /**
          * HTML ID of the start time picker for the date range chooser
          */
-        this.date_range_start_id = "js-date-range-start";
-
-        /**
-         * HTML ID of the end time picker for the date range chooser
-         */
-        this.date_range_end_id = "js-date-range-end";
+        this.date_range_id = "js-date-range-picker";
 
         /**
          * HTML ID of the frame count input date range chooser
