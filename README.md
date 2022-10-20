@@ -63,7 +63,7 @@ Helios is made up of 6 major components
 
 - **Configuration** – This is the read only configuration that defines the back end URLs to use for the API, and HTML elements to attach Helios to.
 
-![Diagram of components](https://bit.ly/3SYalfp)
+![Diagram of components](https://bit.ly/3MNVn99)
 
 ## Class Dependencies
 Each component has a set of classes which are meant to interface
