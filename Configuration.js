@@ -56,6 +56,11 @@ class Config {
         this.animation_fps_id = 'js-animation-speed';
 
         /**
+         * HTML ID of the animation fps duration
+         */
+        this.animation_duration_id = 'js-animation-duration';
+
+        /**
          * HTML ID of the play button for animation controls
          */
         this.play_btn_id = 'js-play-btn';

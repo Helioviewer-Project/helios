@@ -3,6 +3,7 @@ import Helioviewer from "../API/helioviewer.js";
 import {HelioviewerToHelios} from "../common/helioviewer_source_map.js";
 import ResolutionPicker from "./resolution_picker.js";
 import SourceControls from "./source_controls.js";
+import AnimationControls from "./animation_controls.js";
 
 /**
  * Helioviewer Movie integration.
@@ -134,6 +135,14 @@ class HelioviewerMovie {
             let resolution = this._GetResolution(source);
             SourceControls.AddSourceWithParams(dates[0], dates[1], cadence, source, resolution);
         }
+        this._UpdateAnimationUI(data);
+    }
+
+    _UpdateAnimationUI(data) {
+        AnimationControls.SetValues({
+            fps: data.frameRate,
+            duration: data.numFrames / data.frameRate
+        });
     }
 
     /**

@@ -17,6 +17,7 @@ class AnimationControls {
         this._play_btn = document.getElementById(play_btn_id);
         this._pause_btn = document.getElementById(pause_btn_id);
         this._fps_input = document.getElementById(Config.animation_fps_id);
+        this._duration_input = document.getElementById(Config.animation_duration_id);
         this._InitializeClickListeners();
 
         /**
@@ -77,8 +78,11 @@ class AnimationControls {
         // 1 frame / Frames per second = Seconds per frame
         // Seconds per frame * 1000 ms/s = milliseconds per frame
         // This can be reduced to 1000 / fps;
-        this._frame_delay = (1000 / parseFloat(this._fps_input.value) );
-        this._cadence = ((this._end_time - this._start_time) / parseFloat(document.getElementById(Config.date_range_frames_id).value)) / 1000;
+        let fps = parseFloat(this._fps_input.value) || 15;
+        this._frame_delay = (1000 / fps);
+        let time_range_seconds = ((this._end_time - this._start_time) / 1000);
+        let duration = parseFloat(this._duration_input.value) || 20;
+        this._cadence = time_range_seconds / duration / fps;
     }
 
     /**
@@ -94,6 +98,21 @@ class AnimationControls {
             let animator = this;
             this._interval = setInterval(() => {animator._TickFrame();}, this._frame_delay);
         }
+    }
+
+    /**
+     * @typedef AnimationOptions
+     * @type Object
+     * @property fps Frames per second
+     * @property duration Duration in seconds
+     */
+    /**
+     * Sets the values of the animation input fields
+     * @param {AnimationOptions} config
+     */
+    SetValues(config) {
+        this._fps_input.value = config.fps || this._fps_input.value;
+        this._duration_input.value = config.duration || this._duration_input.value;
     }
 
     /**
