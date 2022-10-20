@@ -50,7 +50,7 @@ class Scene {
      * Returns the overall time range of all objects in the scene.
      * @returns {Date[]} Where date[0] is min and date[1] is max.
      */
-    async GetTimeRange() {
+    GetTimeRange() {
         let ids = Object.keys(this._models);
         if (ids.length > 0) {
             let min_date = this._models[0].startTime;

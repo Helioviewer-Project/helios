@@ -71,8 +71,9 @@ class AnimationControls {
      */
     _InitializeAnimationRangeFromInputs() {
         this._current_time = Scene.GetTime();
-        this._start_time = new Date(document.getElementById(Config.date_range_start_id).value + "Z");
-        this._end_time = new Date(document.getElementById(Config.date_range_end_id).value + "Z");
+        let range = Scene.GetTimeRange();
+        this._start_time = range[0];
+        this._end_time = range[1];
         // 1 frame / Frames per second = Seconds per frame
         // Seconds per frame * 1000 ms/s = milliseconds per frame
         // This can be reduced to 1000 / fps;
