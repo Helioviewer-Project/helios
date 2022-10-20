@@ -1,12 +1,11 @@
-import Config from '../Configuration.js';
-import DateRangePicker from './date_range_picker.js';
-import DatasourcePicker from './datasource_picker.js';
-import ResolutionPicker from './resolution_picker.js';
-import Scene from '../Scene/scene.js';
-import {ToAPIDate} from '../common/dates.js';
-import {GetImageScaleForResolution} from '../common/resolution_lookup.js';
-import {GetObserverFromSource} from "../common/observers.js";
-
+import Config from "../Configuration.js";
+import DateRangePicker from "./date_range_picker.js";
+import DatasourcePicker from "./datasource_picker.js";
+import ResolutionPicker from "./resolution_picker.js";
+import Scene from "../Scene/scene.js";
+import { ToAPIDate } from "../common/dates.js";
+import { GetImageScaleForResolution } from "../common/resolution_lookup.js";
+import { GetObserverFromSource } from "../common/observers.js";
 
 /**
  * Manages current sources displayed in the scene
@@ -42,8 +41,9 @@ class SourceManager {
     async _UpdateModelTime(id, element) {
         // Update the text in the UI
         let time = await Scene.GetModelTime(id);
-        element.textContent = time.toISOString();
-
+        let date = time.toISOString().split("T")[0];
+        let time_str = time.toISOString().split("T")[1].split("Z")[0];
+        element.textContent = `${date} ${time_str}`;
         this._ApplyTextColorForTimeDelta(element, time);
     }
 
