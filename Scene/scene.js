@@ -47,6 +47,32 @@ class Scene {
     }
 
     /**
+     * Returns the overall time range of all objects in the scene.
+     * @returns {Date[]} Where date[0] is min and date[1] is max.
+     */
+    async GetTimeRange() {
+        let ids = Object.keys(this._models);
+        if (ids.length > 0) {
+            let min_date = this._models[0].startTime;
+            let max_date = this._models[0].endTime;
+            for (const id of Object.keys(this._models)) {
+                let model = this._models[id];
+                // Find min
+                if (model.startTime < min_date) {
+                    min_date = model.startTime;
+                }
+                // Find max
+                if (model.endTime > max_date) {
+                    max_date = model.endTime;
+                }
+            }
+            return [min_date, max_date];
+        } else {
+            throw "No models in the scene";
+        }
+    }
+
+    /**
      * Adds a new source to the scene
      *
      * @param {number} source Telescope source ID
@@ -209,4 +235,5 @@ class Scene {
 
 // There is only one scene in the application
 let scene = new Scene();
+console.log(scene);
 export default scene;
