@@ -43,7 +43,7 @@ class SourceManager {
         let time = await Scene.GetModelTime(id);
         let timeString = time.toISOString().split("T");
         let date = timeString[0];
-        let time_str = timeString[1].split("Z")[0];
+        let time_str = timeString[1].split(".")[0];
         element.textContent = `${date} ${time_str}`;
         this._ApplyTextColorForTimeDelta(element, time);
     }
