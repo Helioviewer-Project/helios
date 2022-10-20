@@ -135,20 +135,32 @@ class SourceManager {
     }
 
     /**
-     * Adds a source to the scene
+     * Adds a source to the scene with data from the input elements.
      */
     async AddSource() {
         let range = DateRangePicker.GetDateRange();
         let source = DatasourcePicker.GetDatasource();
         let resolution = ResolutionPicker.GetResolution();
+        this.AddSourceWithParams(range.start, range.end, range.cadence, source, resolution);
+    }
+
+    /**
+     * Adds a source to the scene programmatically. Can be called from other modules.
+     * @param {Date} start
+     * @param {Date} end
+     * @param {number} cadence
+     * @param {number|string} source
+     * @param {number|string} resolution
+     */
+    async AddSourceWithParams(start, end, cadence, source, resolution) {
         // TODO: Validate range, source, and resolution.
         //       Make sure that the number of images that are going to be searched for is less than some value set in the configuration
-        if (this._ValidateDateRange(range)) {
+        if (this._ValidateDateRange(start, end)) {
             try {
                 // Get the index for this layer.
                 this._layer_count += 1;
                 let image_scale = GetImageScaleForResolution(resolution, source);
-                let id = await Scene.AddToScene(source, range.start, range.end, range.cadence, image_scale, this._layer_count);
+                let id = await Scene.AddToScene(source, start, end, cadence, image_scale, this._layer_count);
                 // Add the control element for interacting with this model to the UI
                 this._AddUIControl(id, GetObserverFromSource(source));
                 // TODO: if source is already being displayed, then this should replace it, rather than just being added on.
@@ -165,12 +177,13 @@ class SourceManager {
 
     /**
      * Checks if the date range is a valid query
-     * @param {TimeRange} range
+     * @param {Date} start
+     * @param {Date} end
      * @returns {bool}
      */
-    _ValidateDateRange(range) {
+    _ValidateDateRange(start, end) {
         // Subtracting dates returns the time between them in milliseconds
-        let dt = range.end - range.start;
+        let dt = end - start;
         // If the date is negative, it means end is before start, this is bad.
         if (dt < 0) {
             alert("Start time must be before end time.");

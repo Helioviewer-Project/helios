@@ -158,6 +158,18 @@ class Helioviewer {
         let url = this.GetApiUrl() + "downloadImage/?id=" + id + "&scale=" + scale;
         return url;
     }
+
+    /**
+     * Returns details about a helioviewer movie
+     * @param {string} id Movie id
+     */
+    async GetMovieDetails(id) {
+        let url = this.GetApiUrl() + "getMovieStatus/?id=" + id + "&format=mp4&verbose=true";
+        let result = await fetch(url);
+        let data = await result.json();
+        return data;
+
+    }
 }
 
 let SingletonAPI = new Helioviewer();

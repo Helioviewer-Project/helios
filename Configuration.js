@@ -56,6 +56,11 @@ class Config {
         this.animation_fps_id = 'js-animation-speed';
 
         /**
+         * HTML ID of the animation fps duration
+         */
+        this.animation_duration_id = 'js-animation-duration';
+
+        /**
          * HTML ID of the play button for animation controls
          */
         this.play_btn_id = 'js-play-btn';
@@ -102,6 +107,16 @@ class Config {
          * when clicked.
          */
         this.toggle_button_id = "js-enable-helios";
+
+        /**
+         * HTML ID for input element for loading Helioviewer movies;
+         */
+        this.helioviewer_movie_input_id = "js-helioviewer-movie";
+
+        /**
+         * HTML ID for the button that loads the helioviewer movies
+         */
+        this.helioviewer_movie_load_button = "js-helioviewer-movie-load";
 
         /**
          * HTML ID for the "loader" element that gets animated when there are outstanding ajax requests
@@ -159,6 +174,17 @@ class Config {
             75: 1024, // 75-76
             77: 512,  // 77
             78: 1024, // 78-83
+        };
+
+        /**
+         * Naming of sources is slightly different between helioviewer and helios.
+         * This mapping can be used to convert between the two.
+         * If a name doesn't exist in this map, assume its the same for both.
+         */
+        this.helioviewer_to_helios_names = {
+            STEREO_A: "STEREO-A",
+            STEREO_B: "STEREO-B",
+            SECCHI: ""
         };
     }
 
