@@ -4,6 +4,7 @@ import {HelioviewerToHelios} from "../common/helioviewer_source_map.js";
 import ResolutionPicker from "./resolution_picker.js";
 import SourceControls from "./source_controls.js";
 import AnimationControls from "./animation_controls.js";
+import DatePicker from "./date_range_picker.js";
 
 /**
  * Helioviewer Movie integration.
@@ -136,12 +137,21 @@ class HelioviewerMovie {
             SourceControls.AddSourceWithParams(dates[0], dates[1], cadence, source, resolution);
         }
         this._UpdateAnimationUI(data);
+        this._UpdateDatePickerUI(dates, data.numFrames);
     }
 
     _UpdateAnimationUI(data) {
         AnimationControls.SetValues({
             fps: data.frameRate,
             duration: data.numFrames / data.frameRate
+        });
+    }
+
+    _UpdateDatePickerUI(dates, frames) {
+        DatePicker.SetValues({
+            start: dates[0],
+            end: dates[1],
+            frames: frames
         });
     }
 
