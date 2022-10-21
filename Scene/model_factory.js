@@ -27,16 +27,12 @@ class ModelFactory {
         scale = 8;
         */
         try {
-            var images = await Database.GetImages(source, start, end, cadence, scale);
+            let image_promises = Database.GetImages(source, start, end, cadence, scale);
+            let textures = await this._CreateTextures(image_promises);
+            return new Model(textures, source);
         } catch (e) {
             throw 'Failed to create model: ' + e
         }
-        // If there's no image data available, then return nothing
-        // The should bubble up to the UI code which must alert the user
-        // that their search returned nothing.
-
-        let textures = await this._CreateTextures(images);
-        return new Model(textures, source);
     }
 
     /**
@@ -50,26 +46,43 @@ class ModelFactory {
      * Uses 3js to create textures out of image data
      * @private
      *
-     * @param {HeliosImage[]} Image data to create textures from
+     * @param {Array<Promise<HeliosImage>>} data_promises data to create textures from
      * @returns {HeliosTexture[]} Texture data for models to use
      */
-    async _CreateTextures(images) {
+    async _CreateTextures(data_promises) {
         let result = [];
+        let texture_promises = [];
         // LoadTexture is async, so this first iteration
         // fires off the load texture requests
-        for (const image of images) {
-            let texture = LoadTexture(image.url);
-            result.push({
-                date: image.date,
-                texture: texture,
-                jp2info: image.jp2info,
-                position: image.position
-            });
+        for (const promise of data_promises) {
+            texture_promises.push(promise.then((image) => {
+                if (image) {
+                    let texture = LoadTexture(image.url);
+                    return {
+                        date: image.date,
+                        texture: texture,
+                        jp2info: image.jp2info,
+                        position: image.position
+                    };
+                } else {
+                    return false;
+                }
+            }));
         }
 
         // Wait for async calls to complete.
+        for (const promise of texture_promises) {
+            let value = await promise;
+            // Value may be false since promises have been chained all the way up to this point.
+            // Duplicate results are ignored and return false up the promise chain.
+            if (value) {
+                result.push(value);
+            }
+        }
+
         for (const image of result) {
             image.texture = await image.texture;
+            image.position = await image.position;
         }
         return result;
     }

@@ -201,9 +201,11 @@ function UpdateModelLayeringOrder(model, order) {
     model.children[0].material.polygonOffset = true;
     model.children[0].material.polygonOffsetUnits = (order - 1) * -1000;
     model.children[0].material.polygonOffsetFactor = (order - 1) * -1;
-    model.children[1].material.polygonOffset = true;
-    model.children[1].material.polygonOffsetFactor = (order - 1) * 2;
-    model.children[1].material.polygonOffsetUnits = (order - 1) * 1000;
+    if (model.children.length > 1) {
+        model.children[1].material.polygonOffset = true;
+        model.children[1].material.polygonOffsetFactor = (order - 1) * 2;
+        model.children[1].material.polygonOffsetUnits = (order - 1) * 1000;
+    }
 }
 
 export {

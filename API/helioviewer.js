@@ -74,9 +74,9 @@ class Helioviewer {
      * @param {Date} start Beginning of time range to get images for
      * @param {Date} end End of time range to get images for
      * @param {number} cadence Number of seconds between each image
-     * @returns {ImageInfo[]}
+     * @returns {Array<Promise<ImageInfo[]>>}
      */
-    async QueryImages(source, start, end, cadence) {
+    QueryImages(source, start, end, cadence) {
         let results = [];
         let query_time = new Date(start);
 
@@ -96,12 +96,6 @@ class Helioviewer {
             if (cadence == 0) {
                 break;
             }
-        }
-
-        // Iterate over the promise array, and update the values with the actual
-        // queried values
-        for (let i = 0; i < results.length; i++) {
-            results[i] = await results[i];
         }
 
         return results;

@@ -33,30 +33,39 @@ class ImageFinder {
      * @param {Date} end End time of range to query
      * @param {number} cadence Number of seconds between each image
      * @param {number} scale Image scale of images to download
-     * @returns {UrlInfo[]}
+     * @returns {Array<Promise<UrlInfo>>} Either the urlinfo itself, or false if it's a duplicate to be ignored.
      */
-    async GetImages(source, start, end, cadence, scale) {
+    GetImages(source, start, end, cadence, scale) {
         // Use Helioviewer API to query for image ids
-        let images = await Helioviewer.QueryImages(source, start, end, cadence);
+        let image_query_promises = Helioviewer.QueryImages(source, start, end, cadence);
         // Iterate over image IDs and query GetImageURL to create
         // a list of URLs.
         let url_info = [];
-        for (const image of images) {
-            let url = Helioviewer.GetImageURL(image.id, scale);
+        let results = [];
+        for (const promise of image_query_promises) {
+            // Using "then" rather than await because I want to return a list of promises immediately
+            // Making this function async and using await would return one promise that completes when all the subpromises are done.
+            // What I want to achieve is extreme parallelization, so I want to tell each promise what to do when they're done, and return a new list of promises.
+            results.push(promise.then((image) => {
+                let url = Helioviewer.GetImageURL(image.id, scale);
 
-            // ignore duplicates
-            if (this._isNewUrl(url_info, url)) {
-                url_info.push({
-                    id: image.id,
-                    url: url,
-                    timestamp: image.timestamp,
-                    jp2info: image.jp2_info
-                });
-            }
+                // ignore duplicates
+                if (this._isNewUrl(url_info, url)) {
+                    let result = {
+                        id: image.id,
+                        url: url,
+                        timestamp: image.timestamp,
+                        jp2info: image.jp2_info
+                    };
+                    url_info.push(result);
+                    return result;
+                }
+                return false;
+            }));
         }
 
         // Return url list
-        return url_info;
+        return results;
     }
 }
 
