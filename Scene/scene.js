@@ -235,5 +235,4 @@ class Scene {
 
 // There is only one scene in the application
 let scene = new Scene();
-console.log(scene);
 export default scene;
