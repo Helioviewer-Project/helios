@@ -9,7 +9,8 @@ const DatePickerConfig = {
     enableTime: true,
     enableSeconds: true,
     mode: "range",
-    time_24hr: true
+    time_24hr: true,
+    inline: true
 }
 
 /**

@@ -1,0 +1,9 @@
+input, select, button {
+    flex-basis: 30px;
+    border-radius: 5px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    box-sizing: content-box;
+    width: 100%;
+}
+

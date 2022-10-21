@@ -1,0 +1,50 @@
+.dashboard {
+    position: fixed;
+    bottom: 0;
+    max-height: 420px;
+    overflow-y: scroll;
+    width: 100%;
+    padding: 15px;
+    /* From https://css.glass */
+    background: rgba(84, 84, 84, 0.58);
+    border-top-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5.5px);
+    -webkit-backdrop-filter: blur(5.5px);
+    -moz-backdrop-filter: blur(5.5px);
+}
+
+.dashboard {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.dashboard .column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dashboard .calendar-input > input {
+    width: 307px;
+}
+
+/*
+.demo-sidebar {
+    display: none;
+}
+*/
+
+@media only screen and (max-width: 600px) {
+    .dashboard {
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        padding: 0;
+    }
+}
