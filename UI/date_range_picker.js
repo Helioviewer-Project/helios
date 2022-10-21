@@ -1,7 +1,6 @@
 import Config from '../Configuration.js';
 import flatpickr from "flatpickr";
 
-
 /**
  * Configuration for flatpickr datepickers.
  * See https://flatpickr.js.org/options/
@@ -9,7 +8,14 @@ import flatpickr from "flatpickr";
 const DatePickerConfig = {
     enableTime: true,
     enableSeconds: true,
-    mode: "range"
+    mode: "range",
+    time_24hr: true,
+    // Close the datepicker after choosing the end date
+    onChange: (selectedDates, _, instance) => {
+        if (selectedDates.length == 2) {
+            instance.close();
+        }
+    }
 }
 
 /**
@@ -43,6 +49,26 @@ class DateRangePicker {
     }
 
     /**
+     * Converts a UTC date to a local time.
+     * Flatpickr expects dates to be conformed the current locale.
+     * Internally helios uses UTC dates for everything.
+     * When updating the dates in the datepicker, they must be converted from UTC to local time to be displayed correctly
+     * @param {Date} date
+     * @private
+     */
+    _toUTC(date) {
+        let date_copy = new Date(date);
+        date_copy.setMinutes(date_copy.getMinutes() - date.getTimezoneOffset());
+        return date_copy;
+    }
+
+    _toLocal(date) {
+        let date_copy = new Date(date);
+        date_copy.setMinutes(date_copy.getMinutes() + date.getTimezoneOffset());
+        return date_copy;
+    }
+
+    /**
      * @typedef {Object} TimeRange
      * @property {Date} start
      * @property {Date} end
@@ -62,6 +88,31 @@ class DateRangePicker {
             end: end,
             cadence: (((end - start) / frames) / 1000)
         };
+    }
+
+    /**
+     * @typedef DatePickerValues
+     * @type Object
+     * @property {Date} start
+     * @property {Date} end
+     * @property {number} frames
+     */
+    /**
+     * Sets the values of the date range picker
+     * @param {DatePickerValues} values
+     */
+    SetValues(values) {
+        let dates = [];
+        if (values.start) {
+            dates.push(this._toLocal(values.start));
+        }
+        if (values.end) {
+            dates.push(this._toLocal(values.end));
+        }
+        this._range.setDate(dates)
+        if (values.frames) {
+            this._frames.value = values.frames;
+        }
     }
 }
 
