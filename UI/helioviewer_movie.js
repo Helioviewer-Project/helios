@@ -47,7 +47,7 @@ class HelioviewerMovie {
 
     /**
      * Parses a layer string into individual layer data
-     * @returns {Array<string>[]} Layer data broken up into components
+     * @return {string[][]} Layer data broken up into components
      */
     _ParseLayerString(layer_string) {
         let split = layer_string.split("],[");
@@ -91,8 +91,8 @@ class HelioviewerMovie {
 
     /**
      * Returns the source IDs for the given layer sources
-     * @param {Array<string>[]} Layer data
-     * @returns {int[]} Source IDs
+     * @param {string[][]} Layer data
+     * @returns {number[]} Source IDs
      */
     _GetLayerSources(layers) {
         // The format of this data is assumed to always be in this format
