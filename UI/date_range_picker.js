@@ -9,13 +9,7 @@ const DatePickerConfig = {
     enableTime: true,
     enableSeconds: true,
     mode: "range",
-    time_24hr: true,
-    // Close the datepicker after choosing the end date
-    onChange: (selectedDates, _, instance) => {
-        if (selectedDates.length == 2) {
-            instance.close();
-        }
-    }
+    time_24hr: true
 }
 
 /**
