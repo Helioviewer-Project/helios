@@ -53,8 +53,8 @@ class Scene {
     GetTimeRange() {
         let ids = Object.keys(this._models);
         if (ids.length > 0) {
-            let min_date = this._models[0].startTime;
-            let max_date = this._models[0].endTime;
+            let min_date = this._models[ids[0]].startTime;
+            let max_date = this._models[ids[0]].endTime;
             for (const id of Object.keys(this._models)) {
                 let model = this._models[id];
                 // Find min
