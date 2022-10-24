@@ -8,7 +8,7 @@ import flatpickr from "flatpickr";
 const DatePickerConfig = {
     enableTime: true,
     enableSeconds: true,
-    mode: "range",
+    mode: "single",
     time_24hr: true
 }
 
@@ -19,11 +19,13 @@ class DateRangePicker {
     /**
      * Constructs the date range picker
      *
-     * @param {string} range_input_id ID of HTML element for the start input
+     * @param {string} start_id ID of HTML element for the start input
+     * @param {string} end_id ID of HTML element for the end input
      * @param {string} frame_input_id ID of HTML element for frame count picker
      */
-    constructor(range_input_id, frame_input_id) {
-        this._range = flatpickr(document.getElementById(range_input_id), DatePickerConfig);
+    constructor(start_id, end_id, frame_input_id) {
+        this._start = flatpickr(document.getElementById(start_id), DatePickerConfig);
+        this._end = flatpickr(document.getElementById(end_id), DatePickerConfig);
         this._frames = document.getElementById(frame_input_id);
     }
 
@@ -74,8 +76,8 @@ class DateRangePicker {
      * @returns {TimeRange}
      */
     GetDateRange() {
-        let start = this._toUTC(this._range.selectedDates[0]);
-        let end = this._toUTC(this._range.selectedDates[1]);
+        let start = this._toUTC(this._start.selectedDates[0]);
+        let end = this._toUTC(this._end.selectedDates[0]);
         let frames = parseFloat(this._frames.value);
         return {
             start: start,
@@ -103,7 +105,8 @@ class DateRangePicker {
         if (values.end) {
             dates.push(this._toLocal(values.end));
         }
-        this._range.setDate(dates)
+        this._start.setDate(dates[0])
+        this._end.setDate(dates[1])
         if (values.frames) {
             this._frames.value = values.frames;
         }
@@ -111,7 +114,8 @@ class DateRangePicker {
 }
 
 let datepicker = new DateRangePicker(
-    Config.date_range_id,
+    Config.start_picker_id,
+    Config.end_picker_id,
     Config.date_range_frames_id
 );
 export default datepicker;
