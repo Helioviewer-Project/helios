@@ -56,6 +56,9 @@ class ThreeScene {
         this._controls.rotateSpeed = 2.3;
         this._controls.update();
 
+        // Allow the page to be resized
+        this._EnableResizing();
+
         let scene_info = this;
         function animate(time) {
             requestAnimationFrame(animate);
@@ -78,6 +81,24 @@ class ThreeScene {
         if (enable_debug) {
             this._EnableDebug();
         }
+    }
+
+    /**
+     * Sets an event listener on the window to handle resize events
+     * @private
+     */
+    _EnableResizing() {
+        let camera = this._camera;
+        let renderer = this._renderer;
+        function onWindowResize(){
+            camera.left = window.innerWidth / -2;
+            camera.right = window.innerWidth / 2;
+            camera.top = window.innerHeight / 2;
+            camera.bottom = window.innerHeight / -2;
+            camera.updateProjectionMatrix();
+            renderer.setSize( window.innerWidth, window.innerHeight );
+        }
+        window.addEventListener('resize', onWindowResize);
     }
 
     /**
