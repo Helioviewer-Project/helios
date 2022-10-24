@@ -41,9 +41,12 @@
     width: calc(100% - 10px);
 }
 
-.data-source {
+.data-source:nth-child(2) {
     padding-top: 15px;
     border-top: 1px solid white;
+}
+
+.data-source {
     border-bottom: 1px solid white;
     margin-bottom: 15px;
 }

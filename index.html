@@ -86,6 +86,19 @@
 
             <button id="js-add-source">Add Source</button>
 
+            <label for="js-helioviewer-movie">Load Movie</label>
+            <input id="js-helioviewer-movie", type="text" placeholder="Movie ID"/>
+            <button type="button" id="js-helioviewer-movie-load">Load</button>
+
+            <label for="js-animation-speed">Animation FPS</label>
+            <input id="js-animation-speed" type="number" value="6"/>
+
+            <label for="js-animation-duration">Animation Duration (seconds)</label>
+            <input id="js-animation-duration" type="number" value="6" placeholder="20"/>
+
+            <button id="js-play-btn">Play</button>
+            <button id="js-pause-btn">Pause</button>
+
             <div id="current-sources" class="hidden">
                 <h1>Display:</h1>
                 <div class="template data-source">
@@ -103,18 +116,6 @@
                 </div>
             </div>
 
-            <label for="js-helioviewer-movie">Load Movie</label>
-            <input id="js-helioviewer-movie", type="text" placeholder="Movie ID"/>
-            <button type="button" id="js-helioviewer-movie-load">Load</button>
-
-            <label for="js-animation-speed">Animation FPS</label>
-            <input id="js-animation-speed" type="number" value="6"/>
-
-            <label for="js-animation-duration">Animation Duration (seconds)</label>
-            <input id="js-animation-duration" type="number" value="6" placeholder="20"/>
-
-            <button id="js-play-btn">Play</button>
-            <button id="js-pause-btn">Pause</button>
         </div>
         <div class="demo-sidebar" style="left: 230px">
             <!-- <label>Camera Position: <span id="js-camera-position"></span></label> -->
