@@ -86,11 +86,6 @@ class Config {
         this.add_source_btn_id = "js-add-source";
 
         /**
-         * HTML ID of the element that will display the current time
-         */
-        this.current_time_id = "js-current-time";
-
-        /**
          * HTML ID of the input element used to change the current time.
          */
         this.scene_time_input = "js-current-scene-time";

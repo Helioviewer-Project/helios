@@ -1,4 +1,5 @@
 import Config from '../Configuration.js';
+import {ToLocalDate, ToUTCDate} from "../common/dates.js";
 import flatpickr from "flatpickr";
 
 /**
@@ -30,41 +31,6 @@ class DateRangePicker {
     }
 
     /**
-     * Converts a localized date (From flatpickr) to a UTC time.
-     * Dates are returned in local time, but the datepicker is meant for UTC time.
-     * So for example when I (US/Eastern) choose 12:00PM UTC, I am returned 12:00PM Eastern (which is 8am UTC, which is not what I intended to select);
-     * This function applies the time zome offset to convert that 12:00PM Eastern into 12:00PM UTC.
-     * The function is generic and works for all time zones.
-     * @param {Date} date
-     * @private
-     */
-    _toUTC(date) {
-        let date_copy = new Date(date);
-        date_copy.setMinutes(date_copy.getMinutes() - date.getTimezoneOffset());
-        return date_copy;
-    }
-
-    /**
-     * Converts a UTC date to a local time.
-     * Flatpickr expects dates to be conformed the current locale.
-     * Internally helios uses UTC dates for everything.
-     * When updating the dates in the datepicker, they must be converted from UTC to local time to be displayed correctly
-     * @param {Date} date
-     * @private
-     */
-    _toUTC(date) {
-        let date_copy = new Date(date);
-        date_copy.setMinutes(date_copy.getMinutes() - date.getTimezoneOffset());
-        return date_copy;
-    }
-
-    _toLocal(date) {
-        let date_copy = new Date(date);
-        date_copy.setMinutes(date_copy.getMinutes() + date.getTimezoneOffset());
-        return date_copy;
-    }
-
-    /**
      * @typedef {Object} TimeRange
      * @property {Date} start
      * @property {Date} end
@@ -76,8 +42,8 @@ class DateRangePicker {
      * @returns {TimeRange}
      */
     GetDateRange() {
-        let start = this._toUTC(this._start.selectedDates[0]);
-        let end = this._toUTC(this._end.selectedDates[0]);
+        let start = ToUTCDate(this._start.selectedDates[0]);
+        let end = ToUTCDate(this._end.selectedDates[0]);
         let frames = parseFloat(this._frames.value);
         return {
             start: start,
@@ -100,10 +66,10 @@ class DateRangePicker {
     SetValues(values) {
         let dates = [];
         if (values.start) {
-            dates.push(this._toLocal(values.start));
+            dates.push(ToLocalDate(values.start));
         }
         if (values.end) {
-            dates.push(this._toLocal(values.end));
+            dates.push(ToLocalDate(values.end));
         }
         this._start.setDate(dates[0])
         this._end.setDate(dates[1])
