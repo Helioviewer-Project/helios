@@ -113,7 +113,7 @@ class Marker {
             });
         } else {
             // The position is nonexistent, hide the marker
-            this._Hide();
+            // this._Hide();
         }
     }
 
@@ -179,7 +179,7 @@ class Marker {
      */
     _ComputePosition(lon, lat) {
         // Radius of the sun mesh is 25 units
-        let r = 25;
+        let r = 25 * 0.2;
         let lat_rad = lat * Math.PI / 180;
         let lon_rad = lon * Math.PI / 180;
         // Formulas for converting lat/lon/radius (i.e. Heliographic Stonyhurst) to
