@@ -186,6 +186,7 @@ function CreateMarkerModel(texture, text) {
     CreateText(text).then((text_mesh) => {
         plane.add(text_mesh);
     });
+    plane.scale.set(0.2, 0.2, 0.2);
     plane.type = "marker";
     return plane;
 }

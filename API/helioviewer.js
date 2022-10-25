@@ -40,7 +40,6 @@ class Helioviewer {
      * @private
      */
     async _GetClosestImage(source, time) {
-        console.log("Getting closest image for time: ", time);
         let time_copy = new Date(time);
         let api_url = this.GetApiUrl() + "getClosestImage/?sourceId=" + source + "&date=" + ToAPIDate(time);
         let result = await fetch(api_url);
@@ -91,7 +90,7 @@ class Helioviewer {
         while (query_time <= end) {
             // Query Helioviewer for the closest image to the given time.
             // Sends the request off and store the promise
-            let image_promise = this._GetClosestImage(source, query_time);
+            let image_promise = this._GetClosestImage(source, new Date(query_time));
             // Add the result to the output array
             results.push(image_promise);
             // Add cadence to the query time
