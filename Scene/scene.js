@@ -99,11 +99,13 @@ class Scene {
                 order: layer_order,
                 cadence: cadence,
             };
-            sun.SetTime(this._current_time);
             if (this._count == 1) {
                 this._scene.MoveCamera(sun.GetObserverPosition());
                 this._scene.PointCamera(await sun.GetPosition());
+                this.SetTime(start);
             }
+
+            sun.SetTime(this._current_time);
             this._SortLayers();
             // End the loading animation
             Loader.stop();
