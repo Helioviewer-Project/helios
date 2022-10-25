@@ -11,8 +11,6 @@ import {
     Vector3
 } from 'three';
 
-import Marker from "./markers.js";
-
 import Config from '../Configuration.js';
 
 /**
@@ -35,11 +33,6 @@ class Model {
          * ID of the model's source
          */
         this.source = source;
-
-        /**
-         * Store references to event pins that have been added to this model.
-         */
-        this._event_models = [];
 
         /**
          * The current time being displayed on this model
@@ -96,39 +89,8 @@ class Model {
         let model = await this._model;
         UpdateModelTexture(model, texture, this.data[0].jp2info, this.source);
 
-        // Update event data
-        this._UpdateEvents(await data.events);
-
         // Update the rotation of the model to the date's observer position
         this._PointToObserver(model, data.position);
-    }
-
-    /**
-     * Displays the given set of events on the model.
-     */
-    _UpdateEvents(events) {
-        // Remove old events
-        this._RemoveOldEvents();
-        // Add new events
-        this._AddCurrentEvents(events);
-    }
-
-    async _RemoveOldEvents() {
-        let model = await this.GetModel();
-        for (const e of this._event_models) {
-            model.remove(e);
-        }
-    }
-
-    _AddCurrentEvents(events) {
-        for (const e of events) {
-            try {
-                this.AddMarker(Marker.fromEventData(e));
-            } catch (e) {
-                console.warn("Not rendering event: ", e);
-                continue;
-            }
-        }
     }
 
     /**
@@ -229,16 +191,6 @@ class Model {
         for (const datum of this.data) {
             datum.texture.dispose();
         }
-    }
-
-    /**
-     * Adds a marker to this model
-     */
-    async AddMarker(marker) {
-        let marker_model = await marker.GetModel();
-        UpdateModelLayeringOrder(marker_model, this._layer_order);
-        let sun_model = await this.GetModel();
-        sun_model.add(marker_model);
     }
 };
 

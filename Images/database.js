@@ -13,7 +13,6 @@ class Database {
      * @property {string} url URL of the image
      * @property {Coordinates} position Position of the observer in scene coordinates
      * @property {JP2info} jp2info Metadata about this image
-     * @property {Promise<Object[]>} events
      */
     /**
      * Query data sources for a list of image information
@@ -43,7 +42,6 @@ class Database {
                     url: image.url,
                     jp2info: image.jp2info,
                     position: observer_position_promise,
-                    events: image.events
                 };
                 results.push(helios_image);
             }
