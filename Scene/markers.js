@@ -1,4 +1,4 @@
-import {CreateMarkerModel} from "./three/model_builder.js";
+import {CreateMarkerModel, CreateHemisphere} from "./three/model_builder.js";
 import {LoadTexture} from "./three/texture_loader.js";
 import {Vector3} from "three";
 import Scene from "./scene.js";
@@ -16,7 +16,7 @@ class Marker {
      */
     static fromEventData(e) {
         if (e.hasOwnProperty('hgs_x') && e.hasOwnProperty('hgs_y')) {
-            var marker = new Marker(e.hgs_x, e.hgs_y, e);
+            var marker = new Marker(e.hgs_y, e.hgs_x, e);
             return marker
         } else {
             throw ["Event uses unsupported coordinates", e];
@@ -59,6 +59,11 @@ class Marker {
          * Needs to be stored so we can continue to position the model along this latitude.
          */
         this._lat0 = lat;
+
+        /**
+         * Hemisphere model that must be pointed to the observer for accurate rendering
+         */
+        this._hemisphere = null;
 
         // Construct the 3js model here.
         this._model = this._ConstructModel();
@@ -113,7 +118,7 @@ class Marker {
             });
         } else {
             // The position is nonexistent, hide the marker
-            // this._Hide();
+            this._Hide();
         }
     }
 
@@ -167,8 +172,13 @@ class Marker {
                 text = this._event.hv_labels_formatted[keys[0]];
             }
         }
-        let model = CreateMarkerModel(await _active_region, text);
-        return model;
+        this._hemisphere = CreateHemisphere();
+        let hemisphere = await this._hemisphere;
+        // TODO: The hemisphere must face the event's observer for this to work.
+
+        let marker_model = CreateMarkerModel(await _active_region, text);
+        hemisphere.add(marker_model);
+        return marker_model;
     }
 
     /**
@@ -179,7 +189,7 @@ class Marker {
      */
     _ComputePosition(lon, lat) {
         // Radius of the sun mesh is 25 units
-        let r = 25 * 0.2;
+        let r = 25;
         let lat_rad = lat * Math.PI / 180;
         let lon_rad = lon * Math.PI / 180;
         // Formulas for converting lat/lon/radius (i.e. Heliographic Stonyhurst) to
@@ -199,10 +209,6 @@ class Marker {
      */
     async _PositionModel(model, lon, lat) {
         let position = this._ComputePosition(lon, lat);
-        // Radius of the sun mesh is 25 units
-        let r = 26;
-        let lat_rad = lat * Math.PI / 180;
-        let lon_rad = lon * Math.PI / 180;
         // Formulas for converting lat/lon/radius (i.e. Heliographic Stonyhurst) to
         // xyz coordinates are given in W. T. Thompson, 2006, Coordinate systems for solar image data,
         // In 3js, y is the vertical axis (north pole)
@@ -210,16 +216,14 @@ class Marker {
         model.position.y = position.y;
         model.position.z = position.z;
 
-        // TODO: Remove this in favor of having the markers always face the camera.
-        let target = position.multiplyScalar(1.1);
-        model.lookAt(target);
+        // TODO: Make sure the marker is always facing the camera
     }
 
     /**
      * Returns the model attached to this marker.
      */
     async GetModel() {
-        return await this._model;
+        return this._hemisphere;
     }
 }
 
