@@ -111,6 +111,20 @@ async function CreateHemisphereWithTexture(texture, jp2info) {
 }
 
 /**
+ * Creates a hemisphere with the given texture applied
+ */
+async function CreateHemisphere() {
+    let geometry = await LoadMesh('./resources/models/sun_model.gltf');
+    let material = new MeshBasicMaterial();
+    material.opacity = 0;
+    material.transparent = true;
+    let mesh = new Mesh(geometry, material);
+    mesh.scale.set(0.2, 0.2, 0.2);
+    return mesh;
+}
+
+
+/**
  * Gets the dimensions of a flat plane according to the jp2info
  * @param {JP2Info} jp2info
  * @returns {Object} Object with width, height fields.
@@ -186,7 +200,6 @@ function CreateMarkerModel(texture, text) {
     CreateText(text).then((text_mesh) => {
         plane.add(text_mesh);
     });
-    plane.scale.set(0.2, 0.2, 0.2);
     plane.type = "marker";
     return plane;
 }
@@ -308,6 +321,7 @@ export {
     CreateHemisphereWithTexture,
     CreatePlaneWithTexture,
     CreateMarkerModel,
+    CreateHemisphere,
     UpdateModelTexture,
     UpdateModelOpacity,
     UpdateModelLayeringOrder,

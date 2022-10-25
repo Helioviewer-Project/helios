@@ -68,6 +68,10 @@ class EventManager {
             let marker = Marker.fromEventData(event);
             marker.GetModel().then((model) => Scene.AddModel(model));
         }
+        //console.log(sunspots[13]);
+
+        // let marker = new Marker(29.477, -16.133, sunspots[13]);
+        //Scene.AddModel(await marker.GetModel());
     }
 }
 let em = new EventManager();
