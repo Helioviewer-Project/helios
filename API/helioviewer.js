@@ -56,8 +56,7 @@ class Helioviewer {
                 solar_center_x: image.refPixelX,
                 solar_center_y: image.refPixelY,
                 solar_radius: image.rsun
-            },
-            events: this.GetEvents(time_copy)
+            }
         };
     }
 
@@ -74,7 +73,6 @@ class Helioviewer {
      * @property {number} id Image ID
      * @property {Date} timestamp Timestamp for this image
      * @property {JP2Info} jp2_info
-     * @property {Promise<Object[]>} events
      */
     /**
      * Returns a list of Image IDs for the specified time range
