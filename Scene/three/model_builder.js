@@ -11,7 +11,11 @@ import {
     DoubleSide
 } from 'three';
 
+import {TextGeometry} from "three/examples/jsm/geometries/TextGeometry";
+
+
 import {LoadMesh} from './mesh_loader.js';
+import {LoadFont} from './font_loader.js';
 import {
     vertex_shader as SolarVertexShader,
     fragment_shader as SolarFragmentShader
@@ -101,6 +105,7 @@ async function CreateHemisphereWithTexture(texture, jp2info) {
     // closer to the origin. Something something about render distance consuming more
     // compute cycles. I don't know if this actually improves performance or not
     sphere_group.scale.set(0.20, 0.20, 0.20);
+    sphere_group.type = "sun";
 
     return sphere_group;
 }
@@ -139,10 +144,32 @@ async function CreatePlaneWithTexture(texture, jp2info) {
     // API expects all meshes to be groups, so add this mesh to a single group
     const group = new Group();
     group.add(mesh);
+    group.type = "sun";
     return group;
 }
 
-function CreateMarkerModel(texture) {
+async function CreateText(text) {
+    let font = await LoadFont("/resources/fonts/helvetiker_regular.typeface.json");
+    const geometry = new TextGeometry(text, {
+        font: font,
+		size: 80,
+		height: 5,
+		curveSegments: 12,
+		bevelEnabled: true,
+		bevelThickness: 10,
+		bevelSize: 8,
+		bevelOffset: 0,
+		bevelSegments: 5
+    });
+
+    const material = new MeshBasicMaterial();
+    const mesh = new Mesh(geometry, material);
+    mesh.scale.set(0.01, 0.01, 0.01);
+    mesh.type = "text";
+    return mesh;
+}
+
+function CreateMarkerModel(texture, text) {
     // TODO: make this more generic.
     // The 78/46 are the dimensions of the active region marker, this makes the plane that's created
     // the correct size so that the active region image is shown in the correct dimenions (no scaling to fit the mesh).
@@ -155,6 +182,11 @@ function CreateMarkerModel(texture) {
     material.polygonOffset = true;
     material.polygonOffsetUnits = -999 * 1000000;
     const plane = new Mesh( geometry, material );
+
+    CreateText(text).then((text_mesh) => {
+        plane.add(text_mesh);
+    });
+    plane.type = "marker";
     return plane;
 }
 
@@ -215,11 +247,11 @@ function UpdateModelOpacity(model, opacity) {
 }
 
 function _IsSolarModel(model) {
-    return model.children.length > 0;
+    return model.type == "sun";
 }
 
 function _IsMarkerModel(model) {
-    return model.children.length == 0;
+    return model.type == "marker";
 }
 
 /**
