@@ -12,6 +12,7 @@ from sunpy.util.xml import xml_to_dict
 from helios_exceptions import HeliosException
 import os
 import numpy as np
+import logging
 
 # This is passed to ArgumentParser's "description."
 # It is the information printed before the accepted arguments when you run the script with "-h/--help"
@@ -37,6 +38,9 @@ def observatory2source_id(observatory):
 def get_observer_coordinate_by_id(id):
     # Get the jp2 header for that image, this contains the position we want
     jp2_header = hvpy.getJP2Header(id=id)
+    if ("error" in jp2_header and "errno" in jp2_header):
+        logging.error(jp2_header)
+        raise HeliosException("Couldn't find image with id {}".format(id))
     # Finagle that header data into a format sunpy will enjoy
     # This trick is done in helioviewer
     data = xml_to_dict(jp2_header)
