@@ -49,7 +49,7 @@ def position_from_jp2():
 
 
 # This endpoint is used to convert between coordinate data from the HEK
-@app.route("/event/observer")
+@app.route("/event/position")
 def event_position():
     try:
         coord_system = CoordinateSystem.from_str(request.args["system"])
