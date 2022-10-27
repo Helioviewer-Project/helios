@@ -30,6 +30,8 @@ class Config {
          */
         this.geometry_service_url = "http://swhv.oma.be/position";
 
+        this.helios_api_url = "http://localhost:5000/";
+
         /**
          * HTML ID of the start time picker for the date range chooser
          */
