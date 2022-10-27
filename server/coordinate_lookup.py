@@ -9,6 +9,7 @@ from jp2parser import JP2parser
 from tempfile import mkstemp
 from sunpy.map import Map
 from sunpy.util.xml import xml_to_dict
+from helios_exceptions import HeliosException
 import os
 import numpy as np
 
@@ -30,7 +31,7 @@ def observatory2source_id(observatory):
     """
     source = find_sourceid(observatory)
     if (source is None):
-        raise ValueError("Couldn't find source id for %s" % observatory)
+        raise HeliosException("Couldn't find source id for %s" % observatory)
     return source
 
 def get_observer_coordinate(observatory, date):

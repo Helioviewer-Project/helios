@@ -1,0 +1,2 @@
+class HeliosException(Exception):
+    pass

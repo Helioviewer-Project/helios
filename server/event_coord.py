@@ -4,6 +4,7 @@ from datetime import datetime
 from enum import Enum
 from coordinate_lookup import get_observer_coordinate
 from get_heeq import convert_skycoords_to_heeq, dms_to_degrees
+from helios_exceptions import HeliosException
 import json
 import sunpy
 
@@ -25,6 +26,17 @@ class CoordinateSystem(Enum):
     Projective = "UTC-HPC-TOPO"
     Carrington = "UTC-HGC-TOPO"
     Radial = "UTC-HRC-TOPO" 
+
+    @staticmethod
+    def from_str(string):
+        """
+        Tries to parse a string into an enum value, but throws a
+        HeliosException instead of ValueError on failure.
+        """
+        try:
+            return CoordinateSystem(string)
+        except ValueError as e:
+            raise HeliosException(str(e))
 
 # Set arguments to be passed to parser.add_argument here.
 # Format is ([positional_args], {keyword_args: value})
@@ -110,19 +122,29 @@ def process_carrington_coordinates(x, y, z, date, observatory, units):
 
 
 def get_event_coordinates(coordinate_system, coord1, coord2, coord3, date, observatory, units):
-    observatory = _clean_observatory(observatory)
-    units = _clean_units(units)
-    if (coordinate_system == CoordinateSystem.Radial):
-        print("Heliocentric Radial coordinates are unsupported")
-        return None
-    elif (coordinate_system == CoordinateSystem.Projective):
-        return process_helioprojective_coordinates(coord1, coord2, date, observatory, units)
-    elif (coordinate_system == CoordinateSystem.Stonyhurst):
-        return process_stonyhurst_coordinates(coord1, coord2, date, observatory, units)
-    elif (coordinate_system == CoordinateSystem.Carrington):
-        if (coord3 is None):
-            raise ValueError("Coordinate 3 is required for the carrington event coordinates")
-        return process_carrington_coordinates(coord1, coord2, coord3, date, observatory, units)
+    try:
+        observatory = _clean_observatory(observatory)
+        units = _clean_units(units)
+        if (coordinate_system == CoordinateSystem.Radial):
+            print("Heliocentric Radial coordinates are unsupported")
+            return None
+        elif (coordinate_system == CoordinateSystem.Projective):
+            return process_helioprojective_coordinates(coord1, coord2, date, observatory, units)
+        elif (coordinate_system == CoordinateSystem.Stonyhurst):
+            return process_stonyhurst_coordinates(coord1, coord2, date, observatory, units)
+        elif (coordinate_system == CoordinateSystem.Carrington):
+            if (coord3 is None):
+                raise HeliosException("Coordinate 3 is required for the carrington event coordinates")
+            return process_carrington_coordinates(coord1, coord2, coord3, date, observatory, units)
+    except ValueError as e:
+        msg = str(e)
+        # Handle a known error of entering the wrong units
+        # HeliosExceptions are handled as warnings.
+        # Regular exceptions are errors that should be investigated
+        if ("Unit keyword must have" in msg):
+            raise HeliosException(msg)
+        else:
+            raise e
 
 # All args set will be passed as keyword args to main
 def main(coordinate_system, coord1, coord2, coord3, date, observatory, units):
