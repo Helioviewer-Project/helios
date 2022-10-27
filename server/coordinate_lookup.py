@@ -34,16 +34,9 @@ def observatory2source_id(observatory):
         raise HeliosException("Couldn't find source id for %s" % observatory)
     return source
 
-def get_observer_coordinate(observatory, date):
-    """
-    Uses a local database of jp2 images to find an observatory's position in space.
-    """
-    # Map the observatory to a source id
-    source_id = observatory2source_id(observatory)
-    # Get the nearest image to the date we want for that source id
-    closest_image = hvpy.getClosestImage(date=date, sourceId=source_id)
+def get_observer_coordinate_by_id(id):
     # Get the jp2 header for that image, this contains the position we want
-    jp2_header = hvpy.getJP2Header(id=closest_image["id"])
+    jp2_header = hvpy.getJP2Header(id=id)
     # Finagle that header data into a format sunpy will enjoy
     # This trick is done in helioviewer
     data = xml_to_dict(jp2_header)
@@ -54,6 +47,17 @@ def get_observer_coordinate(observatory, date):
     sunpy_map = Map(data_for_sunpy)
     # Finally return the coordinate
     return sunpy_map.observer_coordinate
+
+def get_observer_coordinate(observatory, date):
+    """
+    Uses a local database of jp2 images to find an observatory's position in space.
+    """
+    # Map the observatory to a source id
+    source_id = observatory2source_id(observatory)
+    # Get the nearest image to the date we want for that source id
+    closest_image = hvpy.getClosestImage(date=date, sourceId=source_id)
+
+    return get_observer_coordinate_by_id(closest_image["id"])
 
 # All args passed in will be passed as keyword args to main.
 def main(observatory, date):
