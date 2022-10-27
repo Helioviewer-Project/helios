@@ -118,9 +118,9 @@ class Helioviewer {
      * @returns Coordinates
      */
     _toCoordinates(response) {
-        let x = response["heeq"]['x'];
-        let y = response["heeq"]['z'];
-        let z = response["heeq"]['y'];
+        let x = response['x'];
+        let y = response['z'];
+        let z = response['y'];
         return new Coordinates(-x, y, z);
     }
 
@@ -130,7 +130,7 @@ class Helioviewer {
      * @returns Coordinates
      */
     async GetJp2Observer(id) {
-        let api_url = this.GetApiUrl() + "getObserverPosition/?id=" + id;
+        let api_url = Config.helios_api_url + "observer/position?id=" + id;
         let result = await fetch(api_url);
         let data = await result.json();
         return this._toCoordinates(data);
