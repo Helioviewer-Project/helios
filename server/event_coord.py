@@ -56,8 +56,9 @@ def _clean_units(units):
     """
     # From HEK, units are space separated, sunpy wants them comma separated
     comma_separated = units.replace(" ", ",")
-    abbreviated = comma_separated.replace("degrees", "deg")
-    return abbreviated
+    dedupe_commas = comma_separated.replace(",,", ",")
+    short_named = dedupe_commas.replace("degrees", "deg")
+    return short_named
 
 def _clean_observatory(observatory):
     """
@@ -126,8 +127,7 @@ def get_event_coordinates(coordinate_system, coord1, coord2, coord3, date, obser
         observatory = _clean_observatory(observatory)
         units = _clean_units(units)
         if (coordinate_system == CoordinateSystem.Radial):
-            print("Heliocentric Radial coordinates are unsupported")
-            return None
+            raise HeliosException("Heliocentric Radial coordinates are unsupported")
         elif (coordinate_system == CoordinateSystem.Projective):
             return process_helioprojective_coordinates(coord1, coord2, date, observatory, units)
         elif (coordinate_system == CoordinateSystem.Stonyhurst):
