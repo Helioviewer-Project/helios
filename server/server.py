@@ -62,7 +62,14 @@ def event_position():
         observatory = request.args["observatory"]
         units = request.args["units"]
         coordinates = get_event_coordinates(coord_system, coord1, coord2, coord3, date, observatory, units)
-        return _send_response(coordinates)
+        return _send_response({
+            "observer": {
+                "x": coordinates["observer"][0],
+                "y": coordinates["observer"][1],
+                "z": coordinates["observer"][2],
+            },
+            "event": coordinates["event"]
+        })
     # The design here is any known error we should report to the user should be
     # raised as a HeliosException. The error message is passed on to the user.
     # Any other unexpected exception will be handled and the user will get a generic

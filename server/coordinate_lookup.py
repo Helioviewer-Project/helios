@@ -66,7 +66,6 @@ def get_observer_coordinate(observatory, date):
 # All args passed in will be passed as keyword args to main.
 def main(observatory, date):
     coordinate = get_observer_coordinate(observatory, date)
-    print(coordinate)
 
 # Reference: https://docs.python.org/3/library/argparse.html
 # This is the part you've probably typed out a million times and had to check the reference for it every single time.
