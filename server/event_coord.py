@@ -124,6 +124,8 @@ def process_carrington_coordinates(x, y, z, date, observatory, units):
 
 def get_event_coordinates(coordinate_system, coord1, coord2, coord3, date, observatory, units):
     try:
+        if (type(coordinate_system) != CoordinateSystem):
+            coordinate_system = CoordinateSystem.from_str(coordinate_system)
         observatory = _clean_observatory(observatory)
         units = _clean_units(units)
         if (coordinate_system == CoordinateSystem.Radial):
