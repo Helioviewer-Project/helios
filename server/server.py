@@ -3,7 +3,7 @@ from helios_exceptions import HeliosException
 from datetime import datetime
 import json
 import logging
-logging.basicConfig(filename="helios_server.log", encoding="utf-8", level=logging.DEBUG)
+logging.basicConfig(filename="helios_server.log", level=logging.DEBUG)
 
 app = Flask("Helios")
 
