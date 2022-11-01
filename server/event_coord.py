@@ -7,6 +7,7 @@ from get_heeq import convert_skycoords_to_heeq, dms_to_degrees
 from helios_exceptions import HeliosException
 import json
 import sunpy
+from sunpy.coordinates import get_earth
 
 from astropy.coordinates import SkyCoord
 import astropy.units as u
@@ -57,8 +58,9 @@ def _clean_units(units):
     # From HEK, units are space separated, sunpy wants them comma separated
     comma_separated = units.replace(" ", ",")
     dedupe_commas = comma_separated.replace(",,", ",")
-    short_named = dedupe_commas.replace("degrees", "deg")
-    return short_named
+    degs = dedupe_commas.replace("degrees", "deg")
+    arcs = degs.replace("arcseconds", "arcsec")
+    return arcs
 
 def _clean_observatory(observatory):
     """
@@ -69,14 +71,24 @@ def _clean_observatory(observatory):
     else:
         return observatory
 
-def _generate_result(observer_heeq, event_stonyhurst):
+def _generate_result(observer_heeq, event_stonyhurst, msg):
     """
     Generates a consistent return result
     """
-    return {"observer": observer_heeq, "event": {
+    return {"observer": observer_heeq, "notes": msg, "event": {
         "lat": dms_to_degrees(event_stonyhurst.lat.dms),
         "lon": dms_to_degrees(event_stonyhurst.lon.dms)
     }}
+
+def process_radial_coordinates(angle, date):
+    observer = get_earth(time=date)
+    # radial angle starts from the north pole, latitude starts from the equator. So to get the
+    # correct stonyhurst angle, add 90 to the angle.
+    longitude = -90 if angle <= 180 else 90
+    latitude = (90 - angle) if angle <= 180 else (angle - 270)
+    event_stonyhurst = SkyCoord(longitude, latitude, unit="deg,deg", obstime=date, observer=observer, frame=sunpy.coordinates.HeliographicStonyhurst)
+    observer_heeq = convert_skycoords_to_heeq(observer)
+    return _generate_result(observer_heeq, event_stonyhurst, "")
 
 def process_helioprojective_coordinates(x, y, date, observatory, units):
     """
@@ -85,26 +97,27 @@ def process_helioprojective_coordinates(x, y, date, observatory, units):
     # Get the observer's position as a skycoord
     observer_coordinate = get_observer_coordinate(observatory, date)
     # Create the projective coordinate for the event
-    event_coord_projective = SkyCoord(x, y, unit=units, obstime=date, observer=observer_coordinate, frame=sunpy.coordinates.Helioprojective)
+    event_coord_projective = SkyCoord(x, y, unit=units, obstime=date, observer=observer_coordinate["coordinate"], frame=sunpy.coordinates.Helioprojective)
 
     # Get the observer's heeq coordinate
-    observer_heeq = convert_skycoords_to_heeq(observer_coordinate)
+    observer_heeq = convert_skycoords_to_heeq(observer_coordinate["coordinate"])
     # Get the event's coordinate as heliographic stonyhurst
-    event_stonyhurst = event_coord_projective.transform_to(sunpy.coordinates.HeliographicStonyhurst)
+    with sunpy.coordinates.Helioprojective.assume_spherical_screen(event_coord_projective.observer):
+        event_stonyhurst = event_coord_projective.transform_to(sunpy.coordinates.HeliographicStonyhurst)
 
-    return _generate_result(observer_heeq, event_stonyhurst)
+    return _generate_result(observer_heeq, event_stonyhurst, observer_coordinate["notes"])
 
 def process_stonyhurst_coordinates(lon, lat, date, observatory, units):
     # Get the observer's position as a skycoord
     observer_coordinate = get_observer_coordinate(observatory, date)
     # Get the observer's heeq coordinate
-    observer_heeq = convert_skycoords_to_heeq(observer_coordinate)
+    observer_heeq = convert_skycoords_to_heeq(observer_coordinate["coordinate"])
 
     # Create the coordinate for the event
     # Since we're really just returning lat/lon anyway, the useful part of this is handling arbitrary units
-    event_stonyhurst = SkyCoord(lon, lat, unit=units, obstime=date, observer=observer_coordinate, frame=sunpy.coordinates.HeliographicStonyhurst)
+    event_stonyhurst = SkyCoord(lon, lat, unit=units, obstime=date, observer=observer_coordinate["coordinate"], frame=sunpy.coordinates.HeliographicStonyhurst)
 
-    return _generate_result(observer_heeq, event_stonyhurst)
+    return _generate_result(observer_heeq, event_stonyhurst, observer_coordinate["notes"])
 
 def process_carrington_coordinates(x, y, z, date, observatory, units):
 
@@ -129,7 +142,7 @@ def get_event_coordinates(coordinate_system, coord1, coord2, coord3, date, obser
         observatory = _clean_observatory(observatory)
         units = _clean_units(units)
         if (coordinate_system == CoordinateSystem.Radial):
-            raise HeliosException("Heliocentric Radial coordinates are unsupported")
+            return process_radial_coordinates(coord1, date)
         elif (coordinate_system == CoordinateSystem.Projective):
             return process_helioprojective_coordinates(coord1, coord2, date, observatory, units)
         elif (coordinate_system == CoordinateSystem.Stonyhurst):
@@ -144,7 +157,7 @@ def get_event_coordinates(coordinate_system, coord1, coord2, coord3, date, obser
         # HeliosExceptions are handled as warnings.
         # Regular exceptions are errors that should be investigated
         if ("Unit keyword must have" in msg):
-            raise HeliosException(msg)
+            raise HeliosException(msg + " Got {}".format(units))
         else:
             raise e
 

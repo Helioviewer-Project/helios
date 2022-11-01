@@ -13,12 +13,12 @@ def lookup_hek_events(start_time: str, end_time: str):
     # Query all events
     events = query_hek(start_time, end_time)
     # List that is going to be returned
-    results = []
+    results = {"results": []}
     # For each event, transform them into usable coordinates
     for event in events:
         system = CoordinateSystem.from_str(event["event_coordsys"])
         coordinates = get_event_coordinates(system, event["event_coord1"], event["event_coord2"], event["event_coord3"], event["event_starttime"].to_datetime(), event["obs_instrument"], event["event_coordunit"])
-        results.append({
+        results["results"].append({
             "event": {
                 "coordinates": {
                     "observer": {

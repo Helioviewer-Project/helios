@@ -31,9 +31,14 @@ def observatory2source_id(observatory):
     Mapping of observatories to source ids
     """
     source = find_sourceid(observatory)
+    found = True
     if (source is None):
-        raise HeliosException("Couldn't find source id for %s" % observatory)
-    return source
+        source = find_sourceid("AIA")
+        found = False
+    return {
+        "source": source,
+        "found": found
+    }
 
 def get_observer_coordinate_by_id(id):
     # Get the jp2 header for that image, this contains the position we want
@@ -57,11 +62,19 @@ def get_observer_coordinate(observatory, date):
     Uses a local database of jp2 images to find an observatory's position in space.
     """
     # Map the observatory to a source id
-    source_id = observatory2source_id(observatory)
+    lookup = observatory2source_id(observatory)
+    source_id = lookup["source"]
     # Get the nearest image to the date we want for that source id
     closest_image = hvpy.getClosestImage(date=date, sourceId=source_id)
 
-    return get_observer_coordinate_by_id(closest_image["id"])
+    coordinate = get_observer_coordinate_by_id(closest_image["id"])
+    note = ""
+    if not lookup["found"]:
+        note = "No position data available for {}, defaulting to AIA".format(observatory)
+    return {
+        "coordinate": coordinate,
+        "notes": note
+    }
 
 # All args passed in will be passed as keyword args to main.
 def main(observatory, date):
