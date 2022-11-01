@@ -36,7 +36,7 @@ def _validate_input(parameter_list):
 
 def _exec(fn):
     try:
-        return fn()
+        return _send_response(fn())
     # The design here is any known error we should report to the user should be
     # raised as a HeliosException. The error message is passed on to the user.
     # Any other unexpected exception will be handled and the user will get a generic
@@ -46,8 +46,6 @@ def _exec(fn):
         return _send_response({"error": str(e)})
     except Exception as e:
         logging.error(e)
-        return "An error occurred!: " + str(e)
-        return(str(e))
         return _send_response({"error": "An internal error occurred, please file an issue with the timestamp at https://github.com/Helioviewer-Project/helios",
             "timestamp": str(datetime.now())})
 
