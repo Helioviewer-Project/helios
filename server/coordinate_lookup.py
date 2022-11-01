@@ -26,6 +26,11 @@ PROGRAM_ARGS = [
     (['date'], {'type': datetime.fromisoformat, 'help': "The UTC time to use for the lookup"}),
 ]
 
+# Stores a cache of information to reduce the number of queries.
+# TODO: Make cache persistent
+# Layout is key = "<source_id>_date"
+_CACHE = {}
+
 def observatory2source_id(observatory):
     """
     Mapping of observatories to source ids
@@ -57,6 +62,16 @@ def get_observer_coordinate_by_id(id):
     # Finally return the coordinate
     return sunpy_map.observer_coordinate
 
+def _get_cache_key(source_id, date):
+    """
+    Returns a key that can be used to lookup data in the cache
+    :param source_id: observatory source id
+    :param date: Date of observation
+    """
+    # Returns the year/date/time to the minute
+    date_str = str(date)[0:-3]
+    return "{}_{}".format(source_id, date_str)
+
 def get_observer_coordinate(observatory, date):
     """
     Uses a local database of jp2 images to find an observatory's position in space.
@@ -64,6 +79,14 @@ def get_observer_coordinate(observatory, date):
     # Map the observatory to a source id
     lookup = observatory2source_id(observatory)
     source_id = lookup["source"]
+    # first check the cache
+    cache_key = _get_cache_key(observatory, date)
+    if (cache_key in _CACHE):
+        logging.debug("Cache hit: {}".format(cache_key))
+        return _CACHE[cache_key]
+    logging.debug("Cache miss: {}".format(cache_key))
+
+    # Cache miss, continue query
     # Get the nearest image to the date we want for that source id
     closest_image = hvpy.getClosestImage(date=date, sourceId=source_id)
 
@@ -71,10 +94,12 @@ def get_observer_coordinate(observatory, date):
     note = ""
     if not lookup["found"]:
         note = "No position data available for {}, defaulting to AIA".format(observatory)
-    return {
+    result = {
         "coordinate": coordinate,
         "notes": note
     }
+    _CACHE[cache_key] = result
+    return result
 
 # All args passed in will be passed as keyword args to main.
 def main(observatory, date):
