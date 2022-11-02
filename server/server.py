@@ -9,6 +9,7 @@ app = Flask("Helios")
 
 def _send_response(data):
     response = make_response(json.dumps(data))
+    response.mimetype = 'application/json'
     response.access_control_allow_origin = "*"
     return response
 

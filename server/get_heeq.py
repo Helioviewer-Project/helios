@@ -47,11 +47,11 @@ def convert_skycoords_to_heeq(base_coords):
     longitude = dms_to_radians(coords.lon.dms)
     latitude = dms_to_radians(coords.lat.dms)
     radius = coords.radius.to_value("km")
-    return (
-        get_heeq_x_from_stonyhurst(radius, latitude, longitude),
-        get_heeq_y_from_stonyhurst(radius, latitude, longitude),
-        get_heeq_z_from_stonyhurst(radius, latitude, longitude)
-    )
+    return {
+        "x": get_heeq_x_from_stonyhurst(radius, latitude, longitude),
+        "y": get_heeq_y_from_stonyhurst(radius, latitude, longitude),
+        "z": get_heeq_z_from_stonyhurst(radius, latitude, longitude)
+    }
 
 def get_heeq_x_from_stonyhurst(radius, lat, long):
     return radius * math.cos(lat) * math.cos(long)

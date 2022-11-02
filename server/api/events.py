@@ -18,19 +18,9 @@ def lookup_hek_events(start_time: str, end_time: str):
     for event in events:
         system = CoordinateSystem.from_str(event["event_coordsys"])
         coordinates = get_event_coordinates(system, event["event_coord1"], event["event_coord2"], event["event_coord3"], event["event_starttime"].to_datetime(), event["obs_instrument"], event["event_coordunit"])
-        results["results"].append({
-            "coordinates": {
-                "observer": {
-                    "x": coordinates["observer"][0],
-                    "y": coordinates["observer"][1],
-                    "z": coordinates["observer"][2],
-                },
-                "event": coordinates["event"]
-            },
-            "info": {
-                "id": event["kb_archivid"],
-                "type": event["concept"]
-            }
-        })
+        # Convert the event data into a serializable dictionary
+        event_dict = {k:str(v) for (k,v) in zip(event.keys(), event.values())}
+        event_dict["coordinates"] = coordinates
+        results["results"].append(event_dict)
     return results
 
