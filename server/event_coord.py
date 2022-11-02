@@ -77,7 +77,7 @@ def _generate_result(observer_heeq, event_stonyhurst, msg):
     Generates a consistent return result
     """
     result = {"observer": observer_heeq, "notes": msg, "event": {
-        "lat": dms_to_degrees(event_stonyhurst.lat.dms),
+        "lat": dms_to_degrees((event_stonyhurst.lat - sunpy.coordinates.sun.B0(event_stonyhurst.obstime)).dms),
         "lon": dms_to_degrees(event_stonyhurst.lon.dms)
     }}
     if isnan(result["event"]["lat"]):
