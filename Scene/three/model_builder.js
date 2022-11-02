@@ -118,6 +118,9 @@ async function CreateHemisphere() {
     let material = new MeshBasicMaterial();
     material.opacity = 0;
     material.transparent = true;
+    material.polygonOffset = true;
+    material.polygonOffsetUnits = 0xffffffff;
+    material.polygonOffsetFactor = 0xffffffff; 
     let mesh = new Mesh(geometry, material);
     mesh.scale.set(0.2, 0.2, 0.2);
     return mesh;
@@ -183,11 +186,21 @@ async function CreateText(text) {
     return mesh;
 }
 
+function CreateMarkerModel(_, text) {
+    const geometry = new SphereGeometry( 0.2, 32, 16);
+    const material = new MeshBasicMaterial( { color: 0xffff00 } );
+    const sphere = new Mesh( geometry, material );
+    sphere.type = "marker";
+    return sphere;
+}
+
+/*
 function CreateMarkerModel(texture, text) {
     // TODO: make this more generic.
     // The 78/46 are the dimensions of the active region marker, this makes the plane that's created
     // the correct size so that the active region image is shown in the correct dimenions (no scaling to fit the mesh).
-    const geometry = new PlaneGeometry( 2, 78/46 * 2 );
+    // const geometry = new PlaneGeometry( 2, 78/46 * 2 );
+    const geometry = new PlaneGeometry( 1, 1);
     const material = new MeshBasicMaterial( {map: texture, side: DoubleSide} );
     material.transparent = true;
     // TODO: Investigate if these can be removed.
@@ -203,6 +216,7 @@ function CreateMarkerModel(texture, text) {
     plane.type = "marker";
     return plane;
 }
+*/
 
 /**
  * Updates a model's texture on the fly
