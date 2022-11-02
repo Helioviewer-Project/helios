@@ -133,24 +133,33 @@ class Helioviewer {
         let api_url = Config.helios_api_url + "observer/position?id=" + id;
         let result = await fetch(api_url);
         let data = await result.json();
+        if (data.hasOwnProperty("error")) {
+            throw data.error;
+        }
         return this._toCoordinates(data);
     }
 
     /**
      * Returns solar events for the given time
-     * @param {Date} time Time to query events
+     * @param {Date} start Query range start time
+     * @param {Date} end Query range end time
      */
-    async GetEvents(time) {
-        let api_time = ToAPIDate(time);
-        console.log("Getting events for time: ", api_time);
-        if (_event_cache.hasOwnProperty(api_time)) {
-            return _event_cache[api_time];
+    async GetEvents(start, end) {
+        let start_time = ToAPIDate(start);
+        let end_time = ToAPIDate(end);
+        let api_url = Config.helios_api_url + "event?start=" + start_time + "&end=" + end_time;
+        let result = await fetch(api_url);
+        let data = await result.json();
+        if (data.hasOwnProperty("error")) {
+            throw data.error;
         } else {
-            let api_url = this.GetApiUrl() + "getEvents/?startTime=" + api_time + "&eventType=**";
-            let result = await fetch(api_url);
-            let data = await result.json();
-            _event_cache[api_time] = data;
-            return data;
+            // Parse all dates into Date instances
+            for (const e of data.results) {
+                e.start_time = new Date(e.event_starttime + "Z");
+                e.end_time = new Date(e.event_endtime + "Z");
+                e.coordinates.observer = this._toCoordinates(e.coordinates.observer)
+            }
+            return data.results;
         }
     }
 

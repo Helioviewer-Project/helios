@@ -60,7 +60,6 @@ class EventManager {
      * @param {Date} end End time
      */
     async AddEvents(start, end) {
-        console.log(start, end);
         let events = await EventDB.GetEvents(start, end);
         // For now, only use sunspots
         let sunspots = events.filter((e) => e.concept == "Sunspot");

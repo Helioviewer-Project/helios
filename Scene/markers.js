@@ -15,12 +15,8 @@ class Marker {
      * @param {Object} e Event data queried from the HEK. See https://www.lmsal.com/hek/VOEvent_Spec.html for fields
      */
     static fromEventData(e) {
-        if (e.hasOwnProperty('hgs_x') && e.hasOwnProperty('hgs_y')) {
-            var marker = new Marker(e.hgs_y, e.hgs_x, e);
-            return marker
-        } else {
-            throw ["Event uses unsupported coordinates", e];
-        }
+        var marker = new Marker(e.coordinates.event.lat, e.coordinates.event.lon, e);
+        return marker;
     }
 
     /**
@@ -41,12 +37,12 @@ class Marker {
          * Initial event observation time. Used for calculating position as time passes in the scene.
          * Event_StartTime is a required field in HEK, so I'm trusting it's always present.
          */
-        this._t_start = new Date(e.event_starttime + "Z");
+        this._t_start = new Date(e.start_time);
 
         /**
          * End of the event. If the scene time has passed this time, the marker must disappear
          */
-        this._t_end = new Date(e.event_endtime + "Z");
+        this._t_end = new Date(e.end_time);
 
         /**
          * Initial longitude.
@@ -174,7 +170,7 @@ class Marker {
         }
         this._hemisphere = CreateHemisphere();
         let hemisphere = await this._hemisphere;
-        // TODO: The hemisphere must face the event's observer for this to work.
+        hemisphere.lookAt(this._event.coordinates.observer.toVector3());
 
         let marker_model = CreateMarkerModel(await _active_region, text);
         hemisphere.add(marker_model);
