@@ -28,8 +28,12 @@ class Config {
         /**
          * Geometry service URL used to query position information
          */
-        this.geometry_service_url = "http://swhv.oma.be/position";
+        this.geometry_service_url = "http://swhv.oma.be/position/";
 
+        /**
+         * Helios API server url
+         */
+        // this.helios_api_url = "https://api.gl.helioviewer.org";
         this.helios_api_url = "http://localhost:5000/";
 
         /**
