@@ -99,7 +99,7 @@ class Scene {
                 order: layer_order,
                 cadence: cadence,
             };
-            if (this._count == 1) {
+            if (Object.keys(this._models).length == 1) {
                 this._scene.MoveCamera(sun.GetObserverPosition());
                 this._scene.PointCamera(await sun.GetPosition());
                 this.SetTime(start);
