@@ -33,7 +33,7 @@ class Config {
         /**
          * Helios API server url
          */
-        this.helios_api_url = "https://api.gl.helioviewer.org";
+        this.helios_api_url = "https://api.gl.helioviewer.org/";
         // this.helios_api_url = "http://localhost:5000/";
 
         /**
