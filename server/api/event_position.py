@@ -22,12 +22,4 @@ def get_event_position(coord_system, units, coord1, coord2, coord3, date, observ
     :return: Event coordinates
     """
     coordinates = get_event_coordinates(coord_system, coord1, coord2, coord3, date, observatory, units)
-    return {
-        "observer": {
-            "x": coordinates["observer"][0],
-            "y": coordinates["observer"][1],
-            "z": coordinates["observer"][2],
-        },
-        "event": coordinates["event"]
-    }
-
+    return coordinates

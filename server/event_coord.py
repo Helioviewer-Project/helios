@@ -8,6 +8,7 @@ from helios_exceptions import HeliosException
 import json
 import sunpy
 from sunpy.coordinates import get_earth
+from numpy import isnan
 
 from astropy.coordinates import SkyCoord
 import astropy.units as u
@@ -75,10 +76,15 @@ def _generate_result(observer_heeq, event_stonyhurst, msg):
     """
     Generates a consistent return result
     """
-    return {"observer": observer_heeq, "notes": msg, "event": {
+    result = {"observer": observer_heeq, "notes": msg, "event": {
         "lat": dms_to_degrees(event_stonyhurst.lat.dms),
         "lon": dms_to_degrees(event_stonyhurst.lon.dms)
     }}
+    if isnan(result["event"]["lat"]):
+        result["event"]["lat"] = 0
+    if isnan(result["event"]["lon"]):
+        result["event"]["lon"] = 0
+    return result
 
 def process_radial_coordinates(angle, date):
     observer = get_earth(time=date)
@@ -102,8 +108,7 @@ def process_helioprojective_coordinates(x, y, date, observatory, units):
     # Get the observer's heeq coordinate
     observer_heeq = convert_skycoords_to_heeq(observer_coordinate["coordinate"])
     # Get the event's coordinate as heliographic stonyhurst
-    with sunpy.coordinates.Helioprojective.assume_spherical_screen(event_coord_projective.observer):
-        event_stonyhurst = event_coord_projective.transform_to(sunpy.coordinates.HeliographicStonyhurst)
+    event_stonyhurst = event_coord_projective.transform_to(sunpy.coordinates.HeliographicStonyhurst)
 
     return _generate_result(observer_heeq, event_stonyhurst, observer_coordinate["notes"])
 
