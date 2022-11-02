@@ -15,20 +15,7 @@ class EventDB {
      * @return {HEKEvent[]}
      */
     async GetEvents(start, end) {
-        let results = [];
-        const query_time = new Date(start);
-        while (query_time <= end) {
-            let promise = Helioviewer.GetEvents(new Date(query_time));
-            results.push(promise);
-            query_time.setSeconds(query_time.getSeconds() + Config.event_cadence_s);
-        }
-
-        // Wait for all queries to complete and add them to the resulting array.
-        for (let i = 0; i < results.length; i++) {
-            results[i] = await results[i];
-        }
-
-        return this.MergeEvents(results);
+        return await Helioviewer.GetEvents(start, end);
     }
 
     /**
