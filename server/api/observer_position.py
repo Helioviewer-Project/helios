@@ -10,10 +10,5 @@ def get_observer_position(id):
     """
     observer = get_observer_coordinate_by_id(id)
     result = convert_skycoords_to_heeq(observer)
-    result_dict = {
-        "x": result[0],
-        "y": result[1],
-        "z": result[2]
-    }
-    return result_dict
+    return result
 
