@@ -23,7 +23,8 @@ class EventDB {
         // 86400*1000 is milliseconds per day. Subtracting dates returns milliseconds.
         let num_days = (end - start) / (86400*1000);
         let result = [];
-        for (let i = 0; i < num_days; i++) {
+        // Extra + 1 is that the date range must be inclusive of start & end
+        for (let i = 0; i < num_days + 1; i++) {
             let next_date = new Date(start);
             next_date.setDate(next_date.getDate() + i);
             result.push(next_date);
