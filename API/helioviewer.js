@@ -140,6 +140,18 @@ class Helioviewer {
     }
 
     /**
+     * Returns solar events for the given day
+     * @param {Date} day Day to query events. hours/minutes/seconds of the date are ignored.
+     */
+    async GetEventsForDay(day) {
+        let date_str = ToAPIDate(day);
+        let api_url = this.GetApiUrl() + "getEvents/?eventType=**&startTime=" + day;
+        let result = await fetch(api_url);
+        let data = await result.json();
+        return data;
+    }
+
+    /**
      * Returns solar events for the given time
      * @param {Date} start Query range start time
      * @param {Date} end Query range end time
