@@ -43,6 +43,13 @@ class EventDB {
     async GetEvents(start, end) {
         // Break down start and end into individual days.
         let days = this._DateRangeToIndividualDays(start, end);
+        // Query events for each day of days!
+        let events = [];
+        for (const day of days) {
+            events.push(await Helioviewer.GetEventsForDay(day));
+        }
+
+        return this.MergeEvents(events);
     }
 
     /**
