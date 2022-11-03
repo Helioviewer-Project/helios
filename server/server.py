@@ -7,6 +7,10 @@ logging.basicConfig(filename="helios_server.log", level=logging.DEBUG)
 
 app = Flask("Helios")
 
+@app.errorhandler(HeliosException)
+def handle_user_exception(e):
+    return _send_response({"error": str(e)})
+
 def _send_response(data):
     response = make_response(json.dumps(data))
     response.mimetype = 'application/json'
@@ -33,7 +37,7 @@ def _validate_input(parameter_list):
             missing_list.append(param)
     # If any are missing, create an error message
     if (len(missing_list) > 0):
-        raise HeliosException("Missing parameters {}".format(missing_list.join(",")))
+        raise HeliosException("Missing parameters {}".format(",".join(missing_list)))
 
 def _exec(fn):
     try:
