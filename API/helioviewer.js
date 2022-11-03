@@ -221,5 +221,4 @@ class Helioviewer {
 }
 
 let SingletonAPI = new Helioviewer();
-console.log(SingletonAPI);
 export default SingletonAPI;
