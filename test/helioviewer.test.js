@@ -36,3 +36,7 @@ test('Query a range of data from helioviewer', async () => {
     expect(JSON.stringify(result)).toMatch(new RegExp('^.*"id":"131931338".*$'));
 });
 
+test("Get event data over date range", async () => {
+    // Not failing means passing...
+    let events = await Helioviewer.GetEventsForDay(new Date("2022-10-01 00:00:00Z"));
+});
