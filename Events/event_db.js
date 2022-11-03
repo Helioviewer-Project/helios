@@ -5,6 +5,32 @@ import Helioviewer from "../API/helioviewer.js";
  * Interface for querying HEK events
  */
 class EventDB {
+
+    /**
+     * Takes a date range and returns an array of dates corresponding to one day per date.
+     * For example given 2022-10-01 12:00:00 and 2022-10-04 12:00:00
+     * The result will be [2022-10-01, 2022-10-02, 2022-10-03, 2022-10-04]
+     * @param {Date} start
+     * @param {Date} end
+     * @return {Date[]}
+     * @private
+     */
+    _DateRangeToIndividualDays(start, end) {
+        // Change start and end to days, ignoring hours.
+        start = new Date(`${start.getFullYear()}-${start.getMonth()+1}-${start.getDate()}`);
+        end = new Date(`${end.getFullYear()}-${end.getMonth()+1}-${end.getDate()}`);
+        // Now that start and end are reduced to days, get the number of days between them.
+        // 86400*1000 is milliseconds per day. Subtracting dates returns milliseconds.
+        let num_days = (end - start) / (86400*1000);
+        let result = [];
+        for (let i = 0; i < num_days; i++) {
+            let next_date = new Date(start);
+            next_date.setDate(next_date.getDate() + i);
+            result.push(next_date);
+        }
+        return result;
+    }
+
     /**
      * @typedef {Object} HEKEvent
      */
@@ -15,7 +41,8 @@ class EventDB {
      * @return {HEKEvent[]}
      */
     async GetEvents(start, end) {
-        return await Helioviewer.GetEvents(start, end);
+        // Break down start and end into individual days.
+        let days = this._DateRangeToIndividualDays(start, end);
     }
 
     /**
