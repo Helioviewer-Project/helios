@@ -40,3 +40,18 @@ test("Get event data over date range", async () => {
     // Not failing means passing...
     let events = await Helioviewer.GetEventsForDay(new Date("2022-10-01 00:00:00Z"));
 });
+
+test("Get normalized event coordinates", async () => {
+    let data = await Helioviewer.GetEventCoordinates({
+        event_coordsys: "UTC-HPC-TOPO",
+        event_coord1: 500,
+        event_coord2: 500,
+        event_coord3: null,
+        event_starttime: "2022-10-10T00:00:00",
+        obs_instrument: "AIA",
+        event_coordunit: "arcsec"
+    });
+    let keys = Object.keys(data);
+    expect(keys).toContain("observer");
+    expect(keys).toContain("event");
+});
