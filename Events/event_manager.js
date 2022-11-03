@@ -61,9 +61,9 @@ class EventManager {
      */
     async AddEvents(start, end) {
         let events = await EventDB.GetEvents(start, end);
-        // For now, only use sunspots
-        let sunspots = events.filter((e) => e.concept == "Sunspot");
-        for (const event of sunspots) {
+        // Uncomment this to only render sunspots (or an event type of your choosing)
+        // let events = events.filter((e) => e.concept == "Sunspot");
+        for (const event of events) {
             // Resolve the coordinates promise before passing data to the marker.
             event.coordinates = await event.coordinates;
             let marker = Marker.fromEventData(event);
