@@ -87,6 +87,7 @@ def _generate_result(observer_heeq, event_stonyhurst, msg):
     return result
 
 def process_radial_coordinates(angle, date):
+    angle = int(angle)
     observer = get_earth(time=date)
     # radial angle starts from the north pole, latitude starts from the equator. So to get the
     # correct stonyhurst angle, add 90 to the angle.
