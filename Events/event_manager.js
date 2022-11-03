@@ -64,6 +64,8 @@ class EventManager {
         // For now, only use sunspots
         let sunspots = events.filter((e) => e.concept == "Sunspot");
         for (const event of sunspots) {
+            // Resolve the coordinates promise before passing data to the marker.
+            event.coordinates = await event.coordinates;
             let marker = Marker.fromEventData(event);
             marker.GetModel().then((model) => Scene.AddModel(model));
         }
