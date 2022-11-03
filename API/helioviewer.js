@@ -176,6 +176,24 @@ class Helioviewer {
     }
 
     /**
+     * Gets the normalized event coordinates for a given event.
+     */
+    async GetEventCoordinates(event) {
+        let system = event.event_coordsys;
+        let coordinates = [event.event_coord1, event.event_coord2, event.event_coord3];
+        let date = event.event_starttime;
+        let instrument = event.obs_instrument;
+        let units = event.event_coordunit;
+        let api_url = `${Config.helios_api_url}/event/position?system=${system}&coord1=${coordinates[0]}&coord2=${coordinates[1]}&coord3=${coordinates[2]}&observatory=${instrument}&units=${units}&date=${date}`;
+        let result = await fetch(api_url);
+        let data = await result.json();
+        if (data.hasOwnProperty("error")) {
+            throw data.error;
+        }
+        return data;
+    }
+
+    /**
      * Extracts relevant helios information from the given jp2 header
      * @param {string} jp2_header_xml XML received via the getJP2Header API
      * @returns {JP2Info}
