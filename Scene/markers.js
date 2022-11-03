@@ -192,6 +192,10 @@ class Marker {
     _ComputePosition(lon, lat) {
         // Radius of the sun mesh is 25 units
         let r = 25;
+        // For CMEs extend the radius so it is off-disk
+        if (this._event.concept == "CME") {
+            r *= 2;
+        }
         let lat_rad = lat * Math.PI / 180;
         let lon_rad = lon * Math.PI / 180;
         // Formulas for converting lat/lon/radius (i.e. Heliographic Stonyhurst) to
