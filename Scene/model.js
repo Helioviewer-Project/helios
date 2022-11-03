@@ -3,7 +3,8 @@ import {
     CreatePlaneWithTexture,
     UpdateModelTexture,
     UpdateModelOpacity,
-    UpdateModelLayeringOrder
+    UpdateModelLayeringOrder,
+    FreeModel
 } from './three/model_builder.js';
 
 import {
@@ -167,6 +168,18 @@ class Model {
      */
     async SetLayerOrder(index) {
         UpdateModelLayeringOrder(await this.GetModel(), index);
+    }
+
+    /**
+     * Cleans up and destroys this model.
+     */
+    dispose() {
+        // Free the model's mesh
+        this.GetModel().then((model) => { FreeModel(model); });
+        // Free all the image textures
+        for (const datum of this.data) {
+            datum.texture.dispose();
+        }
     }
 };
 

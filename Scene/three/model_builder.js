@@ -206,10 +206,41 @@ function UpdateModelLayeringOrder(model, order) {
     model.children[1].material.polygonOffsetUnits = (order - 1) * 1000;
 }
 
+/**
+ * Frees a mesh's geometry and material
+ */
+function _FreeMesh(mesh) {
+    mesh.geometry.dispose();
+    mesh.material.dispose();
+}
+
+/**
+ * Frees a model group
+ * @private
+ */
+function _FreeGroup(group) {
+    for (const model of group.children) {
+        FreeModel(model);
+    }
+}
+
+/**
+ * API for freeing a model created with one of the model builder functions
+ * @param {Object} object 
+ */
+function FreeModel(object) {
+    if (object.type == "Group") {
+        _FreeGroup(object);
+    } else if (object.type == "Mesh") {
+        _FreeMesh(object);
+    }
+}
+
 export {
     CreateHemisphereWithTexture,
     CreatePlaneWithTexture,
     UpdateModelTexture,
     UpdateModelOpacity,
-    UpdateModelLayeringOrder
+    UpdateModelLayeringOrder,
+    FreeModel
 };

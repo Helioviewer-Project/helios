@@ -149,7 +149,10 @@ class Scene {
      * @param {number} id Identifier of model to remove
      */
     async RemoveFromScene(id) {
-        this._scene.RemoveModel(await this._models[id].model.GetModel());
+        let model_to_remove = await this._models[id].model.GetModel();
+        this._scene.RemoveModel(model_to_remove);
+        // Free assets related to the model
+        this._models[id].model.dispose();
         delete this._models[id];
     }
 
