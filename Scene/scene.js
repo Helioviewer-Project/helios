@@ -19,7 +19,7 @@ class Scene {
          * List of callback functions waiting for the time to update
          * @private
          */
-        this._time_listeners = [];
+        this._time_listeners = {};
 
         /**
          * Mapping of ids to models for the UI to reference scene objects
@@ -190,8 +190,8 @@ class Scene {
             this._scene.PointCamera(await this._camera_lock.model.GetPosition());
         }
 
-        for (const callback of this._time_listeners) {
-            callback(this._current_time);
+        for (const id of Object.keys(this._time_listeners)) {
+            this._time_listeners[id](this._current_time);
         }
     }
 
@@ -203,13 +203,27 @@ class Scene {
         return this._current_time;
     }
 
+    _CreateId() {
+        return this._count++;
+    }
+
     /**
      * Registers a callback to be executed when the scene time is updated
      * @param {Function} fn Callback function that takes a date as a parameter
      */
     RegisterTimeUpdateListener(fn) {
-        this._time_listeners.push(fn);
+        let id = this._CreateId();
+        this._time_listeners[id] = fn;
         fn(this._current_time);
+        return id;
+    }
+
+    /**
+     * Unregisters a callback to be executed when the scene time is updated
+     * @param {number} id ID returned by RegisterTimeUpdateListener
+     */
+    UnregisterTimeUpdateListener(id) {
+        delete this._time_listeners[id];
     }
 
     /**

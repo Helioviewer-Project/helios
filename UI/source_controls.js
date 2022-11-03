@@ -77,13 +77,14 @@ class SourceManager {
         let time_element = control_element.getElementsByClassName("source-time")[0];
         controller._UpdateModelTime(id, time_element);
 
-        Scene.RegisterTimeUpdateListener(async () => {
+        // Register a listener so the UI is updated as the time in the scene changes.
+        let listener_id = Scene.RegisterTimeUpdateListener(async () => {
             controller._UpdateModelTime(id, time_element);
         });
 
         // Use a closure to capture the ID, so that when this button is clicked, the correct ID is removed
         control_element.getElementsByClassName("source-remove")[0].addEventListener("click", () => {
-            controller.RemoveSource(id);
+            controller.RemoveSource(id, listener_id);
             control_element.remove();
             // If there's nothing in the Scene, then hide this UI control.
             if (document.getElementsByClassName("data-source").length == 0) {
@@ -197,13 +198,14 @@ class SourceManager {
      * Scene.AddToScene
      *
      * @param {number} id ID of the source to remove
+     * @param {number} listener_id ID of the registered time update listener
      */
-    RemoveSource(id) {
+    RemoveSource(id, listener_id) {
         Scene.RemoveFromScene(id);
+        Scene.UnregisterTimeUpdateListener(listener_id);
         // Use filter to get all elements where id does not match the id we just removed from the scene.
         // This effectively deletes it from the layer list, though it's probably a slow solution.
         // The layer list should ever have more than a few layers in it though, so it's not a big deal.
-        // The max number of layers it can have is the max number of datasources we have.
         this._layers = this._layers.filter((el) => el.id != id);
     }
 
