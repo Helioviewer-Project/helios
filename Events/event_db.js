@@ -17,8 +17,8 @@ class EventDB {
      */
     _DateRangeToIndividualDays(start, end) {
         // Change start and end to days, ignoring hours.
-        start = new Date(`${start.getFullYear()}-${start.getMonth()+1}-${start.getDate()}`);
-        end = new Date(`${end.getFullYear()}-${end.getMonth()+1}-${end.getDate()}`);
+        start = new Date(`${start.getUTCFullYear()}-${start.getUTCMonth() + 1}-${start.getUTCDate()} 00:00:00Z`);
+        end = new Date(`${end.getUTCFullYear()}-${end.getUTCMonth() + 1}-${end.getUTCDate()} 00:00:00Z`);
         // Now that start and end are reduced to days, get the number of days between them.
         // 86400*1000 is milliseconds per day. Subtracting dates returns milliseconds.
         let num_days = (end - start) / (86400*1000);
