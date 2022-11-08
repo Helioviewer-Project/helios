@@ -9,15 +9,22 @@ class Loader {
      * @param {string} id HTML ID of the loader
      */
     constructor(id) {
+        this._counter = 0;
         this.element = document.getElementById(id);
     }
 
     stop() {
-        this.element.classList.remove(Config.loader_class);
+        this._counter--;
+        if (this._counter == 0) {
+            this.element.classList.remove(Config.loader_class);
+        }
     }
 
     start() {
-        this.element.classList.add(Config.loader_class);
+        if (this._counter == 0) {
+            this.element.classList.add(Config.loader_class);
+        }
+        this._counter++;
     }
 }
 let loader = new Loader(Config.loader_id);
