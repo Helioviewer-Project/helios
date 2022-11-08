@@ -12,7 +12,6 @@ import DatePicker from "./date_range_picker.js";
  */
 class HelioviewerMovie {
     constructor() {
-        console.log("I know this works");
         // We need to filter an HTMLCollection layer, so add the filter function to it.
         HTMLCollection.prototype.filter = Array.prototype.filter;
         // Input element for the movie id
@@ -98,7 +97,7 @@ class HelioviewerMovie {
         }
         // If there is only one result, return its value.
         if (filtered_sources.length == 1) {
-            return filtered_sources[0].value;
+            return parseInt(filtered_sources[0].value);
         } else {
             // If there are multiple results, throw error
             throw "Couldn't match movie to supported sources";
