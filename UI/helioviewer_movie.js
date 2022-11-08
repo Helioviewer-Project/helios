@@ -185,8 +185,7 @@ class HelioviewerMovie {
             let data = await this._GetMovieData(movie_id);
             this._LoadMovie(data);
         } catch (e) {
-            // alert("Error: " + e);
-            console.warn("Error: " + e);
+            alert("Error: " + e);
         }
     }
 };

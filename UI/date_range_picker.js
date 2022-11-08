@@ -25,9 +25,13 @@ class DateRangePicker {
      * @param {string} frame_input_id ID of HTML element for frame count picker
      */
     constructor(start_id, end_id, frame_input_id) {
-        this._start = flatpickr(document.getElementById(start_id), DatePickerConfig);
-        this._end = flatpickr(document.getElementById(end_id), DatePickerConfig);
+        let default_start_date = ToLocalDate(new Date());
+        default_start_date.setDate(default_start_date.getDate() - 1); // yesterday
+        this._start = flatpickr(document.getElementById(start_id), Object.assign({defaultDate: default_start_date}, DatePickerConfig));
+        default_start_date.setDate(default_start_date.getDate() + 1); // today
+        this._end = flatpickr(document.getElementById(end_id), Object.assign({defaultDate: default_start_date}, DatePickerConfig));
         this._frames = document.getElementById(frame_input_id);
+        this._frames.value = 1;
     }
 
     /**

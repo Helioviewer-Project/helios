@@ -167,6 +167,9 @@ class Helioviewer {
         let url = this.GetApiUrl() + "getMovieStatus/?id=" + id + "&format=mp4&verbose=true";
         let result = await fetch(url);
         let data = await result.json();
+        if (data.hasOwnProperty("error")) {
+            throw data.error;
+        }
         return data;
 
     }
