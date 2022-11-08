@@ -47,3 +47,52 @@ h1.time-label {
     vertical-align: middle;
 }
 
+.demo-sidebar-close {
+    display: none;
+}
+
+@media only screen and (max-width: 600px) {
+    html {
+        overflow-y: clip;
+    }
+    .demo-sidebar-close {
+        display: block;
+        position: absolute;
+        top: calc(150px - 30px);
+        left: 50%;
+        height: 30px;
+        transform: translateX(-50%);
+        background: white;
+        color: black;
+        border: none;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        cursor: pointer;
+        transition: top 0.5s ease-out;
+    }
+    
+    .demo-sidebar-close::before {
+        content: "Close"
+    }
+
+    .demo-sidebar {
+        border-top: 2px solid white;
+        left: 0;
+        width: calc(100vw - 50px);
+        padding: 25px;
+        background: #333;
+        transition: top 0.5s ease-out;
+        top: 150px;
+    }
+
+    .demo-sidebar.closed {
+        top: calc(100vh);
+    }
+
+    .demo-sidebar-close.closed::before {
+        content: "Open "
+    }
+    .demo-sidebar-close.closed {
+        top: calc(100vh - 30px);
+    }
+}

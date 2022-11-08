@@ -2,14 +2,15 @@
 <html>
     <head>
         <title>Minimal Helios Implementation</title>
+        <link rel="stylesheet" href="/resources/css/modal.css"/>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto" />
         <link rel="stylesheet" href="/resources/css/hv_loader.css"/>
         <link rel="stylesheet" href="/resources/css/main.css"/>
         <link rel="stylesheet" href="/resources/css/source_controls.css"/>
         <link rel="stylesheet" href="/resources/css/time_display.css"/>
         <link rel="stylesheet" href="/resources/css/help.css"/>
-        <link rel="stylesheet" href="/resources/css/modal.css"/>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
     </head>
     <body>
         <a href="#help-modal" class="helios-help-button">?</a>
@@ -36,7 +37,9 @@
             <a href="#!" class="modal-close" title="Close this modal" data-close="Close"
                 data-dismiss="modal">?</a>
         </section>
-        <div class="helios-visible demo-sidebar">
+
+        <button id="js-sidebar-toggle" class="demo-sidebar-close sidebar-closed"></button>
+        <div id="js-sidebar" class="helios-visible demo-sidebar sidebar-closed">
             <!-- TODO: add CSS -->
             <label for="js-start-date-picker">Start Date &amp; Time</label>
             <input id="js-start-date-picker" type="text"/>
@@ -143,9 +146,7 @@
             </div>
 
         </div>
-        <div class="demo-sidebar" style="left: 230px">
-            <!-- <label>Camera Position: <span id="js-camera-position"></span></label> -->
-        </div>
+        <!-- <label>Camera Position: <span id="js-camera-position"></span></label> -->
         <h1 class="time-label">
             <img id="loader" src="resources/images/hv_sun.png"/>
             <input class="scene-time" id="js-current-scene-time" type="text"/>
