@@ -186,6 +186,8 @@ class Config {
             STEREO_B: "STEREO-B",
             SECCHI: ""
         };
+
+        this.camera_pan_speed = 2.3;
     }
 
     /**

@@ -52,6 +52,7 @@ class ThreeScene {
          * @private
          */
         this._controls = new TrackballControls(this._camera, this._renderer.domElement);
+        this._controls.panSpeed = Config.camera_pan_speed;
         this._controls.enabled = true;
         this._controls.rotateSpeed = 2.3;
         this._controls.update();
