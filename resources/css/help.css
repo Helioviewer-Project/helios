@@ -1,0 +1,21 @@
+.helios-help-button {
+    position: absolute;
+    top: 32px;
+    right: 10%;
+    color: white;
+    background: black;
+    border: 1px solid white;
+    border-radius: 15px;
+    font-size: 1.5em;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    cursor: pointer;
+    transition: background-color 0.25s ease-in-out;
+    text-decoration: none;
+    text-align: center;
+}
+
+.helios-help-button:hover {
+    background: #888;
+}
