@@ -1,5 +1,5 @@
 import Config from '../Configuration.js';
-import {ToAPIDate} from "../common/dates.js";
+import {ToAPIDate, parseDate} from "../common/dates.js";
 import Coordinates from '../common/coordinates.js';
 
 /**
@@ -42,7 +42,7 @@ class Helioviewer {
         // but doesn't use the formal specification for it.
         return {
             id: image.id,
-            timestamp: new Date(image.date + "Z"),
+            timestamp: parseDate(image.date),
             jp2_info: {
                 width: image.width,
                 height: image.height,

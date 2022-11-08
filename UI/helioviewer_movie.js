@@ -1,6 +1,7 @@
 import Config from "../Configuration.js";
 import Helioviewer from "../API/helioviewer.js";
 import {HelioviewerToHelios} from "../common/helioviewer_source_map.js";
+import {parseDate} from "../common/dates.js";
 import ResolutionPicker from "./resolution_picker.js";
 import SourceControls from "./source_controls.js";
 import AnimationControls from "./animation_controls.js";
@@ -55,8 +56,8 @@ class HelioviewerMovie {
      * @param {Object} Movie data returned from the API
      */
     _GetDateRange(data) {
-        let start = new Date(data.startDate + "Z");
-        let end = new Date(data.endDate + "Z");
+        let start = parseDate(data.startDate);
+        let end = parseDate(data.endDate);
         return [start, end];
     }
 

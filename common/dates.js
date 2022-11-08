@@ -33,5 +33,11 @@ function ToUTCDate(date) {
     return date_copy;
 }
 
+function parseDate(datestr) {
+    let numbers = datestr.split(/[^0-9]/);
+    // Creating a date this way uses local time, but values are UTC, so offset needs to be applied
+    let localdate = new Date(numbers[0], numbers[1]-1, numbers[2], numbers[3], numbers[4], numbers[5]);
+    return ToUTCDate(localdate);
+}
 
-export { ToAPIDate, ToLocalDate, ToUTCDate };
+export { ToAPIDate, ToLocalDate, ToUTCDate, parseDate };
