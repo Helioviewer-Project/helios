@@ -149,7 +149,13 @@ class HelioviewerMovie {
         let cadence = this._ParseCadence(dates, data);
         for (const source of sources) {
             let resolution = this._GetResolution(source);
-            SourceControls.AddSourceWithParams(dates[0], dates[1], cadence, source, resolution);
+            let promise = SourceControls.AddSourceWithParams(dates[0], dates[1], cadence, source, resolution);
+            // If last source
+            if (source == sources[sources.length - 1]) {
+                promise.then(() => {
+                    AnimationControls.Play();
+                })
+            }
         }
         this._UpdateAnimationUI(data);
         this._UpdateDatePickerUI(dates, data.numFrames);
