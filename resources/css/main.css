@@ -47,8 +47,9 @@ h1.time-label {
 }
 
 #loader {
-    margin-top: -8px;
-    vertical-align: middle;
+    position: fixed;
+    right: 10%;
+    bottom: 15px;
 }
 
 .demo-sidebar-close {
