@@ -55,12 +55,17 @@ h1.time-label {
     html {
         overflow-y: clip;
     }
+    :root {
+        --tab-button-height: 30px;
+    }
+
     .demo-sidebar-close {
         display: block;
         position: absolute;
         top: calc(150px - 30px);
         left: 50%;
-        height: 30px;
+        /* see :root for var values */
+        height: var(--tab-button-height);
         transform: translateX(-50%);
         background: white;
         color: black;
@@ -78,8 +83,10 @@ h1.time-label {
     .demo-sidebar {
         border-top: 2px solid white;
         left: 0;
-        width: calc(100vw - 50px);
-        padding: 25px;
+        --sidebar-padding: 25px;
+        padding: var(--sidebar-padding);
+        /* Leave enough space on both sides of the menu bar */
+        width: calc(100vw - calc(var(--sidebar-padding) * 2));
         background: #333;
         transition: top 0.5s ease-out;
         top: 150px;
@@ -96,6 +103,7 @@ h1.time-label {
 
     .demo-sidebar-close.closed {
         top: calc(100vh - 30px);
-        top: calc(var(--vh, 1vh) * 100 - 30px);
+        /* see :root for var values */
+        top: calc(var(--vh, 1vh) * 100 - var(--tab-button-height));
     }
 }
