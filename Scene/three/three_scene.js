@@ -33,7 +33,7 @@ class ThreeScene {
         this._camera.position.x = 0;
         this._camera.position.y = 0;
         this._camera.position.z = -100;
-        this._camera.zoom = 49;
+        this._camera.zoom = 30;
         this._camera.updateProjectionMatrix();
 
         /**

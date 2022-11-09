@@ -8,6 +8,10 @@
         --sidebar-transition-ease: ease-in-out;
     }
 
+    .data-source {
+        padding-bottom: 15px;
+    }
+
     .demo-sidebar-close {
         display: block;
         position: absolute;
@@ -39,6 +43,8 @@
         background: #333;
         transition: top var(--sidebar-transition-speed) var(--sidebar-transition-ease);
         top: 150px;
+        max-height: calc(var(--vh, 1vh) * 100 - 150px);
+        padding-bottom: 15px;
     }
 
     .demo-sidebar.closed {
