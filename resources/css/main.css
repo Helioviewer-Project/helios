@@ -42,6 +42,10 @@ h1.time-label {
     color: white;
 }
 
+.scene-time {
+    text-align: center;
+}
+
 #loader {
     margin-top: -8px;
     vertical-align: middle;

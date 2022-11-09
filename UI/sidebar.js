@@ -4,9 +4,14 @@
 class Sidebar {
     constructor() {
         this._toggle = document.getElementById('js-sidebar-toggle');
-        this._sidebar = document.getElementById('js-sidebar');
         this._RegisterListeners();
         this._ExecuteMobileViewportPatch();
+        this._objects_to_animate = [
+            this._toggle,
+            document.getElementById('js-sidebar'),
+            document.getElementById('loader'),
+            document.getElementById('js-help')
+        ];
     }
 
     _ExecuteMobileViewportPatch() {
@@ -26,11 +31,13 @@ class Sidebar {
      */
     toggle() {
         if (this._toggle.classList.contains('closed')) {
-            this._toggle.classList.remove('closed');
-            this._sidebar.classList.remove('closed');
+            for (const object of this._objects_to_animate) {
+                object.classList.remove('closed');
+            }
         } else {
-            this._toggle.classList.add('closed');
-            this._sidebar.classList.add('closed');
+            for (const object of this._objects_to_animate) {
+                object.classList.add('closed');
+            }
         }
     }
 }

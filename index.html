@@ -14,7 +14,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
     </head>
     <body>
-        <a href="#help-modal" class="helios-help-button">?</a>
+        <a id="js-help" href="#help-modal" class="helios-help-button closed">?</a>
         <section class="modal--show" id="help-modal" tabindex="-1"
             role="dialog" aria-labelledby="modal-label" aria-hidden="true">
 
@@ -148,8 +148,8 @@
 
         </div>
         <!-- <label>Camera Position: <span id="js-camera-position"></span></label> -->
+        <img id="loader" class="closed" src="resources/images/hv_sun.png"/>
         <h1 class="time-label">
-            <img id="loader" src="resources/images/hv_sun.png"/>
             <input class="scene-time" id="js-current-scene-time" type="text"/>
         </h1>
         <div id="js-helios-viewport"></div>

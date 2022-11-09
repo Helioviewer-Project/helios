@@ -3,6 +3,11 @@
         overflow-y: clip;
     }
 
+    :root {
+        --sidebar-transition-speed: 0.5s;
+        --sidebar-transition-ease: ease-in-out;
+    }
+
     .demo-sidebar-close {
         display: block;
         position: absolute;
@@ -17,7 +22,7 @@
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
         cursor: pointer;
-        transition: top 0.5s ease-out;
+        transition: top var(--sidebar-transition-speed) var(--sidebar-transition-ease);
     }
     
     .demo-sidebar-close::before {
@@ -32,7 +37,7 @@
         /* Leave enough space on both sides of the menu bar */
         width: calc(100vw - calc(var(--sidebar-padding) * 2));
         background: #333;
-        transition: top 0.5s ease-out;
+        transition: top var(--sidebar-transition-speed) var(--sidebar-transition-ease);
         top: 150px;
     }
 
@@ -42,11 +47,37 @@
     }
 
     .demo-sidebar-close.closed::before {
-        content: "Open "
+        content: "Open"
     }
 
     .demo-sidebar-close.closed {
         top: calc(100vh - 30px);
         top: calc(var(--vh, 1vh) * 100 - var(--tab-button-height));
     }
+
+    #loader {
+        position: absolute;
+        left: 5px;
+        width: 2.5em;
+        bottom: calc(var(--vh, 1vh) * 100 - 145px);
+        transition: bottom var(--sidebar-transition-speed) var(--sidebar-transition-ease);
+    }
+
+    #loader.closed {
+        bottom: 5px;
+    }
+
+    .helios-help-button {
+        top: unset;
+        right: 5px;
+        position: absolute;
+        bottom: calc(var(--vh, 1vh) * 100 - 145px);
+        transition: bottom var(--sidebar-transition-speed) var(--sidebar-transition-ease);
+    }
+
+    .helios-help-button.closed {
+        bottom: 5px;
+    }
 }
+
+
