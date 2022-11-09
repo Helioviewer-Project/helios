@@ -6,6 +6,14 @@ class Sidebar {
         this._toggle = document.getElementById('js-sidebar-toggle');
         this._sidebar = document.getElementById('js-sidebar');
         this._RegisterListeners();
+        this._ExecuteMobileViewportPatch();
+    }
+
+    _ExecuteMobileViewportPatch() {
+        // CSS trick to fix 100vh on mobile. Without this, 100vh goes below the viewport due to silly mobile browser implementations
+        // See https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
+        let vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
     }
 
     _RegisterListeners() {
@@ -27,4 +35,6 @@ class Sidebar {
     }
 }
 let sidebar = new Sidebar();
+
+
 export default sidebar;

@@ -86,13 +86,16 @@ h1.time-label {
     }
 
     .demo-sidebar.closed {
-        top: calc(100vh);
+        top: 100vh;
+        top: calc(var(--vh, 1vh) * 100);
     }
 
     .demo-sidebar-close.closed::before {
         content: "Open "
     }
+
     .demo-sidebar-close.closed {
         top: calc(100vh - 30px);
+        top: calc(var(--vh, 1vh) * 100 - 30px);
     }
 }
