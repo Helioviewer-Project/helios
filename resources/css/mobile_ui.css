@@ -1,0 +1,52 @@
+@media only screen and (max-width: 600px) {
+    html {
+        overflow-y: clip;
+    }
+
+    .demo-sidebar-close {
+        display: block;
+        position: absolute;
+        top: calc(150px - 30px);
+        left: 50%;
+        --tab-button-height: 30px;
+        height: var(--tab-button-height);
+        transform: translateX(-50%);
+        background: white;
+        color: black;
+        border: none;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        cursor: pointer;
+        transition: top 0.5s ease-out;
+    }
+    
+    .demo-sidebar-close::before {
+        content: "Close"
+    }
+
+    .demo-sidebar {
+        border-top: 2px solid white;
+        left: 0;
+        --sidebar-padding: 25px;
+        padding: var(--sidebar-padding);
+        /* Leave enough space on both sides of the menu bar */
+        width: calc(100vw - calc(var(--sidebar-padding) * 2));
+        background: #333;
+        transition: top 0.5s ease-out;
+        top: 150px;
+    }
+
+    .demo-sidebar.closed {
+        top: 100vh;
+        top: calc(var(--vh, 1vh) * 100);
+    }
+
+    .demo-sidebar-close.closed::before {
+        content: "Open "
+    }
+
+    .demo-sidebar-close.closed {
+        top: calc(100vh - 30px);
+        top: calc(var(--vh, 1vh) * 100 - var(--tab-button-height));
+    }
+}
