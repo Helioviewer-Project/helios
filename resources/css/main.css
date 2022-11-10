@@ -21,10 +21,7 @@ body {
     max-height: calc(100vh - 15px);
 }
 
-.demo-sidebar > * {
-}
-
-label, p {
+body {
     color: white;
 }
 
@@ -56,3 +53,6 @@ h1.time-label {
     display: none;
 }
 
+.current-events {
+    color: white;
+}

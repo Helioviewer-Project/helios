@@ -1,6 +1,7 @@
 import EventDB from "../Events/event_db.js";
 import Scene from "../Scene/scene.js";
 import Marker from "../Scene/markers.js";
+import EventUI from "../UI/events.js";
 
 /**
  * The Event Manager manages all events being rendered in the scene.
@@ -68,7 +69,9 @@ class EventManager {
             event.coordinates = await event.coordinates;
             let marker = Marker.fromEventData(event);
             marker.GetModel().then((model) => Scene.AddModel(model));
+            EventUI.AddEvent(event, marker);
         }
+        EventUI.render();
         //console.log(sunspots[13]);
 
         // let marker = new Marker(29.477, -16.133, sunspots[13]);

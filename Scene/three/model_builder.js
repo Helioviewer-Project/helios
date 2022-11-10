@@ -105,7 +105,7 @@ async function CreateHemisphereWithTexture(texture, jp2info) {
     // closer to the origin. Something something about render distance consuming more
     // compute cycles. I don't know if this actually improves performance or not
     sphere_group.scale.set(0.20, 0.20, 0.20);
-    sphere_group.type = "sun";
+    sphere_group.helios_type = "sun";
 
     return sphere_group;
 }
@@ -161,36 +161,19 @@ async function CreatePlaneWithTexture(texture, jp2info) {
     // API expects all meshes to be groups, so add this mesh to a single group
     const group = new Group();
     group.add(mesh);
-    group.type = "sun";
+    group.helios_type = "sun";
     return group;
 }
 
 async function CreateText(text) {
-    let font = await LoadFont("/resources/fonts/helvetiker_regular.typeface.json");
-    const geometry = new TextGeometry(text, {
-        font: font,
-		size: 80,
-		height: 5,
-		curveSegments: 12,
-		bevelEnabled: true,
-		bevelThickness: 10,
-		bevelSize: 8,
-		bevelOffset: 0,
-		bevelSegments: 5
-    });
-
-    const material = new MeshBasicMaterial();
-    const mesh = new Mesh(geometry, material);
-    mesh.scale.set(0.01, 0.01, 0.01);
-    mesh.type = "text";
-    return mesh;
+    console.warn("Text labels not implemented");
 }
 
-function CreateMarkerModel(_, text) {
-    const geometry = new SphereGeometry( 0.2, 32, 16);
-    const material = new MeshBasicMaterial( { color: 0xffff00 } );
+function CreateMarkerModel(text, color) {
+    const geometry = new SphereGeometry(0.5, 32, 16);
+    const material = new MeshBasicMaterial( { color: color } );
     const sphere = new Mesh( geometry, material );
-    sphere.type = "marker";
+    sphere.helios_type = "marker";
     return sphere;
 }
 
@@ -213,7 +196,7 @@ function CreateMarkerModel(texture, text) {
     CreateText(text).then((text_mesh) => {
         plane.add(text_mesh);
     });
-    plane.type = "marker";
+    plane.helios_type = "marker";
     return plane;
 }
 */
@@ -275,11 +258,11 @@ function UpdateModelOpacity(model, opacity) {
 }
 
 function _IsSolarModel(model) {
-    return model.type == "sun";
+    return model.helios_type == "sun";
 }
 
 function _IsMarkerModel(model) {
-    return model.type == "marker";
+    return model.helios_type == "marker";
 }
 
 /**
