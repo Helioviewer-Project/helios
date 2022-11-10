@@ -41,7 +41,7 @@ test("Get event data over date range", async () => {
     let events = await Helioviewer.GetEventsForDay(new Date("2022-10-01 00:00:00Z"));
 });
 
-test("Get normalized event coordinates", async () => {
+test.skip("Get normalized event coordinates", async () => {
     let data = await Helioviewer.GetEventCoordinates({
         event_coordsys: "UTC-HPC-TOPO",
         event_coord1: 500,
