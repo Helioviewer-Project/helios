@@ -1,0 +1,5 @@
+.event-list {
+    max-height: 0;
+    overflow-y: clip;
+}
+

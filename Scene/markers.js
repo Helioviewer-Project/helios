@@ -3,8 +3,7 @@ import {LoadTexture} from "./three/texture_loader.js";
 import {Vector3} from "three";
 import Scene from "./scene.js";
 import {deg2rad, rad2deg, ms2day} from "../common/math.js";
-
-let _active_region = LoadTexture("resources/images/active_region.png");
+import {GetEventLabel} from "../common/event.js";
 
 /**
  * Encapsulates information about a feature/event marker
@@ -33,6 +32,17 @@ class Marker {
      */
     constructor(lat, lon, e) {
         this._event = e;
+
+        /**
+         * Controls whether or not this element is rendered
+         */
+        this._enabled = true;
+
+        /**
+         * HEX color for the given event type
+         */
+        this._color = this._GetColorForEvent(e);
+
         /**
          * Angular velocity for computing the marker's position over time
          * Unit is radians/day
@@ -49,6 +59,11 @@ class Marker {
          * End of the event. If the scene time has passed this time, the marker must disappear
          */
         this._t_end = new Date(e.event_endtime + "Z");
+
+        /**
+         * Current render time.
+         */
+        this._t_now = this._t_start;
 
         /**
          * Initial longitude.
@@ -108,6 +123,7 @@ class Marker {
      * Sets the marker's position for a given date.
      */
     _SetPositionForDate(scene_time) {
+        this._t_now = scene_time;
         // Only position the object if the event occurs within the scene's point in time
         if ((scene_time > this._t_start) && (scene_time < this._t_end)) {
             // Get the angle that the marker should have moved at away from the initial position.
@@ -137,9 +153,11 @@ class Marker {
      * Shows the model
      */
     _Show() {
-        this._model.then((model) => {
-            model.visible = true;
-        });
+        if (this._enabled) {
+            this._model.then((model) => {
+                model.visible = true;
+            });
+        }
     }
 
     /**
@@ -167,18 +185,12 @@ class Marker {
      * @private
      */
     async _ConstructModel() {
-        let text = "";
-        if (this._event.hasOwnProperty("hv_labels_formatted")) {
-            let keys = Object.keys(this._event.hv_labels_formatted);
-            if (keys.length > 0) {
-                text = this._event.hv_labels_formatted[keys[0]];
-            }
-        }
         this._hemisphere = CreateHemisphere();
         let hemisphere = await this._hemisphere;
         hemisphere.lookAt(this._event.observer);
 
-        let marker_model = CreateMarkerModel(await _active_region, text);
+        let text = GetEventLabel(this._event);
+        let marker_model = CreateMarkerModel(text, this._color);
         hemisphere.add(marker_model);
         return marker_model;
     }
@@ -230,6 +242,20 @@ class Marker {
      */
     async GetModel() {
         return this._hemisphere;
+    }
+
+    _GetColorForEvent(e) {
+        return Math.random() * 0xFFFFFF;
+    }
+
+    Enable() {
+        this._enabled = true;
+        this._SetPositionForDate(this._t_now);
+    }
+
+    Disable() {
+        this._enabled = false;
+        this._Hide();
     }
 }
 
