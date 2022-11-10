@@ -7,7 +7,7 @@ function GetEventLabel(event) {
         }
     }
     if (text == "") {
-        text = "Unknown";
+        text = event.concept;
     }
     return text;
 }
