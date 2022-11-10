@@ -26,7 +26,23 @@ class EventUI {
         el.remove();
     }
 
+    /**
+     * Sorts the event list
+     */
+    _sort() {
+        this._events.sort((a, b) => {
+            if (a.event.concept == b.event.concept) {
+                let a_label = GetEventLabel(a.event);
+                let b_label = GetEventLabel(b.event);
+                return a_label > b_label;
+            } else {
+                return a.event.concept > b.event.concept;
+            }
+        });
+    }
+
     render() {
+        this._sort();
         // Clear currently rendered events
         this._clear();
         // Create a new div to add everything into
@@ -57,24 +73,32 @@ class EventUI {
     }
 
     _getListForEventType(div, concept) {
+        let list = div.querySelector(`ul[event-type="${concept}"]`);
+        if (!list) {
+            list = this._createListForConcept(concept);
+            list.classList.add("expanded");
+            list.classList.add("event-list");
+        }
+
         let header = div.querySelector(`h2[event-type="${concept}"]`);
         if (!header) {
             header = this._createHeaderForConcept(concept);
             div.appendChild(header);
-        }
-        let list = div.querySelector(`ul[event-type="${concept}"]`);
-        if (!list) {
-            list = this._createListForConcept(concept);
             div.appendChild(list);
+            header.addEventListener('click', (e) => {
+                list.classList.toggle("expanded");
+            });
         }
+
         return list;
     }
 
     _createHeaderForConcept(concept) {
-        let h2 = document.createElement('h2');
-        h2.textContent = concept;
-        h2.setAttribute("event-type", concept);
-        return h2;
+        let header = document.createElement('h2');
+        header.classList.add("event-header");
+        header.textContent = concept;
+        header.setAttribute("event-type", concept);
+        return header;
     }
 
     _createListForConcept(concept) {
@@ -97,6 +121,9 @@ class EventUI {
             } else {
                 item.marker.Disable();
             }
+        });
+        li.addEventListener('click', () => {
+            checkbox.click();
         });
         li.appendChild(checkbox);
         return li;
