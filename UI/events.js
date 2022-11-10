@@ -51,7 +51,9 @@ class EventUI {
         // Render event controls into the div
         this._renderEvents(div);
         // Add it to the DOM
-        document.getElementById('current-events').appendChild(div);
+        let container = document.getElementById('current-events');
+        container.appendChild(div);
+        container.classList.remove('hidden');
     }
 
     /**
