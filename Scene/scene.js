@@ -199,7 +199,7 @@ class Scene {
         // If camera is locked on to a specific model, then update its position.
         // This must happen after the model time updates have completed.
         if (this._camera_lock) {
-            this._scene.MoveCamera(this._camera_lock.model.GetObserverPosition());
+            this._scene.MoveCamera(this._camera_lock.model.GetObserverPosition(), true);
             this._scene.PointCamera(await this._camera_lock.model.GetPosition());
         }
 
