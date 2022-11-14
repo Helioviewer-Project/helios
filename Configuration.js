@@ -200,6 +200,12 @@ class Config {
         };
 
         this.camera_pan_speed = 2.3;
+
+        /**
+         * Flag to enable/disable showing features and events.
+         * This is a debug flag, currently disabled since this feature is still not well developed.
+         */
+        this.enable_features_and_events = false;
     }
 
     /**
