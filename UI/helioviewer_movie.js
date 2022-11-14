@@ -163,8 +163,7 @@ class HelioviewerMovie {
 
     _UpdateAnimationUI(data) {
         AnimationControls.SetValues({
-            fps: data.frameRate,
-            duration: data.numFrames / data.frameRate
+            fps: data.frameRate
         });
     }
 
