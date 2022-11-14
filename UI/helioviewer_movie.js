@@ -181,11 +181,12 @@ class HelioviewerMovie {
      */
     async Submit() {
         try {
-            let movie_id = this._input.value;
+            var movie_id = this._input.value;
             let data = await this._GetMovieData(movie_id);
             this._LoadMovie(data);
         } catch (e) {
-            alert("Error: " + e);
+            console.error(e);
+            alert(`Movie ${movie_id} is unsupported. Please contact us to see about adding support for it.`);
         }
     }
 };

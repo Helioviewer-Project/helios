@@ -10,6 +10,11 @@ import Coordinates from '../common/coordinates.js';
  */
 
 /**
+ * Cache of events so we don't duplicate queries
+ */
+let _event_cache = {};
+
+/**
  * Helioviewer API Client.
  * Allows making API calls to the helioviewer server
  */
@@ -35,6 +40,7 @@ class Helioviewer {
      * @private
      */
     async _GetClosestImage(source, time) {
+        let time_copy = new Date(time);
         let api_url = this.GetApiUrl() + "getClosestImage/?sourceId=" + source + "&date=" + ToAPIDate(time);
         let result = await fetch(api_url);
         let image = await result.json();
@@ -84,7 +90,7 @@ class Helioviewer {
         while (query_time <= end) {
             // Query Helioviewer for the closest image to the given time.
             // Sends the request off and store the promise
-            let image_promise = this._GetClosestImage(source, query_time);
+            let image_promise = this._GetClosestImage(source, new Date(query_time));
             // Add the result to the output array
             results.push(image_promise);
             // Add cadence to the query time
@@ -112,9 +118,9 @@ class Helioviewer {
      * @returns Coordinates
      */
     _toCoordinates(response) {
-        let x = response["heeq"]['x'];
-        let y = response["heeq"]['z'];
-        let z = response["heeq"]['y'];
+        let x = response['x'];
+        let y = response['z'];
+        let z = response['y'];
         return new Coordinates(-x, y, z);
     }
 
@@ -124,10 +130,67 @@ class Helioviewer {
      * @returns Coordinates
      */
     async GetJp2Observer(id) {
-        let api_url = this.GetApiUrl() + "getObserverPosition/?id=" + id;
+        let api_url = Config.helios_api_url + "observer/position?id=" + id;
         let result = await fetch(api_url);
         let data = await result.json();
+        if (data.hasOwnProperty("error")) {
+            throw data.error;
+        }
         return this._toCoordinates(data);
+    }
+
+    /**
+     * Returns solar events for the given day
+     * @param {Date} day Day to query events. hours/minutes/seconds of the date are ignored.
+     */
+    async GetEventsForDay(day) {
+        let date_str = ToAPIDate(day);
+        let api_url = this.GetApiUrl() + "getEvents/?eventType=**&startTime=" + date_str;
+        let result = await fetch(api_url);
+        let data = await result.json();
+        return data;
+    }
+
+    /**
+     * Returns solar events for the given time
+     * @param {Date} start Query range start time
+     * @param {Date} end Query range end time
+     */
+    async GetEvents(start, end) {
+        let start_time = ToAPIDate(start);
+        let end_time = ToAPIDate(end);
+        let api_url = Config.helios_api_url + "event?start=" + start_time + "&end=" + end_time;
+        let result = await fetch(api_url);
+        let data = await result.json();
+        if (data.hasOwnProperty("error")) {
+            throw data.error;
+        } else {
+            // Parse all dates into Date instances
+            for (const e of data.results) {
+                e.start_time = new Date(e.event_starttime + "Z");
+                e.end_time = new Date(e.event_endtime + "Z");
+                e.coordinates.observer = this._toCoordinates(e.coordinates.observer)
+            }
+            return data.results;
+        }
+    }
+
+    /**
+     * Gets the normalized event coordinates for a given event.
+     */
+    async GetEventCoordinates(event) {
+        let system = event.event_coordsys;
+        let coordinates = [event.event_coord1, event.event_coord2, event.event_coord3];
+        let date = event.event_starttime;
+        let instrument = event.obs_instrument;
+        let units = event.event_coordunit;
+        let api_url = `${Config.helios_api_url}/event/position?system=${system}&coord1=${coordinates[0]}&coord2=${coordinates[1]}&coord3=${coordinates[2]}&observatory=${instrument}&units=${units}&date=${date}`;
+        let result = await fetch(api_url);
+        let data = await result.json();
+        if (data.hasOwnProperty("error")) {
+            throw data.error;
+        }
+        return data;
     }
 
     /**

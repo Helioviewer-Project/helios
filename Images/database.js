@@ -41,7 +41,7 @@ class Database {
                     date: image.timestamp,
                     url: image.url,
                     jp2info: image.jp2info,
-                    position: observer_position_promise
+                    position: observer_position_promise,
                 };
                 results.push(helios_image);
             }

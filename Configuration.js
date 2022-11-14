@@ -28,12 +28,19 @@ class Config {
         /**
          * Geometry service URL used to query position information
          */
-        this.geometry_service_url = "http://swhv.oma.be/position";
+        this.geometry_service_url = "http://swhv.oma.be/position/";
+
+        /**
+         * Helios API server url
+         */
+        this.helios_api_url = "https://api.gl.helioviewer.org/";
+        // this.helios_api_url = "http://localhost:5000/";
 
         /**
          * HTML ID of the start time picker for the date range chooser
          */
         this.start_picker_id = "js-start-date-picker";
+
 
         /**
          * HTML ID of the end time picker for the date range chooser
@@ -142,6 +149,11 @@ class Config {
          * Number of milliseconds away from the scene time that causes the model timestamp to turn red.
          */
         this.time_off_threshold = 300000;
+
+        /**
+         * Parameter for searching for events. Events will only be queried each hour between the start and end times.
+         */
+        this.event_cadence_s = 3600;
 
         /**
          * Limits the maximum images to be queried from helioviewer for a single date range.

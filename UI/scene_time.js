@@ -15,7 +15,8 @@ const DatePickerConfig = {
     onChange: function (selectedDates) {
         let date = ToUTCDate(selectedDates[0]);
         Scene.SetTime(date);
-    }
+    },
+    disableMobile: true
 }
 
 /**

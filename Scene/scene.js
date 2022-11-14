@@ -3,6 +3,7 @@ import ThreeScene from "./three/three_scene.js";
 import ModelFactory from "./model_factory.js";
 import { GetImageScaleForResolution } from "../common/resolution_lookup.js";
 import Loader from "../UI/loader.js";
+import EventManager from "../Events/event_manager.js";
 
 /**
  * Manages the full 3js scene that is rendered.
@@ -53,17 +54,17 @@ class Scene {
     GetTimeRange() {
         let ids = Object.keys(this._models);
         if (ids.length > 0) {
-            let min_date = this._models[ids[0]].startTime;
-            let max_date = this._models[ids[0]].endTime;
+            let min_date = new Date(this._models[ids[0]].startTime);
+            let max_date = new Date(this._models[ids[0]].endTime);
             for (const id of Object.keys(this._models)) {
                 let model = this._models[id];
                 // Find min
                 if (model.startTime < min_date) {
-                    min_date = model.startTime;
+                    min_date = new Date(model.startTime);
                 }
                 // Find max
                 if (model.endTime > max_date) {
-                    max_date = model.endTime;
+                    max_date = new Date(model.endTime);
                 }
             }
             return [min_date, max_date];
@@ -71,6 +72,7 @@ class Scene {
             throw "No models in the scene";
         }
     }
+
 
     /**
      * Adds a new source to the scene
@@ -109,11 +111,20 @@ class Scene {
             this._SortLayers();
             // End the loading animation
             Loader.stop();
+            this._UpdateEvents();
             return id;
         } catch (e) {
             Loader.stop();
             throw e;
         }
+    }
+
+    AddModel(model) {
+        this._scene.AddModel(model);
+    }
+
+    async _UpdateEvents() {
+        EventManager.SetTimeRange(this.GetTimeRange());
     }
 
     /**
@@ -154,6 +165,8 @@ class Scene {
         // Free assets related to the model
         this._models[id].model.dispose();
         delete this._models[id];
+        // Removing the model from the scene may change the time range of the scene, and the events must be updated to handle this.
+        this._UpdateEvents();
     }
 
     /**

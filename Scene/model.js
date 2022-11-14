@@ -45,6 +45,12 @@ class Model {
          */
         this._scene_time = this.current_time;
 
+        /**
+         * Layering order, determines which mesh gets rendered in front of others
+         * @private
+         */
+        this._layer_order = 0;
+
         // Initialize the 3js model
         this._InitializeModel();
     }
@@ -62,6 +68,10 @@ class Model {
 
         // Update the texture/rotational position
         this._Update();
+    }
+
+    async GetScale() {
+        return (await this.GetModel()).scale;
     }
 
     /**
@@ -84,7 +94,7 @@ class Model {
     }
 
     /**
-     * Rotats the given model to face the observer position
+     * Rotates the given model to face the observer position
      * @param {Object} model threejs model
      * @param {Coordinates} observer Position of the observer in scene coordinates
      */
@@ -168,6 +178,7 @@ class Model {
      */
     async SetLayerOrder(index) {
         UpdateModelLayeringOrder(await this.GetModel(), index);
+        this._layer_order = index;
     }
 
     /**

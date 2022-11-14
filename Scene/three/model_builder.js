@@ -7,10 +7,15 @@ import {
     Vector2,
     Matrix4,
     Group,
-    BackSide
+    BackSide,
+    DoubleSide
 } from 'three';
 
+import {TextGeometry} from "three/examples/jsm/geometries/TextGeometry";
+
+
 import {LoadMesh} from './mesh_loader.js';
+import {LoadFont} from './font_loader.js';
 import {
     vertex_shader as SolarVertexShader,
     fragment_shader as SolarFragmentShader
@@ -100,9 +105,27 @@ async function CreateHemisphereWithTexture(texture, jp2info) {
     // closer to the origin. Something something about render distance consuming more
     // compute cycles. I don't know if this actually improves performance or not
     sphere_group.scale.set(0.20, 0.20, 0.20);
+    sphere_group.helios_type = "sun";
 
     return sphere_group;
 }
+
+/**
+ * Creates a hemisphere with the given texture applied
+ */
+async function CreateHemisphere() {
+    let geometry = await LoadMesh('./resources/models/sun_model.gltf');
+    let material = new MeshBasicMaterial();
+    material.opacity = 0;
+    material.transparent = true;
+    material.polygonOffset = true;
+    material.polygonOffsetUnits = 0xffffffff;
+    material.polygonOffsetFactor = 0xffffffff; 
+    let mesh = new Mesh(geometry, material);
+    mesh.scale.set(0.2, 0.2, 0.2);
+    return mesh;
+}
+
 
 /**
  * Gets the dimensions of a flat plane according to the jp2info
@@ -138,8 +161,45 @@ async function CreatePlaneWithTexture(texture, jp2info) {
     // API expects all meshes to be groups, so add this mesh to a single group
     const group = new Group();
     group.add(mesh);
+    group.helios_type = "sun";
     return group;
 }
+
+async function CreateText(text) {
+    console.warn("Text labels not implemented");
+}
+
+function CreateMarkerModel(text, color) {
+    const geometry = new SphereGeometry(0.5, 32, 16);
+    const material = new MeshBasicMaterial( { color: color } );
+    const sphere = new Mesh( geometry, material );
+    sphere.helios_type = "marker";
+    return sphere;
+}
+
+/*
+function CreateMarkerModel(texture, text) {
+    // TODO: make this more generic.
+    // The 78/46 are the dimensions of the active region marker, this makes the plane that's created
+    // the correct size so that the active region image is shown in the correct dimenions (no scaling to fit the mesh).
+    // const geometry = new PlaneGeometry( 2, 78/46 * 2 );
+    const geometry = new PlaneGeometry( 1, 1);
+    const material = new MeshBasicMaterial( {map: texture, side: DoubleSide} );
+    material.transparent = true;
+    // TODO: Investigate if these can be removed.
+    // Since polygon offsets are used to make sure certain images show up on top of others, this is here so that the
+    // marker is always in front of everything.
+    material.polygonOffset = true;
+    material.polygonOffsetUnits = -999 * 1000000;
+    const plane = new Mesh( geometry, material );
+
+    CreateText(text).then((text_mesh) => {
+        plane.add(text_mesh);
+    });
+    plane.helios_type = "marker";
+    return plane;
+}
+*/
 
 /**
  * Updates a model's texture on the fly
@@ -150,14 +210,16 @@ async function CreatePlaneWithTexture(texture, jp2info) {
 function UpdateModelTexture(group, texture, jp2info, source) {
     // Iterate through the group and update the texture uniform.
     for (const model of group.children) {
-        model.material.uniforms.tex.value = texture;
-        if (Config.plane_sources.indexOf(source) != -1) {
-            let dimensions = _getPlaneDimensionsFromJp2Info(jp2info);
-            model.geometry.width = dimensions.width;
-            model.geometry.height = dimensions.height;
-            model.updateMatrix();
-        } else {
-            model.material.uniforms.scale.value = _ComputeMeshScale(jp2info);
+        if (model.material.hasOwnProperty('uniforms')) {
+            model.material.uniforms.tex.value = texture;
+            if (Config.plane_sources.indexOf(source) != -1) {
+                let dimensions = _getPlaneDimensionsFromJp2Info(jp2info);
+                model.geometry.width = dimensions.width;
+                model.geometry.height = dimensions.height;
+                model.updateMatrix();
+            } else {
+                model.material.uniforms.scale.value = _ComputeMeshScale(jp2info);
+            }
         }
     }
 }
@@ -189,8 +251,18 @@ function _ComputeMeshScale(jp2info) {
  */
 function UpdateModelOpacity(model, opacity) {
     for (const sub_model of model.children) {
-        sub_model.material.uniforms.opacity.value = opacity;
+        if (sub_model.material.hasOwnProperty("uniforms")) {
+            sub_model.material.uniforms.opacity.value = opacity;
+        }
     }
+}
+
+function _IsSolarModel(model) {
+    return model.helios_type == "sun";
+}
+
+function _IsMarkerModel(model) {
+    return model.helios_type == "marker";
 }
 
 /**
@@ -198,12 +270,18 @@ function UpdateModelOpacity(model, opacity) {
  * @param {number} order Effectize "Z-index" of the model
  */
 function UpdateModelLayeringOrder(model, order) {
-    model.children[0].material.polygonOffset = true;
-    model.children[0].material.polygonOffsetUnits = (order - 1) * -1000;
-    model.children[0].material.polygonOffsetFactor = (order - 1) * -1;
-    model.children[1].material.polygonOffset = true;
-    model.children[1].material.polygonOffsetFactor = (order - 1) * 2;
-    model.children[1].material.polygonOffsetUnits = (order - 1) * 1000;
+    if (_IsSolarModel(model)) {
+        model.children[0].material.polygonOffset = true;
+        model.children[0].material.polygonOffsetUnits = (order - 1) * -1000;
+        model.children[0].material.polygonOffsetFactor = (order - 1) * -1;
+        model.children[1].material.polygonOffset = true;
+        model.children[1].material.polygonOffsetFactor = (order - 1) * 2;
+        model.children[1].material.polygonOffsetUnits = (order - 1) * 1000;
+    } else if (_IsMarkerModel(model)) {
+        model.material.polygonOffset = true;
+        model.material.polygonOffsetUnits = (order - 1) * 1000;
+        model.material.polygonOffsetFactor = (order - 1) * 1;
+    }
 }
 
 /**
@@ -239,6 +317,8 @@ function FreeModel(object) {
 export {
     CreateHemisphereWithTexture,
     CreatePlaneWithTexture,
+    CreateMarkerModel,
+    CreateHemisphere,
     UpdateModelTexture,
     UpdateModelOpacity,
     UpdateModelLayeringOrder,

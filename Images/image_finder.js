@@ -50,7 +50,7 @@ class ImageFinder {
                     id: image.id,
                     url: url,
                     timestamp: image.timestamp,
-                    jp2info: image.jp2_info
+                    jp2info: image.jp2_info,
                 });
             }
         }

@@ -63,7 +63,7 @@ class ModelFactory {
                 date: image.date,
                 texture: texture,
                 jp2info: image.jp2info,
-                position: image.position
+                position: image.position,
             });
         }
 
