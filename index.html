@@ -1,56 +1,150 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Minimal Helios Implementation</title>
-        <style>
-            body {
-                margin: 0;
-                padding: 0;
-            }
-            #js-helios-viewport {
-                margin: 0;
-                padding: 0;
-            }
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-            .demo-sidebar {
-                position: absolute;
-                display: inline-grid;
-                top: 15px;
-                left: 10px;
-            }
+<link rel="stylesheet" href="/resources/css/modal.css"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto" />
+<link rel="stylesheet" href="/resources/css/hv_loader.css"/>
+<link rel="stylesheet" href="/resources/css/main.css"/>
+<link rel="stylesheet" href="/resources/css/source_controls.css"/>
+<link rel="stylesheet" href="/resources/css/event_controls.css"/>
+<link rel="stylesheet" href="/resources/css/time_display.css"/>
+<link rel="stylesheet" href="/resources/css/help.css"/>
+<link rel="stylesheet" href="/resources/css/mobile_ui.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
-            label, p {
-                color: white;
-            }
 
-            input, button, select {
-                margin-bottom: 15px;
-            }
+<link rel="stylesheet" href="css/scrolltool.css">
+<link rel="stylesheet" href="css/helioscss.css">
 
-            #js-current-time {
-                position: fixed;
-                left: 50%;
-                transform: translateX(-50%);
-                top: 20px;
-                color: white;
-            }
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="js/controls.js"></script>
 
-        </style>
-    </head>
-    <body>
-        <div class="helios-visible demo-sidebar">
-            <!-- TODO: add CSS -->
-            <label for="js-date-range-start">Start Date</label>
-            <input id="js-date-range-start" type="datetime-local"/>
+</head>
+<body>
 
-            <label for="js-date-range-end">End Date</label>
-            <input id="js-date-range-end" type="datetime-local"/>
+        <a id="js-help" href="#help-modal" class="helios-help-button closed">?</a>
+        <section class="modal--show" id="help-modal" tabindex="-1"
+            role="dialog" aria-labelledby="modal-label" aria-hidden="true">
 
-            <label for="js-date-range-cadence">Cadence (seconds)</label>
-            <input id="js-date-range-cadence" type="number"/>
+            <div class="modal-inner">
+                <header id="modal-label"><h1>Controls</h1></header>
+                <div class="modal-content">
+                    <h2>Panning</h2>
+                    Mobile: 2 finger drag<br/>
+                    Desktop: Hold D + Click and Drag
 
-            <label for="js-source-selector">Observatory</label>
-            <select id="js-source-selector">
+                    <h2>Zooming</h2>
+                    Mobile: Pinch zoom<br/>
+                    Desktop: Mouse wheel or Hold S + Click and Drag
+
+                    <h2>Rotating</h2>
+                    Mobile: 1 finger drag<br/>
+                    Desktop: Click and Drag or Hold A + Click and Drag
+
+                    <h2>Support/Contact Information</h2>
+                    Helios is supported by <em>The Helioviewer Project</em><br/>
+                    It was created using <a href="https://threejs.org/">three.js</a><br/>
+                    Please report any issues <a href="https://github.com/Helioviewer-Project/helios/issues">here</a>
+                </div>
+            </div>
+
+            <a href="#!" class="modal-close" title="Close this modal" data-close="Close"
+                data-dismiss="modal">?</a>
+        </section>
+
+
+
+<!--
+<div class>
+	Tools
+</div>
+
+-->
+
+<div id="mobbottombar" style="disply:none;">
+	<div class="">D&T</div>
+	<div class="">Animation</div>
+	<div class="">Layers</div>
+</div>
+
+<div class="hv_leftcontrolswrap">
+	
+	<div class="hv_lefttabswrap">
+		<div class="hv_lefttabs" thistab="hv_datetime_div">Date & Time</div>
+		<div class="hv_lefttabs" thistab="hv_animation_div">Animation</div>
+		<div class="hv_lefttabs" thistab="hv_layers_div">Layers</div>
+		<div class="closebutton">&nbsp;</div>
+	</div>
+
+	<div id="hv_datetime_div" class="hv_tabcont">
+	
+		<div class="hv_datetime_inner" style="width:90%;">
+	
+			<label class="hv_labels">Start Date/Time</label><br>
+			<input id="js-start-date-picker" type="text"><br>
+			
+			<label class="hv_labels">End Date/Time</label><br>
+			<input id="js-end-date-picker" type="text"><br>
+	
+		</div>
+		
+		
+		<div id="current-sources" class="hidden">
+			<div>Display:</div>
+			<div class="template data-source">
+				<p class="source-label"></p>
+				<p class="source-time">2022-08-11 00:00:00</p>
+				<p class="source-camera">
+					<label class="hv_labels">Lock Camera: </label>
+					<input class="source-camera-lock" type="checkbox"/>
+				</p>
+				<div class="source-opacity-block">
+					<label class="hv_labels">Opacity:</label>
+					<input class="source-opacity" type="range" min="0" max="1" step="0.01" value="1"/>
+				</div>
+				
+				<div style="padding-top:10px;text-align:center;">
+					<button type="button" class="source-remove hv_buttons1">Remove</button>
+				</div>
+				
+			</div>
+		</div>
+		
+		
+	</div>
+	
+	<div id="hv_animation_div" class="hv_tabcont">
+	
+		<div class="hv_animation_inner" style="width:80%;text-align:right;">
+	
+			<div class="hv_labels" for="js-date-range-frames" style="text-align:left;color:#ffffff;">Texture Resolution</div>
+			<select id="js-resolution-selector" class="hv_inputs1"><br>
+				<option value="256">Low (256x256)</option>
+				<option value="512">Average (512x512)</option>
+				<option value="1024">High (1024x1024)</option>
+				<option value="2048">2K (2048x2048)</option>
+				<option value="4096">4K (4096x4096)</option>
+			</select><br>
+			
+			<label class="hv_labels" for="js-date-range-frames">Number of Frames</label>
+			<input class="hv_inputs1" id="js-date-range-frames" name="js-date-range-frames" type="number"><br>			
+			
+			<label class="hv_labels">Frames per second</label>
+			<input id="js-animation-speed" class="hv_inputs1" type="number" value="24"><br>
+			
+			<label class="hv_labels">Duration (seconds)</label>
+			<input id="js-animation-duration" class="hv_inputs1" type="number" value="30">
+		
+		</div>
+		
+	</div>
+	
+	<div id="hv_layers_div" class="hv_tabcont">
+		
+		<label class="hv_labels">Observatory</label>&nbsp;
+		<select id="js-source-selector" class="hv_inputs1">
                 <!-- TODO: Fill this in with javascript -->
                 <option value="8">SDO AIA 94</option>
                 <option value="9">SDO AIA 131</option>
@@ -66,44 +160,170 @@
                 <option value="19">SDO HMI Mag</option>
                 <option value="4">SOHO LASCO C2</option>
                 <option value="5">SOHO LASCO C3</option>
+                <option value="0">SOHO EIT 171</option>
+                <option value="1">SOHO EIT 195</option>
+                <option value="2">SOHO EIT 284</option>
+                <option value="3">SOHO EIT 304</option>
+                <option value="7">SOHO MDI Continuum</option>
+                <option value="6">SOHO MDI Magnetogram</option>
+                <option value="20">STEREO-A EUVI-A 171</option>
+                <option value="21">STEREO-A EUVI-A 195</option>
+                <option value="22">STEREO-A EUVI-A 284</option>
+                <option value="23">STEREO-A EUVI-A 304</option>
+                <option value="28">STEREO-A COR1-A</option>
+                <option value="29">STEREO-A COR2-A</option>
+                <option value="24">STEREO-B EUVI-B 171</option>
+                <option value="25">STEREO-B EUVI-B 195</option>
+                <option value="26">STEREO-B EUVI-B 284</option>
+                <option value="27">STEREO-B EUVI-B 304</option>
+                <option value="30">STEREO-B COR1-B</option>
+                <option value="31">STEREO-B COR2-B</option>
+
+                <!-- TRACE is currently not supported. Use at your own risk (you'll just get an error).
+                <option value="75">TRACE 171</option>
+                <option value="76">TRACE 195</option>
+                <option value="77">TRACE 284</option>
+                <option value="78">TRACE 1216</option>
+                <option value="79">TRACE 1550</option>
+                <option value="80">TRACE 1600</option>
+                <option value="81">TRACE 1700</option>
+                <option value="82">TRACE white-light</option>
+                -->
+
+                <!--<option value="33">Yohkoh SXT AlMgMn</option>-->
+                <option value="34">Yohkoh SXT thin-Al</option>
+                <option value="35">Yohkoh SXT white-light</option>
+
+                <!-- <option value="83">MLSO COSMO KCor</option>-->
             </select>
+			
+			<div class="addsource_button_wrap">
+				<button id="js-add-source" class="hv_buttons1">Add Source</button>
+			</div>
+			
+			<!-- TESTING START needs display testing -->
+			<label for="js-helioviewer-movie">Load Movie</label>
+            <input id="js-helioviewer-movie", type="text" placeholder="Movie ID"/>
+            <button type="button" id="js-helioviewer-movie-load">Load</button>
+			<!-- TESTING END needs display testing -->
+			
+	</div>
 
-            <button id="js-add-source">Add Source</button>
 
-            <label for="js-resolution-selector">Texture Resolution</label>
-            <select id="js-resolution-selector">
-                <option value="256">Low (256x256)</option>
-                <option value="512">Average (512x512)</option>
-                <option value="1024">High (1024x1024)</option>
-                <option value="2048">2K (2048x2048)</option>
-                <option value="4096">4K (4096x4096)</option>
-            </select>
+	<div class="hv_playbackcontrols_div">
+		 
+		<div style="display:none;">
+			<button id="js-play-btn">Play</button>
+			<button id="js-pause-btn">Pause</button>
+		</div>
+		
+		<!-- TESTING START needs display testing -->
+			<div id="current-sources" class="hidden">
+				<h1>Display:</h1>
+				<div class="template data-source">
+					<p class="source-label"></p>
+					<p class="source-time">2022-08-11 00:00:00</p>
+					<p class="source-camera">
+						<label>Lock Camera: </label>
+						<input class="source-camera-lock" type="checkbox"/>
+					</p>
+					<div class="source-opacity-block">
+						<label>Opacity:</label>
+						<input class="source-opacity" type="range" min="0" max="1" step="0.01" value="1"/>
+					</div>
+					<button type="button" class="source-remove">Remove</button>
+				</div>
+			</div>
 
-            <label for="js-animation-speed">Animation FPS</label>
-            <input id="js-animation-speed" type="number" value="6"/>
+            <div id="current-events" class="hidden">
+                <h1>Events:</h1>
+                <div id="js-events" class="event-section">
+                </div>
+            </div>
+		<!-- TESTING END needs display testing -->
+		
+		
+		<input id="js-play-btn-main" class="hv_inputs1" type="image" src="images/playbutton_white1.png">
+		<!--<button id="js-pause-btn">Pause</button>-->
+	</div>
+	
+</div>
 
-            <button id="js-play-btn">Play</button>
-            <button id="js-pause-btn">Pause</button>
 
-            <label for="js-current-scene-time">Viewport Time</label>
-            <input id="js-current-scene-time" type="datetime-local"/>
+<!--
+<div class="grid-container">
+  <div class="grid-item main" style="">
+    <div id="timeline_div" class="items" style="">
+		<div class="item item1"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div><div class="item item2"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div><div class="item item3"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div><div class="item item4"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div><div class="item item5"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div><div class="item item6"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div><div class="item item7"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div><div class="item item8"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div><div class="item item9"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div><div class="item item10"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div><div class="item item11"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div><div class="item item12"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div><div class="item item13"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div><div class="item item14"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div><div class="item item15"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div><div class="item item16"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div><div class="item item17"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div><div class="item item18"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div><div class="item item19"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div><div class="item item20"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div><div class="item item21"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div><div class="item item22"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div><div class="item item23"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div><div class="item item24"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div><div class="item item25"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div><div class="item item26"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div><div class="item item27"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div><div class="item item28"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div><div class="item item29"><div class="timeline_txt">12/30/2000<br>12:58:58<br><span class="dtasrce_txt">STR-A > AIA > 4500</span><br></div></div>    </div>
+  </div>
+</div>
+-->
 
-        </div>
-        <div class="demo-sidebar" style="left: 230px">
-            <!-- <label>Camera Position: <span id="js-camera-position"></span></label> -->
-        </div>
-        <h1 id="js-current-time"></h1>
-        <div id="js-helios-viewport"></div>
-        <script src="helios_bundle.js" type="module" onload="updateHeliosConfiguration();"></script>
-        <script>
-            function updateHeliosConfiguration() {
-                let launch = new CustomEvent('InitializeHelios', {
-                    detail: {
-                        configuration: {backEnd: 'http://localhost:8081' }
-                    }
-                });
-                // document.dispatchEvent(launch);
-            }
-        </script>
-    </body>
+
+
+<input class="scene-time" id="js-current-scene-time" type="text" style="display:none;" />
+
+<div id="js-helios-viewport"></div>
+<script src="helios_bundle.js" type="module" onload="updateHeliosConfiguration();"></script>
+<script>
+	function updateHeliosConfiguration() {
+		let launch = new CustomEvent('InitializeHelios', {
+			detail: {
+				configuration: {backEnd: 'http://localhost:8081' }
+			}
+		});
+		// document.dispatchEvent(launch);
+	}
+</script>
+
+
+
+<script>
+const slider = document.querySelector('.items');
+let isDown = false;
+let startX;
+let scrollLeft;
+
+slider.addEventListener('mousedown', (e) => {
+  isDown = true;
+  slider.classList.add('active');
+  startX = e.pageX - slider.offsetLeft;
+  scrollLeft = slider.scrollLeft;
+});
+slider.addEventListener('mouseleave', () => {
+  isDown = false;
+  slider.classList.remove('active');
+});
+slider.addEventListener('mouseup', () => {
+  isDown = false;
+  slider.classList.remove('active');
+});
+slider.addEventListener('mousemove', (e) => {
+  if(!isDown) return;
+  e.preventDefault();
+  const x = e.pageX - slider.offsetLeft;
+  const walk = (x - startX) * 3; //scroll-fast
+  slider.scrollLeft = scrollLeft - walk;
+  //console.log(walk);
+});
+
+
+$(document).ready(function(){
+
+	$('.item').click(function(){
+		$('.item .timeline_txt').removeClass('activeTLitem');
+		$(this).find(".timeline_txt").addClass('activeTLitem'); // added by BAT
+	});
+	
+
+
+});
+
+
+</script>
+
+
+</body>
 </html>
+
+
