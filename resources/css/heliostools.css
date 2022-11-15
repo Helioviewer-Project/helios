@@ -37,7 +37,7 @@ body {
 	padding-bottom: 0px;
 	padding-right: 0px;
 	text-align: left;
-
+	z-index: 2;
 }
 
 .hv_lefttabs {
