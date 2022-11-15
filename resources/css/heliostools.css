@@ -1,0 +1,239 @@
+body {
+	width: 100%;
+	background: #000000;
+	margin-left:0px;
+	margin-top:80px;
+	font-family: arial;
+	font-size: 13px;
+}
+
+.hv_leftcontrolswrap {
+	position: relative;
+	float:left;
+	width:350px;
+	min-height:436px;
+	background:#000000;
+	border:1px solid #999999;
+	border-top-right-radius:12px;
+	border-bottom-right-radius:12px;
+	border-left: 0px solid transparent;
+	text-align: center;
+}
+
+.hv_lefttabswrap {
+	height:22px;
+	border-bottom: 1px solid #999999;
+	padding:12px;
+	padding-bottom: 0px;
+	padding-right: 0px;
+	text-align: left;
+
+}
+
+.hv_lefttabs {
+	display: inline-block;
+	width:75px;
+	height: 20px;
+	margin-left:3px;
+	padding:4px;
+	padding-bottom: 0px;
+	padding-top: 1px;
+	text-align: center;
+	background: #000000;
+	color: #ffffff;
+	border-top-left-radius:6px;
+	border-top-right-radius:6px;
+	border: 1px solid #999999;
+	border-bottom: 0px solid transparent;
+	cursor: pointer;
+	-webkit-user-select: none; /* Safari */        
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+/Edge */
+	user-select: none; /* Standard */
+	
+}
+
+	.tabActive {
+		background:#ffffff;
+		color:#000000;
+		font-weight:bold;	
+	}
+
+	.tabInactive {
+		background:#000000;
+		color:#ffffff;
+		font-weight:normal;
+	}
+
+	.hv_lefttabs:hover {
+		background: #ffffff;
+		color: #000000;
+	}
+
+.closebutton {
+	cursor:pointer;
+	position:absolute;
+	width:20px;
+	top:0px;
+	right:0px;
+	padding-right: 10px;
+	display: inline-block;
+	border-left: 1px solid #999999;
+	height: 35px;
+	color:#ffffff;
+	background-image: url('../images/closebutton1.png');
+	background-size:12px 11px;
+	background-repeat: no-repeat;
+	background-position:9px center;
+	border-top-right-radius: 10px;
+}
+
+	.closebutton:hover {
+		background: silver;
+		background-image: url('../images/closebutton2.png');
+		background-size:12px 11px;
+		background-repeat: no-repeat;
+		background-position:9px center;
+	}
+	
+	
+
+.hv_tabcont {
+	display: none;
+	padding: 70px;
+	padding-top:30px;
+	text-align: left;
+}
+
+
+.hv_playbackcontrols_div {
+	clear:both;
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+	padding-top:30px;
+}
+
+.hv_inputs1 {
+	width: 175px;
+	background: #000000;
+	color: #ffffff;
+	border-radius:5px;
+	border: 1px solid #999999;
+	padding: 5px;
+	margin-bottom:11px;
+}
+
+.hv_inputs2 {
+	width:50px;
+	background: #000000;
+	color: #ffffff;
+	border-radius:5px;
+	border: 1px solid #999999;
+	padding: 5px;
+	margin-bottom:11px;
+}
+
+	#js-date-range-frames {
+		width:50px;
+	}
+	
+	#js-animation-speed {
+		width: 50px;
+	}
+	
+	#js-animation-duration {
+		width: 50px;
+	}
+
+
+
+.hv_labels {
+	color: #ffffff;
+	padding-top:0px;
+	-webkit-user-select: none; /* Safari */        
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+/Edge */
+	user-select: none; /* Standard */
+}
+
+.hv_labels2 {
+	display:block;
+	float: right;
+	width:175px;
+	text-align: left;
+	color: #ffffff;
+	-webkit-user-select: none; /* Safari */        
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+/Edge */
+	user-select: none; /* Standard */
+}
+
+.addsource_button_wrap {
+	padding-top:10px;
+	text-align: left;
+}
+
+#js-add-source, .hv_buttons1 {
+	background: #ffffff;
+	color: #000000;
+	font-weight: normal;
+	border-radius:6px;
+	padding:5px;
+	font-size: 12px;
+}
+
+
+#js-play-btn-main {
+	width:45px;
+	height:45px;
+	border: 0px solid transparent;
+}
+
+
+@media screen and (max-width: 500px) {
+	
+	body {
+		margin-top: 40px;
+	}
+	
+	.hv_leftcontrolswrap {
+		width: 100%;
+		border-left: 0px solid transparent;
+		border-right: 0px solid transparent;
+		border-radius: 0px;
+	}
+	
+	.hv_lefttabswrap {
+	   padding-top: 0px;
+	   height: 45px;
+	}
+
+	.hv_lefttabs {
+	   padding-top: 12px;
+	   padding-bottom: 12px;
+	   border-top-left-radius: 0px;
+	   border-top-right-radius: 0px;
+	}
+	
+	.closebutton {
+		border-top-right-radius: 0px;
+		height: 45px;
+	}
+	
+	.hv_tabcont {
+		padding: 10px;
+	}
+	
+	.hv_inputs1 {
+		width: 100%;
+	}
+	
+	.grid-container {
+		bottom: 10px;
+	}
+	
+	.items {
+		height:;
+	}
+}
