@@ -162,16 +162,6 @@
             <input class="scene-time" id="js-current-scene-time" type="text"/>
         </h1>
         <div id="js-helios-viewport"></div>
-        <script src="helios_bundle.js" type="module" onload="updateHeliosConfiguration();"></script>
-        <script>
-            function updateHeliosConfiguration() {
-                let launch = new CustomEvent('InitializeHelios', {
-                    detail: {
-                        configuration: {backEnd: 'http://localhost:8081' }
-                    }
-                });
-                // document.dispatchEvent(launch);
-            }
-        </script>
+        <script src="helios_bundle.js" type="module"></script>
     </body>
 </html>
