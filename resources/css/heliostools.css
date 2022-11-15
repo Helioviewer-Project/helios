@@ -5,6 +5,9 @@
    z-index: 1;
 }
 
+#js-help {
+	z-index:2;
+}
 
 /* END move this elsewhere in a more appropriate CSS file  */
 
