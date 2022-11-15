@@ -1,3 +1,13 @@
+/* START move this elsewhere in a more appropriate CSS file  */
+
+#js-helios-viewport canvas {
+   position: absolute;
+   z-index: 1;
+}
+
+
+/* END move this elsewhere in a more appropriate CSS file  */
+
 body {
 	width: 100%;
 	background: #000000;
