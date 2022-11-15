@@ -79,7 +79,7 @@ body {
 	padding-right: 10px;
 	display: inline-block;
 	border-left: 1px solid #999999;
-	height: 35px;
+	height: 34px;
 	color:#ffffff;
 	background-image: url('../images/closebutton1.png');
 	background-size:12px 11px;
@@ -89,7 +89,7 @@ body {
 }
 
 	.closebutton:hover {
-		background: #e81123;/*silver;
+		background: #e9757f;/*silver;
 		background-image: url('../images/closebutton2.png');*/
 		background-image: url('../images/closebutton1.png');
 		background-size:12px 11px;
