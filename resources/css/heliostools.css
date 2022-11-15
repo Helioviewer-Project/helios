@@ -73,10 +73,10 @@ body {
 .closebutton {
 	cursor:pointer;
 	position:absolute;
-	width:20px;
+	width:30px;
 	top:0px;
 	right:0px;
-	padding-right: 10px;
+	padding-right: 0px;
 	display: inline-block;
 	border-left: 1px solid #999999;
 	height: 34px;
