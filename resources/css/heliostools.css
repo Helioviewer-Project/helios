@@ -81,7 +81,7 @@ body {
 	border-left: 1px solid #999999;
 	height: 35px;
 	color:#ffffff;
-	background-image: url('../images/closebutton1.png');
+	background-image: url('..images/closebutton1.png');
 	background-size:12px 11px;
 	background-repeat: no-repeat;
 	background-position:9px center;
@@ -90,7 +90,7 @@ body {
 
 	.closebutton:hover {
 		background: silver;
-		background-image: url('../images/closebutton2.png');
+		background-image: url('..images/closebutton2.png');
 		background-size:12px 11px;
 		background-repeat: no-repeat;
 		background-position:9px center;
