@@ -9,13 +9,19 @@
 	z-index:2;
 }
 
+
+#js-events {
+   display: none;
+}
+
+
 /* END move this elsewhere in a more appropriate CSS file  */
 
 body {
 	width: 100%;
 	background: #000000;
 	margin-left:0px;
-	margin-top:80px;
+	margin-top:0px;
 	font-family: arial;
 	font-size: 13px;
 }
