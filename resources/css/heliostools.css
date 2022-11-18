@@ -32,6 +32,7 @@ body {
 	width:350px;
 	min-height:436px;
 	background:#000000;
+	margin-top: 80px;
 	border:1px solid #999999;
 	border-top-right-radius:12px;
 	border-bottom-right-radius:12px;
