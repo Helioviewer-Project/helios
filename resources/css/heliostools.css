@@ -212,6 +212,17 @@ body {
 }
 
 
+
+#current-sources {
+    height: 100px;
+    overflow: auto;
+    border: 1px #e2e288 solid;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+
+
 @media screen and (max-width: 500px) {
 	
 	body {
