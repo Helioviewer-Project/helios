@@ -68,7 +68,7 @@ void main() {
     // If all three color values are below this threshold, then make them transparent.
     // then change the color to transparent. If any color is above the threshold, then don't change it
     // use the color sampled from the texture.
-    float transparent_threshold = 0.05f;
+    float transparent_threshold = 0.10f;
     bool should_be_transparent = color.x < transparent_threshold && color.y < transparent_threshold && color.z < transparent_threshold;
     if (should_be_transparent) {
         discard;

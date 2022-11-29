@@ -206,6 +206,11 @@ class Config {
          * This is a debug flag, currently disabled since this feature is still not well developed.
          */
         this.enable_features_and_events = false;
+
+        /**
+         * Texture load resolution
+         */
+        this.default_texture_resolution = 1024;
     }
 
     /**
