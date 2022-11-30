@@ -17,7 +17,6 @@ class AnimationControls {
         this._play_btn = document.getElementById(play_btn_id);
         this._pause_btn = document.getElementById(pause_btn_id);
         this._fps_input = document.getElementById(Config.animation_fps_id);
-        this._duration_input = document.getElementById(Config.animation_duration_id);
         this._InitializeClickListeners();
 
         /**
@@ -75,14 +74,22 @@ class AnimationControls {
         let range = Scene.GetTimeRange();
         this._start_time = range[0];
         this._end_time = range[1];
-        // 1 frame / Frames per second = Seconds per frame
+        // The delay between each frame is computed by inverting FPS to get
+        // seconds per frame.
+        // Animation uses SetInterval to create the animation, which requires
+        // time in milliseconds.
+        // 1 / Frames per second = Seconds per frame
         // Seconds per frame * 1000 ms/s = milliseconds per frame
-        // This can be reduced to 1000 / fps;
-        let fps = parseFloat(this._fps_input.value) || 15;
+        // This can be reduced to (1000ms/s) / fps => ms/f;
+        let fps = parseFloat(this._fps_input.value) || 24;
         this._frame_delay = (1000 / fps);
+
+        // Cadence is determined via the total number of frames available.
+        // First, ask the scene for the frame count, then divide the time range
+        // by that count to get the amount that time should move forward each frame.
+        let frame_count = Scene.GetMaxFrameCount();
         let time_range_seconds = ((this._end_time - this._start_time) / 1000);
-        let duration = parseFloat(this._duration_input.value) || 20;
-        this._cadence = time_range_seconds / duration / fps;
+        this._cadence = time_range_seconds / frame_count;
     }
 
     /**
@@ -104,7 +111,6 @@ class AnimationControls {
      * @typedef AnimationOptions
      * @type Object
      * @property fps Frames per second
-     * @property duration Duration in seconds
      */
     /**
      * Sets the values of the animation input fields
@@ -112,7 +118,6 @@ class AnimationControls {
      */
     SetValues(config) {
         this._fps_input.value = config.fps || this._fps_input.value;
-        this._duration_input.value = config.duration || this._duration_input.value;
     }
 
     /**

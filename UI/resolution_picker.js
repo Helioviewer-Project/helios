@@ -12,11 +12,14 @@ class ResolutionPicker {
      */
     constructor(resolution_select_id) {
         this._selector = document.getElementById(resolution_select_id);
-        // We capture when the user changes the resolution so we can update the scene
-        this._selector.addEventListener("change", (e) => {
-            let res = this.GetResolution();
-            Scene.UpdateResolution(res);
-        });
+        // Use an if block since having the texture picker displayed is optional.
+        if (this._selector) {
+             // We capture when the user changes the resolution so we can update the scene
+            this._selector.addEventListener("change", (e) => {
+                let res = this.GetResolution();
+                Scene.UpdateResolution(res);
+            });
+        }
     }
 
     /**
@@ -25,8 +28,12 @@ class ResolutionPicker {
      * @returns {number}
      */
     GetResolution() {
-        let value = this._selector.value;
-        return Number(value);
+        if (this._selector) {
+            let value = this._selector.value;
+            return Number(value);
+        } else {
+            return Config.default_texture_resolution;
+        }
     }
 }
 

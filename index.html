@@ -124,43 +124,13 @@
 		<div class="hv_animation_inner" style="width:80%;text-align:right;">
 	
 			<table style="margin:auto;width:95%;">
-			
-					<tr>
-						<td colspan="2">
-							<div class="hv_labels" for="js-date-range-frames" style="text-align:left;color:#ffffff;">Texture Resolution</div>
-							<select id="js-resolution-selector" class="hv_inputs1"><br>
-								<option value="256">Low (256x256)</option>
-								<option value="512">Average (512x512)</option>
-								<option value="1024">High (1024x1024)</option>
-								<option value="2048">2K (2048x2048)</option>
-								<option value="4096">4K (4096x4096)</option>
-							</select><br>
-						</td>
-					</tr>
-					
-					<tr>
-						<td style="text-align: left;">
-							<label class="hv_labels" for="js-date-range-frames" style="font-size:10px;">&nbsp;<br>No. of Frames</label>
-							<input class="hv_inputs1" id="js-date-range-frames" name="js-date-range-frames" type="number"><br>			
-						</td>
-					
-						<td style="text-align: left;">
-							<label class="hv_labels" style="font-size:10px;">Frames per second</label>
-							<input id="js-animation-speed" class="hv_inputs1" type="number" value="24"><br>
-						</td>
-					</tr>
-							
-					<tr>
-						<td style="text-align: left;">
-							<label class="hv_labels" style="font-size:10px;">Duration (seconds)</label>
-							<input id="js-animation-duration" class="hv_inputs1" type="number" value="30">
-						</td>
-						<td>
-							&nbsp;
-						</td>
-					</tr>
-					
-				</table>
+                <tr>
+                    <td style="text-align: left;">
+                        <label class="hv_labels" style="font-size:10px;">Frames per second</label>
+                        <input id="js-animation-speed" class="hv_inputs1" type="number" value="24"><br>
+                    </td>
+                </tr>
+            </table>
 		
 		</div>
 		
@@ -221,6 +191,9 @@
 
                 <!-- <option value="83">MLSO COSMO KCor</option>-->
             </select>
+
+            <label class="hv_labels" for="js-date-range-frames" style="font-size:10px;">&nbsp;<br>No. of Frames</label>
+            <input class="hv_inputs1" id="js-date-range-frames" name="js-date-range-frames" type="number"><br>			
 			
 			<div class="addsource_button_wrap">
 				<button id="js-add-source" class="hv_buttons1">Add Source</button>

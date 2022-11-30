@@ -199,7 +199,7 @@ class Scene {
         // If camera is locked on to a specific model, then update its position.
         // This must happen after the model time updates have completed.
         if (this._camera_lock) {
-            this._scene.MoveCamera(this._camera_lock.model.GetObserverPosition());
+            this._scene.MoveCamera(this._camera_lock.model.GetObserverPosition(), true);
             this._scene.PointCamera(await this._camera_lock.model.GetPosition());
         }
 
@@ -262,6 +262,30 @@ class Scene {
      */
     Refresh() {
         this.SetTime(this.GetTime());
+    }
+
+    /**
+     * Returns the maximum number of frames.
+     */
+    GetMaxFrameCount() {
+        // this._models is a json object, not an array, so we need to get keys to iterate over it.
+        let ids = Object.keys(this._models);
+        if (ids.length > 0) {
+            // Get the initial frame count
+            let max = this._models[ids[0]].model.GetFrameCount();
+            // Simple linear search to find the maximum.
+            for (const id of ids) {
+                let solar_object = this._models[id];
+                let count = solar_object.model.GetFrameCount();
+                if (count > max) {
+                    max = count;
+                }
+            }
+
+            return max;
+        } else {
+            throw "No models available";
+        }
     }
 }
 

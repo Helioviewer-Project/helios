@@ -113,21 +113,26 @@ class ThreeScene {
     /**
      * Moves the camera to the given position
      * @param {Coordinates} position
+     * @param {boolean} skip_tween Determines if smoothing should be skipped or not.
      */
-    MoveCamera(position) {
+    MoveCamera(position, skip_tween) {
         let camera = this._camera;
-        const tween = new Tween(this._camera.position)
-            .to(position, Config.camera_tween_time)
-            .easing(Easing.Cubic.InOut)
-            .onUpdate(() => {
-                camera.lookAt(new Vector3(0, 0, 0));
-            })
-            .start();
-        const up_tween = new Tween(this._camera.up)
-            .to(new Vector3(0, 1, 0), Config.camera_tween_time)
-            .easing(Easing.Cubic.InOut)
-            .start();
-
+        if (skip_tween) {
+            camera.position.copy(position);
+            camera.up = new Vector3(0, 1, 0);
+        } else {
+            const tween = new Tween(this._camera.position)
+                .to(position, Config.camera_tween_time)
+                .easing(Easing.Cubic.InOut)
+                .onUpdate(() => {
+                    camera.lookAt(new Vector3(0, 0, 0));
+                })
+                .start();
+            const up_tween = new Tween(this._camera.up)
+                .to(new Vector3(0, 1, 0), Config.camera_tween_time)
+                .easing(Easing.Cubic.InOut)
+                .start();
+        }
     }
 
     /**

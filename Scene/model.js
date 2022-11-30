@@ -182,6 +182,13 @@ class Model {
     }
 
     /**
+     * Returns the number of frames attached to this model
+     */
+    GetFrameCount() {
+        return this.data.length;
+    }
+
+    /**
      * Cleans up and destroys this model.
      */
     dispose() {

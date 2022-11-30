@@ -53,7 +53,11 @@ class EventUI {
         // Add it to the DOM
         let container = document.getElementById('current-events');
         container.appendChild(div);
-        container.classList.remove('hidden');
+        if (this._events.length > 0) {
+            container.classList.remove('hidden');
+        } else {
+            container.classList.add('hidden');
+        }
     }
 
     /**

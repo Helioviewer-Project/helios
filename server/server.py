@@ -72,6 +72,15 @@ def get_events():
     from api.events import lookup_hek_events
     return _exec(lambda : lookup_hek_events(start, end))
 
+@app.route("/psp")
+def psp_position():
+    _validate_input(["start", "end"])
+    start = _parse_date(request.args["start"])
+    end = _parse_date(request.args["end"])
+
+    from api.psp_position import get_psp_position
+    return _exec(lambda : get_psp_position(start, end))
+
 # This endpoint is used to convert between coordinate data from the HEK
 @app.route("/event/position")
 def event_position():
