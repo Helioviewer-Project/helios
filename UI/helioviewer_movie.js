@@ -82,11 +82,23 @@ class HelioviewerMovie {
         return HelioviewerToHelios(str);
     }
 
+    _GetHumanReadableLayer(layer) {
+        let cutoff = layer.indexOf('1');
+        if (cutoff == -1) {
+            cutoff = layer.indexOf('0');
+        } if (cutoff == -1) {
+            cutoff = layer.length;
+        }
+
+        let result = layer.slice(0, cutoff);
+        return result.join(" ");
+    }
+
     _MatchLayerToSource(layer, source_list) {
         let filtered_sources = source_list;
         // For each element in layer
-        for (const data of layer) {
-            let str_to_check = this._CleanSource(data);
+        for (var data of layer) {
+            var str_to_check = this._CleanSource(data);
             // Filter the option list down via that element
             // by checking if the text contains it.
             filtered_sources = filtered_sources.filter((e) => e.textContent.indexOf(str_to_check) >= 0);
@@ -101,7 +113,7 @@ class HelioviewerMovie {
             return parseInt(filtered_sources[0].value);
         } else {
             // If there are multiple results, throw error
-            throw "Couldn't match movie to supported sources";
+            throw "Data source " + this._GetHumanReadableLayer(layer) + " is unsupported";
         }
     }
 
@@ -184,8 +196,7 @@ class HelioviewerMovie {
             let data = await this._GetMovieData(movie_id);
             this._LoadMovie(data);
         } catch (e) {
-            console.error(e);
-            alert(`Movie ${movie_id} is unsupported. Please contact us to see about adding support for it.`);
+            alert(e);
         }
     }
 };
