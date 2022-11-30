@@ -17,6 +17,7 @@ body {
     padding-top: 15px;
     padding-right: 10px;
     left: 10px;
+    top: 25px;
     overflow-y: auto;
     max-height: calc(100vh - 15px);
 }
@@ -55,4 +56,11 @@ h1.time-label {
 
 .current-events {
     color: white;
+}
+
+.version {
+    position: absolute;
+    top: 0;
+    left: 10px;
+    font-size: 0.8em;
 }
