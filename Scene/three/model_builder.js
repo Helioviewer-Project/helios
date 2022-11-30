@@ -272,14 +272,14 @@ function _IsMarkerModel(model) {
 function UpdateModelLayeringOrder(model, order) {
     if (_IsSolarModel(model)) {
         model.children[0].material.polygonOffset = true;
-        model.children[0].material.polygonOffsetUnits = (order - 1) * -1000;
+        model.children[0].material.polygonOffsetUnits = (order - 1) * -1000000;
         model.children[0].material.polygonOffsetFactor = (order - 1) * -1;
         model.children[1].material.polygonOffset = true;
         model.children[1].material.polygonOffsetFactor = (order - 1) * 2;
-        model.children[1].material.polygonOffsetUnits = (order - 1) * 1000;
+        model.children[1].material.polygonOffsetUnits = (order - 1) * 1000000;
     } else if (_IsMarkerModel(model)) {
         model.material.polygonOffset = true;
-        model.material.polygonOffsetUnits = (order - 1) * 1000;
+        model.material.polygonOffsetUnits = (order - 1) * 1000000;
         model.material.polygonOffsetFactor = (order - 1) * 1;
     }
 }

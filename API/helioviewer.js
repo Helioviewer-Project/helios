@@ -144,11 +144,15 @@ class Helioviewer {
      * @param {Date} day Day to query events. hours/minutes/seconds of the date are ignored.
      */
     async GetEventsForDay(day) {
-        let date_str = ToAPIDate(day);
-        let api_url = this.GetApiUrl() + "getEvents/?eventType=**&startTime=" + date_str;
-        let result = await fetch(api_url);
-        let data = await result.json();
-        return data;
+        if (Config.enable_features_and_events) {
+            let date_str = ToAPIDate(day);
+            let api_url = this.GetApiUrl() + "getEvents/?eventType=**&startTime=" + date_str;
+            let result = await fetch(api_url);
+            let data = await result.json();
+            return data;
+        } else {
+            return [];
+        }
     }
 
     /**
