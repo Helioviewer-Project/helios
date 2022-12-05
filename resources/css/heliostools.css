@@ -242,8 +242,14 @@ body {
 	}
 	
 	.hv_lefttabswrap {
-	   padding-top: 0px;
-	   height: 45px;
+		margin-top: 0px;
+		padding-top: 0px;
+		height: 45px;
+	}
+
+	#js-sidebar {
+		bottom: 0;
+		position: absolute;
 	}
 
 	.hv_lefttabs {
@@ -264,6 +270,8 @@ body {
 	
 	.hv_inputs1 {
 		width: 100%;
+		height: 30px;
+		font-size: 17px;
 	}
 	
 	.grid-container {
