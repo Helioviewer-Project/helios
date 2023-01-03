@@ -25,13 +25,6 @@
 
 
 <style>
-body {
-  align-items: center;
-  background-color: #000;
-  display: flex;
-  justify-content: center;
-  height: 100vh;
-}
 
 .form {
   background-color: #15172b;
@@ -73,9 +66,9 @@ body {
 }
 
 .input {
-  background-color: #303245;
+  background-color: transparent;
   border-radius: 12px;
-  border: 0;
+  border: 1px solid #ffffff;
   box-sizing: border-box;
   color: #eee;
   font-size: 18px;
@@ -127,7 +120,7 @@ body {
   color: #808097;
 }
 
-.input:focus ~ .placeholder {
+.input:focus ~ .placeholder { /* label on focus */
   color: #dc2f55;
 }
 
