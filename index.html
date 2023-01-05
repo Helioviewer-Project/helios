@@ -425,9 +425,10 @@
 
 
 <script>
-
-$(".closebutton").click(function(){
-	$('#js-sidebar').hide('slide', {direction: 'left'}, 1000);
+$(document).ready(function(){
+	$(".closebutton").click(function(){
+		$('#js-sidebar').hide('slide', {direction: 'left'}, 1000);
+	});
 });
 </script>
 
