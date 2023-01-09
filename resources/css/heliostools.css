@@ -26,6 +26,10 @@ body {
 	font-size: 13px;
 }
 
+.hv_leftcontrolsswitch {
+	writing-mode: vertical-rl;
+}
+
 .hv_leftcontrolswrap {
 	position: relative;
 	float:left;
@@ -40,6 +44,8 @@ body {
 	text-align: center;
 	z-index: 2;
 }
+
+
 
 .hv_lefttabswrap {
 	height:22px;
@@ -119,10 +125,32 @@ body {
 	
 
 
-	#hv_datetime_div {
-		height: 220px;
-		overflow: auto;		
+#hv_datetime_div {
+	height: 220px;
+	overflow: auto;		
+}
+
+
+
+	#hv_datetime_div::-webkit-scrollbar {
+	  width: 10px;
 	}
+
+	/* Track */
+	#hv_datetime_div::-webkit-scrollbar-track {
+	  background: #f1f1f1; 
+	}
+	 
+	/* Handle */
+	#hv_datetime_div::-webkit-scrollbar-thumb {
+	  background: #888; 
+	}
+
+	/* Handle on hover */
+	#hv_datetime_div::-webkit-scrollbar-thumb:hover {
+	  background: #555; 
+	}
+
 
 .hv_tabcont {
 	display: none;
@@ -173,7 +201,10 @@ body {
 		width: 50px;
 	}
 
-
+#js-source-selector option {
+	background:#999999;
+	color:#EEEEEE;
+}
 
 .hv_labels {
 	color: #ffffff;
