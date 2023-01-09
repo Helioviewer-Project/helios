@@ -138,7 +138,8 @@ body {
 
 	/* Track */
 	#hv_datetime_div::-webkit-scrollbar-track {
-	  background: #f1f1f1; 
+		background: #000000;
+		border: solid 1px darkgray;
 	}
 	 
 	/* Handle */
