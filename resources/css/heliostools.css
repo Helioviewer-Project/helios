@@ -117,7 +117,12 @@ body {
 		background-position:9px center;
 	}
 	
-	
+
+
+	#hv_datetime_div {
+		height: 220px;
+		overflow: auto;		
+	}
 
 .hv_tabcont {
 	display: none;
