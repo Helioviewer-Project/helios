@@ -155,7 +155,7 @@ body {
 
 .hv_tabcont {
 	display: none;
-	padding: 70px;
+	padding: 10px;
 	padding-top:30px;
 	text-align: left;
 }
@@ -201,6 +201,11 @@ body {
 	#js-animation-duration {
 		width: 50px;
 	}
+
+.obs_date_div {
+	display: inline-block;
+    width: 47%;
+}
 
 #js-source-selector option {
 	background:#999999;
