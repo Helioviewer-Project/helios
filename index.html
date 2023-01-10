@@ -190,7 +190,7 @@
 
 <div id="mobbottombar" style="display:none;">
 	<div class="">Dates & Layers</div>
-	<div class="">Animation</div>
+	<!--<div class="">Animation</div>-->
 	<!--<div class="">Layers</div>-->
 </div>
 
@@ -213,7 +213,7 @@
 	
 		<div class="hv_datetime_inner" style="width:90%;">
 	
-			<div class="input-container ic1">
+			<div class="input-container ic1 obs_date_div">
 				<input id="js-start-date-picker" class="input hv_inputs1" type="text" placeholder=" " />
 				<div class="cut"></div>
 				<label for="js-start-date-picker" class="placeholder">Start Date/Time</label>
@@ -226,7 +226,7 @@
 			<input class="hv_inputs1" id="js-end-date-picker" type="text"><br>
 			-->
 			
-			<div class="input-container ic1">
+			<div class="input-container ic1 obs_date_div">
 				<input id="js-end-date-picker" class="input hv_inputs1" type="text" placeholder=" " />
 				<div class="cut"></div>
 				<label for="js-end-date-picker" class="placeholder">End Date/Time</label>
@@ -296,18 +296,20 @@
 				<input  id="js-date-range-frames" name="js-date-range-frames" type="number" class="input hv_inputs1" />
 				<div class="cut"></div>
 				<label for="js-date-range-frames" class="placeholder">No. of Frames</label>
-			</div>
-
-            <label class="hv_labels" for="js-date-range-frames" style="font-size:10px;">&nbsp;<br>No. of Frames</label>
-            <input class="hv_inputs1" id="js-date-range-frames" name="js-date-range-frames" type="number"><br>			
+			</div>		
 			
 			<div class="addsource_button_wrap">
 				<button id="js-add-source" class="hv_buttons1">Add Source</button>
 			</div>
 			
-			<!-- TESTING START needs display testing -->
-			<label for="js-helioviewer-movie">Load Movie</label>
-            <input class="hv_inputs1" id="js-helioviewer-movie", type="text" placeholder="Movie ID"/>
+			<div class="input-container ic1">
+				<input  id="js-helioviewer-movie" name="js-helioviewer-movie" type="text" class="input hv_inputs1"  placeholder=" " />
+				<div class="cut"></div>
+				<label for="js-date-range-frames" class="placeholder">Load Movie</label>
+			</div>
+			
+			
+			
             <button type="button" id="js-helioviewer-movie-load" class="hv_buttons1">Load</button>
 			<!-- TESTING END needs display testing -->	
 
