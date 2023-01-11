@@ -117,10 +117,8 @@ body {
 
 	.closebutton:hover {
 		/*background: #e9757f; */
-		background: url('../images/closebgred_transp1.png') top left repeat, url('../images/closebutton2.png');
-		background-size:12px 11px;
-		background-repeat: no-repeat;
-		background-position:9px center;
+		background: url('../images/closebgred_transp1.png') top left repeat, url('../images/closebutton2.png') 9px center no-repeat 12px 11px;
+		/*background-size:12px 11px;*/
 	}
 	
 
