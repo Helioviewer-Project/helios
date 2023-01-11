@@ -116,7 +116,8 @@ body {
 }
 
 	.closebutton:hover {
-		background: #e9757f;/*silver;*/
+		/*background: #e9757f; */
+		background-image: url('../images/closebgred_transp1.png');
 		background-image: url('../images/closebutton2.png');
 		background-size:12px 11px;
 		background-repeat: no-repeat;
@@ -191,7 +192,7 @@ body {
 }
 
 	#js-date-range-frames {
-		width:50px;
+		width:150px;
 	}
 	
 	#js-animation-speed {
