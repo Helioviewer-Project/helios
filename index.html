@@ -109,12 +109,13 @@
   position: absolute;
   transform-origin: 0 50%;
   transition: transform 200ms, color 200ms;
-  top: 20px;
+  top: 10px; /* 20px */
 }
 
 .input:focus ~ .placeholder,
 .input:not(:placeholder-shown) ~ .placeholder {
   transform: translateY(-27px) translateX(10px) scale(0.75);
+  top: 20px;
 }
 
 .input:not(:placeholder-shown) ~ .placeholder {
