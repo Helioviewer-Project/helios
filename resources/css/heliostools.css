@@ -34,7 +34,7 @@ body {
 	position: relative;
 	float:left;
 	width:350px;
-	min-height: 376px; /*436px;*/
+	min-height: 426px; /*436px;*/
 	background-image: url('../images/blackbg_transp1.png');
 	margin-top: 80px;
 	border:1px solid #999999;
@@ -124,7 +124,7 @@ body {
 
 
 #hv_datetime_div {
-	height: 220px;
+	height: 270px;
 	overflow: auto;		
 }
 
@@ -163,8 +163,8 @@ body {
 	clear:both;
 	position: absolute;
 	width: 100%;
+	height: 60px;
 	bottom: 0;
-	padding-top:30px;
 }
 
 .hv_inputs1 {
