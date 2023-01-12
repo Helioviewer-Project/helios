@@ -451,8 +451,16 @@
 
 <script>
 $(document).ready(function(){
+	let contopen='yes';
 	$(".closebutton").click(function(){
-		$('#js-sidebar').hide('slide', {direction: 'left'}, 1000);
+		if(contopen=='yes') {
+			$('#js-sidebar').hide('slide', {direction: 'left'}, 650);
+			contopen='no';
+		}
+		else if(contopen=='no'){
+			$('#js-sidebar').show('slide', {direction: 'left'}, 650);
+			contopen='yes';
+		}
 	});
 });
 </script>
