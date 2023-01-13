@@ -34,6 +34,14 @@ export default class Scene {
         this._models = {};
 
         /**
+         * Generic assets being managed by the scene.
+         * @TODO existing sun models should conform to the asset interface spec.
+         */
+        this._assets = {};
+
+        this._asset_loaders = [];
+
+        /**
          * Current model count used for creating IDs
          * @private
          */
@@ -113,7 +121,7 @@ export default class Scene {
             let model = await sun.GetModel();
             this._scene.AddModel(model);
 
-            let id = this._count++;
+            let id = this._CreateId();
             this._models[id] = {
                 id: id,
                 source: source,
@@ -138,6 +146,8 @@ export default class Scene {
 
             sun.SetTime(this._current_time);
             this._SortLayers();
+
+            await this._LoadAssets(start, end, cadence);
             // End the loading animation
             Loader.stop();
             this._UpdateEvents();
@@ -331,6 +341,39 @@ export default class Scene {
             return max;
         } else {
             return 0;
+        }
+    }
+
+    /**
+     * Add a generic asset to the scene.
+     * The asset instance must adhere to the asset interface specification (see assets folder).
+     * @param {Asset} asset
+     */
+    async AddAsset(asset) {
+        // Add the asset renderable object to the scene
+        this._scene.AddModel(await asset.GetRenderableModel());
+        // Track the asset
+        let id = this._CreateId();
+        this._assets[id] = asset;
+    }
+
+    /**
+     * Registers an asset loader.
+     * This is a function that will be executed when data is requested
+     */
+    RegisterAssetLoader(loader) {
+        this._asset_loaders.push(loader);
+    }
+
+    async _LoadAssets(start, end, cadence) {
+        let promises = [];
+        // Iterate over all asset loaders and request their data
+        for (const loader of this._asset_loaders) {
+            promises.push(loader(start, end, cadence, this));
+        }
+        // Wait for all assets to finish loading
+        for (const promise of promises) {
+            await promise;
         }
     }
 
