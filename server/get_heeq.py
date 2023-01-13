@@ -1,5 +1,6 @@
 from argparse import ArgumentParser
 from sunpy.map import Map
+import sunpy.coordinates
 from astropy.coordinates.sky_coordinate import SkyCoord
 import astropy.units as u
 import math
@@ -14,13 +15,7 @@ PROGRAM_ARGS = [
     (['jp2'], {'type': str, 'help': 'JP2 file to extract coordinates from'})
 ]
 
-def load_reference_point():
-    ref = None
-    with open("ref_point.pickle", "rb") as fp:
-        ref = pickle.load(fp)
-    return ref
-
-REFERENCE_POINT = load_reference_point()
+REFERENCE_POINT = sunpy.coordinates.get_earth("2018-08-11 00:00:00")
 
 def main(jp2: str):
     heeq_coords = get_heeq_coordinates_from_jp2_file(jp2)
@@ -44,33 +39,13 @@ def get_heeq_coordinates_from_jp2(jp2_map: Map):
 
 def convert_skycoords_to_heeq(base_coords):
     coords = base_coords.transform_to(REFERENCE_POINT)
-    longitude = dms_to_radians(coords.lon.dms)
-    latitude = dms_to_radians(coords.lat.dms)
-    radius = coords.radius.to_value("km")
+    rsun_coords = SkyCoord(coords, unit="deg,deg,solRad")
+    xyz = rsun_coords.represent_as("cartesian")
     return {
-        "x": get_heeq_x_from_stonyhurst(radius, latitude, longitude),
-        "y": get_heeq_y_from_stonyhurst(radius, latitude, longitude),
-        "z": get_heeq_z_from_stonyhurst(radius, latitude, longitude)
+        "x": xyz.x.value,
+        "y": xyz.y.value,
+        "z": xyz.z.value
     }
-
-def get_heeq_x_from_stonyhurst(radius, lat, long):
-    return radius * math.cos(lat) * math.cos(long)
-
-def get_heeq_y_from_stonyhurst(radius, lat, long):
-    return radius * math.cos(lat) * math.sin(long)
-
-def get_heeq_z_from_stonyhurst(radius, lat, long):
-    return radius * math.sin(lat)
-
-def dms_to_radians(dms):
-    degrees = dms_to_degrees(dms)
-    return (degrees * math.pi) / 180
-
-def dms_to_degrees(dms):
-    degrees = dms.d
-    degrees += (dms.m / 60)
-    degrees += (dms.s / 3600)
-    return degrees
 
 #######################
 # Template code below #

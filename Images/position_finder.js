@@ -18,17 +18,14 @@ class PositionFinder {
     }
 
     /**
-     * Converts HEEQ coordinates into scene coordinates
+     * Converts coordinates returned from the position API into scene coordinates
      */
     _ToSceneCoordinates(coordinates) {
-        // Subject to change, but for now use a factor of 10^6.
-        // Chosen because Daniel's gut says it feels right.
-        let divider = Math.pow(10, 6);
-        return new Coordinates(
-            coordinates.x / divider,
-            coordinates.y / divider,
-            coordinates.z / divider
-        );
+        // This function used to be used to scale down large values into small values within
+        // rendering range. However, the API is now expected to return coordinates in X,Y,Z R_SUN units.
+        // If coordinates are ever returned in a non-standard format, this function may be used to
+        // transform them into usable values for rendering.
+        return coordinates;
     }
 }
 
