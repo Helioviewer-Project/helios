@@ -452,23 +452,25 @@
 <script>
 $(document).ready(function(){
 	let contopen='yes';
+	if( && window.matchMedia("(max-width: 500px)").matches) {
+		slideoutdirec='down';
+	}
+	else {
+		slideoutdirec='left';
+	}	
 	$(".closebutton").click(function(){
 		if(contopen=='yes') {
-			$('#js-sidebar').hide('slide', {direction: 'left'}, 650);
-			contopen='no';
-			$(".hv_leftcontrolsswitch").show('slide', {direction: 'left'}, 650);
+			$('#js-sidebar').hide('slide', {direction: slideoutdirec}, 650);
+			$(".hv_leftcontrolsswitch").show('slide', {direction: slideoutdirec}, 650);
+			contopen='no';		
 		}
-		/*else if(contopen=='no'){
-			$('#js-sidebar').show('slide', {direction: 'left'}, 650);
-			contopen='yes';
-		}*/
 	});
 	
 	$(".hv_leftcontrolsswitch").click(function(){
 		if(contopen=='no'){
-			$(".hv_leftcontrolsswitch").hide('slide', {direction: 'left'}, 650);
+			$(".hv_leftcontrolsswitch").hide('slide', {direction: slideoutdirec}, 650);
 			contopen='yes';
-			$('#js-sidebar').show('slide', {direction: 'left'}, 650);
+			$('#js-sidebar').show('slide', {direction: slideoutdirec}, 650);
 			
 		}
 	});
@@ -524,3 +526,5 @@ $(document).ready(function(){
 
 </body>
 </html>
+
+
