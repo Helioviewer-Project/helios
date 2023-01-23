@@ -340,3 +340,16 @@ body {
 		height:;
 	}
 }
+
+
+@media screen and (min-width: 500px) {
+	.hv_leftcontrolsswitch {
+		writing-mode: horizontal-tb;
+		margin-top: 0px;
+		bottom:0;
+		margin-left: 20%;
+		border-left:1px solid #ffffff;
+		border-top-left-radius: 5px;
+		border-bottom-right-radius: 0px;
+	}
+}
