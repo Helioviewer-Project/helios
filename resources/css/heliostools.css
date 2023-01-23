@@ -27,6 +27,7 @@ body {
 }
 
 .hv_leftcontrolsswitch {
+	display: none;
 	writing-mode: vertical-rl;
 }
 
