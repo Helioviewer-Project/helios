@@ -355,6 +355,8 @@ body {
 @media screen and (max-width: 800px) and (orientation: landscape) {
 		
 	.hv_leftcontrolswrap {
-		min-height: 205px;
+		    max-height: 205px;
+			min-height: 100px;
 	}
+	
 }
