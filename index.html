@@ -456,6 +456,7 @@ $(document).ready(function(){
 		if(contopen=='yes') {
 			$('#js-sidebar').hide('slide', {direction: 'left'}, 650);
 			contopen='no';
+			$(".hv_leftcontrolsswitch").show('slide', {direction: 'left'}, 650);
 		}
 		/*else if(contopen=='no'){
 			$('#js-sidebar').show('slide', {direction: 'left'}, 650);
@@ -465,8 +466,10 @@ $(document).ready(function(){
 	
 	$(".hv_leftcontrolsswitch").click(function(){
 		if(contopen=='no'){
-			$('#js-sidebar').show('slide', {direction: 'left'}, 650);
+			$(".hv_leftcontrolsswitch").hide('slide', {direction: 'left'}, 650);
 			contopen='yes';
+			$('#js-sidebar').show('slide', {direction: 'left'}, 650);
+			
 		}
 	});
 	
