@@ -342,7 +342,7 @@ body {
 }
 
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 800px) {
 	.hv_leftcontrolsswitch {
 		writing-mode: horizontal-tb;
 		margin-top: 0px;
@@ -351,5 +351,6 @@ body {
 		border-left:1px solid #ffffff;
 		border-top-left-radius: 5px;
 		border-bottom-right-radius: 0px;
+		border-bottom: 0px solid #000000;
 	}
 }
