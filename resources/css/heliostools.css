@@ -286,7 +286,7 @@ body {
 }
 
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 800px) {
 	
 	body {
 		margin-top: 40px;
@@ -339,10 +339,7 @@ body {
 	.items {
 		height:;
 	}
-}
 
-
-@media screen and (max-width: 800px) {
 	.hv_leftcontrolsswitch {
 		writing-mode: horizontal-tb;
 		margin-top: 0px;
