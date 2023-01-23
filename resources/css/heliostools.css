@@ -37,6 +37,7 @@ body {
     border: 1px solid #ffffff;
     border-top-right-radius: 5px;
 	border-bottom-right-radius: 5px;
+	border-left: 0px solid #000000;
 }
 
 .hv_leftcontrolswrap {
@@ -125,8 +126,8 @@ body {
 }
 
 	.closebutton:hover {
-		/*background: #e9757f; */
-		background: url('../images/closebgred_transp1.png') top left repeat, url('../images/closebutton2.png') 9px center no-repeat 12px 11px;
+		background: #e9757f; 
+		/* background: url('../images/closebgred_transp1.png') top left repeat, url('../images/closebutton2.png') 9px center no-repeat 12px 11px;   */
 		/*background-size:12px 11px;*/
 	}
 	
