@@ -342,7 +342,7 @@ body {
 }
 
 
-@media screen and (min-width: 500px) {
+@media screen and (max-width: 500px) {
 	.hv_leftcontrolsswitch {
 		writing-mode: horizontal-tb;
 		margin-top: 0px;
