@@ -29,6 +29,14 @@ body {
 .hv_leftcontrolsswitch {
 	display: none;
 	writing-mode: vertical-rl;
+	margin-top: 80px;
+    position: absolute;
+    z-index: 2;
+    cursor: pointer;
+    padding: 4px;
+    border: 1px solid #ffffff;
+    border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
 }
 
 .hv_leftcontrolswrap {
