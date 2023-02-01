@@ -22,12 +22,12 @@ $(document).ready(function(){
   $("#js-play-btn-main").click(function(){
 		if(playcontrolstate=='play') {
 			$('#js-play-btn').trigger('click');
-			$("#js-play-btn-main").attr('src','..images/pausebutton_white1.png').fadeIn();
+			$("#js-play-btn-main").attr('src','resources/images/pausebutton_white1.png').fadeIn();
 			playcontrolstate='pause';
 		}
 		else if(playcontrolstate=='pause') {
 			$('#js-pause-btn').trigger('click');
-			$("#js-play-btn-main").attr('src','..images/playbutton_white1.png').fadeIn();
+			$("#js-play-btn-main").attr('src','resources/images/playbutton_white1.png').fadeIn();
 			playcontrolstate='play';
 		}
   });
@@ -35,15 +35,15 @@ $(document).ready(function(){
 	// hover and press Play/Pause button behavior
 	$('#js-play-btn').hover(function() {
 		if(playcontrolstate=='play') {
-			$('#js-play-btn-main').attr('src','..images/playbutton_white2.png');
+			$('#js-play-btn-main').attr('src','resources/images/playbutton_white2.png');
 		} else if(playcontrolstate=='pause') {
-			$('#js-play-btn-main').attr('src','..images/pausebutton_white2.png');
+			$('#js-play-btn-main').attr('src','resources/images/pausebutton_white2.png');
 		}
 	}, function() {
 		if(playcontrolstate=='play') {
-			$('#js-play-btn-main').attr('src','..images/playbutton_white1.png');
+			$('#js-play-btn-main').attr('src','resources/images/playbutton_white1.png');
 		} else if(playcontrolstate=='pause') {
-			$('#js-play-btn-main').attr('src','..images/pausebutton_white1.png');
+			$('#js-play-btn-main').attr('src','resources/images/pausebutton_white1.png');
 		}
 	});
   
