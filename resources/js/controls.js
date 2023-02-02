@@ -33,7 +33,7 @@ $(document).ready(function(){
   });
   
 	// hover and press Play/Pause button behavior
-	$('#js-play-btn').hover(function() {
+	$('#js-play-btn-main').hover(function() {
 		if(playcontrolstate=='play') {
 			$('#js-play-btn-main').attr('src','https://gl.helioviewer.org/btaylor/resources/images/playbutton_white2.png');
 		} else if(playcontrolstate=='pause') {
