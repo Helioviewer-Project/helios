@@ -126,7 +126,7 @@ body {
 }
 
 	.closebutton:hover {
-		background: #e9757f; 
+		background: #ab2e39; /*#e9757f; */
 		background-image: url('../images/closebutton1.png');
 		background-size:12px 11px;
 		background-repeat: no-repeat;
