@@ -61,6 +61,7 @@
         top: calc(var(--vh, 1vh) * 100 - var(--tab-button-height));
     }
 
+    /*
     #loader {
         position: absolute;
         left: 5px;
@@ -68,7 +69,16 @@
         bottom: calc(var(--vh, 1vh) * 100 - 145px);
         transition: bottom var(--sidebar-transition-speed) var(--sidebar-transition-ease);
     }
+    */
 
+    #loader {
+        position: absolute;
+        right: 0;
+        width: 250px;
+        height: auto;
+    }
+    
+    
     #loader.closed {
         bottom: 5px;
     }
