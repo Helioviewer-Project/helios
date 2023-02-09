@@ -153,6 +153,10 @@ class ThreeScene {
         this._scene.remove(model);
     }
 
+    GetTextureInitFunction() {
+        return this._renderer.initTexture;
+    }
+
     _EnableDebug() {
         const axesHelper = new AxesHelper(5);
         this._scene.add(axesHelper);

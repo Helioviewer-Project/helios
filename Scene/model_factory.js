@@ -16,9 +16,10 @@ class ModelFactory {
      * @param {Date} end End of time range to query
      * @param {number} cadence Number of seconds between each image
      * @param {number} scale Image scale that will be requested
+     * @param {Function} gpu_load_texture Function to initialize the texture on the GPU.
      * @returns {Model} Model representing the sun, or null if no data is available
      */
-    async CreateSolarModel(source, start, end, cadence, scale) {
+    async CreateSolarModel(source, start, end, cadence, scale, gpu_load_texture) {
         /*
         source = 13;
         start = new Date("2022-01-01");
@@ -35,7 +36,7 @@ class ModelFactory {
         // The should bubble up to the UI code which must alert the user
         // that their search returned nothing.
 
-        let textures = await this._CreateTextures(images);
+        let textures = await this._CreateTextures(images, gpu_load_texture);
         return new Model(textures, source);
     }
 
@@ -51,9 +52,10 @@ class ModelFactory {
      * @private
      *
      * @param {HeliosImage[]} Image data to create textures from
+     * @param {Function} gpu_load_texture Function to initialize the texture on the GPU.
      * @returns {HeliosTexture[]} Texture data for models to use
      */
-    async _CreateTextures(images) {
+    async _CreateTextures(images, gpu_load_texture) {
         let result = [];
         // LoadTexture is async, so this first iteration
         // fires off the load texture requests
@@ -70,6 +72,9 @@ class ModelFactory {
         // Wait for async calls to complete.
         for (const image of result) {
             image.texture = await image.texture;
+            if (gpu_load_texture) {
+                gpu_load_texture(image.texture);
+            }
         }
         return result;
     }
