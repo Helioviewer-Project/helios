@@ -1,0 +1,366 @@
+/* START move this elsewhere in a more appropriate CSS file  */
+
+#js-helios-viewport canvas {
+   position: absolute;
+   z-index: 1;
+}
+
+#js-help {
+	z-index:2;
+}
+
+
+#js-events {
+   display: none;
+}
+
+
+/* END move this elsewhere in a more appropriate CSS file  */
+
+body {
+	width: 100%;
+	background: #000000;
+	margin-left:0px;
+	margin-top:0px;
+	font-family: arial;
+	font-size: 13px;
+}
+
+.hv_leftcontrolsswitch {
+	display: none;
+	writing-mode: vertical-rl;
+	margin-top: 80px;
+    position: absolute;
+    z-index: 2;
+    cursor: pointer;
+    padding: 4px;
+    border: 1px solid #ffffff;
+    border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+	border-left: 0px solid #000000;
+}
+
+.hv_leftcontrolswrap {
+	position: relative;
+	float:left;
+	width:350px;
+	min-height: 426px; /*436px;*/
+	background-image: url('../images/blackbg_transp1.png');
+	margin-top: 80px;
+	border:1px solid #999999;
+	border-top-right-radius:12px;
+	border-bottom-right-radius:12px;
+	border-left: 0px solid transparent;
+	text-align: center;
+	z-index: 2;
+}
+
+
+
+.hv_lefttabswrap {
+	height:22px;
+	border-bottom: 1px solid #999999;
+	padding:12px;
+	padding-bottom: 0px;
+	padding-right: 0px;
+	text-align: left;
+	
+}
+
+.hv_lefttabs {
+	display: inline-block;
+	width:95px;
+	height: 20px;
+	margin-left:3px;
+	padding:4px;
+	padding-bottom: 0px;
+	padding-top: 1px;
+	text-align: center;
+	background: #000000;
+	color: #ffffff;
+	border-top-left-radius:6px;
+	border-top-right-radius:6px;
+	border: 1px solid #999999;
+	border-bottom: 0px solid transparent;
+	cursor: pointer;
+	-webkit-user-select: none; /* Safari */        
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+/Edge */
+	user-select: none; /* Standard */
+	
+}
+
+	.tabActive {
+		background:#ffffff;
+		color:#000000;
+		font-weight:bold;	
+	}
+
+	.tabInactive {
+		background:#000000;
+		color:#ffffff;
+		font-weight:normal;
+	}
+
+	.hv_lefttabs:hover {
+		background: #ffffff;
+		color: #000000;
+	}
+
+.closebutton {
+	cursor:pointer;
+	position:absolute;
+	width:30px;
+	top:0px;
+	right:0px;
+	padding-right: 0px;
+	display: inline-block;
+	border-left: 1px solid #999999;
+	height: 34px;
+	color:#ffffff;
+	background-image: url('../images/closebutton1.png');
+	background-size:12px 11px;
+	background-repeat: no-repeat;
+	background-position:9px center;
+	border-top-right-radius: 10px;
+}
+
+	.closebutton:hover {
+		background: #ab2e39; /*#e9757f; */
+		background-image: url('../images/closebutton1.png');
+		background-size:12px 11px;
+		background-repeat: no-repeat;
+		background-position:9px center;
+		/* background: url('../images/closebgred_transp1.png') top left repeat, url('../images/closebutton2.png') 9px center no-repeat 12px 11px;   */
+		/*background-size:12px 11px;*/
+	}
+	
+
+
+#hv_datetime_div {
+	height: 270px;
+	overflow: auto;		
+}
+
+
+
+	#hv_datetime_div::-webkit-scrollbar {
+	  width: 10px;
+	}
+
+	/* Track */
+	#hv_datetime_div::-webkit-scrollbar-track {
+		background: #000000;
+		border: solid 1px darkgray;
+	}
+	 
+	/* Handle */
+	#hv_datetime_div::-webkit-scrollbar-thumb {
+	  background: #888; 
+	}
+
+	/* Handle on hover */
+	#hv_datetime_div::-webkit-scrollbar-thumb:hover {
+	  background: #555; 
+	}
+
+
+.hv_tabcont {
+	display: none;
+	padding: 10px;
+	padding-top:30px;
+	text-align: left;
+}
+
+
+.hv_playbackcontrols_div {
+	clear:both;
+	position: absolute;
+	width: 100%;
+	height: 60px;
+	bottom: 0;
+}
+
+.hv_inputs1 {
+	width: 175px;
+	background: #000000;
+	color: #d5d5d5;
+	border-radius:5px;
+	border: 1px solid #999999;
+	padding: 5px;
+	margin-bottom:11px;
+	font-size: 12px;
+}
+
+.hv_inputs2 {
+	width:50px;
+	background: #000000;
+	color: #ffffff;
+	border-radius:5px;
+	border: 1px solid #999999;
+	padding: 5px;
+	margin-bottom:11px;
+}
+
+	#js-date-range-frames {
+		width:150px;
+	}
+	
+	#js-helioviewer-movie {
+		width:150px;
+	}
+	
+	#js-animation-speed {
+		width: 50px;
+	}
+	
+	#js-animation-duration {
+		width: 50px;
+	}
+
+.obs_date_div {
+	display: inline-block;
+    width: 47% !important;
+}
+
+.obs_date_div input {
+	font-size: 10px;
+}
+
+#js-source-selector option {
+	background:#999999;
+	color:#EEEEEE;
+}
+
+.hv_labels {
+	color: #ffffff;
+	padding-top:0px;
+	-webkit-user-select: none; /* Safari */        
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+/Edge */
+	user-select: none; /* Standard */
+	font-size: 11px;
+}
+
+.hv_labels2 {
+	display:block;
+	float: right;
+	width:175px;
+	text-align: left;
+	color: #ffffff;
+	-webkit-user-select: none; /* Safari */        
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+/Edge */
+	user-select: none; /* Standard */
+}
+
+.addsource_button_wrap {
+	padding-top:10px;
+	text-align: left;
+}
+
+#js-add-source, .hv_buttons1 {
+	background: #ffffff;
+	color: #000000;
+	font-weight: normal;
+	border-radius:6px;
+	padding:5px;
+	font-size: 12px;
+}
+
+
+#js-play-btn-main {
+	width:45px;
+	height:45px;
+	border: 0px solid transparent;
+}
+
+
+
+#current-sources {
+    height: 100px;
+    overflow: auto;
+    border: 1px #e2e288 solid;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.help {
+	line-height: 29px;
+}
+
+
+@media screen and (max-width: 800px) {
+	
+	body {
+		margin-top: 40px;
+	}
+	
+	.hv_leftcontrolswrap {
+		width: 100%;
+		border-left: 0px solid transparent;
+		border-right: 0px solid transparent;
+		border-radius: 0px;
+	}
+	
+	.hv_lefttabswrap {
+		margin-top: 0px;
+		padding-top: 0px;
+		height: 45px;
+	}
+
+	#js-sidebar {
+		bottom: 0;
+		position: absolute;
+	}
+
+	.hv_lefttabs {
+	   padding-top: 12px;
+	   padding-bottom: 12px;
+	   border-top-left-radius: 0px;
+	   border-top-right-radius: 0px;
+	}
+	
+	.closebutton {
+		border-top-right-radius: 0px;
+		height: 45px;
+	}
+	
+	.hv_tabcont {
+		padding: 10px;
+	}
+	
+	.hv_inputs1 {
+		width: 100%;
+		height: 30px;
+		font-size: 17px;
+	}
+	
+	.grid-container {
+		bottom: 10px;
+	}
+	
+	.items {
+		height:;
+	}
+
+	.hv_leftcontrolsswitch {
+		writing-mode: horizontal-tb;
+		margin-top: 0px;
+		bottom:0;
+		margin-left: 20%;
+		border-left:1px solid #ffffff;
+		border-top-left-radius: 5px;
+		border-bottom-right-radius: 0px;
+		border-bottom: 0px solid #000000;
+	}
+}
+
+@media screen and (max-width: 800px) and (orientation: landscape) {
+		
+	.hv_leftcontrolswrap {
+		    max-height: 205px;
+			min-height: 100px;
+	}
+	
+}
