@@ -1,5 +1,7 @@
 import { Scene, OrthographicCamera, WebGLRenderer, AxesHelper, BoxGeometry, MeshBasicMaterial, Mesh, Vector3 } from "three";
 
+import { LoadCube, CreateHemisphere } from "./model_builder.js";
+
 import { TrackballControls } from "three/examples/jsm/controls/TrackballControls.js";
 
 import {Tween, Easing, update as TweenUpdate} from "@tweenjs/tween.js";
@@ -33,7 +35,7 @@ class ThreeScene {
         this._camera.position.x = 0;
         this._camera.position.y = 0;
         this._camera.position.z = -100;
-        this._camera.zoom = 30;
+        this._camera.zoom = 160;
         this._camera.updateProjectionMatrix();
 
         /**
@@ -151,19 +153,33 @@ class ThreeScene {
         this._scene.remove(model);
     }
 
+    GetTextureInitFunction() {
+        return this._renderer.initTexture;
+    }
+
     _EnableDebug() {
         const axesHelper = new AxesHelper(5);
         this._scene.add(axesHelper);
 
         /* Uncomment to enable reference cubes
         const geometry = new BoxGeometry(1, 1, 1);
-        const material = new MeshBasicMaterial({color: 0x00FF00});
+        const material = new MeshBasicMaterial({color: 0xFFFFFF});
         // material.depthWrite = false;
         const cube = new Mesh(geometry, material);
-        cube.position.x = 10;
-        cube.position.z = 3;
+        cube.position.x = 0.5;
+        cube.position.z = -0.49;
         // cube.renderOrder = 1;
         this._scene.add(cube);
+
+        let scene = this._scene;
+        LoadCube().then((blender_cube) => {
+            blender_cube.position.y = 1;
+            scene.add(blender_cube);
+        });
+
+        CreateHemisphere().then((hemi) => {
+            scene.add(hemi);
+        });
 
         const geometry2 = new BoxGeometry(1, 1, 1);
         const material2 = new MeshBasicMaterial({color: 0x00FF00});

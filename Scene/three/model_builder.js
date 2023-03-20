@@ -101,10 +101,10 @@ async function CreateHemisphereWithTexture(texture, jp2info) {
     const sphere_group = new Group();
     sphere_group.add(sphere);
     sphere_group.add(await backside);
+    sphere_group.scale.set(0.04, 0.04, 0.04);
     // Set the scale, this isn't strictly necessary, but keeps our camera position
     // closer to the origin. Something something about render distance consuming more
     // compute cycles. I don't know if this actually improves performance or not
-    sphere_group.scale.set(0.20, 0.20, 0.20);
     sphere_group.helios_type = "sun";
 
     return sphere_group;
@@ -115,17 +115,28 @@ async function CreateHemisphereWithTexture(texture, jp2info) {
  */
 async function CreateHemisphere() {
     let geometry = await LoadMesh('./resources/models/sun_model.gltf');
-    let material = new MeshBasicMaterial();
+    let material = new MeshBasicMaterial({color: 0xFF0000});
+    /*
     material.opacity = 0;
     material.transparent = true;
     material.polygonOffset = true;
     material.polygonOffsetUnits = 0xffffffff;
-    material.polygonOffsetFactor = 0xffffffff; 
+    material.polygonOffsetFactor = 0xffffffff;
+    */
     let mesh = new Mesh(geometry, material);
-    mesh.scale.set(0.2, 0.2, 0.2);
+    mesh.scale.set(0.04, 0.04, 0.04);
     return mesh;
 }
 
+/**
+ * Loads the blender test cube
+ */
+async function LoadCube() {
+    let geometry = await LoadMesh('./resources/models/cube4.gltf');
+    let material = new MeshBasicMaterial();
+    let mesh = new Mesh(geometry, material);
+    return mesh;
+}
 
 /**
  * Gets the dimensions of a flat plane according to the jp2info
@@ -135,8 +146,8 @@ async function CreateHemisphere() {
 function _getPlaneDimensionsFromJp2Info(jp2info) {
     let x_scale = jp2info.width / jp2info.solar_radius;
     let y_scale = jp2info.height / jp2info.solar_radius;
-    let width = x_scale * 5;
-    let height = y_scale * 5;
+    let width = x_scale;
+    let height = y_scale;
     return {
         width: width,
         height: height
@@ -304,7 +315,7 @@ function _FreeGroup(group) {
 
 /**
  * API for freeing a model created with one of the model builder functions
- * @param {Object} object 
+ * @param {Object} object
  */
 function FreeModel(object) {
     if (object.type == "Group") {
@@ -322,5 +333,6 @@ export {
     UpdateModelTexture,
     UpdateModelOpacity,
     UpdateModelLayeringOrder,
-    FreeModel
+    FreeModel,
+    LoadCube
 };

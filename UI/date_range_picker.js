@@ -31,7 +31,7 @@ class DateRangePicker {
         default_start_date.setDate(default_start_date.getDate() + 1); // today
         this._end = flatpickr(document.getElementById(end_id), Object.assign({defaultDate: default_start_date}, DatePickerConfig));
         this._frames = document.getElementById(frame_input_id);
-        this._frames.value = 1;
+        this._frames.value = 120;
     }
 
     /**

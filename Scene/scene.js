@@ -89,7 +89,7 @@ class Scene {
         try {
             // Start the loading animation
             Loader.start();
-            let sun = await ModelFactory.CreateSolarModel(source, start, end, cadence, scale);
+            let sun = await ModelFactory.CreateSolarModel(source, start, end, cadence, scale, this._scene.GetTextureInitFunction());
             let model = await sun.GetModel();
             this._scene.AddModel(model);
 
