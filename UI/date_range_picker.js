@@ -1,6 +1,7 @@
 import Config from '../Configuration.js';
 import {ToLocalDate, ToUTCDate} from "../common/dates.js";
 import flatpickr from "flatpickr";
+import HTML from "../common/html.js";
 
 /**
  * Configuration for flatpickr datepickers.
@@ -27,10 +28,10 @@ class DateRangePicker {
     constructor(start_id, end_id, frame_input_id) {
         let default_start_date = ToLocalDate(new Date());
         default_start_date.setDate(default_start_date.getDate() - 1); // yesterday
-        this._start = flatpickr(document.getElementById(start_id), Object.assign({defaultDate: default_start_date}, DatePickerConfig));
+        this._start = flatpickr(HTML.start_time_input, Object.assign({defaultDate: default_start_date}, DatePickerConfig));
         default_start_date.setDate(default_start_date.getDate() + 1); // today
-        this._end = flatpickr(document.getElementById(end_id), Object.assign({defaultDate: default_start_date}, DatePickerConfig));
-        this._frames = document.getElementById(frame_input_id);
+        this._end = flatpickr(HTML.end_time_input, Object.assign({defaultDate: default_start_date}, DatePickerConfig));
+        this._frames = HTML.num_frames_input;
         this._frames.value = 120;
     }
 

@@ -1,4 +1,4 @@
-import Config from "../Configuration.js";
+import HTML from '../common/html.js';
 
 /**
  * Returns the observer for a given data source ID
@@ -9,7 +9,7 @@ import Config from "../Configuration.js";
  */
 function GetObserverFromSource(source) {
     // This takes advantage of the front-end already having a dropdown with each observer/source pair
-    let select = document.getElementById(Config.source_selector_id);
+    let select = HTML.source_selector;
     let option = select.querySelector("[value='"+source+"']");
     if (option) {
         return option.textContent;
