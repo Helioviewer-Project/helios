@@ -6,7 +6,6 @@ import Config from '../Configuration.js';
  */
 class HTML {
     constructor() {
-        console.log("Loading elements");
         this.start_time_input = document.getElementById(Config.start_picker_id);
         this.end_time_input = document.getElementById(Config.end_picker_id);
         this.num_frames_input = document.getElementById(Config.date_range_frames_id);
