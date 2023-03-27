@@ -440,18 +440,7 @@
 </h1>
 
 <div id="js-helios-viewport"></div>
-<script src="helios_bundle.js" type="module" onload="updateHeliosConfiguration();"></script>
-<script>
-	function updateHeliosConfiguration() {
-		let launch = new CustomEvent('InitializeHelios', {
-			detail: {
-				configuration: {backEnd: 'http://localhost:8081' }
-			}
-		});
-		// document.dispatchEvent(launch);
-	}
-</script>
-
+<script src="helios_bundle.js" type="module"></script>
 
 <script>
 $(document).ready(function(){
