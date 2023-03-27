@@ -212,22 +212,6 @@ class Config {
          */
         this.default_texture_resolution = 1024;
     }
-
-    /**
-     * Overrides any member values with data specfied in the given object
-     * For example, to override helioviewer_url, pass in an object with
-     * {helioviewer_url: "your url"}
-     *
-     * @note Currently only functional for API urls
-     *
-     * @param[in] overrides Object containing specific configuration values
-     *                      to override
-     */
-    Update(overrides) {
-        for (const key of Object.keys(overrides)) {
-            this[key] = overrides[key];
-        }
-    }
 }
 
 let config = new Config();

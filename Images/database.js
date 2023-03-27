@@ -1,7 +1,6 @@
 import ImageFinder from './image_finder.js';
 import PositionFinder from './position_finder.js';
 import Coordinates from '../common/coordinates.js';
-import {GetObserverFromSource} from '../common/observers.js';
 
 /**
  * Interface for querying image and positional information
