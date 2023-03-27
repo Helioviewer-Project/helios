@@ -1,5 +1,6 @@
 import Config from '../Configuration.js';
 import Scene from '../Scene/scene.js';
+import HTML from '../common/html.js';
 
 /**
  * Animation controls allows for visualizing the 3js scene in time.
@@ -14,9 +15,9 @@ class AnimationControls {
      * @param {string} pause_btn_id HTML ID for the pause button
      */
     constructor(play_btn_id, pause_btn_id) {
-        this._play_btn = document.getElementById(play_btn_id);
-        this._pause_btn = document.getElementById(pause_btn_id);
-        this._fps_input = document.getElementById(Config.animation_fps_id);
+        this._play_btn = HTML.play_btn;
+        this._pause_btn = HTML.pause_btn;
+        this._fps_input = HTML.animation_fps_input;
         this._InitializeClickListeners();
 
         /**

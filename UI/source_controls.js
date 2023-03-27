@@ -3,28 +3,23 @@ import DateRangePicker from "./date_range_picker.js";
 import DatasourcePicker from "./datasource_picker.js";
 import ResolutionPicker from "./resolution_picker.js";
 import Scene from "../Scene/scene.js";
-import { ToAPIDate } from "../common/dates.js";
 import { GetImageScaleForResolution } from "../common/resolution_lookup.js";
 import { GetObserverFromSource } from "../common/observers.js";
+import HTML from '../common/html.js';
 
 /**
  * Manages current sources displayed in the scene
  */
 class SourceManager {
-    /**
-     * @param {string} add_source_btn_id ID of element that will trigger
-                                         AddSource when clicked.
-     * @param {string} ui_div_id ID of element that will store controls for the scene
-     */
-    constructor(add_source_btn_id, ui_div_id) {
+    constructor() {
         /**
          * Stores the IDs of layers that have been added to the scene
          */
         this._layers = [];
-        this._add_btn = document.getElementById(add_source_btn_id);
+        this._add_btn = HTML.add_source_btn;
         this._InitializeAddListener();
         this._layer_count = 0;
-        this._ui_div = document.getElementById(ui_div_id);
+        this._ui_div = HTML.ui_sources;
         this._InitUITemplate();
     }
 
@@ -219,5 +214,5 @@ class SourceManager {
     }
 }
 
-let manager = new SourceManager(Config.add_source_btn_id, Config.ui_sources_id);
+let manager = new SourceManager();
 export default manager;

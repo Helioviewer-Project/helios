@@ -1,4 +1,5 @@
 import Config from '../Configuration.js';
+import HTML from '../common/html.js'
 
 /**
  * UI component for choosing the telescope sources
@@ -6,11 +7,9 @@ import Config from '../Configuration.js';
 class DatasourcePicker {
     /**
      * Constructs a datasource picker
-     *
-     * @param {string} source_select_id HTML id of the source select box
      */
-    constructor(source_select_id) {
-        this._selector = document.getElementById(source_select_id);
+    constructor() {
+        this._selector = HTML.source_selector;
     }
 
     /**
@@ -24,6 +23,6 @@ class DatasourcePicker {
     }
 }
 
-let picker = new DatasourcePicker(Config.source_selector_id);
+let picker = new DatasourcePicker();
 export default picker;
 
