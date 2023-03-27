@@ -1,5 +1,6 @@
 import Scene from "../Scene/scene.js";
 import Config from "../Configuration.js";
+import HTML from "../common/html.js";
 
 /**
  * UI component for choosing the resolution
@@ -7,11 +8,9 @@ import Config from "../Configuration.js";
 class ResolutionPicker {
     /**
      * Constructs a resolution picker
-     *
-     * @param {string} resolution_select_id HTML id of the resolution select box
      */
-    constructor(resolution_select_id) {
-        this._selector = document.getElementById(resolution_select_id);
+    constructor() {
+        this._selector = HTML.resolution_selector;
         // Use an if block since having the texture picker displayed is optional.
         if (this._selector) {
              // We capture when the user changes the resolution so we can update the scene
@@ -37,5 +36,5 @@ class ResolutionPicker {
     }
 }
 
-let picker = new ResolutionPicker(Config.resolution_selector_id);
+let picker = new ResolutionPicker();
 export default picker;

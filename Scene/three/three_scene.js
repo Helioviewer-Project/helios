@@ -8,6 +8,8 @@ import {Tween, Easing, update as TweenUpdate} from "@tweenjs/tween.js";
 
 import Config from "../../Configuration.js";
 
+import HTML from '../../common/html.js';
+
 let enable_debug = true;
 
 /**
@@ -46,7 +48,7 @@ class ThreeScene {
         this._renderer.setSize(window.innerWidth, window.innerHeight);
 
 
-        let target = document.getElementById(viewport_id);
+        let target = HTML.viewport;
         target.appendChild(this._renderer.domElement);
 
         /**

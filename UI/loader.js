@@ -1,4 +1,5 @@
 import Config from '../Configuration.js';
+import HTML from '../common/html.js';
 
 /**
  * Controller for loading element in the UI
@@ -6,11 +7,10 @@ import Config from '../Configuration.js';
 class Loader {
     /**
      * Creates a Loader controller on the element with the given id
-     * @param {string} id HTML ID of the loader
      */
-    constructor(id) {
+    constructor() {
         this._counter = 0;
-        this.element = document.getElementById(id);
+        this.element = HTML.loader;
     }
 
     stop() {
@@ -27,5 +27,5 @@ class Loader {
         this._counter++;
     }
 }
-let loader = new Loader(Config.loader_id);
+let loader = new Loader();
 export default loader;

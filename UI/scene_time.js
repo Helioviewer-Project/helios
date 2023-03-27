@@ -2,6 +2,7 @@ import Config from '../Configuration.js';
 import Scene from '../Scene/scene.js';
 import {ToLocalDate, ToUTCDate} from "../common/dates.js";
 import flatpickr from "flatpickr";
+import HTML from '../common/html.js';
 
 /**
  * Configuration for flatpickr datepickers.
@@ -24,7 +25,7 @@ const DatePickerConfig = {
  */
 class TimeDisplay {
     constructor() {
-        let input = document.getElementById(Config.scene_time_input);
+        let input = HTML.scene_time_input;
         this._input = flatpickr(input, DatePickerConfig);
 
         let time = this;
