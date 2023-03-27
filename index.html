@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>BAT -- Minimal Helios Implementation</title>
-	
+
 <link rel="stylesheet" href="resources/css/modal.css"/>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto" />
 <link rel="stylesheet" href="resources/css/hv_loader.css"/>
@@ -204,7 +204,7 @@
 </div>
 
 <div id="js-sidebar" class="hv_leftcontrolswrap">
-	
+
 	<div class="hv_lefttabswrap">
 		<div class="hv_lefttabs" thistab="hv_datetime_div">Dates & Layers</div>
 		<!--<div class="hv_lefttabs" thistab="hv_animation_div">Animation</div>-->
@@ -213,29 +213,29 @@
 	</div>
 
 	<div id="hv_datetime_div" class="hv_tabcont">
-	
+
 		<div class="hv_datetime_inner" style="width:90%;">
-	
+
 			<div class="input-container ic1 obs_date_div">
 				<input id="js-start-date-picker" class="input hv_inputs1" type="text" placeholder=" " />
 				<div class="cut"></div>
 				<label for="js-start-date-picker" class="placeholder">Start Date/Time</label>
-			</div>	
-	
+			</div>
+
 			<!--<label class="hv_labels" style="font-size:10px;">Start Date/Time</label><br>
 			<input class="hv_inputs1" id="js-start-date-picker" type="text"><br><br>
-			
+
 			<label class="hv_labels" style="font-size:10px;">End Date/Time</label><br>
 			<input class="hv_inputs1" id="js-end-date-picker" type="text"><br>
 			-->
-			
+
 			<div class="input-container ic1 obs_date_div">
 				<input id="js-end-date-picker" class="input hv_inputs1" type="text" placeholder=" " />
 				<div class="cut"></div>
 				<label for="js-end-date-picker" class="placeholder">End Date/Time</label>
-			</div>	
-	
-	
+			</div>
+
+
 <!-- ADD NEW added to dates and layers -->
 
 <div class="input-container ic1">
@@ -292,37 +292,37 @@
 	</select>
 	<div class="cut"></div>
 	<label for="js-source-selector" class="placeholder">Observatory</label>
-</div>	
+</div>
 
 
 			<div class="input-container ic1" style="max-width: 163px;display: inline-block;">
 				<input  id="js-date-range-frames" name="js-date-range-frames" type="number" class="input hv_inputs1" />
 				<div class="cut"></div>
 				<label for="js-date-range-frames" class="placeholder">No. of Frames</label>
-			</div>		
-			
+			</div>
+
 			<div class="addsource_button_wrap" style="display:inline-block;">
 				<button id="js-add-source" class="hv_buttons1" style="margin-bottom: 2px;">Add Source</button>
 			</div>
-			
+
 			<div class="input-container ic1" style="max-width: 163px;display: inline-block;">
 				<input  id="js-helioviewer-movie" name="js-helioviewer-movie" type="text" class="input hv_inputs1"  placeholder=" " />
 				<div class="cut"></div>
 				<label for="js-helioviewer-movie" class="placeholder">Load Movie</label>
 			</div>
-			
-			
-			<div class="addsource_button_wrap" style="display:inline-block;">	
+
+
+			<div class="addsource_button_wrap" style="display:inline-block;">
 				<button type="button" id="js-helioviewer-movie-load" class="hv_buttons1">Load</button>
 			</div>
-			<!-- TESTING END needs display testing -->	
+			<!-- TESTING END needs display testing -->
 
 	<!-- END NEW added to dates and layers -->
-	
-	
+
+
 		</div>
-		
-		
+
+
 		<div id="current-sources" class="hidden">
 			<div>Display:</div>
 			<div class="template data-source">
@@ -336,21 +336,21 @@
 					<label class="hv_labels">Opacity:</label>
 					<input class="source-opacity" type="range" min="0" max="1" step="0.01" value="1"/>
 				</div>
-				
+
 				<div style="padding-top:10px;text-align:center;">
 					<button type="button" class="source-remove hv_buttons1">Remove</button>
 				</div>
-				
+
 			</div>
 		</div>
-		
-		
+
+
 	</div>
-	
+
 	<div id="hv_animation_div" class="hv_tabcont">
-	
+
 		<div class="hv_animation_inner" style="width:80%;text-align:right;">
-	
+
 			<!--
 			<table style="margin:auto;width:95%;">
                 <tr>
@@ -361,31 +361,31 @@
                 </tr>
             </table>
 			-->
-			
+
 			<div class="input-container ic1">
 				<input id="js-animation-speed" class="input hv_inputs1" type="text" placeholder=" " />
 				<div class="cut"></div>
 				<label for="js-animation-speed" class="placeholder">Frames per second</label>
 			</div>
-			
-		
+
+
 		</div>
-		
+
 	</div>
-	
+
 	<!--
 	<div id="hv_layers_div" class="hv_tabcont">
-			
+
 	</div>
 	-->
 
 	<div class="hv_playbackcontrols_div">
-		 
+
 		<div style="display:none;">
 			<button id="js-play-btn">Play</button>
 			<button id="js-pause-btn">Pause</button>
 		</div>
-		
+
 		<!-- TESTING START needs display testing -->
 			<div id="current-sources" class="hidden">
 				<h1>Display:</h1>
@@ -410,12 +410,12 @@
                 </div>
             </div>
 		<!-- TESTING END needs display testing -->
-		
-		
+
+
 		<input id="js-play-btn-main" class="hv_inputs1" type="image" src="resources/images/playbutton_white1.png">
 		<!--<button id="js-pause-btn">Pause</button>-->
 	</div>
-	
+
 </div>
 
 
@@ -434,11 +434,11 @@
 
 <!-- <img id="loader" class="closed" src="resources/images/hv_sun.png"/> -->
 <img id="loader" class="closed" src="resources/images/loading-word.gif" >
-	
+
 <h1 class="time-label">
     <input class="scene-time" id="js-current-scene-time" type="text"/>
 </h1>
-	
+
 <div id="js-helios-viewport"></div>
 <script src="helios_bundle.js" type="module"></script>
 
@@ -450,24 +450,24 @@ $(document).ready(function(){
 	}
 	else {
 		slideoutdirec='left';
-	}	
+	}
 	$(".closebutton").click(function(){
 		if(contopen=='yes') {
 			$('#js-sidebar').hide('slide', {direction: slideoutdirec}, 650);
 			$(".hv_leftcontrolsswitch").show('slide', {direction: slideoutdirec}, 650);
-			contopen='no';		
+			contopen='no';
 		}
 	});
-	
+
 	$(".hv_leftcontrolsswitch").click(function(){
 		if(contopen=='no'){
 			$(".hv_leftcontrolsswitch").hide('slide', {direction: slideoutdirec}, 650);
 			contopen='yes';
 			$('#js-sidebar').show('slide', {direction: slideoutdirec}, 650);
-			
+
 		}
 	});
-	
+
 });
 </script>
 
@@ -508,7 +508,7 @@ $(document).ready(function(){
 		$('.item .timeline_txt').removeClass('activeTLitem');
 		$(this).find(".timeline_txt").addClass('activeTLitem'); // added by BAT
 	});
-	
+
 
 
 });
