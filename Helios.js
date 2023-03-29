@@ -4,6 +4,7 @@ import './UI/animation_controls.js';
 import './UI/scene_time.js';
 import './UI/helioviewer_movie.js';
 import './UI/sidebar.js';
+import './UI/video_manager.js';
 import HTML from './common/html.js';
 
 /**
