@@ -95,11 +95,13 @@ class Scene {
 
             let id = this._count++;
             this._models[id] = {
+                source: source,
                 startTime: start,
                 endTime: end,
                 model: sun,
                 order: layer_order,
                 cadence: cadence,
+                scale: scale
             };
             if (Object.keys(this._models).length == 1) {
                 this._scene.MoveCamera(sun.GetObserverPosition());
@@ -286,6 +288,35 @@ class Scene {
         } else {
             throw "No models available";
         }
+    }
+
+    /**
+     * The complete Triforce, or one or more components of the Triforce.
+     * @typedef {Object} SceneLayer
+     * @property {number} source - Source ID.
+     * @property {Date} start - Beginning of time range
+     * @property {Date} end - End of time range
+     * @property {number} cadence - amount of time between frames
+     * @property {number} scale - Image scale
+     */
+    /**
+     * Returns all current layers in the scene
+     * @returns {SceneLayer[]} Array of layers
+     */
+    GetLayers() {
+        let layers = [];
+        let ids = Object.keys(this._models);
+        for (const id of ids) {
+            let model = this._models[id];
+            layers.push({
+                source: model.source,
+                start: model.startTime,
+                end: model.endTime,
+                cadence: model.cadence,
+                scale: model.scale
+            });
+        }
+        return layers;
     }
 }
 
