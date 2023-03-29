@@ -291,7 +291,7 @@ class Scene {
     }
 
     /**
-     * The complete Triforce, or one or more components of the Triforce.
+     * A single layer in the scene with information needed to recreate the scene
      * @typedef {Object} SceneLayer
      * @property {number} source - Source ID.
      * @property {Date} start - Beginning of time range
