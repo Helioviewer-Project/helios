@@ -205,6 +205,17 @@ class SourceManager {
     }
 
     /**
+     * Completely clears the scene of all models
+     */
+    RemoveAllSources() {
+        // What better way than to click the buttons...?
+        let buttons = document.getElementsByClassName("source-remove");
+        for (const button of buttons) {
+            button.click();
+        }
+    }
+
+    /**
      * Updates the opacity of the model associated with the given ID
      * @param {number} id ID returned from AddToScene
      * @param {number} opacity New opacity to apply to the model
