@@ -37,7 +37,7 @@ python3 -m http.server # runs on port 8000 by default
 5. See it in browser by going to [http://localhost:8000](http://localhost:8000)
 
 ### Making Changes
-Make sure to re-run `npx webpack` to update the js bundle whenever making javascript changes.
+Use `npx webpack watch` to automatically rebuild changes as you make them.
 
 #### Adding a new Data Source
 It *should* be easy to add a new data source. Just follow these 3 easy steps.
