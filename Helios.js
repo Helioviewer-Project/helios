@@ -1,3 +1,5 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
 import './UI/source_controls.js';
 import './UI/camera_controls.js';
 import './UI/animation_controls.js';
