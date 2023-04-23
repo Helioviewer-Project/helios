@@ -2,23 +2,19 @@ import Config from '../Configuration.js';
 import Scene from '../Scene/scene.js';
 import HTML from '../common/html.js';
 
+import React from 'react';
+
 /**
  * Animation controls allows for visualizing the 3js scene in time.
  * AnimationControls provides functions for updating the scene
  * in time.
  */
-class AnimationControls {
-    /**
-     * Constructs animation controls
-     *
-     * @param {string} play_btn_id HTML ID for the play button
-     * @param {string} pause_btn_id HTML ID for the pause button
-     */
-    constructor(play_btn_id, pause_btn_id) {
-        this._play_btn = HTML.play_btn;
-        this._pause_btn = HTML.pause_btn;
-        this._fps_input = HTML.animation_fps_input;
-        this._InitializeClickListeners();
+class AnimationControls extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            speed: 15
+        };
 
         /**
          * Start time for the animation range
@@ -58,21 +54,11 @@ class AnimationControls {
     }
 
     /**
-     * Add click listeners for play/pause buttons
-     * @private
-     */
-    _InitializeClickListeners() {
-        let animator = this;
-        this._play_btn.addEventListener('click', () => {animator.Play();});
-        this._pause_btn.addEventListener('click', () => {animator.Pause();});
-    }
-
-    /**
      * Sets the start/end animation times and the current time.
      */
     _InitializeAnimationRangeFromInputs() {
-        this._current_time = Scene.GetTime();
-        let range = Scene.GetTimeRange();
+        this._current_time = this.props.scene.GetTime();
+        let range = this.props.scene.GetTimeRange();
         this._start_time = range[0];
         this._end_time = range[1];
         // The delay between each frame is computed by inverting FPS to get
@@ -82,13 +68,14 @@ class AnimationControls {
         // 1 / Frames per second = Seconds per frame
         // Seconds per frame * 1000 ms/s = milliseconds per frame
         // This can be reduced to (1000ms/s) / fps => ms/f;
-        let fps = parseFloat(this._fps_input.value) || 24;
+        let fps = parseFloat(this.state.speed);
         this._frame_delay = (1000 / fps);
+        alert(this._frame_delay);
 
         // Cadence is determined via the total number of frames available.
         // First, ask the scene for the frame count, then divide the time range
         // by that count to get the amount that time should move forward each frame.
-        let frame_count = Scene.GetMaxFrameCount();
+        let frame_count = this.props.scene.GetMaxFrameCount();
         let time_range_seconds = ((this._end_time - this._start_time) / 1000);
         this._cadence = time_range_seconds / frame_count;
     }
@@ -109,19 +96,6 @@ class AnimationControls {
     }
 
     /**
-     * @typedef AnimationOptions
-     * @type Object
-     * @property fps Frames per second
-     */
-    /**
-     * Sets the values of the animation input fields
-     * @param {AnimationOptions} config
-     */
-    SetValues(config) {
-        this._fps_input.value = config.fps || this._fps_input.value;
-    }
-
-    /**
      * Stops the animation
      */
     Pause() {
@@ -130,55 +104,11 @@ class AnimationControls {
     }
 
     /**
-     * Sets the start time of the animation
-     *
-     * @param {Date} date Animation start time
-     */
-    SetStartTime(date) {
-        this._start_time = date;
-    }
-
-    /**
-     * Sets the animation's end time
-     *
-     * @param {Date} date End time of the animation
-     */
-    SetEndTime(date) {
-        this._end_time = date;
-    }
-
-    /**
-     * Sets the current animation time to a specific point
-     *
-     * @param {Date} date point in time to set the animation to.
-     */
-    SetTime(date) {
-        this._current_time = date;
-        this._UpdateScene();
-    }
-
-    /**
-     * Sets the time to wait between each frame update
-     *
-     * @param {number} ms Number of milliseconds between each frame
-     */
-    SetFrameDelay(ms) {
-        this._frame_delay = ms;
-    }
-
-    /**
-     * Returns the current animation time
-     */
-    GetCurrentTime() {
-        return this._current_time;
-    }
-
-    /**
      * Updates the scene with the current time;
      * @private
      */
     _UpdateScene() {
-        Scene.SetTime(this._current_time);
+        this.props.scene.SetTime(this._current_time);
     }
 
     /**
@@ -206,8 +136,16 @@ class AnimationControls {
             return nextTime;
         }
     }
+
+    render() {
+        return [
+            <label key={0} htmlFor="js-animation-speed">Animation FPS</label>,
+            <input key={1} value={this.state.speed} onChange={(e) => this.setState({speed: e.target.value})} id="js-animation-speed" type="number"/>,
+            <button key={2} onClick={() => this.Play()} id="js-play-btn">Play</button>,
+            <button key={3} onClick={() => this.Pause()} id="js-pause-btn">Pause</button>
+        ]
+    }
 }
 
-let animation_controller = new AnimationControls(Config.play_btn_id, Config.pause_btn_id);
-export default animation_controller;
+export default AnimationControls;
 

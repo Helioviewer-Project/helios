@@ -1,18 +1,38 @@
-import './UI/source_controls.js';
-import './UI/camera_controls.js';
-import './UI/animation_controls.js';
-import './UI/scene_time.js';
-import './UI/helioviewer_movie.js';
-import './UI/sidebar.js';
-import './UI/video_manager.js';
-import HTML from './common/html.js';
+// import './UI/source_controls.js';
+// import './UI/camera_controls.js';
+// import './UI/animation_controls.js';
+// import './UI/scene_time.js';
+// import './UI/helioviewer_movie.js';
+import Controls from './UI/controls.js';
+import Scene from './Scene/scene';
+// import './UI/video_manager.js';
+import { createRoot } from 'react-dom/client';
+import React from 'react';
+// import HTML from './common/html.js';
 
-/**
- * When the page first loads, users should see something besides black, so load the first available image
- */
-function LoadDefaultImage() {
-    // All the input fields are set to default values, so we can just click the "Load Image" button
-    HTML.add_source_btn.click();
+// /**
+//  * When the page first loads, users should see something besides black, so load the first available image
+//  */
+// function LoadDefaultImage() {
+//     // All the input fields are set to default values, so we can just click the "Load Image" button
+//     HTML.add_source_btn.click();
+// }
+
+// LoadDefaultImage();
+
+
+
+// Defined in main HTML, not React
+const scene = new Scene('js-helios-viewport');
+
+function App() {
+    return (
+        <div>
+            <Controls scene={scene}
+                />
+        </div>
+    )
 }
 
-LoadDefaultImage();
+let root = createRoot(document.getElementById('app'));
+root.render(<App />)

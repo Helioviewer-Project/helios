@@ -1,7 +1,6 @@
-import Config from '../Configuration.js';
 import {ToLocalDate, ToUTCDate} from "../common/dates.js";
-import flatpickr from "flatpickr";
-import HTML from "../common/html.js";
+import Flatpickr from "react-flatpickr";
+import React, { useEffect, useState } from 'react';
 
 /**
  * Configuration for flatpickr datepickers.
@@ -14,80 +13,25 @@ const DatePickerConfig = {
     time_24hr: true
 }
 
-/**
- * UI component for selecting date range and cadence
- */
-class DateRangePicker {
-    /**
-     * Constructs the date range picker
-     *
-     * @param {string} start_id ID of HTML element for the start input
-     * @param {string} end_id ID of HTML element for the end input
-     * @param {string} frame_input_id ID of HTML element for frame count picker
-     */
-    constructor(start_id, end_id, frame_input_id) {
-        let default_start_date = ToLocalDate(new Date());
-        default_start_date.setDate(default_start_date.getDate() - 1); // yesterday
-        this._start = flatpickr(HTML.start_time_input, Object.assign({defaultDate: default_start_date}, DatePickerConfig));
-        default_start_date.setDate(default_start_date.getDate() + 1); // today
-        this._end = flatpickr(HTML.end_time_input, Object.assign({defaultDate: default_start_date}, DatePickerConfig));
-        this._frames = HTML.num_frames_input;
-        this._frames.value = 120;
-    }
-
-    /**
-     * @typedef {Object} TimeRange
-     * @property {Date} start
-     * @property {Date} end
-     * @property {number} cadence
-     */
-    /**
-     * Returns the currently selected date/time range
-     *
-     * @returns {TimeRange}
-     */
-    GetDateRange() {
-        let start = ToUTCDate(this._start.selectedDates[0]);
-        let end = ToUTCDate(this._end.selectedDates[0]);
-        let frames = parseFloat(this._frames.value);
-        return {
-            start: start,
-            end: end,
-            cadence: (((end - start) / frames) / 1000)
-        };
-    }
-
-    /**
-     * @typedef DatePickerValues
-     * @type Object
-     * @property {Date} start
-     * @property {Date} end
-     * @property {number} frames
-     */
-    /**
-     * Sets the values of the date range picker
-     * @param {DatePickerValues} values
-     */
-    SetValues(values) {
-        let dates = [];
-        if (values.start) {
-            dates.push(ToLocalDate(values.start));
-        }
-        if (values.end) {
-            dates.push(ToLocalDate(values.end));
-        }
-        this._start.setDate(dates[0])
-        this._end.setDate(dates[1])
-        if (values.frames) {
-            this._frames.value = values.frames;
-        }
-    }
+function frames2cadence(start, end, frames) {
+    return (((end - start) / frames) / 1000);
 }
 
-let datepicker = new DateRangePicker(
-    Config.start_picker_id,
-    Config.end_picker_id,
-    Config.date_range_frames_id
-);
-export default datepicker;
 
+export default function DateRangePicker({currentRange}) {
+    function updateCadence(e) {
+        currentRange.cadence = frames2cadence(currentRange.start, currentRange.end, e.target.value);
+    }
+    return (
+        [
+            <label key={0} htmlFor="js-start-date-picker">Start Date &amp; Time</label>,
+            <Flatpickr key={1} data-enable-time value={currentRange.start} onChange={([date]) => currentRange.start = date} />,
+
+            <label key={2} htmlFor="js-end-date-picker">End Date &amp; Time</label>,
+            <Flatpickr key={3} data-enable-time value={currentRange.end} onChange={([date]) => currentRange.end = date} />,
+
+            <label key={4} htmlFor="js-date-range-frames" name="Number of images to download in this time range">Number of Frames</label>,
+            <input key={5} id="js-date-range-frames" defaultValue={60} type="number" onChange={updateCadence} />
+        ]
+    )
+}

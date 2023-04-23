@@ -8,13 +8,13 @@ import EventManager from "../Events/event_manager.js";
 /**
  * Manages the full 3js scene that is rendered.
  */
-class Scene {
-    constructor() {
+export default class Scene {
+    constructor(viewport_id) {
         /**
          * Threejs implementation of the scene
          * @private
          */
-        this._scene = new ThreeScene(Config.viewport_id);
+        this._scene = new ThreeScene(viewport_id);
 
         /**
          * List of callback functions waiting for the time to update
@@ -319,7 +319,3 @@ class Scene {
         return layers;
     }
 }
-
-// There is only one scene in the application
-let scene = new Scene();
-export default scene;

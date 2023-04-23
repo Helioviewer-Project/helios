@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Helios - Solar Visualizer</title>
+        <link rel="stylesheet" href="/resources/css/modal.css"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto" />
+        <link rel="stylesheet" href="/resources/css/hv_loader.css"/>
+        <link rel="stylesheet" href="/resources/css/main.css"/>
+        <link rel="stylesheet" href="/resources/css/source_controls.css"/>
+        <link rel="stylesheet" href="/resources/css/event_controls.css"/>
+        <link rel="stylesheet" href="/resources/css/time_display.css"/>
+        <link rel="stylesheet" href="/resources/css/help.css"/>
+        <link rel="stylesheet" href="/resources/css/mobile_ui.css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+    </head>
+    <body>
+        <div id="app"></div>
+        <div class="version">
+            Version: Alpha 1.0.2
+        </div>
+        <a id="js-help" href="#help-modal" class="helios-help-button closed">?</a>
+        <section class="modal--show" id="help-modal" tabindex="-1"
+            role="dialog" aria-labelledby="modal-label" aria-hidden="true">
+
+            <div class="modal-inner">
+                <header id="modal-label"><h1>Controls</h1></header>
+                <div class="modal-content">
+                    <h2>Panning</h2>
+                    Mobile: 2 finger drag<br/>
+                    Desktop: Hold D + Click and Drag
+
+                    <h2>Zooming</h2>
+                    Mobile: Pinch zoom<br/>
+                    Desktop: Mouse wheel or Hold S + Click and Drag
+
+                    <h2>Rotating</h2>
+                    Mobile: 1 finger drag<br/>
+                    Desktop: Click and Drag or Hold A + Click and Drag
+
+                    <h2>Support/Contact Information</h2>
+                    Helios is supported by <em>The Helioviewer Project</em><br/>
+                    It was created using <a href="https://threejs.org/">three.js</a><br/>
+                    Please report any issues <a href="https://github.com/Helioviewer-Project/helios/issues">here</a>
+                </div>
+            </div>
+
+            <a href="#!" class="modal-close" title="Close this modal" data-close="Close"
+                data-dismiss="modal">?</a>
+        </section>
+
+        <!-- <label>Camera Position: <span id="js-camera-position"></span></label> -->
+        <img id="loader" class="closed" src="resources/images/hv_sun.png"/>
+        <h1 class="time-label">
+            <input class="scene-time" id="js-current-scene-time" type="text"/>
+        </h1>
+
+
+        <div id="js-helios-viewport"></div>
+        <script src="helios_bundle.js" type="module"></script>
+    </body>
+</html>
