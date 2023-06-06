@@ -40,10 +40,10 @@
         padding: var(--sidebar-padding);
         /* Leave enough space on both sides of the menu bar */
         width: calc(100vw - calc(var(--sidebar-padding) * 2));
-        background: #333;
+        background: #333333CC;
         transition: top var(--sidebar-transition-speed) var(--sidebar-transition-ease);
         top: 150px;
-        max-height: calc(var(--vh, 1vh) * 100 - 150px);
+        height: calc(100vh - 150px);
         padding-bottom: 15px;
     }
 
