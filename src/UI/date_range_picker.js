@@ -25,10 +25,10 @@ export default function DateRangePicker({currentRange}) {
     return (
         [
             <label key={0} htmlFor="js-start-date-picker">Start Date &amp; Time</label>,
-            <Flatpickr key={1} data-enable-time value={currentRange.start} onChange={([date]) => currentRange.start = date} />,
+            <Flatpickr key={1} data-enable-time value={ToLocalDate(currentRange.start)} onChange={([date]) => currentRange.start = ToUTCDate(date)} />,
 
             <label key={2} htmlFor="js-end-date-picker">End Date &amp; Time</label>,
-            <Flatpickr key={3} data-enable-time value={currentRange.end} onChange={([date]) => currentRange.end = date} />,
+            <Flatpickr key={3} data-enable-time value={ToLocalDate(currentRange.end)} onChange={([date]) => currentRange.end = ToUTCDate(date)} />,
 
             <label key={4} htmlFor="js-date-range-frames" name="Number of images to download in this time range">Number of Frames</label>,
             <input key={5} id="js-date-range-frames" defaultValue={60} type="number" onChange={updateCadence} />

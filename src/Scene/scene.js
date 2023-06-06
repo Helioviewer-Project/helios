@@ -77,13 +77,22 @@ export default class Scene {
     /**
      * Adds a new source to the scene
      *
-     * @param {number} source Telescope source ID
+     * @param {number} source Observatory source ID
      * @param {Date} start Beginning of time range to query
      * @param {Date} end End of time range to query
      * @param {number} cadence Number of seconds between each image
      * @param {number} scale Image scale that will be requested
      * @param {number} layer_order Layer order of the image in the scene.
-     * @returns {number} identifier for model in the scene
+     * 
+     * @typedef {Object} ModelInfo
+     * @param {number} id Model identifier
+     * @param {number} source Observatory source ID
+     * @param {Date} startTime Requested start time for this model
+     * @param {Date} endTime Requested end time for this model
+     * @param {number} order Layer order number. Higher number appears in front of smaller numbers
+     * @param {number} cadence Requested cadence for this model
+     * @param {number} scale Requested image scale
+     * @returns {ModelInfo} Newly added model information
      */
     async AddToScene(source, start, end, cadence, scale, layer_order) {
         try {
@@ -95,6 +104,7 @@ export default class Scene {
 
             let id = this._count++;
             this._models[id] = {
+                id: id,
                 source: source,
                 startTime: start,
                 endTime: end,
@@ -114,7 +124,7 @@ export default class Scene {
             // End the loading animation
             Loader.stop();
             this._UpdateEvents();
-            return id;
+            return this._models[id];
         } catch (e) {
             Loader.stop();
             throw e;

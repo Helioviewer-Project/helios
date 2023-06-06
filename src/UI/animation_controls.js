@@ -70,7 +70,6 @@ class AnimationControls extends React.Component {
         // This can be reduced to (1000ms/s) / fps => ms/f;
         let fps = parseFloat(this.state.speed);
         this._frame_delay = (1000 / fps);
-        alert(this._frame_delay);
 
         // Cadence is determined via the total number of frames available.
         // First, ask the scene for the frame count, then divide the time range
