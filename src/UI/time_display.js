@@ -1,17 +1,7 @@
 import React from 'react'
 import Flatpickr from 'react-flatpickr'
 import {ToUTCDate, ToLocalDate} from '../common/dates'
-
-/**
- * Configuration for flatpickr datepickers.
- * See https://flatpickr.js.org/options/
- */
-const DatePickerConfig = {
-    enableTime: true,
-    enableSeconds: true,
-    mode: "single",
-    time_24hr: true
-}
+import DatePickerConfig from './flatpickr_config'
 
 export default function TimeDisplay({time, onTimeChange}) {
     return (

@@ -4,5 +4,10 @@
     color: white;
     font-size: 1em;
     cursor: pointer;
-    width: 10em;
+}
+
+@media screen and (max-width: 500px) {
+    .scene-time {
+        width: 100vw;
+    }
 }
