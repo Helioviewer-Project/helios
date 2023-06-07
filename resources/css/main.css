@@ -3,7 +3,13 @@ body {
     padding: 0;
     font-family: 'Roboto';
     overflow-x: clip;
+    font-size: 12pt;
 }
+
+div, p, button, label, input {
+    font-size: 12pt;
+}
+
 #js-helios-viewport {
     margin: 0;
     padding: 0;

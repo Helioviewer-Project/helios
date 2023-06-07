@@ -15,22 +15,21 @@
     .demo-sidebar-close {
         display: block;
         position: absolute;
-        top: calc(150px - 30px);
         left: 50%;
-        --tab-button-height: 30px;
+        --tab-button-height: 48px;
+        top: calc(150px - var(--tab-button-height));
         height: var(--tab-button-height);
         transform: translateX(-50%);
-        background: white;
-        color: black;
-        border: none;
+        background: black;
+        color: white;
+        border: 1px solid white;
+        font-weight: bold;
+        border-bottom: none;
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
         cursor: pointer;
+        padding: 15px;
         transition: top var(--sidebar-transition-speed) var(--sidebar-transition-ease);
-    }
-    
-    .demo-sidebar-close::before {
-        content: "Close"
     }
 
     .demo-sidebar {
@@ -50,10 +49,6 @@
     .demo-sidebar.closed {
         top: 100vh;
         top: calc(var(--vh, 1vh) * 100);
-    }
-
-    .demo-sidebar-close.closed::before {
-        content: "Open"
     }
 
     .demo-sidebar-close.closed {

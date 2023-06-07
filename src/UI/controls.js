@@ -70,8 +70,10 @@ export default function Controls({scene}) {
     }
 
     return [
-        <button key="0" onClick={() => setClosed(!closed)} id="js-sidebar-toggle" className={`demo-sidebar-close sidebar-closed ${closed ? 'closed' : ''}`}></button>,
-        <div key="1" id="js-sidebar" className={`helios-visible demo-sidebar sidebar-closed ${closed ? 'closed' : ''}`}>
+        <button key="0" onClick={() => setClosed(!closed)} id="js-sidebar-toggle" className={`control-tab demo-sidebar-close ${closed ? 'closed' : ''}`}>
+            Controls
+        </button>,
+        <div key="1" id="js-sidebar" className={`helios-visible demo-sidebar ${closed ? 'closed' : ''}`}>
             <TimeDisplay time={sceneTime} onTimeChange={time => scene.SetTime(time)} />
             <DateRangePicker currentRange={dateRange} />
             <DatasourcePicker selected={source.value} setSelected={setSource} />
