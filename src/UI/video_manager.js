@@ -56,5 +56,4 @@ class VideoManager {
     }
 }
 let manager = new VideoManager();
-console.log(manager);
 export default manager;

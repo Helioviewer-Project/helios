@@ -10,7 +10,6 @@ export default function LayerControls({scene, layers, removeLayer}) {
             scene.UnlockCamera();
         }
     }
-    console.log("Calling LayerControls: ", layers);
     return (
         <div>
             {layers.length > 0 ? <h1>Display: </h1> : ""}
@@ -20,7 +19,6 @@ export default function LayerControls({scene, layers, removeLayer}) {
 }
 
 function Layer({scene, layer, locked, lockOn, removeLayer}) {
-    console.log("Rendering layer", layer);
     return (
         <div className="data-source">
             <p className="source-label"></p>

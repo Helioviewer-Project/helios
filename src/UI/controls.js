@@ -51,7 +51,6 @@ export default function Controls({scene}) {
         let newLayers = [...layers];
         newLayers.push(layer);
         setLayers(newLayers);
-        console.log("Updating layer state: ", layers);
     }
 
     function removeLayer(id) {

@@ -72,7 +72,6 @@ class EventManager {
             EventUI.AddEvent(event, marker);
         }
         EventUI.render();
-        //console.log(sunspots[13]);
 
         // let marker = new Marker(29.477, -16.133, sunspots[13]);
         //Scene.AddModel(await marker.GetModel());
