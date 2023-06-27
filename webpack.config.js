@@ -9,11 +9,14 @@ module.exports = {
   devtool: 'source-map',
   mode: 'development',
   resolve: {
-    // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: [".ts", ".tsx", ".js"],
+    extensions: [".ts", ".tsx", ".js", ".css"],
   },
   module: {
     rules: [
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
       // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
       { test: /\.tsx?$/, loader: "ts-loader" },
       {
