@@ -6,10 +6,16 @@ module.exports = {
     filename: 'helios_bundle.js',
     path: path.resolve(__dirname),
   },
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
   mode: 'development',
+  resolve: {
+    // Add '.ts' and '.tsx' as resolvable extensions.
+    extensions: [".ts", ".tsx", ".js"],
+  },
   module: {
     rules: [
+      // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
+      { test: /\.tsx?$/, loader: "ts-loader" },
       {
         test: /\.m?js$/,
         exclude: /node_modules/,
