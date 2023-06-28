@@ -83,7 +83,7 @@ export default class Scene {
      * @param {number} cadence Number of seconds between each image
      * @param {number} scale Image scale that will be requested
      * @param {number} layer_order Layer order of the image in the scene.
-     * 
+     *
      * @typedef {Object} ModelInfo
      * @param {number} id Model identifier
      * @param {number} source Observatory source ID
@@ -136,7 +136,8 @@ export default class Scene {
     }
 
     async _UpdateEvents() {
-        EventManager.SetTimeRange(this.GetTimeRange());
+        // TODO: Enable events
+        // EventManager.SetTimeRange(this.GetTimeRange());
     }
 
     /**

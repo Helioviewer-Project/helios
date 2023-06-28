@@ -2,9 +2,15 @@ import React, { useState } from "react";
 import Navbar from "./navbar";
 import { DataControls } from "./control_tabs/data";
 import AnimationControls from "./control_tabs/animation";
+import { ModelInfo } from "../../common/types";
+import LayerControls from "./control_tabs/layers";
 
 type NavControlProps = {
     onAddData: (DataSource, DateRange) => void,
+    /**
+     * Current layers in the scene
+     */
+    Layers: ModelInfo[]
     /**
      * @returns Current time from the scene
      */
@@ -33,6 +39,7 @@ enum ControlTab {
 
 export default function NavControls({
     onAddData,
+    Layers,
     GetSceneTime,
     GetSceneTimeRange,
     GetMaxFrameCount,
@@ -55,9 +62,17 @@ export default function NavControls({
             onSelectLayers={() => selectTab(ControlTab.Layers)}
             onSelectAnimation={() => selectTab(ControlTab.Animation)}/>,
 
-        <DataControls onClose={closeTabs} visible={currentTab === ControlTab.Data} key={1} onAddData={onAddData}/>,
+        <DataControls
+            key={1}
+            onClose={closeTabs}
+            visible={currentTab === ControlTab.Data}
+            onAddData={onAddData}/>,
 
-        <div key={2}/>,
+        <LayerControls
+            key={2}
+            visible={currentTab === ControlTab.Layers}
+            onClose={closeTabs}
+            Layers={Layers}/>,
 
         <AnimationControls
             key={3}
