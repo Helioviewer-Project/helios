@@ -171,7 +171,7 @@ class AnimationControls extends React.Component<AnimationControlProps, Animation
 
     render() {
         const visibilityClass = this.props.visible ? css.visible : css.invisible
-        return <div aria-hidden={this.props.visible ? "false" : "true"} className={`${css.tab} ${visibilityClass}`}>
+        return <div tabIndex={-1} aria-hidden={this.props.visible ? "false" : "true"} className={`${css.tab} ${visibilityClass}`}>
             <CloseButton onClose={this.props.onClose} />
             <label htmlFor="js-animation-speed">Frames Per Second</label>
             <input value={this.state.speed} onChange={(e) => this.setState({speed: parseFloat(e.target.value)})} id="js-animation-speed" type="number"/>

@@ -37,11 +37,11 @@ function DataControls({visible, onAddData, onClose}: DataControlsProps): React.J
     const dateRange = getDefaultDateRange();
     const [source, setSource] = useState({value: 8, name: 'SDO AIA 94'} as DataSource);
     const visibilityClass = visible ? css.visible : css.invisible
-    return <div aria-hidden={visible ? "false" : "true"} className={`${css.tab} ${visibilityClass}`}>
+    return <div tabIndex={-1} aria-hidden={visible ? "false" : "true"} className={`${css.tab} ${visibilityClass}`}>
         <CloseButton onClose={onClose} />
         <DatasourcePicker selected={source.value} setSelected={setSource} />
         <DateRangePicker currentRange={dateRange} />
-        <button onClick={() => onAddData(source, dateRange)} id="js-add-source">Add</button>
+        <button tabIndex={-1} onClick={() => onAddData(source, dateRange)} id="js-add-source">Add</button>
     </div>
 }
 
