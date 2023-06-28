@@ -6,7 +6,7 @@ module.exports = {
     filename: 'helios_bundle.js',
     path: path.resolve(__dirname),
   },
-  devtool: 'source-map',
+  devtool: 'inline-source-map',
   mode: 'development',
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".css"],
