@@ -50,12 +50,6 @@ h1.time-label {
     text-align: center;
 }
 
-#loader {
-    position: fixed;
-    right: 10%;
-    bottom: 15px;
-}
-
 .demo-sidebar-close {
     display: none;
 }

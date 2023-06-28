@@ -9,7 +9,7 @@
     width: 100vw;
     border-top: 1px solid #ccc;
     padding-top: 50px;
-    padding-bottom: 30px;
+    padding-bottom: 40px;
     background: rgba(0, 0, 0, 0.75);
 }
 
@@ -28,5 +28,5 @@
 }
 
 .invisible {
-    bottom: -450px;
+    bottom: -460px;
 }

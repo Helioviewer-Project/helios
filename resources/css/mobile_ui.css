@@ -56,18 +56,6 @@
         top: calc(var(--vh, 1vh) * 100 - var(--tab-button-height));
     }
 
-    #loader {
-        position: absolute;
-        left: 5px;
-        width: 2.5em;
-        bottom: calc(var(--vh, 1vh) * 100 - 145px);
-        transition: bottom var(--sidebar-transition-speed) var(--sidebar-transition-ease);
-    }
-
-    #loader.closed {
-        bottom: 5px;
-    }
-
     .helios-help-button {
         top: unset;
         right: 5px;

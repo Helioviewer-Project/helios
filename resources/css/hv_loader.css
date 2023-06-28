@@ -1,4 +1,9 @@
 #loader {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2.5em;
 }
 
 #loader.loading {
@@ -8,7 +13,7 @@
 }
 
 @keyframes roll {
-    from { transform: rotate(0turn); }
-    to { transform: rotate(1turn); }
+    from { transform: translateX(-50%) rotate(0turn); }
+    to { transform: translateX(-50%) rotate(1turn); }
 }
 
