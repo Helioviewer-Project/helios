@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
 import HelioviewerMovie from './helioviewer_movie';
-import { GetImageScaleForResolution } from "../common/resolution_lookup.js";
-import Config from "../Configuration.js";
 import AnimationControls from './animation_controls';
 import LayerControls from "./layer_controls.js";
 import TimeDisplay from './time_display';
@@ -41,16 +39,6 @@ export default function Controls({scene}) {
     function removeLayer(id) {
         scene.RemoveFromScene(id);
         setLayers(layers.filter((layer) => layer.id != id));
-    }
-
-    let addSource = async () => {
-        if (dateRange.start > dateRange.end) {
-            alert('Start time must be before end time');
-        } else {
-            let image_scale = GetImageScaleForResolution(Config.default_texture_resolution, source.value);
-            let layer = await scene.AddToScene(source.value, dateRange.start, dateRange.end, dateRange.cadence, image_scale, layers.length + 1);
-            addLayer(layer);
-        }
     }
 
     return [

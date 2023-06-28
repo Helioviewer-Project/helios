@@ -42,4 +42,4 @@ function DataControls({visible, onAddData}: DataControlsProps): React.JSX.Elemen
     </div>
 }
 
-export {DataControls}
+export {DataControls, DataSource, DateRange}

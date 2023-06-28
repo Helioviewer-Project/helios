@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  entry: './src/Helios.js',
+  entry: './src/Helios.tsx',
   output: {
     filename: 'helios_bundle.js',
     path: path.resolve(__dirname),
