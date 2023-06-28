@@ -26,6 +26,7 @@ export default function LayerControls({
     const visibilityClass = visible ? css.visible : css.invisible
     return <div tabIndex={-1} aria-hidden={visible ? "false" : "true"} className={`${css.tab} ${visibilityClass}`}>
         <CloseButton onClose={onClose} />
+        {Layers.length == 0 ? <p>You have not added any data to the scene</p> : <></>}
         {Layers.map(layer =>
             <LayerControl
                 key={layer.id}
