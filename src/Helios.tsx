@@ -37,7 +37,6 @@ class App extends React.Component<{}, AppState> {
         // This happens either from data loading or animation
         let firstRun = true
         scene.RegisterTimeUpdateListener((newTime) => {
-            console.log("Setting time to", newTime)
             if (firstRun) {
                 this.state = {
                     sceneTime: newTime,
@@ -70,7 +69,6 @@ class App extends React.Component<{}, AppState> {
     }
 
     render(): React.ReactNode {
-        console.log(this.state.layers)
         return (
             <div>
                 <TimeDisplay time={this.state.sceneTime} onTimeChange={time => scene.SetTime(time)} />
@@ -80,7 +78,9 @@ class App extends React.Component<{}, AppState> {
                     GetSceneTime={() => scene.GetTime()}
                     GetSceneTimeRange={() => scene.GetTimeRange()}
                     GetMaxFrameCount={() => scene.GetMaxFrameCount()}
-                    SetSceneTime={(date) => scene.SetTime(date)}/>
+                    SetSceneTime={(date) => scene.SetTime(date)}
+                    RegisterTimeListener={(fn) => scene.RegisterTimeUpdateListener(fn)}
+                    UpdateModelOpacity={(id, opacity) => scene.SetModelOpacity(id, opacity)}/>
             </div>
         )
     }

@@ -1,7 +1,7 @@
 import Config from "../Configuration.js";
 import Helioviewer from "../API/helioviewer.js";
 import {HelioviewerToHelios} from "../common/helioviewer_source_map.js";
-import {parseDate} from "../common/dates.js";
+import {parseDate} from "../common/dates";
 import { Sources } from "./navigation/control_tabs/components/datasource_picker.js";
 import React, { useState } from 'react';
 import { GetImageScaleForResolution } from "../common/resolution_lookup.js";

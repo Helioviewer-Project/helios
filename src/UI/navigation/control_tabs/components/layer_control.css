@@ -1,0 +1,8 @@
+.container {
+    width: 80vw;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+}

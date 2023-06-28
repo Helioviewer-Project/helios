@@ -1,5 +1,4 @@
 import Coordinates from '../common/coordinates.js';
-import {ToAPIDate} from '../common/dates.js';
 
 /**
  * Interface for interacting with the Geometry Service used for
@@ -39,7 +38,7 @@ class GeometryService {
         }
 
         // Extract the data from the results
-        // Result has a wonky format of { result: [ {ISO String w/o Z}: [x, y, z] ] 
+        // Result has a wonky format of { result: [ {ISO String w/o Z}: [x, y, z] ]
         if (result.ok) {
             let json = await result.json();
             let key = date_str.substr(0, 23);

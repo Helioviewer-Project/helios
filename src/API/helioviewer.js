@@ -1,5 +1,5 @@
 import Config from '../Configuration.js';
-import {ToAPIDate, parseDate} from "../common/dates.js";
+import {ToAPIDate, parseDate} from "../common/dates";
 import Coordinates from '../common/coordinates.js';
 
 /**

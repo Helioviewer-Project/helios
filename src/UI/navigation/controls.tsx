@@ -26,7 +26,13 @@ type NavControlProps = {
     /**
      * @returns Sets the time in the scene
      */
-    SetSceneTime: (Date) => void
+    SetSceneTime: (Date) => void,
+    /**
+     * Registers a callback to execute when the scene is updated
+     * @param fn Callback to execute whene date changes
+     */
+    RegisterTimeListener: (fn: (Date) => void) => void,
+    UpdateModelOpacity: (id: number, opacity: number) => void
 }
 
 enum ControlTab {
@@ -43,7 +49,9 @@ export default function NavControls({
     GetSceneTime,
     GetSceneTimeRange,
     GetMaxFrameCount,
-    SetSceneTime
+    SetSceneTime,
+    RegisterTimeListener,
+    UpdateModelOpacity
 }: NavControlProps): React.JSX.Element[] {
     let [currentTab, setTab] = useState(ControlTab.None)
     function closeTabs() {
@@ -72,7 +80,9 @@ export default function NavControls({
             key={2}
             visible={currentTab === ControlTab.Layers}
             onClose={closeTabs}
-            Layers={Layers}/>,
+            Layers={Layers}
+            RegisterTimeListener={RegisterTimeListener}
+            UpdateModelOpacity={UpdateModelOpacity}/>,
 
         <AnimationControls
             key={3}
