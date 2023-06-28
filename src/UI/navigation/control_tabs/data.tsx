@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import DateRangePicker from "./components/date_range_picker";
 import DatasourcePicker from "./components/datasource_picker";
 import css from "./common.css"
+import CloseButton from "./components/close_button";
 
 type DateRange = {
     start: Date,
@@ -28,14 +29,16 @@ type DataSource = {
 
 type DataControlsProps = {
     visible: boolean,
-    onAddData: (DataSource, DateRange) => void
+    onAddData: (DataSource, DateRange) => void,
+    onClose: () => void
 }
 
-function DataControls({visible, onAddData}: DataControlsProps): React.JSX.Element {
+function DataControls({visible, onAddData, onClose}: DataControlsProps): React.JSX.Element {
     const dateRange = getDefaultDateRange();
     const [source, setSource] = useState({value: 8, name: 'SDO AIA 94'} as DataSource);
     const visibilityClass = visible ? css.visible : css.invisible
     return <div aria-hidden={visible ? "false" : "true"} className={`${css.tab} ${visibilityClass}`}>
+        <CloseButton onClose={onClose} />
         <DatasourcePicker selected={source.value} setSelected={setSource} />
         <DateRangePicker currentRange={dateRange} />
         <button onClick={() => onAddData(source, dateRange)} id="js-add-source">Add Source</button>

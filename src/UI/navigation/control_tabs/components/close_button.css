@@ -1,0 +1,12 @@
+button.close_button {
+    width: 48px;
+    height: 48px;
+    color: white;
+    background: transparent;
+    border: none;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+}

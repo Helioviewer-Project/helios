@@ -39,18 +39,29 @@ export default function NavControls({
     SetSceneTime
 }: NavControlProps): React.JSX.Element[] {
     let [currentTab, setTab] = useState(ControlTab.None)
+    function closeTabs() {
+        setTab(ControlTab.None)
+    }
+    function selectTab(newTab: ControlTab) {
+        if (currentTab === newTab) {
+            closeTabs()
+        } else {
+            setTab(newTab)
+        }
+    }
     return [
         <Navbar key={0}
-            onSelectData={() => setTab(ControlTab.Data)}
-            onSelectLayers={() => setTab(ControlTab.Layers)}
-            onSelectAnimation={() => setTab(ControlTab.Animation)}/>,
+            onSelectData={() => selectTab(ControlTab.Data)}
+            onSelectLayers={() => selectTab(ControlTab.Layers)}
+            onSelectAnimation={() => selectTab(ControlTab.Animation)}/>,
 
-        <DataControls visible={currentTab === ControlTab.Data} key={1} onAddData={onAddData}/>,
+        <DataControls onClose={closeTabs} visible={currentTab === ControlTab.Data} key={1} onAddData={onAddData}/>,
 
         <div key={2}/>,
 
         <AnimationControls
             key={3}
+            onClose={closeTabs}
             visible={currentTab === ControlTab.Animation}
             GetSceneTime={GetSceneTime}
             GetSceneTimeRange={GetSceneTimeRange}

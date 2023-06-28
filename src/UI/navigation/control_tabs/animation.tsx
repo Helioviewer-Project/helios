@@ -1,11 +1,13 @@
 import React from 'react';
 import css from './common.css'
+import CloseButton from './components/close_button';
 
 type AnimationControlProps = {
     /**
      * Controls whether this component is currently visible
      */
     visible: boolean,
+    onClose: () => void,
     /**
      * @returns Current time from the scene
      */
@@ -170,6 +172,7 @@ class AnimationControls extends React.Component<AnimationControlProps, Animation
     render() {
         const visibilityClass = this.props.visible ? css.visible : css.invisible
         return <div aria-hidden={this.props.visible ? "false" : "true"} className={`${css.tab} ${visibilityClass}`}>
+            <CloseButton onClose={this.props.onClose} />
             <label htmlFor="js-animation-speed">Frames Per Second</label>
             <input value={this.state.speed} onChange={(e) => this.setState({speed: parseFloat(e.target.value)})} id="js-animation-speed" type="number"/>
             <button onClick={() => this.Play()} id="js-play-btn">Play</button>
