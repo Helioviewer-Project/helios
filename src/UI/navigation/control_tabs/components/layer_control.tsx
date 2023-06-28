@@ -6,8 +6,10 @@ import css from "./layer_control.css"
 
 type LayerProps = {
     Layer: ModelInfo,
-    RegisterTimeListener: (fn: (Date) => void) => void,
-    UpdateModelOpacity: (id: number, opacity: number) => void
+    RegisterTimeListener: (fn: (date: Date) => void) => number,
+    UnregisterTimeListener: (number: number) => void,
+    UpdateModelOpacity: (id: number, opacity: number) => void,
+    RemoveModel: (id: number) => void
 }
 
 /**
@@ -16,15 +18,19 @@ type LayerProps = {
 export default function LayerControl({
     Layer,
     RegisterTimeListener,
-    UpdateModelOpacity
+    UnregisterTimeListener,
+    UpdateModelOpacity,
+    RemoveModel
 }: LayerProps): React.JSX.Element {
+    let [listenerId, setListenerId] = useState(null)
     let [modelTime, setModelTime] = useState(new Date())
     let [opacity, setOpacity] = useState(1)
     // Register this event listener so that the model time is updated whenever the scene changes
     useEffect(() => {
-        RegisterTimeListener((date) => {
+        let id = RegisterTimeListener((date) => {
             setModelTime(date)
-        })
+        });
+        setListenerId(id);
     }, []);
 
     function onOpacityChanged(e) {
@@ -33,14 +39,21 @@ export default function LayerControl({
         UpdateModelOpacity(Layer.id, newOpacity);
     }
 
+    function onRemove() {
+        UnregisterTimeListener(listenerId);
+        RemoveModel(Layer.id);
+    }
+
     return <div className={css.container}>
         <div className={css.header} tabIndex={-1}>
             <p>{GetSourceName(Layer.source)}</p>
             <p>{ToDateString(modelTime)}</p>
         </div>
         <div>
-            <label>Opacity:</label>
+            <label>Opacity</label>
             <input onChange={onOpacityChanged} type="range" min="0" max="1" step="0.01" value={opacity} />
         </div>
+        <button onClick={onRemove}>Remove</button>
+        <hr/>
     </div>
 }

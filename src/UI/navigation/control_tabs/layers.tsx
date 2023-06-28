@@ -8,8 +8,10 @@ type LayerControlsProps = {
     visible: boolean,
     onClose: () => void,
     Layers: ModelInfo[],
-    RegisterTimeListener: (fn: (Date) => void) => void,
-    UpdateModelOpacity: (id: number, opacity: number) => void
+    RegisterTimeListener: (fn: (date: Date) => void) => number,
+    UnregisterTimeListener: (number: number) => void,
+    UpdateModelOpacity: (id: number, opacity: number) => void,
+    RemoveModel: (id: number) => void
 }
 
 export default function LayerControls({
@@ -17,7 +19,9 @@ export default function LayerControls({
     onClose,
     Layers,
     RegisterTimeListener,
-    UpdateModelOpacity
+    UnregisterTimeListener,
+    UpdateModelOpacity,
+    RemoveModel
 }: LayerControlsProps): React.JSX.Element {
     const visibilityClass = visible ? css.visible : css.invisible
     return <div tabIndex={-1} aria-hidden={visible ? "false" : "true"} className={`${css.tab} ${visibilityClass}`}>
@@ -27,6 +31,8 @@ export default function LayerControls({
                 key={layer.id}
                 Layer={layer}
                 RegisterTimeListener={RegisterTimeListener}
-                UpdateModelOpacity={UpdateModelOpacity}/>)}
+                UnregisterTimeListener={UnregisterTimeListener}
+                UpdateModelOpacity={UpdateModelOpacity}
+                RemoveModel={RemoveModel}/>)}
     </div>
 }

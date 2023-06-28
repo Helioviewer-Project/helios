@@ -31,8 +31,10 @@ type NavControlProps = {
      * Registers a callback to execute when the scene is updated
      * @param fn Callback to execute whene date changes
      */
-    RegisterTimeListener: (fn: (Date) => void) => void,
-    UpdateModelOpacity: (id: number, opacity: number) => void
+    RegisterTimeListener: (fn: (Date) => void) => number,
+    UnregisterTimeListener: (number: number) => void,
+    UpdateModelOpacity: (id: number, opacity: number) => void,
+    RemoveModel: (id: number) => void
 }
 
 enum ControlTab {
@@ -51,7 +53,9 @@ export default function NavControls({
     GetMaxFrameCount,
     SetSceneTime,
     RegisterTimeListener,
-    UpdateModelOpacity
+    UnregisterTimeListener,
+    UpdateModelOpacity,
+    RemoveModel
 }: NavControlProps): React.JSX.Element[] {
     let [currentTab, setTab] = useState(ControlTab.None)
     function closeTabs() {
@@ -82,7 +86,9 @@ export default function NavControls({
             onClose={closeTabs}
             Layers={Layers}
             RegisterTimeListener={RegisterTimeListener}
-            UpdateModelOpacity={UpdateModelOpacity}/>,
+            UnregisterTimeListener={UnregisterTimeListener}
+            UpdateModelOpacity={UpdateModelOpacity}
+            RemoveModel={RemoveModel}/>,
 
         <AnimationControls
             key={3}

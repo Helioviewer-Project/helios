@@ -68,6 +68,14 @@ class App extends React.Component<{}, AppState> {
         }
     }
 
+    RemoveLayer = (layerId: number) => {
+        scene.RemoveFromScene(layerId);
+        this.setState({
+            // Remove the layer by filtering for all layers that don't match the id we're removing
+            layers: this.state.layers.filter((val) => val.id != layerId)
+        })
+    }
+
     render(): React.ReactNode {
         return (
             <div>
@@ -80,7 +88,9 @@ class App extends React.Component<{}, AppState> {
                     GetMaxFrameCount={() => scene.GetMaxFrameCount()}
                     SetSceneTime={(date) => scene.SetTime(date)}
                     RegisterTimeListener={(fn) => scene.RegisterTimeUpdateListener(fn)}
-                    UpdateModelOpacity={(id, opacity) => scene.SetModelOpacity(id, opacity)}/>
+                    UnregisterTimeListener={(id) => scene.UnregisterTimeUpdateListener(id)}
+                    UpdateModelOpacity={(id, opacity) => scene.SetModelOpacity(id, opacity)}
+                    RemoveModel={this.RemoveLayer}/>
             </div>
         )
     }
