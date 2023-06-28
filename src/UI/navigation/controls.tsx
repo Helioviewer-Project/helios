@@ -26,6 +26,7 @@ type NavControlProps = {
 enum ControlTab {
     None,
     Data,
+    Layers,
     Animation,
     Settings
 }
@@ -41,19 +42,22 @@ export default function NavControls({
     return [
         <Navbar key={0}
             onSelectData={() => setTab(ControlTab.Data)}
+            onSelectLayers={() => setTab(ControlTab.Layers)}
             onSelectAnimation={() => setTab(ControlTab.Animation)}
             onSelectSettings={() => setTab(ControlTab.Settings)} />,
 
         <DataControls visible={currentTab === ControlTab.Data} key={1} onAddData={onAddData}/>,
 
+        <div key={2}/>,
+
         <AnimationControls
-            key={2}
+            key={3}
             visible={currentTab === ControlTab.Animation}
             GetSceneTime={GetSceneTime}
             GetSceneTimeRange={GetSceneTimeRange}
             GetMaxFrameCount={GetMaxFrameCount}
             SetSceneTime={SetSceneTime}/>,
 
-        <div key={3}/>
+        <div key={4}/>
     ]
 }
