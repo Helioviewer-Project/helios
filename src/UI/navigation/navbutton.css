@@ -1,0 +1,19 @@
+.button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 0;
+    color: white;
+    width: 33%;
+    padding: 0;
+    height: 100%;
+}
+
+.icon {
+    font-size: 24pt;
+}
+
+.text {
+    display: block;
+    font-size: 12pt;
+}
