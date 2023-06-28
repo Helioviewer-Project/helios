@@ -6,7 +6,6 @@ type NavbarProps = {
     onSelectData: () => void,
     onSelectLayers: () => void,
     onSelectAnimation: () => void,
-    onSelectSettings: () => void
 }
 
 export default function Navbar(props: NavbarProps): React.JSX.Element {
@@ -14,6 +13,5 @@ export default function Navbar(props: NavbarProps): React.JSX.Element {
         <NavButton onClick={props.onSelectData} icon='add' text='Add' />
         <NavButton onClick={props.onSelectLayers} icon='photo_library' text='Layers' />
         <NavButton onClick={props.onSelectAnimation} icon='movie' text='Player' />
-        <NavButton onClick={props.onSelectSettings} icon='settings' text='Settings' />
     </nav>
 }

@@ -43,8 +43,7 @@ export default function NavControls({
         <Navbar key={0}
             onSelectData={() => setTab(ControlTab.Data)}
             onSelectLayers={() => setTab(ControlTab.Layers)}
-            onSelectAnimation={() => setTab(ControlTab.Animation)}
-            onSelectSettings={() => setTab(ControlTab.Settings)} />,
+            onSelectAnimation={() => setTab(ControlTab.Animation)}/>,
 
         <DataControls visible={currentTab === ControlTab.Data} key={1} onAddData={onAddData}/>,
 
