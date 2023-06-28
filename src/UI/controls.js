@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-import DateRangePicker from './date_range_picker';
-import DatasourcePicker from './datasource_picker';
 import HelioviewerMovie from './helioviewer_movie';
 import { GetImageScaleForResolution } from "../common/resolution_lookup.js";
 import Config from "../Configuration.js";
@@ -20,25 +18,12 @@ function _ExecuteMobileViewportPatch() {
     document.documentElement.style.setProperty('--vh', `${vh}px`);
 }
 
-function getDefaultDateRange() {
-    let now = new Date();
-    let yesterday = new Date();
-    yesterday.setDate(now.getDate() - 1);
-    let cadence = 86400;
-    return {
-        start: yesterday,
-        end: now,
-        cadence: cadence
-    };
-}
-
 export default function Controls({scene}) {
     _ExecuteMobileViewportPatch();
     const [closed, setClosed] = useState(true);
     const [source, setSource] = useState({value: 8, text: 'SDO AIA 94'});
     const [layers, setLayers] = useState([]);
     const [sceneTime, setSceneTime] = useState(null);
-    const dateRange = getDefaultDateRange();
 
     // Make sure this is only ever called once.
     if (sceneTime == null) {
@@ -74,9 +59,6 @@ export default function Controls({scene}) {
         </button>,
         <div key="1" id="js-sidebar" className={`helios-visible demo-sidebar ${closed ? 'closed' : ''}`}>
             <TimeDisplay time={sceneTime} onTimeChange={time => scene.SetTime(time)} />
-            <DateRangePicker currentRange={dateRange} />
-            <DatasourcePicker selected={source.value} setSelected={setSource} />
-            <button onClick={addSource} id="js-add-source">Add Source</button>
 
             <HelioviewerMovie scene={scene} numLayers={layers.length} addLayer={addLayer} />
             <AnimationControls scene={scene} />

@@ -1,14 +1,13 @@
 .navbar {
     position: absolute;
     bottom: 0;
-    height:10vh;
     width: 100vw;
     display: flex;
     align-items: center;
     justify-content: space-around;
     background: rgba(0, 0, 0, 0.75);
     color: white;
-    min-height: 80px;
+    height: 80px;
     /* for migration only. Remove z-index once other components have been moved */
     z-index: 9999;
 }

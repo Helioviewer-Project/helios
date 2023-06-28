@@ -8,6 +8,7 @@ import Scene from './Scene/scene';
 // import './UI/video_manager.js';
 import { createRoot } from 'react-dom/client';
 import React from 'react';
+import NavControls from './UI/navigation/controls';
 // import HTML from './common/html.js';
 
 // /**
@@ -23,13 +24,13 @@ import React from 'react';
 
 
 // Defined in main HTML, not React
-const scene = new Scene('js-helios-viewport');
+window.scene = new Scene('js-helios-viewport');
 
 function App() {
     return (
         <div>
-            <Controls scene={scene}
-                />
+            <NavControls />
+            <Controls scene={window.scene} />
         </div>
     )
 }

@@ -2,10 +2,16 @@ import React from 'react'
 import NavButton from './navbutton'
 import css from './navbar.css'
 
-export default function Navbar(): React.JSX.Element {
+type NavbarProps = {
+    onSelectData: () => void,
+    onSelectAnimation: () => void,
+    onSelectSettings: () => void
+}
+
+export default function Navbar(props: NavbarProps): React.JSX.Element {
     return <nav className={css.navbar}>
-        <NavButton onClick={() => ''} icon='photo_library' text='Data' />
-        <NavButton onClick={() => ''} icon='movie' text='Animate' />
-        <NavButton onClick={() => ''} icon='settings' text='Settings' />
+        <NavButton onClick={props.onSelectData} icon='photo_library' text='Data' />
+        <NavButton onClick={props.onSelectAnimation} icon='movie' text='Animate' />
+        <NavButton onClick={props.onSelectSettings} icon='settings' text='Settings' />
     </nav>
 }
