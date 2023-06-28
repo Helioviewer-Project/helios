@@ -19,6 +19,10 @@ function frames2cadence(start, end, frames) {
 
 
 export default function DateRangePicker({currentRange}) {
+    let defaultValue = 60
+    useEffect(() => {
+        currentRange.cadence = frames2cadence(currentRange.start, currentRange.end, defaultValue);
+    })
     function updateCadence(e) {
         currentRange.cadence = frames2cadence(currentRange.start, currentRange.end, e.target.value);
     }
@@ -31,7 +35,7 @@ export default function DateRangePicker({currentRange}) {
             <Flatpickr key={3} data-enable-time value={ToLocalDate(currentRange.end)} onChange={([date]) => currentRange.end = ToUTCDate(date)} />,
 
             <label key={4} htmlFor="js-date-range-frames" name="Number of images to download in this time range">Number of Frames</label>,
-            <input key={5} id="js-date-range-frames" defaultValue={60} type="number" onChange={updateCadence} />
+            <input key={5} id="js-date-range-frames" defaultValue={defaultValue} type="number" onChange={updateCadence} />
         ]
     )
 }
