@@ -1,17 +1,10 @@
-// import './UI/source_controls.js';
-// import './UI/camera_controls.js';
-// import './UI/animation_controls.js';
-// import './UI/scene_time.js';
-// import './UI/helioviewer_movie.js';
-import Controls from './UI/controls.js';
 import Scene from './Scene/scene';
-// import './UI/video_manager.js';
 import { createRoot } from 'react-dom/client';
-import React from 'react';
+import React, { useState } from 'react';
 import NavControls from './UI/navigation/controls';
 import { GetImageScaleForResolution } from './common/resolution_lookup.js';
 import config from './Configuration.js';
-// import HTML from './common/html.js';
+import TimeDisplay from './UI/time_display.js';
 
 // /**
 //  * When the page first loads, users should see something besides black, so load the first available image
@@ -42,11 +35,22 @@ let addSourceLayer = async (source, dateRange) => {
 }
 
 function App() {
+    const [sceneTime, setSceneTime] = useState(null);
+    // Make sure this is only ever called once.
+    if (sceneTime == null) {
+        scene.RegisterTimeUpdateListener((newTime) => {
+            setSceneTime(newTime);
+        })
+    }
     return (
         <div>
+            <TimeDisplay time={sceneTime} onTimeChange={time => scene.SetTime(time)} />
             <NavControls
-                onAddData={addSourceLayer} />
-            <Controls scene={scene} />
+                onAddData={addSourceLayer}
+                GetSceneTime={() => scene.GetTime()}
+                GetSceneTimeRange={() => scene.GetTimeRange()}
+                GetMaxFrameCount={() => scene.GetMaxFrameCount()}
+                SetSceneTime={(date) => scene.SetTime(date)}/>
         </div>
     )
 }

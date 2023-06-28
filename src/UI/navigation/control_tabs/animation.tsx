@@ -1,16 +1,47 @@
-import Config from '../Configuration.js';
-import Scene from '../Scene/scene.js';
-import HTML from '../common/html.js';
-
 import React from 'react';
+import css from './common.css'
+
+type AnimationControlProps = {
+    /**
+     * Controls whether this component is currently visible
+     */
+    visible: boolean,
+    /**
+     * @returns Current time from the scene
+     */
+    GetSceneTime: () => Date,
+    /**
+     * @returns Gets a 2 element list with the first element being the earliest date in the scene, and max being the latest date in the scene
+     */
+    GetSceneTimeRange: () => Date[],
+    /**
+     * @returns Max frame count of all the sources in the scene
+     */
+    GetMaxFrameCount: () => number,
+    /**
+     * @returns Sets the time in the scene
+     */
+    SetSceneTime: (Date) => void
+}
+
+type AnimationControlState = {
+    speed: number
+}
 
 /**
  * Animation controls allows for visualizing the 3js scene in time.
  * AnimationControls provides functions for updating the scene
  * in time.
  */
-class AnimationControls extends React.Component {
-    constructor(props) {
+class AnimationControls extends React.Component<AnimationControlProps, AnimationControlState> {
+    _start_time: Date;
+    _end_time: Date;
+    _current_time: Date;
+    _cadence: number;
+    _frame_delay: number;
+    _interval: number;
+
+    constructor(props: AnimationControlProps) {
         super(props);
         this.state = {
             speed: 15
@@ -57,8 +88,8 @@ class AnimationControls extends React.Component {
      * Sets the start/end animation times and the current time.
      */
     _InitializeAnimationRangeFromInputs() {
-        this._current_time = this.props.scene.GetTime();
-        let range = this.props.scene.GetTimeRange();
+        this._current_time = this.props.GetSceneTime();
+        let range = this.props.GetSceneTimeRange();
         this._start_time = range[0];
         this._end_time = range[1];
         // The delay between each frame is computed by inverting FPS to get
@@ -68,14 +99,14 @@ class AnimationControls extends React.Component {
         // 1 / Frames per second = Seconds per frame
         // Seconds per frame * 1000 ms/s = milliseconds per frame
         // This can be reduced to (1000ms/s) / fps => ms/f;
-        let fps = parseFloat(this.state.speed);
+        let fps = this.state.speed;
         this._frame_delay = (1000 / fps);
 
         // Cadence is determined via the total number of frames available.
         // First, ask the scene for the frame count, then divide the time range
         // by that count to get the amount that time should move forward each frame.
-        let frame_count = this.props.scene.GetMaxFrameCount();
-        let time_range_seconds = ((this._end_time - this._start_time) / 1000);
+        let frame_count = this.props.GetMaxFrameCount();
+        let time_range_seconds = ((this._end_time.getTime() - this._start_time.getTime()) / 1000);
         this._cadence = time_range_seconds / frame_count;
     }
 
@@ -90,7 +121,7 @@ class AnimationControls extends React.Component {
         // Only start the animation if it's not already running
         if (this._interval == 0) {
             let animator = this;
-            this._interval = setInterval(() => {animator._TickFrame();}, this._frame_delay);
+            this._interval = window.setInterval(() => {animator._TickFrame();}, this._frame_delay);
         }
     }
 
@@ -107,7 +138,7 @@ class AnimationControls extends React.Component {
      * @private
      */
     _UpdateScene() {
-        this.props.scene.SetTime(this._current_time);
+        this.props.SetSceneTime(this._current_time);
     }
 
     /**
@@ -137,12 +168,13 @@ class AnimationControls extends React.Component {
     }
 
     render() {
-        return [
-            <label key={0} htmlFor="js-animation-speed">Animation FPS</label>,
-            <input key={1} value={this.state.speed} onChange={(e) => this.setState({speed: e.target.value})} id="js-animation-speed" type="number"/>,
-            <button key={2} onClick={() => this.Play()} id="js-play-btn">Play</button>,
-            <button key={3} onClick={() => this.Pause()} id="js-pause-btn">Pause</button>
-        ]
+        const visibilityClass = this.props.visible ? css.visible : css.invisible
+        return <div aria-hidden={this.props.visible ? "false" : "true"} className={`${css.tab} ${visibilityClass}`}>
+            <label htmlFor="js-animation-speed">Frames Per Second</label>
+            <input value={this.state.speed} onChange={(e) => this.setState({speed: parseFloat(e.target.value)})} id="js-animation-speed" type="number"/>
+            <button onClick={() => this.Play()} id="js-play-btn">Play</button>
+            <button onClick={() => this.Pause()} id="js-pause-btn">Pause</button>
+        </div>
     }
 }
 

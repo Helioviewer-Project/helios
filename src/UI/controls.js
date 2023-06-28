@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import HelioviewerMovie from './helioviewer_movie';
-import AnimationControls from './animation_controls';
 import LayerControls from "./layer_controls.js";
-import TimeDisplay from './time_display';
 
 
 /**
@@ -46,10 +44,8 @@ export default function Controls({scene}) {
             Controls
         </button>,
         <div key="1" id="js-sidebar" className={`helios-visible demo-sidebar ${closed ? 'closed' : ''}`}>
-            <TimeDisplay time={sceneTime} onTimeChange={time => scene.SetTime(time)} />
 
             <HelioviewerMovie scene={scene} numLayers={layers.length} addLayer={addLayer} />
-            <AnimationControls scene={scene} />
 
             <LayerControls scene={scene} layers={layers} removeLayer={removeLayer} />
 
