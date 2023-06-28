@@ -1,8 +1,10 @@
-out
-node_modules
-*.swp
-*.swo
-helios_bundle.js
 docs
 dist
+helios_bundle.js
+jsdir
+node_modules
+out
+resources/lib
+*.swp
+*.swo
 .vscode
