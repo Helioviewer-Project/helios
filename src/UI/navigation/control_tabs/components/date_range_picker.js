@@ -28,11 +28,11 @@ export default function DateRangePicker({value, setValue}) {
         <>
             <div className={input_css.container}>
                 <Flatpickr className={input_css.input} data-enable-time value={ToLocalDate(currentRange.start)} onChange={([date]) => {currentRange.start = ToUTCDate(date); setValue(currentRange)}} />
-                <label className={input_css.label}>Start Date &amp; Time</label>
+                <label className={input_css.label}>Start</label>
             </div>
             <div className={input_css.container}>
                 <Flatpickr className={input_css.input} data-enable-time value={ToLocalDate(currentRange.end)} onChange={([date]) => {currentRange.end = ToUTCDate(date); setValue(currentRange)}} />
-                <label className={input_css.label}>End Date &amp; Time</label>
+                <label className={input_css.label}>End</label>
             </div>
             <Input label="Number of Frames" type="number" value={frameCount} onChange={updateCadence} />
         </>

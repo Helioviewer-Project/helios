@@ -1,13 +1,14 @@
 import React from 'react';
 import { Sources } from '../../../../common/sources';
+import Select from '../../../components/input/select';
 
 export default function DatasourcePicker({selected, setSelected}) {
-    return [
-        <label key={0} htmlFor="js-source-selector">Observatory</label>,
-        <select key={1} value={selected} onChange={(e) => setSelected({value: e.target.value, name: e.target.selectedOptions[0].textContent})} id="js-source-selector">
-            {Object.keys(Sources).map((source) => <option key={source} value={source}>{Sources[source]}</option>)}
-        </select>
-    ]
+    return <Select
+                label='Observatory'
+                value={selected}
+                onChange={(val) => setSelected(val)}
+                options={Object.keys(Sources).map((source) => <option key={source} value={source}>{Sources[source]}</option>)}
+                />
 }
 
 export { Sources };
