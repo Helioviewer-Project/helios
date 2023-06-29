@@ -41,7 +41,7 @@ function DataControls({visible, onAddData, onClose}: DataControlsProps): React.J
         <CloseButton onClose={onClose} />
         <DatasourcePicker selected={source.value} setSelected={setSource} />
         <DateRangePicker value={dateRange} setValue={setDateRange} />
-        <button tabIndex={-1} onClick={() => onAddData(source, dateRange)} id="js-add-source">Add</button>
+        <button className={css.button} tabIndex={-1} onClick={() => onAddData(source, dateRange)} id="js-add-source">Add</button>
     </div>
 }
 

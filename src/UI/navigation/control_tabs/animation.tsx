@@ -1,5 +1,6 @@
 import React from 'react';
-import css from './common.css'
+import common from './common.css'
+import css from './animation.css'
 import CloseButton from './components/close_button';
 
 type AnimationControlProps = {
@@ -27,7 +28,10 @@ type AnimationControlProps = {
 }
 
 type AnimationControlState = {
-    speed: number
+    /** Frames per second */
+    speed: number,
+    /** Current play status */
+    playing: boolean
 }
 
 /**
@@ -46,7 +50,8 @@ class AnimationControls extends React.Component<AnimationControlProps, Animation
     constructor(props: AnimationControlProps) {
         super(props);
         this.state = {
-            speed: 15
+            speed: 15,
+            playing: false
         };
 
         /**
@@ -124,6 +129,7 @@ class AnimationControls extends React.Component<AnimationControlProps, Animation
         if (this._interval == 0) {
             let animator = this;
             this._interval = window.setInterval(() => {animator._TickFrame();}, this._frame_delay);
+            this.setState({playing: true});
         }
     }
 
@@ -133,6 +139,22 @@ class AnimationControls extends React.Component<AnimationControlProps, Animation
     Pause() {
         clearInterval(this._interval);
         this._interval = 0;
+        this.setState({playing: false});
+    }
+
+    /**
+     * Toggles Play/Pause
+     */
+    Toggle() {
+        if (this.IsPlaying()) {
+            this.Pause();
+        } else {
+            this.Play();
+        }
+    }
+
+    IsPlaying(): boolean {
+        return this.state.playing;
     }
 
     /**
@@ -170,13 +192,14 @@ class AnimationControls extends React.Component<AnimationControlProps, Animation
     }
 
     render() {
-        const visibilityClass = this.props.visible ? css.visible : css.invisible
-        return <div tabIndex={-1} aria-hidden={this.props.visible ? "false" : "true"} className={`${css.tab} ${visibilityClass}`}>
+        const visibilityClass = this.props.visible ? common.visible : common.invisible
+        return <div tabIndex={-1} aria-hidden={this.props.visible ? "false" : "true"} className={`${common.tab} ${visibilityClass}`}>
             <CloseButton onClose={this.props.onClose} />
             <label htmlFor="js-animation-speed">Frames Per Second</label>
             <input value={this.state.speed} onChange={(e) => this.setState({speed: parseFloat(e.target.value)})} id="js-animation-speed" type="number"/>
-            <button onClick={() => this.Play()} id="js-play-btn">Play</button>
-            <button onClick={() => this.Pause()} id="js-pause-btn">Pause</button>
+            <button className={css.play_pause_button} onClick={() => this.Toggle()} id="js-play-btn">
+                <span className="material-symbols-outlined">{this.IsPlaying() ? "pause" : "play_arrow"}</span>
+            </button>
         </div>
     }
 }

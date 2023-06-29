@@ -21,7 +21,7 @@
     box-sizing: border-box;
 }
 
-.tab button {
+.tab .button {
     width: 80vw;
     height: 40px;
     margin-top: 15px;

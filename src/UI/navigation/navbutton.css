@@ -4,9 +4,10 @@
     cursor: pointer;
     margin-bottom: 0;
     color: white;
-    width: 33%;
     padding: 0;
     height: 100%;
+    flex-grow: 1;
+    flex-basis: 0;
 }
 
 .icon {

@@ -1,0 +1,16 @@
+.play_pause_button {
+    width: 48px;
+    height: 48px;
+    border-radius: 25px;
+    background: black;
+    border: 1px solid white;
+    color:white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.play_pause_button:active {
+    background: #333333;
+}
