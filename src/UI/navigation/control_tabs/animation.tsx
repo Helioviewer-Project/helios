@@ -2,6 +2,7 @@ import React from 'react';
 import common from './common.css'
 import css from './animation.css'
 import CloseButton from './components/close_button';
+import Input from '../../components/input/input';
 
 type AnimationControlProps = {
     /**
@@ -191,12 +192,18 @@ class AnimationControls extends React.Component<AnimationControlProps, Animation
         }
     }
 
+    UpdateSpeed(newVal: string) {
+        let tentativeValue = parseFloat(newVal);
+        if (!isNaN(tentativeValue)) {
+            this.setState({speed: tentativeValue});
+        }
+    }
+
     render() {
         const visibilityClass = this.props.visible ? common.visible : common.invisible
-        return <div tabIndex={-1} aria-hidden={this.props.visible ? "false" : "true"} className={`${common.tab} ${visibilityClass}`}>
+        return <div tabIndex={-1} aria-hidden={this.props.visible ? "false" : "true"} className={`${common.tab} ${common.row} ${visibilityClass}`}>
             <CloseButton onClose={this.props.onClose} />
-            <label htmlFor="js-animation-speed">Frames Per Second</label>
-            <input value={this.state.speed} onChange={(e) => this.setState({speed: parseFloat(e.target.value)})} id="js-animation-speed" type="number"/>
+            <Input label='Frames Per Second' type='number' value={this.state.speed} onChange={(val) => this.UpdateSpeed(val)}/>
             <button className={css.play_pause_button} onClick={() => this.Toggle()} id="js-play-btn">
                 <span className="material-symbols-outlined">{this.IsPlaying() ? "pause" : "play_arrow"}</span>
             </button>

@@ -1,0 +1,25 @@
+.input_container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.input_container label {
+    position: absolute;
+    top: -9px;
+    left: 15px;
+    transition: all 0.25s;
+    background: black;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.input_container input {
+    color: white;
+    background: black;
+    border: 1px solid white;
+}
