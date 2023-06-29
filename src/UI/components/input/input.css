@@ -1,4 +1,4 @@
-.input_container {
+.container {
     position: relative;
     display: flex;
     justify-content: center;
@@ -6,7 +6,7 @@
     flex-direction: column;
 }
 
-.input_container label {
+.label {
     position: absolute;
     top: -9px;
     left: 15px;
@@ -18,7 +18,7 @@
     padding-bottom: 0;
 }
 
-.input_container input {
+.input {
     color: white;
     background: black;
     border: 1px solid white;

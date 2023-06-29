@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import css from './input.css'
 
 type InputProps = {
@@ -9,8 +9,8 @@ type InputProps = {
 }
 
 export default function Input(props: InputProps): React.JSX.Element {
-    return <div className={`${css.input_container}`}>
-        <input type={props.type} value={props.value} onChange={(e) => props.onChange(e.target.value)} />
-        <label htmlFor={props.label}>{props.label}</label>
+    return <div className={`${css.container}`}>
+        <input className={css.input} type={props.type} value={props.value} onChange={(e) => props.onChange(e.target.value)} />
+        <label className={css.label} htmlFor={props.label}>{props.label}</label>
     </div>
 }
