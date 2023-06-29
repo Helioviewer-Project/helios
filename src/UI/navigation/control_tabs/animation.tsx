@@ -203,7 +203,7 @@ class AnimationControls extends React.Component<AnimationControlProps, Animation
         const visibilityClass = this.props.visible ? common.visible : common.invisible
         return <div tabIndex={-1} aria-hidden={this.props.visible ? "false" : "true"} className={`${common.tab} ${common.row} ${visibilityClass}`}>
             <CloseButton onClose={this.props.onClose} />
-            <Input style={{marginBottom: 0}} label='Frames Per Second' type='number' value={this.state.speed} onChange={(val) => this.UpdateSpeed(val)}/>
+            <Input style={{marginBottom: 0, maxWidth: "200px"}} label='Frames Per Second' type='number' value={this.state.speed} onChange={(val) => this.UpdateSpeed(val)}/>
             <button className={css.play_pause_button} onClick={() => this.Toggle()} id="js-play-btn">
                 <span className="material-symbols-outlined">{this.IsPlaying() ? "pause" : "play_arrow"}</span>
             </button>
