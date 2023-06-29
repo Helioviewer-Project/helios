@@ -13,7 +13,7 @@ npm run docs
 
 # Copy libraries from node modules to public folder
 resources_dir=resources/lib
-cp node_modules/flatpickr/dist/flatpickr.min.css $resources_dir
+cp node_modules/flatpickr/dist/flatpickr.min.css $resources_dir/css
 
 # Copy dist files to dist folder
 cp helios_bundle.js $dist_dir
