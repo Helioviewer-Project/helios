@@ -3,6 +3,7 @@ import DateRangePicker from "./components/date_range_picker";
 import DatasourcePicker from "./components/datasource_picker";
 import css from "./common.css"
 import CloseButton from "./components/close_button";
+import TextButton from "../../components/button/TextButton";
 
 type DateRange = {
     start: Date,
@@ -41,7 +42,7 @@ function DataControls({visible, onAddData, onClose}: DataControlsProps): React.J
         <CloseButton onClose={onClose} />
         <DatasourcePicker selected={source.value} setSelected={setSource} />
         <DateRangePicker value={dateRange} setValue={setDateRange} />
-        <button className={css.button} tabIndex={-1} onClick={() => onAddData(source, dateRange)} id="js-add-source">Add</button>
+        <TextButton text="Add" onClick={() => onAddData(source, dateRange)} />
     </div>
 }
 
