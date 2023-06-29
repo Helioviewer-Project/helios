@@ -27,5 +27,17 @@
 }
 
 .invisible {
+    visibility: hidden;
     bottom: -460px;
+    /** Using animation property to keep this element visible during the transition */
+    animation: delayHidden 0.25s ease-in-out;
+}
+
+.hidden {
+    display: none;
+}
+
+@keyframes delayHidden {
+    from { visibility: visible; }
+    to { visibility: visible; }
 }
