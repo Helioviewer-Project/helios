@@ -1,4 +1,4 @@
-import ImageFinder from '../Images/image_finder.js';
+import ImageFinder from '../src/Images/image_finder.js';
 
 test.skip('Getting a list of image urls', async () => {
     // Query AIA 304 (13) for a 5 minute range with 60 seconds between each image at scale 8 (512x512)

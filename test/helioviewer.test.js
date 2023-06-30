@@ -1,5 +1,5 @@
-import Configuration from '../Configuration.js';
-import Helioviewer from '../API/helioviewer.js';
+import Configuration from '../src/Configuration.js';
+import Helioviewer from '../src/API/helioviewer.js';
 
 test('Getting API URL with trailing /', () => {
     Configuration.helioviewer_url = "http://testing";

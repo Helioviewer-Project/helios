@@ -1,4 +1,4 @@
-import Database from '../Images/database.js';
+import Database from '../src/Images/database.js';
 
 test.skip('Get a list of image information', async () => {
     // Test AIA 304 (13) for 4 images 6 hours apart on Jan 01, 2022 to Jan 02, 2022 at scale 8 (512x512)

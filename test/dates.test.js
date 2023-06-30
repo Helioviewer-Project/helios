@@ -1,4 +1,4 @@
-import {parseDate} from "../common/dates";
+import {parseDate} from "../src/common/dates";
 
 test("Parsing dates", () => {
     let date = parseDate("2022-11-03 12:00:05");

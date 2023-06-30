@@ -1,4 +1,4 @@
-import EventDB from "../Events/event_db.js";
+import EventDB from "../src/Events/event_db.js";
 
 test("Create range of dates", () => {
     let dates = EventDB._DateRangeToIndividualDays(new Date("2022-10-01 01:55:00Z"), new Date("2022-10-07 23:00:00Z"));
