@@ -12,7 +12,7 @@ interface InputProps {
 
 export default function Input(props: InputProps): React.JSX.Element {
     return <div style={props.style} className={`${css.container}`}>
-        <input style={props.inputStyle} id={window.atob(props.label)} className={css.input} type={props.type} value={props.value} onChange={(e) => props.onChange(e.target.value)} />
-        <label className={css.label} htmlFor={window.atob(props.label)}>{props.label}</label>
+        <input style={props.inputStyle} id={window.btoa(props.label)} className={css.input} type={props.type} value={props.value} onChange={(e) => props.onChange(e.target.value)} />
+        <label className={css.label} htmlFor={window.btoa(props.label)}>{props.label}</label>
     </div>
 }

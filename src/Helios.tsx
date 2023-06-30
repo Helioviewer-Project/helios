@@ -56,12 +56,12 @@ class App extends React.Component<{}, AppState> {
      * @param source Source for the new layer
      * @param dateRange Range to import data over
      */
-    async AddLayer(source: DataSource, dateRange: DateRange) {
+    async AddLayer(source: number, dateRange: DateRange) {
         if (dateRange.start > dateRange.end) {
             alert('Start time must be before end time');
         } else {
-            let image_scale = GetImageScaleForResolution(config.default_texture_resolution, source.value);
-            let layer = await scene.AddToScene(source.value, dateRange.start, dateRange.end, dateRange.cadence, image_scale, 1);
+            let image_scale = GetImageScaleForResolution(config.default_texture_resolution, source);
+            let layer = await scene.AddToScene(source, dateRange.start, dateRange.end, dateRange.cadence, image_scale, 1);
             this.setState({
                 layers: this.state.layers.concat(layer)
             })

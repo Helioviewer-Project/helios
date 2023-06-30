@@ -36,11 +36,11 @@ type DataControlsProps = {
 
 function DataControls({visible, onAddData, onClose}: DataControlsProps): React.JSX.Element {
     let [dateRange, setDateRange] = useState(getDefaultDateRange())
-    const [source, setSource] = useState({value: 8, name: 'SDO AIA 94'} as DataSource);
+    const [source, setSource] = useState(8);
     const visibilityClass = visible ? css.visible : css.invisible
     return <div aria-hidden={visible ? "false" : "true"} className={`${css.tab} ${visibilityClass}`}>
         <CloseButton onClose={onClose} />
-        <DatasourcePicker selected={source.value} setSelected={setSource} />
+        <DatasourcePicker selected={source} setSelected={setSource} />
         <DateRangePicker value={dateRange} setValue={setDateRange} />
         <TextButton text="Add" onClick={() => onAddData(source, dateRange)} />
     </div>
