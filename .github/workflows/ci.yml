@@ -1,11 +1,11 @@
 name: NodeJS with Webpack
 
 on:
+  pull_request:
   push:
     branches:
       - 'main'
       - '*.*'
-  pull_request:
   workflow_dispatch:
 
 jobs:
@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x]
-    
+
     steps:
     - uses: actions/checkout@v3
 
