@@ -1,8 +1,16 @@
-.container {
-    width: 80vw;
-}
-
 .header {
     display: flex;
     justify-content: space-between;
+}
+
+.opacity_block {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 1079px) {
+    .container {
+        width: 80vw;
+    }
 }

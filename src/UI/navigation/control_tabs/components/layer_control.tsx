@@ -3,6 +3,7 @@ import { ModelInfo } from "../../../../common/types";
 import { GetSourceName } from "../../../../common/sources";
 import { ToDateString } from "../../../../common/dates";
 import css from "./layer_control.css"
+import TextButton from "../../../components/button/TextButton";
 
 type LayerProps = {
     Layer: ModelInfo,
@@ -49,11 +50,11 @@ export default function LayerControl({
             <p>{GetSourceName(Layer.source)}</p>
             <p>{ToDateString(modelTime)}</p>
         </div>
-        <div>
-            <label>Opacity</label>
-            <input onChange={onOpacityChanged} type="range" min="0" max="1" step="0.01" value={opacity} />
+        <div className={css.opacity_block}>
+            <label style={{paddingTop: "1px"}}>Opacity:</label>
+            <input style={{marginBottom: 0}} onChange={onOpacityChanged} type="range" min="0" max="1" step="0.01" value={opacity} />
         </div>
-        <button onClick={onRemove}>Remove</button>
+        <TextButton onClick={onRemove} text="Remove" />
         <hr/>
     </div>
 }
