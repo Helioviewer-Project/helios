@@ -1,34 +1,27 @@
 .tab {
     position: absolute;
-    bottom: 80px;
-    transition: bottom 0.25s;
+    transition: left 0.25s;
+    left: 79px;
+    top: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 1px solid white;
+    border-left: none;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 25px;
+    padding-top: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    width: 80vw;
-    border-top: 1px solid #ccc;
-    padding-top: 50px;
-    padding-bottom: 40px;
-    padding-left: 10vw;
-    padding-right: 10vw;
     background: rgba(0, 0, 0, 0.75);
-}
-
-.row {
-    flex-direction: row;
-    justify-content: space-around;
-}
-
-.tab .button {
-    width: 80vw;
-    height: 40px;
-    margin-top: 15px;
+    height: 355px;
 }
 
 .invisible {
     visibility: hidden;
-    bottom: -460px;
+    left: -350px;
     /** Using animation property to keep this element visible during the transition */
     animation: delayHidden 0.25s ease-in-out;
 }
@@ -37,7 +30,52 @@
     display: none;
 }
 
+@media (max-width: 1079px) {
+    .tab {
+        position: absolute;
+        bottom: 80px;
+        transition: bottom 0.25s;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 80vw;
+        border-top: 1px solid #ccc;
+        padding-top: 50px;
+        padding-bottom: 40px;
+        padding-left: 10vw;
+        padding-right: 10vw;
+        background: rgba(0, 0, 0, 0.75);
+    }
+
+    .row {
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    .tab .button {
+        width: 80vw;
+        height: 40px;
+        margin-top: 15px;
+    }
+
+    .invisible {
+        visibility: hidden;
+        bottom: -460px;
+        /** Using animation property to keep this element visible during the transition */
+        animation: delayHidden 0.25s;
+    }
+
+    .hidden {
+        display: none;
+    }
+}
+
 @keyframes delayHidden {
-    from { visibility: visible; }
-    to { visibility: visible; }
+    from {
+        visibility: visible;
+    }
+    to {
+        visibility: visible;
+    }
 }

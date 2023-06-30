@@ -1,13 +1,41 @@
 .navbar {
-    position: absolute;
-    bottom: 0;
-    width: 100vw;
+    position: fixed;
+    left: 0;
     display: flex;
-    align-items: center;
-    justify-content: space-around;
-    background: rgba(0, 0, 0, 0.75);
-    color: white;
-    height: 80px;
-    /* for migration only. Remove z-index once other components have been moved */
-    z-index: 9999;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 400px;
+    border-top: 1px solid white;
+    border-right: 1px solid white;
+    border-bottom: 1px solid white;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: black;
+    transition: all 0.25s;
+    z-index: 10;
+}
+
+.navbar.active {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: 1px solid #999;
+}
+
+@media (max-width: 1079px) {
+    .navbar {
+        position: fixed;
+        bottom: 0;
+        width: 100vw;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        background: rgba(0, 0, 0, 0.75);
+        color: white;
+        height: 80px;
+        /* for migration only. Remove z-index once other components have been moved */
+        z-index: 9999;
+    }
 }

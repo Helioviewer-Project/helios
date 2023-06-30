@@ -70,6 +70,7 @@ export default function NavControls({
     }
     return [
         <Navbar key={0}
+            isActive={currentTab != ControlTab.None}
             onSelectData={() => selectTab(ControlTab.Data)}
             onSelectLayers={() => selectTab(ControlTab.Layers)}
             onSelectAnimation={() => selectTab(ControlTab.Animation)}/>,
