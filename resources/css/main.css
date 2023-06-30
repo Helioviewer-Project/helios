@@ -68,16 +68,3 @@ h1.time-label {
     left: 10px;
     font-size: 0.8em;
 }
-
-
-
-
-
-.hv_datetime_inner {
-    width: 90%;
-}
-
-.input-container.ic1 {
-    max-width: 163px;
-    display: inline-block;
-}

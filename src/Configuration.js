@@ -37,93 +37,9 @@ class Config {
         // this.helios_api_url = "http://localhost:5000/";
 
         /**
-         * HTML ID of the start time picker for the date range chooser
-         */
-        this.start_picker_id = "js-start-date-picker";
-
-
-        /**
-         * HTML ID of the end time picker for the date range chooser
-         */
-        this.end_picker_id = "js-end-date-picker";
-
-        /**
-         * HTML ID of the frame count input date range chooser
-         */
-        this.date_range_frames_id = "js-date-range-frames";
-
-        /**
-         * HTML ID of the source id input selector
-         */
-        this.source_selector_id = "js-source-selector";
-
-        /**
-         * HTML ID of the resolution input selector
-         */
-        this.resolution_selector_id = "js-resolution-selector";
-
-        /**
-         * HTML ID of the animation fps input
-         */
-        this.animation_fps_id = 'js-animation-speed';
-
-        /**
-         * HTML ID of the animation fps duration
-         */
-        this.animation_duration_id = 'js-animation-duration';
-
-        /**
-         * HTML ID of the play button for animation controls
-         */
-        this.play_btn_id = 'js-play-btn';
-
-        /**
-         * HTML ID of the pause button for animation controls
-         */
-        this.pause_btn_id = 'js-pause-btn';
-
-        /**
          * HTML ID of the element to use for the 3js viewport
          */
         this.viewport_id = "js-helios-viewport";
-
-        /**
-         * HTML ID of the button that triggers adding data to the scene
-         */
-        this.add_source_btn_id = "js-add-source";
-
-        /**
-         * HTML ID of the input element used to change the current time.
-         */
-        this.scene_time_input = "js-current-scene-time";
-
-        /**
-         * HTML class attached to elements that should be hidden
-         * when helios is enabled
-         */
-        this.hidden_class = "helios-hidden";
-
-        /**
-         * HTML class attached to elements that should be displayed
-         * when helios is enabled
-         */
-        this.show_class = "helios-visible";
-
-        /**
-         * HTML ID for the button that will display/hide the Helios viewport
-         * when clicked.
-         */
-        this.toggle_button_id = "js-enable-helios";
-
-        /**
-         * HTML ID for input element for loading Helioviewer movies;
-         */
-        this.helioviewer_movie_input_id = "js-helioviewer-movie";
-
-        /**
-         * HTML ID for the button that loads the helioviewer movies
-         */
-        this.helioviewer_movie_load_button = "js-helioviewer-movie-load";
 
         /**
          * HTML ID for the "loader" element that gets animated when there are outstanding ajax requests
@@ -134,11 +50,6 @@ class Config {
          * CSS Class to apply to the loader when an ajax request is outstanding
          */
         this.loader_class = "loading";
-
-        /**
-         * HTML ID for the element that will contain controls for the current sources in the scene.
-         */
-        this.ui_sources_id = "current-sources";
 
         /**
          * Number of milliseconds away from the scene time that causes the model timestamp to turn orange.
