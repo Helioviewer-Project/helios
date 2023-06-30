@@ -1,33 +1,35 @@
-.tab {
-    position: absolute;
-    transition: left 0.25s;
-    left: 79px;
-    top: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    border: 1px solid white;
-    border-left: none;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    padding: 25px;
-    padding-top: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    background: rgba(0, 0, 0, 0.75);
-    height: 355px;
-}
+@media (min-width: 1080px) {
+    .tab {
+        position: absolute;
+        transition: left 0.25s;
+        left: 79px;
+        top: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        border: 1px solid white;
+        border-left: none;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        padding: 25px;
+        padding-top: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background: rgba(0, 0, 0, 0.75);
+        height: 355px;
+    }
 
-.invisible {
-    visibility: hidden;
-    left: -350px;
-    /** Using animation property to keep this element visible during the transition */
-    animation: delayHidden 0.25s ease-in-out;
-}
+    .invisible {
+        visibility: hidden;
+        left: -350px;
+        /** Using animation property to keep this element visible during the transition */
+        animation: delayHidden 0.25s ease-in-out;
+    }
 
-.hidden {
-    display: none;
+    .hidden {
+        display: none;
+    }
 }
 
 @media (max-width: 1079px) {
