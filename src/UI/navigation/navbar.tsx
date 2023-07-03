@@ -19,11 +19,6 @@ export default function Navbar(props: NavbarProps): React.JSX.Element {
                 icon="photo_library"
                 text="Layers"
             />
-            <NavButton
-                onClick={props.onSelectAnimation}
-                icon="movie"
-                text="Player"
-            />
         </nav>
     );
 }

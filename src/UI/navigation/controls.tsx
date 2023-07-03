@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Navbar from "./navbar";
 import { DataControls } from "./control_tabs/data";
-import AnimationControls from "./control_tabs/animation";
+import AnimationControls from "../video_player/animation";
 import { ModelInfo } from "../../common/types";
 import LayerControls from "./control_tabs/layers";
 
@@ -35,6 +35,8 @@ type NavControlProps = {
     UnregisterTimeListener: (number: number) => void;
     UpdateModelOpacity: (id: number, opacity: number) => void;
     RemoveModel: (id: number) => void;
+    /** The movie player button is special. It sends toggle events to show/hide the video player */
+    OnPlayerToggle: () => void;
 };
 
 enum ControlTab {
@@ -56,6 +58,7 @@ export default function NavControls({
     UnregisterTimeListener,
     UpdateModelOpacity,
     RemoveModel,
+    OnPlayerToggle
 }: NavControlProps): React.JSX.Element[] {
     let [currentTab, setTab] = useState(ControlTab.None);
     function closeTabs() {
@@ -74,7 +77,7 @@ export default function NavControls({
             isActive={currentTab != ControlTab.None}
             onSelectData={() => selectTab(ControlTab.Data)}
             onSelectLayers={() => selectTab(ControlTab.Layers)}
-            onSelectAnimation={() => selectTab(ControlTab.Animation)}
+            onSelectAnimation={() => OnPlayerToggle()}
         />,
 
         <DataControls
@@ -93,16 +96,6 @@ export default function NavControls({
             UnregisterTimeListener={UnregisterTimeListener}
             UpdateModelOpacity={UpdateModelOpacity}
             RemoveModel={RemoveModel}
-        />,
-
-        <AnimationControls
-            key={3}
-            onClose={closeTabs}
-            visible={currentTab === ControlTab.Animation}
-            GetSceneTime={GetSceneTime}
-            GetSceneTimeRange={GetSceneTimeRange}
-            GetMaxFrameCount={GetMaxFrameCount}
-            SetSceneTime={SetSceneTime}
         />,
 
         <div key={4} />,

@@ -8,6 +8,7 @@ import TimeDisplay from "./UI/time_display.js";
 import { DataSource, DateRange } from "./UI/navigation/control_tabs/data";
 import { ModelInfo } from "./common/types";
 import { LoadHelioviewerMovie } from "./UI/helioviewer_movie";
+import AnimationControls from "./UI/video_player/animation";
 
 // /**
 //  * When the page first loads, users should see something besides black, so load the first available image
@@ -25,6 +26,7 @@ const scene = new Scene("js-helios-viewport");
 type AppState = {
     sceneTime: Date;
     layers: ModelInfo[];
+    showVideoPlayer: boolean;
 };
 
 /**
@@ -42,6 +44,7 @@ class App extends React.Component<{}, AppState> {
                 this.state = {
                     sceneTime: newTime,
                     layers: [],
+                    showVideoPlayer: true
                 };
                 firstRun = false;
             } else {
@@ -129,7 +132,18 @@ class App extends React.Component<{}, AppState> {
                         scene.SetModelOpacity(id, opacity)
                     }
                     RemoveModel={this.RemoveLayer}
+                    OnPlayerToggle={() => {
+                        this.setState({showVideoPlayer: !this.state.showVideoPlayer});
+                    }}
                 />
+                <AnimationControls
+                    visible={this.state.showVideoPlayer}
+                    onClose={() => {}}
+                    GetSceneTime={() => scene.GetTime()}
+                    GetSceneTimeRange={() => scene.GetTimeRange()}
+                    GetMaxFrameCount={() => scene.GetMaxFrameCount()}
+                    SetSceneTime={(date) => scene.SetTime(date)}
+                    />
             </div>
         );
     }

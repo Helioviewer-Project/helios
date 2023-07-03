@@ -1,9 +1,7 @@
 import React from "react";
-import common from "./common.css";
 import css from "./animation.css";
-import CloseButton from "./components/close_button";
-import Input from "../../components/input/input";
-import { MoviePlayerFacade } from "./components/player";
+import Input from "../components/input/input";
+import { MoviePlayerFacade } from "./movie_player_facade";
 
 type AnimationControlProps = {
     /**
@@ -236,23 +234,29 @@ class AnimationControls extends React.Component<
     }
 
     render() {
-        const visibilityClass = this.props.visible
-            ? common.visible
-            : common.invisible;
         return (
             <div
                 tabIndex={-1}
                 aria-hidden={this.props.visible ? "false" : "true"}
-                className={`${common.tab} ${common.row} ${visibilityClass}`}
+                className={css.player}
             >
-                <CloseButton onClose={this.props.onClose} />
+                {/* <CloseButton onClose={this.props.onClose} /> */}
                 <Input
-                    style={{ marginBottom: 0, maxWidth: "200px" }}
+                    style={{ marginBottom: 0, maxWidth: "200px", marginRight: "15px" }}
+                    labelClass={css.fps_label}
                     label="Frames Per Second"
                     type="number"
                     value={this.state.speed}
                     onChange={(val) => this.UpdateSpeed(val)}
                 />
+
+                <MoviePlayerFacade
+                    className={css.progress}
+                    frameCount={this.props.GetMaxFrameCount()}
+                    SetFrame={(n) => this.SetSpecificFrame(n)}
+                    currentFrame={this._current_frame}
+                    />
+
                 <button
                     className={css.play_pause_button}
                     onClick={() => this.Toggle()}
@@ -262,11 +266,6 @@ class AnimationControls extends React.Component<
                         {this.IsPlaying() ? "pause" : "play_arrow"}
                     </span>
                 </button>
-                <MoviePlayerFacade
-                    frameCount={this.props.GetMaxFrameCount()}
-                    SetFrame={(n) => this.SetSpecificFrame(n)}
-                    currentFrame={this._current_frame}
-                    />
             </div>
         );
     }

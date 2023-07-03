@@ -3,6 +3,7 @@ import React from "react";
 type PlayerProps = {
     frameCount: number;
     currentFrame: number;
+    className: string;
     /** Sets the current frame */
     SetFrame: (frame: number) => void
 };
@@ -17,6 +18,7 @@ class MoviePlayerFacade extends React.Component<PlayerProps, {}> {
 
     render(): React.ReactNode {
         return <input
+            className={this.props.className}
             type="range"
             min={0}
             max={this.props.frameCount}

@@ -7,6 +7,7 @@ interface InputProps {
     value: any;
     style?: Object | null;
     inputStyle?: Object | null;
+    labelClass?: string;
     onChange: (value: any) => void;
 }
 
@@ -21,7 +22,7 @@ export default function Input(props: InputProps): React.JSX.Element {
                 value={props.value}
                 onChange={(e) => props.onChange(e.target.value)}
             />
-            <label className={css.label} htmlFor={window.btoa(props.label)}>
+            <label className={`${css.label} ${props.labelClass}`} htmlFor={window.btoa(props.label)}>
                 {props.label}
             </label>
         </div>
