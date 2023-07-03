@@ -10,6 +10,9 @@ module.exports = {
   mode: 'development',
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".css"],
+    alias: {
+      three: path.resolve('./node_modules/three')
+    },
   },
   module: {
     rules: [
