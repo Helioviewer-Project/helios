@@ -7,6 +7,7 @@ import config from './Configuration.js';
 import TimeDisplay from './UI/time_display.js';
 import { DataSource, DateRange } from './UI/navigation/control_tabs/data';
 import { ModelInfo } from './common/types';
+import { LoadHelioviewerMovie } from './UI/helioviewer_movie';
 
 // /**
 //  * When the page first loads, users should see something besides black, so load the first available image
@@ -49,6 +50,7 @@ class App extends React.Component<{}, AppState> {
         })
 
         this.AddLayer = this.AddLayer.bind(this);
+        this._LoadHelioviewerMovieFromQueryParameters();
     }
 
     /**
@@ -74,6 +76,23 @@ class App extends React.Component<{}, AppState> {
             // Remove the layer by filtering for all layers that don't match the id we're removing
             layers: this.state.layers.filter((val) => val.id != layerId)
         })
+    }
+
+    /**
+     * If the query parameters match movie=string, then attempt to load the movie from that movie ID string.
+     */
+    _LoadHelioviewerMovieFromQueryParameters() {
+        let params = new URLSearchParams(window.location.search);
+        let movieId = params.get("movie");
+        if (movieId != null) {
+            LoadHelioviewerMovie(scene, movieId, (layer) => {
+                this.setState({
+                    layers: this.state.layers.concat(layer)
+                })
+            }).catch((e) => {
+                alert("Unable to load movie from Helioviewer");
+            })
+        }
     }
 
     render(): React.ReactNode {

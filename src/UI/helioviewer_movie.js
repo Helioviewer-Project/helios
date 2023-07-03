@@ -5,13 +5,13 @@ import {parseDate} from "../common/dates";
 import { Sources } from "./navigation/control_tabs/components/datasource_picker.js";
 import React, { useState } from 'react';
 import { GetImageScaleForResolution } from "../common/resolution_lookup.js";
+import Scene from "../Scene/scene.js";
 
-export default function HelioviewerMovie({scene, addLayer}) {
+function HelioviewerMovie({scene, addLayer}) {
     const [movieId, setMovieId] = useState("")
 
     async function loadMovie() {
-        let data = await GetMovieData(movieId);
-        AddMovieToScene(scene, data, addLayer);
+        LoadHelioviewerMovie(scene, movieId);
     }
 
     return [
@@ -19,6 +19,17 @@ export default function HelioviewerMovie({scene, addLayer}) {
         <input key={1} value={movieId} onChange={(e) => setMovieId(e.target.value)} id="js-helioviewer-movie" type="text" placeholder="Movie ID"/>,
         <button key={2} onClick={loadMovie} type="button" id="js-helioviewer-movie-load">Load</button>
     ]
+}
+
+/**
+ * Adds the given movie to the scene
+ * @param {Scene} scene
+ * @param {string} movieId
+ * @param {(layer: ModelInfo) => void} onLayerCreated Executed when a new layer is added by the helioviewer movie
+ */
+async function LoadHelioviewerMovie(scene, movieId, onLayerCreated) {
+    let data = await GetMovieData(movieId);
+    AddMovieToScene(scene, data, onLayerCreated);
 }
 
 async function GetMovieData(id) {
@@ -91,7 +102,7 @@ function MatchLayerToSource(layer, source_list) {
         var str_to_check = CleanSource(data);
         // Filter the option list down via that element
         // by checking if the text contains it.
-        filtered_sources = filtered_sources.filter((e) => e[0].indexOf(str_to_check) >= 0);
+        filtered_sources = filtered_sources.filter((e) => e[1].indexOf(str_to_check) >= 0);
         // If the element is a number exit the loop
         // The element is a number if parsing it does not result in NaN
         if (!isNaN(parseInt(data)) || filtered_sources.length == 1) {
@@ -100,7 +111,7 @@ function MatchLayerToSource(layer, source_list) {
     }
     // If there is only one result, return its value.
     if (filtered_sources.length == 1) {
-        return parseInt(filtered_sources[0][1]);
+        return parseInt(filtered_sources[0][0]);
     } else {
         // If there are multiple results, throw error
         throw "Data source " + GetHumanReadableLayer(layer) + " is unsupported";
@@ -132,3 +143,5 @@ function ParseCadence(dates, data) {
     let seconds = (dates[1] - dates[0]) / 1000;
     return seconds / data.numFrames;
 }
+
+export {HelioviewerMovie, LoadHelioviewerMovie}
