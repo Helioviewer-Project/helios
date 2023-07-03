@@ -1,0 +1,6 @@
+{
+    "entryPoints": ["src/**/*.js", "src/**/*.ts", "src/**/*.tsx"],
+    "out": "./docs",
+    "plugin": ["typedoc-plugin-missing-exports"],
+    "name": "Helios"
+}
