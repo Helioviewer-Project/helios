@@ -1,5 +1,5 @@
 import Config from "../Configuration.js";
-import ThreeScene from "./three/three_scene.js";
+import {ThreeScene} from "./three/three_scene";
 import ModelFactory from "./model_factory.js";
 import { GetImageScaleForResolution } from "../common/resolution_lookup.js";
 import Loader from "../UI/loader.js";
