@@ -318,7 +318,7 @@ export default class Scene {
 
             return max;
         } else {
-            throw "No models available";
+            return 0;
         }
     }
 

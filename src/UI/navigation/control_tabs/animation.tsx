@@ -3,6 +3,7 @@ import common from "./common.css";
 import css from "./animation.css";
 import CloseButton from "./components/close_button";
 import Input from "../../components/input/input";
+import { MoviePlayerFacade } from "./components/player";
 
 type AnimationControlProps = {
     /**
@@ -50,6 +51,7 @@ class AnimationControls extends React.Component<
     _cadence: number;
     _frame_delay: number;
     _interval: number;
+    _current_frame: number;
 
     constructor(props: AnimationControlProps) {
         super(props);
@@ -87,6 +89,12 @@ class AnimationControls extends React.Component<
          * @private
          */
         this._frame_delay = 1000;
+
+        /**
+         * Represents the current "frame" of the scene.
+         * (frame is in quotes because they are really just timestamps that characterize steps that will cover all data in the scene.)
+         */
+        this._current_frame = 0;
 
         /**
          * Interval for the animation thread
@@ -176,6 +184,7 @@ class AnimationControls extends React.Component<
      * Animation frame tick, called to update to the next frame
      */
     _TickFrame() {
+        this._current_frame += 1;
         this._current_time = this._GetNextFrameTime();
         this._UpdateScene();
     }
@@ -191,6 +200,7 @@ class AnimationControls extends React.Component<
         nextTime.setSeconds(nextTime.getSeconds() + this._cadence);
         // If nextTime is over end time, then go back to start time
         if (nextTime > this._end_time) {
+            this._current_frame = 0;
             return new Date(this._start_time);
         } else {
             // Otherwise, return this as the next date
@@ -203,6 +213,26 @@ class AnimationControls extends React.Component<
         if (!isNaN(tentativeValue)) {
             this.setState({ speed: tentativeValue });
         }
+    }
+
+    /**
+     * Updates the scene to a specific frame.
+     * This is determined by calculating the date based on the frame number
+     * @param frame
+     */
+    SetSpecificFrame(frame: number) {
+        this._InitializeAnimationRangeFromInputs();
+        // _cadence represents the seconds between each frame.
+        // Multiply this by the frame number to get the amount of time from the beginning of the animation range.
+        let secondsFromStart = this._cadence * frame;
+        let newTime = new Date(this._start_time);
+        // Compute a date with the desired time
+        newTime.setSeconds(newTime.getSeconds() + secondsFromStart);
+        // Set this to the current time
+        this._current_time = newTime;
+        // Tell the scene to use the new time
+        this._UpdateScene();
+        this._current_frame = frame;
     }
 
     render() {
@@ -232,6 +262,11 @@ class AnimationControls extends React.Component<
                         {this.IsPlaying() ? "pause" : "play_arrow"}
                     </span>
                 </button>
+                <MoviePlayerFacade
+                    frameCount={this.props.GetMaxFrameCount()}
+                    SetFrame={(n) => this.SetSpecificFrame(n)}
+                    currentFrame={this._current_frame}
+                    />
             </div>
         );
     }
