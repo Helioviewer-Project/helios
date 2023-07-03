@@ -1,8 +1,17 @@
-import { Scene, OrthographicCamera, WebGLRenderer, AxesHelper, Mesh, Vector3, Raycaster, Vector2 } from "three";
+import {
+    Scene,
+    OrthographicCamera,
+    WebGLRenderer,
+    AxesHelper,
+    Mesh,
+    Vector3,
+    Raycaster,
+    Vector2,
+} from "three";
 import { TrackballControls } from "three/examples/jsm/controls/TrackballControls.js";
-import {Tween, Easing, update as TweenUpdate} from "@tweenjs/tween.js";
+import { Tween, Easing, update as TweenUpdate } from "@tweenjs/tween.js";
 import Config from "../../Configuration.js";
-import HTML from '../../common/html.js';
+import HTML from "../../common/html.js";
 import Coordinates from "../../common/coordinates.js";
 import { FocalPointMaintainer } from "./focal_point_maintainer";
 
@@ -33,7 +42,14 @@ class ThreeScene {
         this._scene = new Scene();
 
         // Create the camera and set its default position
-        this._camera = new OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / -2, 0, 1000);
+        this._camera = new OrthographicCamera(
+            window.innerWidth / -2,
+            window.innerWidth / 2,
+            window.innerHeight / 2,
+            window.innerHeight / -2,
+            0,
+            1000
+        );
         this._camera.position.x = 0;
         this._camera.position.y = 0;
         this._camera.position.z = -100;
@@ -49,16 +65,27 @@ class ThreeScene {
         target.appendChild(this._renderer.domElement);
 
         // Initialize input controls via TrackballControls
-        this._controls = new TrackballControls(this._camera, this._renderer.domElement);
+        this._controls = new TrackballControls(
+            this._camera,
+            this._renderer.domElement
+        );
         this._controls.panSpeed = Config.camera_pan_speed;
         this._controls.enabled = true;
         this._controls.rotateSpeed = 2.3;
         this._controls.update();
 
         // Create the focal point maintainer to manage the focus for zooming/panning/rotating
-        this._focal_point_maintainer = new FocalPointMaintainer(this._scene, this._camera, this._controls);
-        this._controls.addEventListener("start", () => this._focal_point_maintainer.OnInteractionStart());
-        this._controls.addEventListener("end", () => this._focal_point_maintainer.OnInteractionEnd());
+        this._focal_point_maintainer = new FocalPointMaintainer(
+            this._scene,
+            this._camera,
+            this._controls
+        );
+        this._controls.addEventListener("start", () =>
+            this._focal_point_maintainer.OnInteractionStart()
+        );
+        this._controls.addEventListener("end", () =>
+            this._focal_point_maintainer.OnInteractionEnd()
+        );
 
         // Allow the page to be resized
         this._EnableResizing();
@@ -78,10 +105,19 @@ class ThreeScene {
             scene_info._renderer.render(scene_info._scene, scene_info._camera);
             if (enable_debug) {
                 if (scene_info._camera) {
-                    let camera_position = document.getElementById("js-camera-position");
+                    let camera_position =
+                        document.getElementById("js-camera-position");
                     if (camera_position) {
                         let pos = scene_info._camera.position;
-                        camera_position.textContent = "(" + pos.x + ", " + pos.y + ", " + pos.z + "). Zoom: " + scene_info._camera.zoom;
+                        camera_position.textContent =
+                            "(" +
+                            pos.x +
+                            ", " +
+                            pos.y +
+                            ", " +
+                            pos.z +
+                            "). Zoom: " +
+                            scene_info._camera.zoom;
                     }
                 }
             }
@@ -96,15 +132,15 @@ class ThreeScene {
     _EnableResizing() {
         let camera = this._camera;
         let renderer = this._renderer;
-        function onWindowResize(){
+        function onWindowResize() {
             camera.left = window.innerWidth / -2;
             camera.right = window.innerWidth / 2;
             camera.top = window.innerHeight / 2;
             camera.bottom = window.innerHeight / -2;
             camera.updateProjectionMatrix();
-            renderer.setSize( window.innerWidth, window.innerHeight );
+            renderer.setSize(window.innerWidth, window.innerHeight);
         }
-        window.addEventListener('resize', onWindowResize);
+        window.addEventListener("resize", onWindowResize);
     }
 
     /**
@@ -166,4 +202,4 @@ class ThreeScene {
     }
 }
 
-export {ThreeScene};
+export { ThreeScene };

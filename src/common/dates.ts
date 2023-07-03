@@ -35,9 +35,16 @@ function ToUTCDate(date: Date): Date {
 
 function parseDate(datestr: string): Date {
     let numbers: any = datestr.split(/[^0-9]/);
-    numbers = numbers.map((numstr: string): number => parseInt(numstr))
+    numbers = numbers.map((numstr: string): number => parseInt(numstr));
     // Creating a date this way uses local time, but values are UTC, so offset needs to be applied
-    let localdate = new Date(numbers[0], numbers[1]-1, numbers[2], numbers[3], numbers[4], numbers[5]);
+    let localdate = new Date(
+        numbers[0],
+        numbers[1] - 1,
+        numbers[2],
+        numbers[3],
+        numbers[4],
+        numbers[5]
+    );
     return ToUTCDate(localdate);
 }
 

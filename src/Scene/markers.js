@@ -1,9 +1,9 @@
-import {CreateMarkerModel, CreateHemisphere} from "./three/model_builder.js";
-import {LoadTexture} from "./three/texture_loader.js";
-import {Vector3} from "three";
+import { CreateMarkerModel, CreateHemisphere } from "./three/model_builder.js";
+import { LoadTexture } from "./three/texture_loader.js";
+import { Vector3 } from "three";
 import Scene from "./scene.js";
-import {deg2rad, rad2deg, ms2day} from "../common/math.js";
-import {GetEventLabel} from "../common/event.js";
+import { deg2rad, rad2deg, ms2day } from "../common/math.js";
+import { GetEventLabel } from "../common/event.js";
 
 /**
  * Encapsulates information about a feature/event marker
@@ -18,9 +18,13 @@ class Marker {
         e.observer = new Vector3(
             -e.coordinates.observer.x,
             e.coordinates.observer.z,
-            e.coordinates.observer.y,
+            e.coordinates.observer.y
         );
-        var marker = new Marker(e.coordinates.event.lat, e.coordinates.event.lon, e);
+        var marker = new Marker(
+            e.coordinates.event.lat,
+            e.coordinates.event.lon,
+            e
+        );
         return marker;
     }
 
@@ -90,7 +94,6 @@ class Marker {
         this._model.then((model) => {
             marker._RegisterPositionUpdater();
         });
-
     }
 
     _RegisterPositionUpdater() {
@@ -108,7 +111,7 @@ class Marker {
     _ComputeAngleChange(time) {
         // difference between scene time and observation time
         // Dates return the result in milliseconds.
-        let dt_ms = (time - this._t_start);
+        let dt_ms = time - this._t_start;
         // Convert milliseconds to days since angular velocity is stored in radians per day.
         let dt_days = ms2day(dt_ms);
         // Angular velocity is defined as change in angle over time
@@ -125,7 +128,7 @@ class Marker {
     _SetPositionForDate(scene_time) {
         this._t_now = scene_time;
         // Only position the object if the event occurs within the scene's point in time
-        if ((scene_time > this._t_start) && (scene_time < this._t_end)) {
+        if (scene_time > this._t_start && scene_time < this._t_end) {
             // Get the angle that the marker should have moved at away from the initial position.
             let angle = this._ComputeAngleChange(scene_time);
             // Apply this angle to get the longitude for the new scene time.
@@ -174,7 +177,7 @@ class Marker {
         // Latitude is in degrees, so convert it to radians
         let sin = Math.sin(deg2rad(lat));
         // This is the equation given in the article
-        let w = A + B*Math.pow(sin, 2) + C*Math.pow(sin, 4);
+        let w = A + B * Math.pow(sin, 2) + C * Math.pow(sin, 4);
         // The result is in degrees per day, convert this to radians for use with
         return deg2rad(w);
     }
@@ -208,8 +211,8 @@ class Marker {
         if (this._event.concept == "CME") {
             r *= 2;
         }
-        let lat_rad = lat * Math.PI / 180;
-        let lon_rad = lon * Math.PI / 180;
+        let lat_rad = (lat * Math.PI) / 180;
+        let lon_rad = (lon * Math.PI) / 180;
         // Formulas for converting lat/lon/radius (i.e. Heliographic Stonyhurst) to
         // xyz coordinates are given in W. T. Thompson, 2006, Coordinate systems for solar image data,
         // In 3js, y is the vertical axis (north pole)
@@ -245,7 +248,7 @@ class Marker {
     }
 
     _GetColorForEvent(e) {
-        return Math.random() * 0xFFFFFF;
+        return Math.random() * 0xffffff;
     }
 
     Enable() {

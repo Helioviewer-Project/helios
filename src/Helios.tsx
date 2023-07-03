@@ -1,13 +1,13 @@
-import Scene from './Scene/scene';
-import { createRoot } from 'react-dom/client';
-import React from 'react';
-import NavControls from './UI/navigation/controls';
-import { GetImageScaleForResolution } from './common/resolution_lookup.js';
-import config from './Configuration.js';
-import TimeDisplay from './UI/time_display.js';
-import { DataSource, DateRange } from './UI/navigation/control_tabs/data';
-import { ModelInfo } from './common/types';
-import { LoadHelioviewerMovie } from './UI/helioviewer_movie';
+import Scene from "./Scene/scene";
+import { createRoot } from "react-dom/client";
+import React from "react";
+import NavControls from "./UI/navigation/controls";
+import { GetImageScaleForResolution } from "./common/resolution_lookup.js";
+import config from "./Configuration.js";
+import TimeDisplay from "./UI/time_display.js";
+import { DataSource, DateRange } from "./UI/navigation/control_tabs/data";
+import { ModelInfo } from "./common/types";
+import { LoadHelioviewerMovie } from "./UI/helioviewer_movie";
 
 // /**
 //  * When the page first loads, users should see something besides black, so load the first available image
@@ -20,12 +20,12 @@ import { LoadHelioviewerMovie } from './UI/helioviewer_movie';
 // LoadDefaultImage();
 
 // Defined in main HTML, not React
-const scene = new Scene('js-helios-viewport');
+const scene = new Scene("js-helios-viewport");
 
 type AppState = {
-    sceneTime: Date,
-    layers: ModelInfo[]
-}
+    sceneTime: Date;
+    layers: ModelInfo[];
+};
 
 /**
  * Entry point for the Helios app.
@@ -36,18 +36,18 @@ class App extends React.Component<{}, AppState> {
         super(props);
         // Register the listener to update the React state any time the scene time changes.
         // This happens either from data loading or animation
-        let firstRun = true
+        let firstRun = true;
         scene.RegisterTimeUpdateListener((newTime) => {
             if (firstRun) {
                 this.state = {
                     sceneTime: newTime,
-                    layers: []
-                }
-                firstRun = false
+                    layers: [],
+                };
+                firstRun = false;
             } else {
-                this.setState({sceneTime: newTime})
+                this.setState({ sceneTime: newTime });
             }
-        })
+        });
 
         this.AddLayer = this.AddLayer.bind(this);
         this._LoadHelioviewerMovieFromQueryParameters();
@@ -60,13 +60,23 @@ class App extends React.Component<{}, AppState> {
      */
     async AddLayer(source: number, dateRange: DateRange) {
         if (dateRange.start > dateRange.end) {
-            alert('Start time must be before end time');
+            alert("Start time must be before end time");
         } else {
-            let image_scale = GetImageScaleForResolution(config.default_texture_resolution, source);
-            let layer = await scene.AddToScene(source, dateRange.start, dateRange.end, dateRange.cadence, image_scale, 1);
+            let image_scale = GetImageScaleForResolution(
+                config.default_texture_resolution,
+                source
+            );
+            let layer = await scene.AddToScene(
+                source,
+                dateRange.start,
+                dateRange.end,
+                dateRange.cadence,
+                image_scale,
+                1
+            );
             this.setState({
-                layers: this.state.layers.concat(layer)
-            })
+                layers: this.state.layers.concat(layer),
+            });
         }
     }
 
@@ -74,9 +84,9 @@ class App extends React.Component<{}, AppState> {
         scene.RemoveFromScene(layerId);
         this.setState({
             // Remove the layer by filtering for all layers that don't match the id we're removing
-            layers: this.state.layers.filter((val) => val.id != layerId)
-        })
-    }
+            layers: this.state.layers.filter((val) => val.id != layerId),
+        });
+    };
 
     /**
      * If the query parameters match movie=string, then attempt to load the movie from that movie ID string.
@@ -87,18 +97,21 @@ class App extends React.Component<{}, AppState> {
         if (movieId != null) {
             LoadHelioviewerMovie(scene, movieId, (layer) => {
                 this.setState({
-                    layers: this.state.layers.concat(layer)
-                })
+                    layers: this.state.layers.concat(layer),
+                });
             }).catch((e) => {
                 alert("Unable to load movie from Helioviewer");
-            })
+            });
         }
     }
 
     render(): React.ReactNode {
         return (
             <div>
-                <TimeDisplay time={this.state.sceneTime} onTimeChange={time => scene.SetTime(time)} />
+                <TimeDisplay
+                    time={this.state.sceneTime}
+                    onTimeChange={(time) => scene.SetTime(time)}
+                />
                 <NavControls
                     onAddData={this.AddLayer}
                     Layers={this.state.layers}
@@ -106,14 +119,21 @@ class App extends React.Component<{}, AppState> {
                     GetSceneTimeRange={() => scene.GetTimeRange()}
                     GetMaxFrameCount={() => scene.GetMaxFrameCount()}
                     SetSceneTime={(date) => scene.SetTime(date)}
-                    RegisterTimeListener={(fn) => scene.RegisterTimeUpdateListener(fn)}
-                    UnregisterTimeListener={(id) => scene.UnregisterTimeUpdateListener(id)}
-                    UpdateModelOpacity={(id, opacity) => scene.SetModelOpacity(id, opacity)}
-                    RemoveModel={this.RemoveLayer}/>
+                    RegisterTimeListener={(fn) =>
+                        scene.RegisterTimeUpdateListener(fn)
+                    }
+                    UnregisterTimeListener={(id) =>
+                        scene.UnregisterTimeUpdateListener(id)
+                    }
+                    UpdateModelOpacity={(id, opacity) =>
+                        scene.SetModelOpacity(id, opacity)
+                    }
+                    RemoveModel={this.RemoveLayer}
+                />
             </div>
-        )
+        );
     }
 }
 
-let root = createRoot(document.getElementById('app'));
-root.render(<App />)
+let root = createRoot(document.getElementById("app"));
+root.render(<App />);

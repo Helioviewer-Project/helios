@@ -113,4 +113,4 @@ void main() {
 	// gl_FragColor = vec4(texture2D(tex, scaled_uv).rgb, 1.0);
 }`;
 
-export {vertex_shader, fragment_shader};
+export { vertex_shader, fragment_shader };

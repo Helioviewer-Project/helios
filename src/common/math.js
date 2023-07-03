@@ -6,14 +6,14 @@
  * Degrees to radians
  */
 function deg2rad(deg) {
-    return deg*Math.PI/180;
+    return (deg * Math.PI) / 180;
 }
 
 /**
  * Radians to degrees
  */
 function rad2deg(rad) {
-    return rad * 180 / Math.PI;
+    return (rad * 180) / Math.PI;
 }
 
 /**
@@ -23,7 +23,7 @@ function ms2sec(ms) {
     return ms / 1000;
 }
 
-/** 
+/**
  * Seconds to minutes
  */
 function sec2min(s) {
@@ -52,8 +52,4 @@ function ms2day(ms) {
     return hour2day(min2hour(sec2min(ms2sec(ms))));
 }
 
-export {
-    ms2day,
-    deg2rad,
-    rad2deg
-};
+export { ms2day, deg2rad, rad2deg };

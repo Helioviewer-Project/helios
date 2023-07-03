@@ -29,4 +29,4 @@ function GetImageScaleForResolution(resolution, source) {
     return scale;
 }
 
-export {GetImageScaleForResolution};
+export { GetImageScaleForResolution };

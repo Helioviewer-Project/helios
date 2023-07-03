@@ -12,4 +12,4 @@ function GetEventLabel(event) {
     return text;
 }
 
-export {GetEventLabel};
+export { GetEventLabel };

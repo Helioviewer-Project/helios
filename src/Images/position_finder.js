@@ -1,5 +1,5 @@
-import Helioviewer from '../API/helioviewer.js';
-import Coordinates from '../common/coordinates.js'
+import Helioviewer from "../API/helioviewer.js";
+import Coordinates from "../common/coordinates.js";
 
 /**
  * API used for getting positional information for objects
@@ -32,4 +32,3 @@ class PositionFinder {
 let finder = new PositionFinder();
 
 export default finder;
-

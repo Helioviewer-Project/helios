@@ -4,14 +4,12 @@ import {
     UpdateModelTexture,
     UpdateModelOpacity,
     UpdateModelLayeringOrder,
-    FreeModel
-} from './three/model_builder.js';
+    FreeModel,
+} from "./three/model_builder.js";
 
-import {
-    Vector3
-} from 'three';
+import { Vector3 } from "three";
 
-import Config from '../Configuration.js';
+import Config from "../Configuration.js";
 
 /**
  * Representation of an animatable sun created from image and
@@ -61,9 +59,15 @@ class Model {
      */
     _InitializeModel() {
         if (Config.plane_sources.indexOf(this.source) != -1) {
-            this._model = CreatePlaneWithTexture(this.data[0].texture, this.data[0].jp2info);
+            this._model = CreatePlaneWithTexture(
+                this.data[0].texture,
+                this.data[0].jp2info
+            );
         } else {
-            this._model = CreateHemisphereWithTexture(this.data[0].texture, this.data[0].jp2info);
+            this._model = CreateHemisphereWithTexture(
+                this.data[0].texture,
+                this.data[0].jp2info
+            );
         }
 
         // Update the texture/rotational position
@@ -193,13 +197,14 @@ class Model {
      */
     dispose() {
         // Free the model's mesh
-        this.GetModel().then((model) => { FreeModel(model); });
+        this.GetModel().then((model) => {
+            FreeModel(model);
+        });
         // Free all the image textures
         for (const datum of this.data) {
             datum.texture.dispose();
         }
     }
-};
+}
 
 export default Model;
-

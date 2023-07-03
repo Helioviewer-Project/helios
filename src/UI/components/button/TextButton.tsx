@@ -1,5 +1,5 @@
 import React from "react";
-import css from "./TextButton.css"
+import css from "./TextButton.css";
 
 interface TextButtonProps {
     text: string;
@@ -8,5 +8,13 @@ interface TextButtonProps {
 }
 
 export default function TextButton(props: TextButtonProps) {
-    return <button className={css.button} onClick={props.onClick} style={props.style}>{props.text}</button>
+    return (
+        <button
+            className={css.button}
+            onClick={props.onClick}
+            style={props.style}
+        >
+            {props.text}
+        </button>
+    );
 }

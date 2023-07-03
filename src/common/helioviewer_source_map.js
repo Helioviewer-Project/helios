@@ -11,4 +11,4 @@ function HelioviewerToHelios(source) {
     }
 }
 
-export {HelioviewerToHelios};
+export { HelioviewerToHelios };

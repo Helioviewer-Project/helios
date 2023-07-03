@@ -1,6 +1,6 @@
-import Config from '../Configuration.js';
-import {ToAPIDate, parseDate} from "../common/dates";
-import Coordinates from '../common/coordinates.js';
+import Config from "../Configuration.js";
+import { ToAPIDate, parseDate } from "../common/dates";
+import Coordinates from "../common/coordinates.js";
 
 /**
  * This module is used for interfacing with the Helioviewer API
@@ -26,7 +26,7 @@ class Helioviewer {
      */
     GetApiUrl() {
         let url = Config.helioviewer_url;
-        if (!url.endsWith('/')) {
+        if (!url.endsWith("/")) {
             url = url + "/";
         }
         return url + "v2/";
@@ -41,7 +41,12 @@ class Helioviewer {
      */
     async _GetClosestImage(source, time) {
         let time_copy = new Date(time);
-        let api_url = this.GetApiUrl() + "getClosestImage/?sourceId=" + source + "&date=" + ToAPIDate(time);
+        let api_url =
+            this.GetApiUrl() +
+            "getClosestImage/?sourceId=" +
+            source +
+            "&date=" +
+            ToAPIDate(time);
         let result = await fetch(api_url);
         let image = await result.json();
         // Add the Z to indicate the date is a UTC date. Helioviewer works in UTC
@@ -54,8 +59,8 @@ class Helioviewer {
                 height: image.height,
                 solar_center_x: image.refPixelX,
                 solar_center_y: image.refPixelY,
-                solar_radius: image.rsun
-            }
+                solar_radius: image.rsun,
+            },
         };
     }
 
@@ -90,7 +95,10 @@ class Helioviewer {
         while (query_time <= end) {
             // Query Helioviewer for the closest image to the given time.
             // Sends the request off and store the promise
-            let image_promise = this._GetClosestImage(source, new Date(query_time));
+            let image_promise = this._GetClosestImage(
+                source,
+                new Date(query_time)
+            );
             // Add the result to the output array
             results.push(image_promise);
             // Add cadence to the query time
@@ -118,9 +126,9 @@ class Helioviewer {
      * @returns Coordinates
      */
     _toCoordinates(response) {
-        let x = response['x'];
-        let y = response['z'];
-        let z = response['y'];
+        let x = response["x"];
+        let y = response["z"];
+        let z = response["y"];
         return new Coordinates(-x, y, z);
     }
 
@@ -146,7 +154,10 @@ class Helioviewer {
     async GetEventsForDay(day) {
         if (Config.enable_features_and_events) {
             let date_str = ToAPIDate(day);
-            let api_url = this.GetApiUrl() + "getEvents/?eventType=**&startTime=" + date_str;
+            let api_url =
+                this.GetApiUrl() +
+                "getEvents/?eventType=**&startTime=" +
+                date_str;
             let result = await fetch(api_url);
             let data = await result.json();
             return data;
@@ -163,7 +174,12 @@ class Helioviewer {
     async GetEvents(start, end) {
         let start_time = ToAPIDate(start);
         let end_time = ToAPIDate(end);
-        let api_url = Config.helios_api_url + "event?start=" + start_time + "&end=" + end_time;
+        let api_url =
+            Config.helios_api_url +
+            "event?start=" +
+            start_time +
+            "&end=" +
+            end_time;
         let result = await fetch(api_url);
         let data = await result.json();
         if (data.hasOwnProperty("error")) {
@@ -173,7 +189,9 @@ class Helioviewer {
             for (const e of data.results) {
                 e.start_time = new Date(e.event_starttime + "Z");
                 e.end_time = new Date(e.event_endtime + "Z");
-                e.coordinates.observer = this._toCoordinates(e.coordinates.observer)
+                e.coordinates.observer = this._toCoordinates(
+                    e.coordinates.observer
+                );
             }
             return data.results;
         }
@@ -184,7 +202,11 @@ class Helioviewer {
      */
     async GetEventCoordinates(event) {
         let system = event.event_coordsys;
-        let coordinates = [event.event_coord1, event.event_coord2, event.event_coord3];
+        let coordinates = [
+            event.event_coord1,
+            event.event_coord2,
+            event.event_coord3,
+        ];
         let date = event.event_starttime;
         let instrument = event.obs_instrument;
         let units = event.event_coordunit;
@@ -206,11 +228,21 @@ class Helioviewer {
         let parser = new DOMParser();
         let xml = parser.parseFromString(jp2_header_xml, "text/xml");
         return {
-            width: parseFloat(xml.getElementsByTagName('NAXIS1')[0].textContent),
-            height: parseFloat(xml.getElementsByTagName('NAXIS2')[0].textContent),
-            solar_center_x: parseFloat(xml.getElementsByTagName('CRPIX1')[0].textContent),
-            solar_center_y: parseFloat(xml.getElementsByTagName('CRPIX2')[0].textContent),
-            solar_radius: parseFloat(xml.getElementsByTagName('R_SUN')[0].textContent)
+            width: parseFloat(
+                xml.getElementsByTagName("NAXIS1")[0].textContent
+            ),
+            height: parseFloat(
+                xml.getElementsByTagName("NAXIS2")[0].textContent
+            ),
+            solar_center_x: parseFloat(
+                xml.getElementsByTagName("CRPIX1")[0].textContent
+            ),
+            solar_center_y: parseFloat(
+                xml.getElementsByTagName("CRPIX2")[0].textContent
+            ),
+            solar_radius: parseFloat(
+                xml.getElementsByTagName("R_SUN")[0].textContent
+            ),
         };
     }
 
@@ -222,7 +254,8 @@ class Helioviewer {
      * @returns {string} URL of the image
      */
     GetImageURL(id, scale) {
-        let url = this.GetApiUrl() + "downloadImage/?id=" + id + "&scale=" + scale;
+        let url =
+            this.GetApiUrl() + "downloadImage/?id=" + id + "&scale=" + scale;
         return url;
     }
 
@@ -231,14 +264,17 @@ class Helioviewer {
      * @param {string} id Movie id
      */
     async GetMovieDetails(id) {
-        let url = this.GetApiUrl() + "getMovieStatus/?id=" + id + "&format=mp4&verbose=true";
+        let url =
+            this.GetApiUrl() +
+            "getMovieStatus/?id=" +
+            id +
+            "&format=mp4&verbose=true";
         let result = await fetch(url);
         let data = await result.json();
         if (data.hasOwnProperty("error")) {
             throw data.error;
         }
         return data;
-
     }
 }
 

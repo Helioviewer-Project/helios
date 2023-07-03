@@ -1,24 +1,40 @@
 import Config from "../Configuration.js";
 import Helioviewer from "../API/helioviewer.js";
-import {HelioviewerToHelios} from "../common/helioviewer_source_map.js";
-import {parseDate} from "../common/dates";
+import { HelioviewerToHelios } from "../common/helioviewer_source_map.js";
+import { parseDate } from "../common/dates";
 import { Sources } from "./navigation/control_tabs/components/datasource_picker.js";
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { GetImageScaleForResolution } from "../common/resolution_lookup.js";
 import Scene from "../Scene/scene.js";
 
-function HelioviewerMovie({scene, addLayer}) {
-    const [movieId, setMovieId] = useState("")
+function HelioviewerMovie({ scene, addLayer }) {
+    const [movieId, setMovieId] = useState("");
 
     async function loadMovie() {
         LoadHelioviewerMovie(scene, movieId);
     }
 
     return [
-        <label key={0} htmlFor="js-helioviewer-movie">Load Movie</label>,
-        <input key={1} value={movieId} onChange={(e) => setMovieId(e.target.value)} id="js-helioviewer-movie" type="text" placeholder="Movie ID"/>,
-        <button key={2} onClick={loadMovie} type="button" id="js-helioviewer-movie-load">Load</button>
-    ]
+        <label key={0} htmlFor="js-helioviewer-movie">
+            Load Movie
+        </label>,
+        <input
+            key={1}
+            value={movieId}
+            onChange={(e) => setMovieId(e.target.value)}
+            id="js-helioviewer-movie"
+            type="text"
+            placeholder="Movie ID"
+        />,
+        <button
+            key={2}
+            onClick={loadMovie}
+            type="button"
+            id="js-helioviewer-movie-load"
+        >
+            Load
+        </button>,
+    ];
 }
 
 /**
@@ -42,8 +58,18 @@ async function AddMovieToScene(scene, data, addLayer, layerCount) {
     let sources = ParseLayerString(data.layers);
     let cadence = ParseCadence(dates, data);
     for (const source of sources) {
-        let scale = GetImageScaleForResolution(Config.default_texture_resolution, source);
-        let layer = await scene.AddToScene(source, dates[0], dates[1], cadence, scale, layerCount + 1);
+        let scale = GetImageScaleForResolution(
+            Config.default_texture_resolution,
+            source
+        );
+        let layer = await scene.AddToScene(
+            source,
+            dates[0],
+            dates[1],
+            cadence,
+            scale,
+            layerCount + 1
+        );
         // TODO: Make sure I'm managing layers somehow
         addLayer(layer);
         // TODO: Play movie
@@ -68,11 +94,7 @@ function ParseLayerString(layer_string) {
     let split = layer_string.split("],[");
     let layers = [];
     for (const layer of split) {
-        layers.push(
-            layer.replace("[", "")
-            .replace("]", "")
-            .split(",")
-        );
+        layers.push(layer.replace("[", "").replace("]", "").split(","));
     }
     return GetLayerSources(layers);
 }
@@ -94,7 +116,6 @@ function GetLayerSources(layers) {
     return sources_found;
 }
 
-
 function MatchLayerToSource(layer, source_list) {
     let filtered_sources = Object.entries(source_list);
     // For each element in layer
@@ -102,7 +123,9 @@ function MatchLayerToSource(layer, source_list) {
         var str_to_check = CleanSource(data);
         // Filter the option list down via that element
         // by checking if the text contains it.
-        filtered_sources = filtered_sources.filter((e) => e[1].indexOf(str_to_check) >= 0);
+        filtered_sources = filtered_sources.filter(
+            (e) => e[1].indexOf(str_to_check) >= 0
+        );
         // If the element is a number exit the loop
         // The element is a number if parsing it does not result in NaN
         if (!isNaN(parseInt(data)) || filtered_sources.length == 1) {
@@ -122,19 +145,18 @@ function CleanSource(str) {
     return HelioviewerToHelios(str);
 }
 
-
 function GetHumanReadableLayer(layer) {
-    let cutoff = layer.indexOf('1');
+    let cutoff = layer.indexOf("1");
     if (cutoff == -1) {
-        cutoff = layer.indexOf('0');
-    } if (cutoff == -1) {
+        cutoff = layer.indexOf("0");
+    }
+    if (cutoff == -1) {
         cutoff = layer.length;
     }
 
     let result = layer.slice(0, cutoff);
     return result.join(" ");
 }
-
 
 /**
  * Parses the cadence of the movie. Computed from the date range and FPS.
@@ -144,4 +166,4 @@ function ParseCadence(dates, data) {
     return seconds / data.numFrames;
 }
 
-export {HelioviewerMovie, LoadHelioviewerMovie}
+export { HelioviewerMovie, LoadHelioviewerMovie };

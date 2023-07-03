@@ -1,4 +1,4 @@
-import {Vector3} from "three";
+import { Vector3 } from "three";
 
 /**
  * Represents coordinates in 3D space
@@ -23,4 +23,3 @@ class Coordinates {
 }
 
 export default Coordinates;
-

@@ -78,4 +78,4 @@ void main() {
 	gl_FragColor = color;
 }`;
 
-export {vertex_shader, fragment_shader};
+export { vertex_shader, fragment_shader };

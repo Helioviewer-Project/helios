@@ -1,6 +1,6 @@
-import {STLLoader} from 'three/examples/jsm/loaders/STLLoader.js';
-import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
-import {Matrix4} from 'three';
+import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { Matrix4 } from "three";
 
 /**
  * Keep one loader initialized.
@@ -24,16 +24,16 @@ let cache = {};
  */
 function _ExtractMeshFromGLTF(gltf) {
     let mesh;
-    gltf.scene.traverse( function ( child ) {
-        if ( child.isMesh ) {
+    gltf.scene.traverse(function (child) {
+        if (child.isMesh) {
             //Setting the buffer geometry
             mesh = child.geometry;
         }
-    } );
+    });
 
     // Flip the geometry so the front of the sun is the front.
     // Without this, threejs thinks the flat side is the front.
-    mesh.applyMatrix4( new Matrix4().makeRotationX( Math.PI ) );
+    mesh.applyMatrix4(new Matrix4().makeRotationX(Math.PI));
     return mesh;
 }
 
@@ -53,22 +53,23 @@ function LoadMesh(path) {
         }
 
         return new Promise((resolve, reject) => {
-            loader.load(path,
-            // on success
-            (geometry) => {
-                if (loader == gltfloader) {
-                    geometry = _ExtractMeshFromGLTF(geometry);
-                }
-                cache[path] = geometry;
-                resolve(geometry);
-            },
-            // onProgress is not supported by threejs
-            undefined,
-            // on error
-            (result) => reject(result));
+            loader.load(
+                path,
+                // on success
+                (geometry) => {
+                    if (loader == gltfloader) {
+                        geometry = _ExtractMeshFromGLTF(geometry);
+                    }
+                    cache[path] = geometry;
+                    resolve(geometry);
+                },
+                // onProgress is not supported by threejs
+                undefined,
+                // on error
+                (result) => reject(result)
+            );
         });
     }
 }
 
 export { LoadMesh };
-

@@ -1,4 +1,4 @@
-import {TextureLoader} from 'three';
+import { TextureLoader } from "three";
 
 /**
  * Keep one texture loader initialized.
@@ -12,15 +12,16 @@ let loader = new TextureLoader();
  */
 function LoadTexture(url) {
     return new Promise((resolve, reject) => {
-        loader.load(url,
-        // on success
-        (texture) => resolve(texture),
-        // onProgress is not supported by threejs
-        undefined,
-        // on error
-        (result) => reject(result));
+        loader.load(
+            url,
+            // on success
+            (texture) => resolve(texture),
+            // onProgress is not supported by threejs
+            undefined,
+            // on error
+            (result) => reject(result)
+        );
     });
 }
 
 export { LoadTexture };
-

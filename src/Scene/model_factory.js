@@ -1,6 +1,6 @@
-import Database from '../Images/database.js';
-import Model from './model.js';
-import { LoadTexture } from './three/texture_loader.js';
+import Database from "../Images/database.js";
+import Model from "./model.js";
+import { LoadTexture } from "./three/texture_loader.js";
 
 /**
  * The model factory is used to build 3D models that can be added
@@ -19,7 +19,14 @@ class ModelFactory {
      * @param {Function} gpu_load_texture Function to initialize the texture on the GPU.
      * @returns {Model} Model representing the sun, or null if no data is available
      */
-    async CreateSolarModel(source, start, end, cadence, scale, gpu_load_texture) {
+    async CreateSolarModel(
+        source,
+        start,
+        end,
+        cadence,
+        scale,
+        gpu_load_texture
+    ) {
         /*
         source = 13;
         start = new Date("2022-01-01");
@@ -28,9 +35,15 @@ class ModelFactory {
         scale = 8;
         */
         try {
-            var images = await Database.GetImages(source, start, end, cadence, scale);
+            var images = await Database.GetImages(
+                source,
+                start,
+                end,
+                cadence,
+                scale
+            );
         } catch (e) {
-            throw 'Failed to create model: ' + e
+            throw "Failed to create model: " + e;
         }
         // If there's no image data available, then return nothing
         // The should bubble up to the UI code which must alert the user
@@ -82,4 +95,3 @@ class ModelFactory {
 
 let factory = new ModelFactory();
 export default factory;
-

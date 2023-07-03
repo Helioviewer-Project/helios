@@ -7,7 +7,9 @@
     "test": "jest",
     "docs": "typedoc",
     "view-docs": "open docs/index.html",
-    "build": "./build.sh"
+    "build": "./build.sh",
+    "prettier": "prettier --write src",
+    "prettier-test": "prettier --check src"
   },
   "author": "Daniel Garcia-Briseno",
   "license": "MIT",
@@ -21,6 +23,7 @@
     "babel-loader": "^9.1.2",
     "css-loader": "^6.8.1",
     "jest": "^28.1.3",
+    "prettier": "^2.8.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-flatpickr": "^3.10.13",

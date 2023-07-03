@@ -1,10 +1,10 @@
-import { Camera, Quaternion, Scene, Vector3, Vector2, Raycaster } from "three"
+import { Camera, Quaternion, Scene, Vector3, Vector2, Raycaster } from "three";
 import { TrackballControls } from "three/examples/jsm/controls/TrackballControls";
 
 type CameraState = {
     position: Vector3;
     quaternion: Quaternion;
-}
+};
 
 /**
  * This class maintains the camera focal point so that user interaction feels smooth and intuitive.
@@ -56,8 +56,8 @@ class FocalPointMaintainer {
     private _GetCameraState(camera: Camera): CameraState {
         return {
             position: camera.position.clone(),
-            quaternion: camera.quaternion.clone()
-        }
+            quaternion: camera.quaternion.clone(),
+        };
     }
 
     /**
@@ -73,13 +73,15 @@ class FocalPointMaintainer {
      */
     private _UpdateFocalPoint() {
         this._raycaster.setFromCamera(this._center_screen, this._camera);
-        const intersects = this._raycaster.intersectObjects(this._scene.children);
+        const intersects = this._raycaster.intersectObjects(
+            this._scene.children
+        );
         intersects.forEach((intersection) => {
             if (intersection.object.type == "Mesh") {
                 this._controls.target = intersection.point;
             }
-        })
+        });
     }
 }
 
-export {FocalPointMaintainer}
+export { FocalPointMaintainer };

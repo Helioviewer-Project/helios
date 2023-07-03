@@ -1,6 +1,6 @@
 const Sources = {
-    8: "SDO AIA 94" ,
-    9: "SDO AIA 131" ,
+    8: "SDO AIA 94",
+    9: "SDO AIA 131",
     10: "SDO AIA 171",
     11: "SDO AIA 193",
     12: "SDO AIA 211",
@@ -11,14 +11,14 @@ const Sources = {
     17: "SDO AIA 4500",
     18: "SDO HMI Int",
     19: "SDO HMI Mag",
-    4: "SOHO LASCO C2" ,
-    5: "SOHO LASCO C3" ,
-    0: "SOHO EIT 171" ,
-    1: "SOHO EIT 195" ,
-    2: "SOHO EIT 284" ,
-    3: "SOHO EIT 304" ,
-    7: "SOHO MDI Continuum" ,
-    6: "SOHO MDI Magnetogram" ,
+    4: "SOHO LASCO C2",
+    5: "SOHO LASCO C3",
+    0: "SOHO EIT 171",
+    1: "SOHO EIT 195",
+    2: "SOHO EIT 284",
+    3: "SOHO EIT 304",
+    7: "SOHO MDI Continuum",
+    6: "SOHO MDI Magnetogram",
     20: "STEREO-A EUVI-A 171",
     21: "STEREO-A EUVI-A 195",
     22: "STEREO-A EUVI-A 284",
@@ -33,13 +33,10 @@ const Sources = {
     31: "STEREO-B COR2-B",
     34: "Yohkoh SXT thin-Al",
     35: "Yohkoh SXT white-light",
-}
+};
 
 function GetSourceName(source: number): string {
     return Sources[source];
 }
 
-export {
-    Sources,
-    GetSourceName
-}
+export { Sources, GetSourceName };

@@ -1,4 +1,4 @@
-import Scene from '../Scene/scene.js';
+import Scene from "../Scene/scene.js";
 
 /**
  * Camera controls provide UI functions for locking the
@@ -24,4 +24,3 @@ class CameraControls {
 
 let controls = new CameraControls();
 export default controls;
-

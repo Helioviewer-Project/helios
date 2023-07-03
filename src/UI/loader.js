@@ -1,5 +1,5 @@
-import Config from '../Configuration.js';
-import HTML from '../common/html.js';
+import Config from "../Configuration.js";
+import HTML from "../common/html.js";
 
 /**
  * Controller for loading element in the UI

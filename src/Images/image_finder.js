@@ -1,10 +1,9 @@
-import Helioviewer from '../API/helioviewer.js';
+import Helioviewer from "../API/helioviewer.js";
 
 /**
  * Searches helioviewer for images to use
  */
 class ImageFinder {
-
     /**
      * Checks if the given url is new to the list
      * @param {UrlInfo[]} urls Array of url objects
@@ -13,7 +12,7 @@ class ImageFinder {
      */
     _isNewUrl(urls, url_to_check) {
         // Check if the url is in the list
-        const found = urls.find(el => el.url == url_to_check);
+        const found = urls.find((el) => el.url == url_to_check);
         // If found is undefined, then the url is a new url
         return found == undefined;
     }
@@ -62,4 +61,3 @@ class ImageFinder {
 
 let finder = new ImageFinder();
 export default finder;
-

@@ -13,7 +13,7 @@ class ResolutionPicker {
         this._selector = HTML.resolution_selector;
         // Use an if block since having the texture picker displayed is optional.
         if (this._selector) {
-             // We capture when the user changes the resolution so we can update the scene
+            // We capture when the user changes the resolution so we can update the scene
             this._selector.addEventListener("change", (e) => {
                 let res = this.GetResolution();
                 Scene.UpdateResolution(res);

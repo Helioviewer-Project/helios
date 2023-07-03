@@ -5,7 +5,6 @@ import Helioviewer from "../API/helioviewer.js";
  * Interface for querying HEK events
  */
 class EventDB {
-
     /**
      * Takes a date range and returns an array of dates corresponding to one day per date.
      * For example given 2022-10-01 12:00:00 and 2022-10-04 12:00:00
@@ -17,11 +16,19 @@ class EventDB {
      */
     _DateRangeToIndividualDays(start, end) {
         // Change start and end to days, ignoring hours.
-        start = new Date(`${start.getUTCFullYear()}-${start.getUTCMonth() + 1}-${start.getUTCDate()} 12:00:00Z`);
-        end = new Date(`${end.getUTCFullYear()}-${end.getUTCMonth() + 1}-${end.getUTCDate()} 12:00:00Z`);
+        start = new Date(
+            `${start.getUTCFullYear()}-${
+                start.getUTCMonth() + 1
+            }-${start.getUTCDate()} 12:00:00Z`
+        );
+        end = new Date(
+            `${end.getUTCFullYear()}-${
+                end.getUTCMonth() + 1
+            }-${end.getUTCDate()} 12:00:00Z`
+        );
         // Now that start and end are reduced to days, get the number of days between them.
         // 86400*1000 is milliseconds per day. Subtracting dates returns milliseconds.
-        let num_days = (end - start) / (86400*1000);
+        let num_days = (end - start) / (86400 * 1000);
         let result = [];
         // Extra + 1 is that the date range must be inclusive of start & end
         for (let i = 0; i < num_days + 1; i++) {
@@ -80,7 +87,7 @@ class EventDB {
                 // If the event is not known, add it to the final event list
                 if (!is_event_known) {
                     final_events.push(hekevent);
-                    known_events.add(hekevent.kb_archivid)
+                    known_events.add(hekevent.kb_archivid);
                 }
             }
         }
@@ -90,4 +97,3 @@ class EventDB {
 
 let db = new EventDB();
 export default db;
-

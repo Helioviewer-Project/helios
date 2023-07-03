@@ -4,7 +4,7 @@ import Config from "../Configuration.js";
  * This module manages the controls for feature markers being rendered on the hemisphere.
  */
 class Features {
-    constructor () {
+    constructor() {
         /**
          * Stores all the events in a format that can be rendered in HTML
          * In order to keep the UI updated, events are stored with a "count"
@@ -24,8 +24,7 @@ class Features {
     /**
      * Adds a single event to the feature list
      */
-    AddEvent(e) {
-    }
+    AddEvent(e) {}
 
     /**
      * Removes a set of events from the feature list
@@ -35,15 +34,13 @@ class Features {
     /**
      * Removes a single event to the feature list
      */
-    RemoveEvent(e) {
-    }
+    RemoveEvent(e) {}
 
-    /** 
+    /**
      * Renders events stored in this._events to HTML
      * @private
      */
-    _render() {
-    }
+    _render() {}
 }
 let features = new Features();
 export default features;

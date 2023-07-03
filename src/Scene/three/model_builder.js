@@ -8,23 +8,22 @@ import {
     Matrix4,
     Group,
     BackSide,
-    DoubleSide
-} from 'three';
+    DoubleSide,
+} from "three";
 
-import {TextGeometry} from "three/examples/jsm/geometries/TextGeometry";
+import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry";
 
-
-import {LoadMesh} from './mesh_loader.js';
-import {LoadFont} from './font_loader.js';
+import { LoadMesh } from "./mesh_loader.js";
+import { LoadFont } from "./font_loader.js";
 import {
     vertex_shader as SolarVertexShader,
-    fragment_shader as SolarFragmentShader
-} from './glsl/solar_shaders.js';
+    fragment_shader as SolarFragmentShader,
+} from "./glsl/solar_shaders.js";
 import {
     vertex_shader as LascoVertexShader,
-    fragment_shader as LascoFragmentShader
-} from './glsl/lasco_shaders.js';
-import Config from '../../Configuration.js';
+    fragment_shader as LascoFragmentShader,
+} from "./glsl/lasco_shaders.js";
+import Config from "../../Configuration.js";
 
 /**
  * Creates a flat plane that represents the backside of the sun.
@@ -35,22 +34,22 @@ import Config from '../../Configuration.js';
  */
 async function _GetBackside(texture, scale) {
     // Load the mesh
-    let geometry = await LoadMesh('./resources/models/sun_model.gltf');
+    let geometry = await LoadMesh("./resources/models/sun_model.gltf");
 
     // Create the shader, this is where the uniforms that appear
     // in the shader are set.
     let shader = new ShaderMaterial({
         uniforms: {
-            tex: {value: texture},
-            scale: {value: scale},
-            x_offset: {value: 0.0},
-            y_offset: {value: 0.0},
-            backside: {value: true},
-            opacity: {value: 1},
-            transparent_threshold: {value: 0.05}
+            tex: { value: texture },
+            scale: { value: scale },
+            x_offset: { value: 0.0 },
+            y_offset: { value: 0.0 },
+            backside: { value: true },
+            opacity: { value: 1 },
+            transparent_threshold: { value: 0.05 },
         },
         vertexShader: SolarVertexShader,
-        fragmentShader: SolarFragmentShader
+        fragmentShader: SolarFragmentShader,
     });
     // Enable transparency, without this, making pixels transparent will
     // just make them white.
@@ -59,7 +58,7 @@ async function _GetBackside(texture, scale) {
     // to the front side.
     shader.side = BackSide;
     // Construct the mesh and return it.
-    const backside = new Mesh( geometry, shader );
+    const backside = new Mesh(geometry, shader);
     return backside;
 }
 
@@ -72,28 +71,28 @@ async function CreateHemisphereWithTexture(texture, jp2info) {
     let scale = _ComputeMeshScale(jp2info);
     // Load the backside of the mesh in parallel
     // Load the model
-    let geometry = await LoadMesh('./resources/models/sun_model.gltf');
+    let geometry = await LoadMesh("./resources/models/sun_model.gltf");
 
     // Create the shader, this is where the uniforms that appear
     // in the shader are set.
     let shader = new ShaderMaterial({
         uniforms: {
-            tex: {value: texture},
-            scale: {value: scale},
-            x_offset: {value: 0.0},
-            y_offset: {value: 0.0},
-            backside: {value: false},
-            opacity: {value: 1},
-            transparent_threshold: {value: 0.05}
+            tex: { value: texture },
+            scale: { value: scale },
+            x_offset: { value: 0.0 },
+            y_offset: { value: 0.0 },
+            backside: { value: false },
+            opacity: { value: 1 },
+            transparent_threshold: { value: 0.05 },
         },
         vertexShader: SolarVertexShader,
-        fragmentShader: SolarFragmentShader
+        fragmentShader: SolarFragmentShader,
     });
     // Enable transparency, without this, making pixels transparent will
     // just make them white.
     shader.transparent = true;
     // Construct the 3js mesh
-    const sphere = new Mesh( geometry, shader );
+    const sphere = new Mesh(geometry, shader);
     const backside = await _GetBackside(texture, scale);
     // Construct the backside of the mesh
     // Add both sphere and backside models to a group, so all operations
@@ -114,8 +113,8 @@ async function CreateHemisphereWithTexture(texture, jp2info) {
  * Creates a hemisphere with the given texture applied
  */
 async function CreateHemisphere() {
-    let geometry = await LoadMesh('./resources/models/sun_model.gltf');
-    let material = new MeshBasicMaterial({color: 0xFF0000});
+    let geometry = await LoadMesh("./resources/models/sun_model.gltf");
+    let material = new MeshBasicMaterial({ color: 0xff0000 });
     /*
     material.opacity = 0;
     material.transparent = true;
@@ -132,7 +131,7 @@ async function CreateHemisphere() {
  * Loads the blender test cube
  */
 async function LoadCube() {
-    let geometry = await LoadMesh('./resources/models/cube4.gltf');
+    let geometry = await LoadMesh("./resources/models/cube4.gltf");
     let material = new MeshBasicMaterial();
     let mesh = new Mesh(geometry, material);
     return mesh;
@@ -150,7 +149,7 @@ function _getPlaneDimensionsFromJp2Info(jp2info) {
     let height = y_scale;
     return {
         width: width,
-        height: height
+        height: height,
     };
 }
 
@@ -159,13 +158,13 @@ async function CreatePlaneWithTexture(texture, jp2info) {
     const geometry = new PlaneGeometry(dimensions.width, dimensions.height);
     let shader = new ShaderMaterial({
         uniforms: {
-            tex: {value: texture},
-            x_offset: {value: 0.0},
-            y_offset: {value: 0.0},
-            opacity: {value: 1},
+            tex: { value: texture },
+            x_offset: { value: 0.0 },
+            y_offset: { value: 0.0 },
+            opacity: { value: 1 },
         },
         vertexShader: LascoVertexShader,
-        fragmentShader: LascoFragmentShader
+        fragmentShader: LascoFragmentShader,
     });
     shader.transparent = true;
     const mesh = new Mesh(geometry, shader);
@@ -182,8 +181,8 @@ async function CreateText(text) {
 
 function CreateMarkerModel(text, color) {
     const geometry = new SphereGeometry(0.5, 32, 16);
-    const material = new MeshBasicMaterial( { color: color } );
-    const sphere = new Mesh( geometry, material );
+    const material = new MeshBasicMaterial({ color: color });
+    const sphere = new Mesh(geometry, material);
     sphere.helios_type = "marker";
     return sphere;
 }
@@ -221,7 +220,7 @@ function CreateMarkerModel(texture, text) {
 function UpdateModelTexture(group, texture, jp2info, source) {
     // Iterate through the group and update the texture uniform.
     for (const model of group.children) {
-        if (model.material.hasOwnProperty('uniforms')) {
+        if (model.material.hasOwnProperty("uniforms")) {
             model.material.uniforms.tex.value = texture;
             if (Config.plane_sources.indexOf(source) != -1) {
                 let dimensions = _getPlaneDimensionsFromJp2Info(jp2info);
@@ -229,7 +228,8 @@ function UpdateModelTexture(group, texture, jp2info, source) {
                 model.geometry.height = dimensions.height;
                 model.updateMatrix();
             } else {
-                model.material.uniforms.scale.value = _ComputeMeshScale(jp2info);
+                model.material.uniforms.scale.value =
+                    _ComputeMeshScale(jp2info);
             }
         }
     }
@@ -334,5 +334,5 @@ export {
     UpdateModelOpacity,
     UpdateModelLayeringOrder,
     FreeModel,
-    LoadCube
+    LoadCube,
 };

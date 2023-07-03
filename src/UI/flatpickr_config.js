@@ -6,5 +6,5 @@ export default {
     enableTime: true,
     enableSeconds: true,
     mode: "single",
-    time_24hr: true
-}
+    time_24hr: true,
+};

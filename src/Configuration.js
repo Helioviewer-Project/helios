@@ -86,16 +86,16 @@ class Config {
          * If a source is not specified, then the next source going down is used. For example, 9 through 19 are not listed because they all use the same source as 8.
          */
         this.source_resolutions = {
-            0: 1024,  // 0 - 7
-            8: 4096,  // 8 - 19
+            0: 1024, // 0 - 7
+            8: 4096, // 8 - 19
             20: 2048, // 20 - 27
-            28: 512,  // 28
+            28: 512, // 28
             29: 2048, // 29
-            30: 512,  // 30
+            30: 512, // 30
             31: 2048, // 31
-            33: 512,  // 33-35
+            33: 512, // 33-35
             75: 1024, // 75-76
-            77: 512,  // 77
+            77: 512, // 77
             78: 1024, // 78-83
         };
 
@@ -107,7 +107,7 @@ class Config {
         this.helioviewer_to_helios_names = {
             STEREO_A: "STEREO-A",
             STEREO_B: "STEREO-B",
-            SECCHI: ""
+            SECCHI: "",
         };
 
         this.camera_pan_speed = 2.3;
@@ -127,4 +127,3 @@ class Config {
 
 let config = new Config();
 export default config;
-

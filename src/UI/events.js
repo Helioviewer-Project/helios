@@ -1,4 +1,4 @@
-import {GetEventLabel} from "../common/event.js";
+import { GetEventLabel } from "../common/event.js";
 /**
  * Renders events with checkboxes to show/hide them.
  */
@@ -14,7 +14,7 @@ class EventUI {
         this._events.push({
             event: event,
             marker: marker,
-            enabled: true
+            enabled: true,
         });
     }
 
@@ -22,7 +22,7 @@ class EventUI {
      * Clears the currently rendered HTML.
      */
     _clear() {
-        let el = document.getElementById('js-events');
+        let el = document.getElementById("js-events");
         el.remove();
     }
 
@@ -46,17 +46,17 @@ class EventUI {
         // Clear currently rendered events
         this._clear();
         // Create a new div to add everything into
-        let div = document.createElement('div');
-        div.id = 'js-events';
+        let div = document.createElement("div");
+        div.id = "js-events";
         // Render event controls into the div
         this._renderEvents(div);
         // Add it to the DOM
-        let container = document.getElementById('current-events');
+        let container = document.getElementById("current-events");
         container.appendChild(div);
         if (this._events.length > 0) {
-            container.classList.remove('hidden');
+            container.classList.remove("hidden");
         } else {
-            container.classList.add('hidden');
+            container.classList.add("hidden");
         }
     }
 
@@ -75,7 +75,7 @@ class EventUI {
     _renderSingleEvent(div, item) {
         let data = item.event;
         let li = this._getListForEventType(div, data.concept);
-        li.appendChild(this._createEventControls(item))
+        li.appendChild(this._createEventControls(item));
     }
 
     _getListForEventType(div, concept) {
@@ -91,7 +91,7 @@ class EventUI {
             header = this._createHeaderForConcept(concept);
             div.appendChild(header);
             div.appendChild(list);
-            header.addEventListener('click', (e) => {
+            header.addEventListener("click", (e) => {
                 list.classList.toggle("expanded");
             });
         }
@@ -100,7 +100,7 @@ class EventUI {
     }
 
     _createHeaderForConcept(concept) {
-        let header = document.createElement('h2');
+        let header = document.createElement("h2");
         header.classList.add("event-header");
         header.textContent = concept;
         header.setAttribute("event-type", concept);
@@ -108,27 +108,27 @@ class EventUI {
     }
 
     _createListForConcept(concept) {
-        let ul = document.createElement('ul');
+        let ul = document.createElement("ul");
         ul.setAttribute("event-type", concept);
         return ul;
     }
 
     _createEventControls(item) {
-        let li = document.createElement('li');
+        let li = document.createElement("li");
         li.textContent = GetEventLabel(item.event);
-        let checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
+        let checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
         if (item.enabled) {
             checkbox.checked = true;
         }
-        checkbox.addEventListener('change', (e) => {
+        checkbox.addEventListener("change", (e) => {
             if (e.target.checked) {
                 item.marker.Enable();
             } else {
                 item.marker.Disable();
             }
         });
-        li.addEventListener('click', () => {
+        li.addEventListener("click", () => {
             checkbox.click();
         });
         li.appendChild(checkbox);

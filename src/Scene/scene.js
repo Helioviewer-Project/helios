@@ -1,5 +1,5 @@
 import Config from "../Configuration.js";
-import {ThreeScene} from "./three/three_scene";
+import { ThreeScene } from "./three/three_scene";
 import ModelFactory from "./model_factory.js";
 import { GetImageScaleForResolution } from "../common/resolution_lookup.js";
 import Loader from "../UI/loader.js";
@@ -73,7 +73,6 @@ export default class Scene {
         }
     }
 
-
     /**
      * Adds a new source to the scene
      *
@@ -98,7 +97,14 @@ export default class Scene {
         try {
             // Start the loading animation
             Loader.start();
-            let sun = await ModelFactory.CreateSolarModel(source, start, end, cadence, scale, this._scene.GetTextureInitFunction());
+            let sun = await ModelFactory.CreateSolarModel(
+                source,
+                start,
+                end,
+                cadence,
+                scale,
+                this._scene.GetTextureInitFunction()
+            );
             let model = await sun.GetModel();
             this._scene.AddModel(model);
 
@@ -111,7 +117,7 @@ export default class Scene {
                 model: sun,
                 order: layer_order,
                 cadence: cadence,
-                scale: scale
+                scale: scale,
             };
             if (Object.keys(this._models).length == 1) {
                 this._scene.MoveCamera(sun.GetObserverPosition());
@@ -149,7 +155,14 @@ export default class Scene {
         for (let id in this._models) {
             const model = this._models[id];
             // get the id of new scene
-            let new_id = await this.AddToScene(model.model.source, model.startTime, model.endTime, model.cadence, GetImageScaleForResolution(resolution, model.model.source), model.order);
+            let new_id = await this.AddToScene(
+                model.model.source,
+                model.startTime,
+                model.endTime,
+                model.cadence,
+                GetImageScaleForResolution(resolution, model.model.source),
+                model.order
+            );
             await this.RemoveFromScene(id);
             // overwrite the original with the new_id
             this._models[id] = this._models[new_id];
@@ -164,7 +177,10 @@ export default class Scene {
     _SortLayers() {
         let keys = Object.keys(this._models);
         for (const id of keys) {
-            this._models[id].model.SetLayerOrder(this._models[id].order, keys.length);
+            this._models[id].model.SetLayerOrder(
+                this._models[id].order,
+                keys.length
+            );
         }
     }
 
@@ -212,8 +228,13 @@ export default class Scene {
         // If camera is locked on to a specific model, then update its position.
         // This must happen after the model time updates have completed.
         if (this._camera_lock) {
-            this._scene.MoveCamera(this._camera_lock.model.GetObserverPosition(), true);
-            this._scene.PointCamera(await this._camera_lock.model.GetPosition());
+            this._scene.MoveCamera(
+                this._camera_lock.model.GetObserverPosition(),
+                true
+            );
+            this._scene.PointCamera(
+                await this._camera_lock.model.GetPosition()
+            );
         }
 
         for (const id of Object.keys(this._time_listeners)) {
@@ -324,7 +345,7 @@ export default class Scene {
                 start: model.startTime,
                 end: model.endTime,
                 cadence: model.cadence,
-                scale: model.scale
+                scale: model.scale,
             });
         }
         return layers;

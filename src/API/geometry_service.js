@@ -1,4 +1,4 @@
-import Coordinates from '../common/coordinates.js';
+import Coordinates from "../common/coordinates.js";
 
 /**
  * Interface for interacting with the Geometry Service used for
@@ -6,7 +6,7 @@ import Coordinates from '../common/coordinates.js';
  */
 class GeometryService {
     constructor() {
-        this.api_url = "http://swhv.oma.be/position"
+        this.api_url = "http://swhv.oma.be/position";
     }
 
     /**
@@ -29,7 +29,13 @@ class GeometryService {
         // convert time to a string
         let date_str = time.toISOString();
         // Construct URL
-        let api_url = this.api_url + "?utc=" + date_str + "&observer=" + observer + "&target=SUN&ref=HEEQ";
+        let api_url =
+            this.api_url +
+            "?utc=" +
+            date_str +
+            "&observer=" +
+            observer +
+            "&target=SUN&ref=HEEQ";
         try {
             // Perform Get Request
             var result = await fetch(api_url);
@@ -54,4 +60,3 @@ class GeometryService {
 
 let SingletonAPI = new GeometryService();
 export default SingletonAPI;
-

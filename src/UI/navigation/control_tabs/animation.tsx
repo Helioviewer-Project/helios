@@ -1,46 +1,49 @@
-import React from 'react';
-import common from './common.css'
-import css from './animation.css'
-import CloseButton from './components/close_button';
-import Input from '../../components/input/input';
+import React from "react";
+import common from "./common.css";
+import css from "./animation.css";
+import CloseButton from "./components/close_button";
+import Input from "../../components/input/input";
 
 type AnimationControlProps = {
     /**
      * Controls whether this component is currently visible
      */
-    visible: boolean,
-    onClose: () => void,
+    visible: boolean;
+    onClose: () => void;
     /**
      * @returns Current time from the scene
      */
-    GetSceneTime: () => Date,
+    GetSceneTime: () => Date;
     /**
      * @returns Gets a 2 element list with the first element being the earliest date in the scene, and max being the latest date in the scene
      */
-    GetSceneTimeRange: () => Date[],
+    GetSceneTimeRange: () => Date[];
     /**
      * @returns Max frame count of all the sources in the scene
      */
-    GetMaxFrameCount: () => number,
+    GetMaxFrameCount: () => number;
     /**
      * @returns Sets the time in the scene
      */
-    SetSceneTime: (Date) => void
-}
+    SetSceneTime: (Date) => void;
+};
 
 type AnimationControlState = {
     /** Frames per second */
-    speed: number,
+    speed: number;
     /** Current play status */
-    playing: boolean
-}
+    playing: boolean;
+};
 
 /**
  * Animation controls allows for visualizing the 3js scene in time.
  * AnimationControls provides functions for updating the scene
  * in time.
  */
-class AnimationControls extends React.Component<AnimationControlProps, AnimationControlState> {
+class AnimationControls extends React.Component<
+    AnimationControlProps,
+    AnimationControlState
+> {
     _start_time: Date;
     _end_time: Date;
     _current_time: Date;
@@ -52,7 +55,7 @@ class AnimationControls extends React.Component<AnimationControlProps, Animation
         super(props);
         this.state = {
             speed: 15,
-            playing: false
+            playing: false,
         };
 
         /**
@@ -108,13 +111,14 @@ class AnimationControls extends React.Component<AnimationControlProps, Animation
         // Seconds per frame * 1000 ms/s = milliseconds per frame
         // This can be reduced to (1000ms/s) / fps => ms/f;
         let fps = this.state.speed;
-        this._frame_delay = (1000 / fps);
+        this._frame_delay = 1000 / fps;
 
         // Cadence is determined via the total number of frames available.
         // First, ask the scene for the frame count, then divide the time range
         // by that count to get the amount that time should move forward each frame.
         let frame_count = this.props.GetMaxFrameCount();
-        let time_range_seconds = ((this._end_time.getTime() - this._start_time.getTime()) / 1000);
+        let time_range_seconds =
+            (this._end_time.getTime() - this._start_time.getTime()) / 1000;
         this._cadence = time_range_seconds / frame_count;
     }
 
@@ -129,8 +133,10 @@ class AnimationControls extends React.Component<AnimationControlProps, Animation
         // Only start the animation if it's not already running
         if (this._interval == 0) {
             let animator = this;
-            this._interval = window.setInterval(() => {animator._TickFrame();}, this._frame_delay);
-            this.setState({playing: true});
+            this._interval = window.setInterval(() => {
+                animator._TickFrame();
+            }, this._frame_delay);
+            this.setState({ playing: true });
         }
     }
 
@@ -140,7 +146,7 @@ class AnimationControls extends React.Component<AnimationControlProps, Animation
     Pause() {
         clearInterval(this._interval);
         this._interval = 0;
-        this.setState({playing: false});
+        this.setState({ playing: false });
     }
 
     /**
@@ -195,21 +201,40 @@ class AnimationControls extends React.Component<AnimationControlProps, Animation
     UpdateSpeed(newVal: string) {
         let tentativeValue = parseFloat(newVal);
         if (!isNaN(tentativeValue)) {
-            this.setState({speed: tentativeValue});
+            this.setState({ speed: tentativeValue });
         }
     }
 
     render() {
-        const visibilityClass = this.props.visible ? common.visible : common.invisible
-        return <div tabIndex={-1} aria-hidden={this.props.visible ? "false" : "true"} className={`${common.tab} ${common.row} ${visibilityClass}`}>
-            <CloseButton onClose={this.props.onClose} />
-            <Input style={{marginBottom: 0, maxWidth: "200px"}} label='Frames Per Second' type='number' value={this.state.speed} onChange={(val) => this.UpdateSpeed(val)}/>
-            <button className={css.play_pause_button} onClick={() => this.Toggle()} id="js-play-btn">
-                <span className="material-symbols-outlined">{this.IsPlaying() ? "pause" : "play_arrow"}</span>
-            </button>
-        </div>
+        const visibilityClass = this.props.visible
+            ? common.visible
+            : common.invisible;
+        return (
+            <div
+                tabIndex={-1}
+                aria-hidden={this.props.visible ? "false" : "true"}
+                className={`${common.tab} ${common.row} ${visibilityClass}`}
+            >
+                <CloseButton onClose={this.props.onClose} />
+                <Input
+                    style={{ marginBottom: 0, maxWidth: "200px" }}
+                    label="Frames Per Second"
+                    type="number"
+                    value={this.state.speed}
+                    onChange={(val) => this.UpdateSpeed(val)}
+                />
+                <button
+                    className={css.play_pause_button}
+                    onClick={() => this.Toggle()}
+                    id="js-play-btn"
+                >
+                    <span className="material-symbols-outlined">
+                        {this.IsPlaying() ? "pause" : "play_arrow"}
+                    </span>
+                </button>
+            </div>
+        );
     }
 }
 
 export default AnimationControls;
-

@@ -1,14 +1,12 @@
-import Scene from '../Scene/scene.js';
-import SourceManager from './source_controls.js';
-import ResolutionPicker from './resolution_picker.js';
+import Scene from "../Scene/scene.js";
+import SourceManager from "./source_controls.js";
+import ResolutionPicker from "./resolution_picker.js";
 
 /**
  * The Video Manager manages saving and loading videos created on Helios.
  */
 class VideoManager {
-    constructor() {
-
-    }
+    constructor() {}
 
     /**
      * Saves the current layers in the viewport to a video
@@ -31,7 +29,13 @@ class VideoManager {
         SourceManager.RemoveAllSources();
         // Add the layers from the video to the scene
         for (const layer of video) {
-            SourceManager.AddSourceWithParams(new Date(layer.start), new Date(layer.end), layer.cadence, layer.source, ResolutionPicker.GetResolution());
+            SourceManager.AddSourceWithParams(
+                new Date(layer.start),
+                new Date(layer.end),
+                layer.cadence,
+                layer.source,
+                ResolutionPicker.GetResolution()
+            );
         }
     }
 
