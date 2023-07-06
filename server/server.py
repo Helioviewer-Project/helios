@@ -1,6 +1,7 @@
 from flask import Flask, request, make_response
 from helios_exceptions import HeliosException
 from datetime import datetime
+from database import rest as database_endpoints
 import json
 import logging
 logging.basicConfig(filename="helios_server.log", level=logging.DEBUG)
@@ -12,6 +13,8 @@ def handle_user_exception(e):
     return _send_response({"error": str(e)})
 
 def _send_response(data):
+    if data is None:
+        data = {"error": "Nothing to return"}
     response = make_response(json.dumps(data))
     response.mimetype = 'application/json'
     response.access_control_allow_origin = "*"
@@ -103,3 +106,5 @@ def event_position():
     units = request.args["units"]
     from api.event_position import get_event_position
     return _exec(lambda : get_event_position(coord_system, units, coord1, coord2, coord3, date, observatory))
+
+database_endpoints.init(app, _send_response, _parse_date)
