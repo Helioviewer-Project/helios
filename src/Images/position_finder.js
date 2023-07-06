@@ -1,4 +1,4 @@
-import Helioviewer from "../API/helioviewer.js";
+import { Helios } from "../API/helios";
 import Coordinates from "../common/coordinates.js";
 
 /**
@@ -13,7 +13,7 @@ class PositionFinder {
      * @returns {Coordinates} Scene coordinates
      */
     async GetPosition(id) {
-        let coordinates = await Helioviewer.GetJp2Observer(id);
+        let coordinates = await Helios.GetJp2Observer(id);
         return this._ToSceneCoordinates(coordinates);
     }
 

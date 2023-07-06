@@ -1,6 +1,6 @@
 import Config from "../Configuration.js";
 import { ToAPIDate, parseDate } from "../common/dates";
-import Coordinates from "../common/coordinates.js";
+import { ToCoordinates } from "./common";
 
 /**
  * This module is used for interfacing with the Helioviewer API
@@ -122,32 +122,6 @@ class Helioviewer {
     }
 
     /**
-     * Converts the GetJp2Observer response to our Coordinate object
-     * @returns Coordinates
-     */
-    _toCoordinates(response) {
-        let x = response["x"];
-        let y = response["z"];
-        let z = response["y"];
-        return new Coordinates(-x, y, z);
-    }
-
-    /**
-     * Returns the observer position of a jp2 image
-     * @param {number} id ID of the jp2 image
-     * @returns Coordinates
-     */
-    async GetJp2Observer(id) {
-        let api_url = Config.helios_api_url + "observer/position?id=" + id;
-        let result = await fetch(api_url);
-        let data = await result.json();
-        if (data.hasOwnProperty("error")) {
-            throw data.error;
-        }
-        return this._toCoordinates(data);
-    }
-
-    /**
      * Returns solar events for the given day
      * @param {Date} day Day to query events. hours/minutes/seconds of the date are ignored.
      */
@@ -189,7 +163,7 @@ class Helioviewer {
             for (const e of data.results) {
                 e.start_time = new Date(e.event_starttime + "Z");
                 e.end_time = new Date(e.event_endtime + "Z");
-                e.coordinates.observer = this._toCoordinates(
+                e.coordinates.observer = ToCoordinates(
                     e.coordinates.observer
                 );
             }
