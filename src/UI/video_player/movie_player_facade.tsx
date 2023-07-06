@@ -5,7 +5,7 @@ type PlayerProps = {
     currentFrame: number;
     className: string;
     /** Sets the current frame */
-    SetFrame: (frame: number) => void
+    SetFrame: (frame: number) => void;
 };
 
 /**
@@ -17,15 +17,18 @@ class MoviePlayerFacade extends React.Component<PlayerProps, {}> {
     }
 
     render(): React.ReactNode {
-        return <input
-            className={this.props.className}
-            type="range"
-            min={0}
-            max={this.props.frameCount}
-            value={this.props.currentFrame}
-            disabled={this.props.frameCount == 0}
-            onChange={(e) => this.props.SetFrame(parseInt(e.target.value))}/>
+        return (
+            <input
+                className={this.props.className}
+                type="range"
+                min={0}
+                max={this.props.frameCount}
+                value={this.props.currentFrame}
+                disabled={this.props.frameCount == 0}
+                onChange={(e) => this.props.SetFrame(parseInt(e.target.value))}
+            />
+        );
     }
 }
 
-export { MoviePlayerFacade }
+export { MoviePlayerFacade };

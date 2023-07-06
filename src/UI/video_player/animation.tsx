@@ -242,30 +242,37 @@ class AnimationControls extends React.Component<
             >
                 {/* <CloseButton onClose={this.props.onClose} /> */}
                 <Input
-                    style={{ marginBottom: 0, maxWidth: "200px", marginRight: "15px" }}
+                    style={{
+                        marginBottom: 0,
+                        maxWidth: "200px",
+                        marginRight: "15px",
+                    }}
+                    className={css.controls_input}
                     labelClass={css.fps_label}
-                    label="Frames Per Second"
+                    label="FPS"
                     type="number"
                     value={this.state.speed}
                     onChange={(val) => this.UpdateSpeed(val)}
                 />
 
-                <MoviePlayerFacade
-                    className={css.progress}
-                    frameCount={this.props.GetMaxFrameCount()}
-                    SetFrame={(n) => this.SetSpecificFrame(n)}
-                    currentFrame={this._current_frame}
+                <div className={css.controls}>
+                    <MoviePlayerFacade
+                        className={css.progress}
+                        frameCount={this.props.GetMaxFrameCount()}
+                        SetFrame={(n) => this.SetSpecificFrame(n)}
+                        currentFrame={this._current_frame}
                     />
 
-                <button
-                    className={css.play_pause_button}
-                    onClick={() => this.Toggle()}
-                    id="js-play-btn"
-                >
-                    <span className="material-symbols-outlined">
-                        {this.IsPlaying() ? "pause" : "play_arrow"}
-                    </span>
-                </button>
+                    <button
+                        className={css.play_pause_button}
+                        onClick={() => this.Toggle()}
+                        id="js-play-btn"
+                    >
+                        <span className="material-symbols-outlined">
+                            {this.IsPlaying() ? "pause" : "play_arrow"}
+                        </span>
+                    </button>
+                </div>
             </div>
         );
     }

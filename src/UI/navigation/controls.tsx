@@ -58,7 +58,7 @@ export default function NavControls({
     UnregisterTimeListener,
     UpdateModelOpacity,
     RemoveModel,
-    OnPlayerToggle
+    OnPlayerToggle,
 }: NavControlProps): React.JSX.Element[] {
     let [currentTab, setTab] = useState(ControlTab.None);
     function closeTabs() {

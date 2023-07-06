@@ -48,6 +48,7 @@
         padding-left: 10vw;
         padding-right: 10vw;
         background: rgba(0, 0, 0, 0.75);
+        z-index: 10;
     }
 
     .row {

@@ -9,6 +9,7 @@
 @media (max-width: 1079px) {
     #loader {
         width: 2.5em;
+        bottom: 20px;
     }
 }
 

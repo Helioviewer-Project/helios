@@ -1,18 +1,36 @@
 @media (max-width: 1079px) {
     .player {
         position: absolute;
-        bottom: 10px;
+        bottom: 80px;
         left: 50%;
         transform: translateX(-50%);
         display: flex;
+        flex-direction: column;
+        justify-content: left;
+        width: 95vw;
+    }
+
+    .controls {
+        display: flex;
         flex-direction: row;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
-        width: 80vw;
+        width: 100%;
+    }
+
+    .controls_input {
+        padding: 0.4rem;
+        padding-left: 0;
+        width: 75px;
+        justify-content: left;
+    }
+
+    .controls_input label {
+        top: -3px;
     }
 
     .progress {
-        width: 50%;
+        width: calc(100% - 60px);
     }
 
     .play_pause_button {
@@ -35,9 +53,6 @@
     .play_pause_button:active {
         background: #333333;
     }
-
-    .fps_label {
-    }
 }
 
 @media (min-width: 1080px) {
@@ -50,11 +65,23 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        width: 80vw;
+        width: 50vw;
+    }
+
+    .controls {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .controls_input {
+        width: 75px;
     }
 
     .progress {
-        width: 50%;
+        flex-grow: 1;
     }
 
     .play_pause_button {

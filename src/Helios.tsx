@@ -44,7 +44,7 @@ class App extends React.Component<{}, AppState> {
                 this.state = {
                     sceneTime: newTime,
                     layers: [],
-                    showVideoPlayer: true
+                    showVideoPlayer: true,
                 };
                 firstRun = false;
             } else {
@@ -133,7 +133,9 @@ class App extends React.Component<{}, AppState> {
                     }
                     RemoveModel={this.RemoveLayer}
                     OnPlayerToggle={() => {
-                        this.setState({showVideoPlayer: !this.state.showVideoPlayer});
+                        this.setState({
+                            showVideoPlayer: !this.state.showVideoPlayer,
+                        });
                     }}
                 />
                 <AnimationControls
@@ -143,7 +145,7 @@ class App extends React.Component<{}, AppState> {
                     GetSceneTimeRange={() => scene.GetTimeRange()}
                     GetMaxFrameCount={() => scene.GetMaxFrameCount()}
                     SetSceneTime={(date) => scene.SetTime(date)}
-                    />
+                />
             </div>
         );
     }
