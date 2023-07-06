@@ -20,11 +20,11 @@ def init(app: Flask, send_response, parse_date):
         for data in layers:
             data["start"] = parse_date(data["start"])
             data["end"] = parse_date(data["end"])
-            layer = Layer(**{k: data[k] for k in ('source_id', 'count', 'start', 'end') if k in data})
+            layer = Layer(**{k: data[k] for k in Layer.settable if k in data})
             print(layer)
             scene.layers.append(layer)
         with Session(engine) as session:
             session.add(scene)
             session.commit()
             print(scene)
-        return send_response(scene.id)
+        return send_response({"id": scene.id})
