@@ -21,6 +21,10 @@ export default function SharedControls(props: SharedControlProps): React.JSX.Ele
             className={`${css.tab} ${visibilityClass}`}
         >
             <CloseButton onClose={props.onClose} />
+            <div className={css.separator}>
+                <hr style={{width: "100%"}}/>
+                <p style={{width: "122px"}}>Shared by Others</p>
+            </div>
             {props.sharedItems.length == 0 ? <p>Nothing to see here.<br/>Try sharing something from your favorites</p> : <></>}
             {props.sharedItems.map((fav: Favorite, i) =>
                 <FavoriteComponent

@@ -1,3 +1,20 @@
+.separator {
+    position: relative;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.separator p {
+    margin: 0;
+    background: black;
+    padding-left: 5px;
+    padding-right: 5px;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+}
+
 @media (min-width: 1080px) {
     .tab {
         position: absolute;
