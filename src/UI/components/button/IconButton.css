@@ -1,0 +1,19 @@
+.button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 0;
+    color: white;
+    padding: 0;
+    height: 100%;
+    flex-grow: 1;
+    flex-basis: 0;
+}
+
+.button span {
+    display: block;
+}
+
+.icon {
+    font-size: 24pt;
+}

@@ -20,18 +20,23 @@ class Helios {
     }
 
     static async SaveScene(layers: SceneLayer[]): Promise<number> {
+        let _layers: SceneLayer[] = [];
         for (let i = 0; i < layers.length; i ++) {
-            layers[i].start = ToDateString(layers[i].start as Date);
-            layers[i].end = ToDateString(layers[i].end as Date);
+            _layers.push(Object.assign({}, layers[i]))
+            _layers[i].start = ToDateString(_layers[i].start as Date);
+            _layers[i].end = ToDateString(_layers[i].end as Date);
         }
         let response = await fetch(Config.helios_api_url + "scene", {
             method: "POST", // *GET, POST, PUT, DELETE, etc.
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(layers), // body data type must match "Content-Type" header
+            body: JSON.stringify(_layers), // body data type must match "Content-Type" header
         });
         let result = await response.json();
+        if (result.hasOwnProperty("error")) {
+            throw result["error"];
+        }
         return result.id;
     }
 

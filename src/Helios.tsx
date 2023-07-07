@@ -9,6 +9,8 @@ import { DataSource, DateRange } from "./UI/navigation/control_tabs/data";
 import { ModelInfo } from "./common/types";
 import { LoadHelioviewerMovie } from "./UI/helioviewer_movie";
 import AnimationControls from "./UI/video_player/animation";
+import { Favorite, Favorites } from "./API/favorites";
+import { Helios } from "./API/helios";
 
 // /**
 //  * When the page first loads, users should see something besides black, so load the first available image
@@ -22,11 +24,13 @@ import AnimationControls from "./UI/video_player/animation";
 
 // Defined in main HTML, not React
 const scene = new Scene("js-helios-viewport");
+const FavoritesAPI = new Favorites(scene);
 
 type AppState = {
     sceneTime: Date;
     layers: ModelInfo[];
     showVideoPlayer: boolean;
+    favorites: Favorite[];
 };
 
 /**
@@ -45,6 +49,7 @@ class App extends React.Component<{}, AppState> {
                     sceneTime: newTime,
                     layers: [],
                     showVideoPlayer: true,
+                    favorites: FavoritesAPI.GetFavorites()
                 };
                 firstRun = false;
             } else {
@@ -75,7 +80,7 @@ class App extends React.Component<{}, AppState> {
                 dateRange.end,
                 dateRange.cadence,
                 image_scale,
-                1
+                this.state.layers.length
             );
             this.setState({
                 layers: this.state.layers.concat(layer),
@@ -136,6 +141,26 @@ class App extends React.Component<{}, AppState> {
                         this.setState({
                             showVideoPlayer: !this.state.showVideoPlayer,
                         });
+                    }}
+                    favorites={this.state.favorites}
+                    CreateFavorite={() => {
+                        FavoritesAPI.AddFavorite();
+                        this.setState({favorites: FavoritesAPI.GetFavorites()});
+                    }}
+                    OnLoadFavorite={async (fav: Favorite) => {
+                        let layerOrder = this.state.layers.length;
+                        fav.layers.forEach(async (layer) => {
+                            console.log("Adding layer with layerOrder " + layerOrder);
+                            let newLayer = await scene.AddToScene(layer.source, layer.start as Date, layer.end as Date, layer.cadence, layer.scale, layerOrder++);
+                            this.setState({
+                                layers: this.state.layers.concat(newLayer),
+                            });
+                        });
+                    }}
+                    OnShareFavorite={async (fav: Favorite) => {
+                        console.log(fav);
+                        let id = await Helios.SaveScene(fav.layers);
+                        console.log("New id: " + id);
                     }}
                 />
                 <AnimationControls

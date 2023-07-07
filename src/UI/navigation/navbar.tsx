@@ -6,7 +6,7 @@ type NavbarProps = {
     isActive: boolean;
     onSelectData: () => void;
     onSelectLayers: () => void;
-    onSelectAnimation: () => void;
+    onSelectFavorite: () => void;
 };
 
 export default function Navbar(props: NavbarProps): React.JSX.Element {
@@ -20,6 +20,7 @@ export default function Navbar(props: NavbarProps): React.JSX.Element {
                     icon="photo_library"
                     text="Layers"
                 />
+                <NavButton onClick={props.onSelectFavorite} icon="favorite" text="Favorites"/>
             </div>
         </nav>
     );

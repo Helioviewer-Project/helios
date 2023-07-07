@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import Navbar from "./navbar";
 import { DataControls } from "./control_tabs/data";
-import AnimationControls from "../video_player/animation";
 import { ModelInfo } from "../../common/types";
 import LayerControls from "./control_tabs/layers";
+import { FavoritesControls } from "./control_tabs/favorites";
+import { Favorite } from "../../API/favorites";
 
 type NavControlProps = {
     onAddData: (DataSource, DateRange) => void;
@@ -37,6 +38,12 @@ type NavControlProps = {
     RemoveModel: (id: number) => void;
     /** The movie player button is special. It sends toggle events to show/hide the video player */
     OnPlayerToggle: () => void;
+    /** List of favorites */
+    favorites: Favorite[];
+    /** Executed when user requests to add a new favorite */
+    CreateFavorite: () => void;
+    OnLoadFavorite: (fav: Favorite) => void;
+    OnShareFavorite: (fav: Favorite) => void;
 };
 
 enum ControlTab {
@@ -45,6 +52,7 @@ enum ControlTab {
     Layers,
     Animation,
     Settings,
+    Favorites
 }
 
 export default function NavControls({
@@ -59,6 +67,10 @@ export default function NavControls({
     UpdateModelOpacity,
     RemoveModel,
     OnPlayerToggle,
+    favorites,
+    CreateFavorite,
+    OnLoadFavorite,
+    OnShareFavorite
 }: NavControlProps): React.JSX.Element[] {
     let [currentTab, setTab] = useState(ControlTab.None);
     function closeTabs() {
@@ -77,7 +89,7 @@ export default function NavControls({
             isActive={currentTab != ControlTab.None}
             onSelectData={() => selectTab(ControlTab.Data)}
             onSelectLayers={() => selectTab(ControlTab.Layers)}
-            onSelectAnimation={() => OnPlayerToggle()}
+            onSelectFavorite={() => selectTab(ControlTab.Favorites)}
         />,
 
         <DataControls
@@ -98,6 +110,14 @@ export default function NavControls({
             RemoveModel={RemoveModel}
         />,
 
-        <div key={4} />,
+        <FavoritesControls
+            key={3}
+            visible={currentTab === ControlTab.Favorites}
+            onClose={closeTabs}
+            favorites={favorites}
+            onAddFavorite={CreateFavorite}
+            onLoadFavorite={OnLoadFavorite}
+            onShareFavorite={OnShareFavorite}
+        />
     ];
 }
