@@ -2,6 +2,7 @@ import Config from "../Configuration.js";
 import { ToAPIDate, ToDateString } from "../common/dates";
 import { SceneLayer } from "../common/types";
 import { ToCoordinates } from "./common";
+import { Favorite, Favorites } from "./favorites";
 
 class Helios {
     /**
@@ -44,6 +45,12 @@ class Helios {
         let response = await fetch(Config.helios_api_url + "scene/" + id);
         let data = await response.json();
         return data as SceneLayer[];
+    }
+
+    static async GetRecentlyShared(): Promise<Favorite[]> {
+        // TODO: Load from API
+        let tmp = new Favorites(null);
+        return tmp.GetFavorites();
     }
 }
 

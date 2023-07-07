@@ -7,6 +7,7 @@ type NavbarProps = {
     onSelectData: () => void;
     onSelectLayers: () => void;
     onSelectFavorite: () => void;
+    onSelectCloud: () => void;
 };
 
 export default function Navbar(props: NavbarProps): React.JSX.Element {
@@ -21,6 +22,7 @@ export default function Navbar(props: NavbarProps): React.JSX.Element {
                     text="Layers"
                 />
                 <NavButton onClick={props.onSelectFavorite} icon="favorite" text="Favorites"/>
+                <NavButton onClick={props.onSelectCloud} icon="cloud" text="Shared" />
             </div>
         </nav>
     );

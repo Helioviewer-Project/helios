@@ -5,6 +5,7 @@ import { ModelInfo } from "../../common/types";
 import LayerControls from "./control_tabs/layers";
 import { FavoritesControls } from "./control_tabs/favorites";
 import { Favorite } from "../../API/favorites";
+import SharedControls from "./control_tabs/shared_controls";
 
 type NavControlProps = {
     onAddData: (DataSource, DateRange) => void;
@@ -44,6 +45,7 @@ type NavControlProps = {
     CreateFavorite: () => void;
     OnLoadFavorite: (fav: Favorite) => void;
     OnShareFavorite: (fav: Favorite) => void;
+    sharedScenes: Favorite[];
 };
 
 enum ControlTab {
@@ -52,7 +54,8 @@ enum ControlTab {
     Layers,
     Animation,
     Settings,
-    Favorites
+    Favorites,
+    Cloud
 }
 
 export default function NavControls({
@@ -70,7 +73,8 @@ export default function NavControls({
     favorites,
     CreateFavorite,
     OnLoadFavorite,
-    OnShareFavorite
+    OnShareFavorite,
+    sharedScenes
 }: NavControlProps): React.JSX.Element[] {
     let [currentTab, setTab] = useState(ControlTab.None);
     function closeTabs() {
@@ -90,6 +94,7 @@ export default function NavControls({
             onSelectData={() => selectTab(ControlTab.Data)}
             onSelectLayers={() => selectTab(ControlTab.Layers)}
             onSelectFavorite={() => selectTab(ControlTab.Favorites)}
+            onSelectCloud={() => selectTab(ControlTab.Cloud)}
         />,
 
         <DataControls
@@ -118,6 +123,14 @@ export default function NavControls({
             onAddFavorite={CreateFavorite}
             onLoadFavorite={OnLoadFavorite}
             onShareFavorite={OnShareFavorite}
-        />
+        />,
+
+        <SharedControls
+            key={4}
+            visible={currentTab === ControlTab.Cloud}
+            onClose={closeTabs}
+            sharedItems={sharedScenes}
+            onLoadSharedItem={OnLoadFavorite}
+            />
     ];
 }

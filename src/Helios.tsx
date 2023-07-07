@@ -31,6 +31,7 @@ type AppState = {
     layers: ModelInfo[];
     showVideoPlayer: boolean;
     favorites: Favorite[];
+    recentlyShared: Favorite[];
 };
 
 /**
@@ -49,7 +50,8 @@ class App extends React.Component<{}, AppState> {
                     sceneTime: newTime,
                     layers: [],
                     showVideoPlayer: true,
-                    favorites: FavoritesAPI.GetFavorites()
+                    favorites: FavoritesAPI.GetFavorites(),
+                    recentlyShared: []
                 };
                 firstRun = false;
             } else {
@@ -59,6 +61,12 @@ class App extends React.Component<{}, AppState> {
 
         this.AddLayer = this.AddLayer.bind(this);
         this._LoadHelioviewerMovieFromQueryParameters();
+        this._LoadRecentlyShared();
+    }
+
+    async _LoadRecentlyShared() {
+        let shared = await Helios.GetRecentlyShared();
+        this.setState({recentlyShared: shared});
     }
 
     /**
@@ -162,6 +170,7 @@ class App extends React.Component<{}, AppState> {
                         let id = await Helios.SaveScene(fav.layers);
                         console.log("New id: " + id);
                     }}
+                    sharedScenes={this.state.recentlyShared}
                 />
                 <AnimationControls
                     visible={this.state.showVideoPlayer}
