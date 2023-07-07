@@ -10,6 +10,7 @@ type Favorite = {
     layers: SceneLayer[];
     start: Date;
     end: Date;
+    shared: boolean;
 }
 
 /**
@@ -27,7 +28,7 @@ class Favorites {
         let favorites = localStorage.getItem(FAVORITES_KEY) ?? "[]";
         // Restore date objects
         let parsedFavorites: Favorite[] = JSON.parse(favorites);
-        return Favorites.RestoreDates(parsedFavorites).reverse();
+        return Favorites.RestoreDates(parsedFavorites).sort((a: Favorite, b: Favorite) => b.created_at.getTime() - a.created_at.getTime());
     }
 
     /**
@@ -68,11 +69,22 @@ class Favorites {
             created_at: new Date(),
             layers: this.scene.GetLayers(),
             start: dateRange[0],
-            end: dateRange[1]
+            end: dateRange[1],
+            shared: false
         };
         let storedFavorites = this.GetFavorites();
         storedFavorites.push(newFavorite);
         this.SaveFavorites(storedFavorites);
+    }
+
+    FlagShared(fav: Favorite) {
+        let storedFavorites = this.GetFavorites();
+        let storedFavorite = storedFavorites.find((f) => {
+            return f.created_at.getTime() === fav.created_at.getTime();
+        });
+        storedFavorite.shared = true;
+        this.SaveFavorites(storedFavorites);
+
     }
 }
 

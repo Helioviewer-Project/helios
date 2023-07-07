@@ -166,8 +166,9 @@ class App extends React.Component<{}, AppState> {
                         });
                     }}
                     OnShareFavorite={async (fav: Favorite) => {
-                        console.log(fav);
                         let id = await Helios.SaveScene(fav);
+                        FavoritesAPI.FlagShared(fav);
+                        this.setState({favorites: FavoritesAPI.GetFavorites()});
                         this._LoadRecentlyShared();
                     }}
                     sharedScenes={this.state.recentlyShared}

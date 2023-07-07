@@ -3,6 +3,7 @@ import css from "./IconButton.css";
 
 interface IconButtonProps {
     icon: string;
+    disabled?: boolean;
     text?: string;
     className?: string;
     style?: Object | null;
@@ -11,7 +12,7 @@ interface IconButtonProps {
 
 export default function IconButton(props: IconButtonProps) {
     return (
-        <button style={props.style} className={`${css.button} ${props.className}`} onClick={props.onClick}>
+        <button disabled={props.disabled ?? false} style={props.style} className={`${css.button} ${props.className} ${props.disabled ? css.disabled : ''}`} onClick={props.onClick}>
             <span className={css.icon + " material-symbols-outlined "}>
                 {props.icon}
             </span>

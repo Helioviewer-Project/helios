@@ -17,3 +17,8 @@
 .icon {
     font-size: 24pt;
 }
+
+.disabled {
+    cursor: not-allowed;
+    color: gray;
+}

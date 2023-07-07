@@ -39,7 +39,7 @@ function FavoritesControls(props: FavoritesControlsProps): React.JSX.Element {
                     favorite={fav}
                     controls={<>
                         <IconButton icon="add" text="Load" onClick={() => props.onLoadFavorite(fav)} />
-                        <IconButton icon="cloud_upload" text="Share" onClick={() => props.onShareFavorite(fav)} />
+                        <IconButton icon="cloud_upload" disabled={fav.shared} text={fav.shared ? "Already Shared" : "Share"} onClick={() => props.onShareFavorite(fav)} />
                     </>}
                     />)}
                 {props.favorites.length == 0 ? <p>You don't have any favorites yet</p> : <></>}
