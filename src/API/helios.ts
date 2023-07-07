@@ -1,6 +1,5 @@
 import Config from "../Configuration.js";
-import { ToAPIDate, ToDateString } from "../common/dates";
-import { SceneLayer } from "../common/types";
+import { ToDateString } from "../common/dates";
 import { ToCoordinates } from "./common";
 import { Favorite, Favorites } from "./favorites";
 
@@ -21,11 +20,11 @@ class Helios {
     }
 
     static async SaveScene(favorite: Favorite): Promise<number> {
-        let copy: any = Object.assign({}, favorite);
+        let copy: any = window.structuredClone(favorite);
         copy.created_at = ToDateString(copy.created_at);
         copy.start = ToDateString(copy.start);
         copy.end = ToDateString(copy.end);
-        for (let i = 0; i < favorite.layers.length; i ++) {
+        for (let i = 0; i < copy.layers.length; i ++) {
             copy.layers[i].start = ToDateString(copy.layers[i].start as Date);
             copy.layers[i].end = ToDateString(copy.layers[i].end as Date);
         }
