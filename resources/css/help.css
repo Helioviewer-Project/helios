@@ -19,3 +19,9 @@
 .helios-help-button:hover {
     background: #888;
 }
+
+@media (max-width: 1079px) {
+    .helios-help-button {
+        display: none;
+    }
+}
