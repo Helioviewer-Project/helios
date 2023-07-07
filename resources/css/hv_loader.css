@@ -6,17 +6,32 @@
     width: 4em;
 }
 
-@media (max-width: 1079px) {
-    #loader {
-        width: 2.5em;
-        bottom: 20px;
-    }
-}
-
 #loader.loading {
     visibility: visible;
     animation: roll 1s ease-in-out 0.3s;
     animation-iteration-count: infinite;
+}
+
+@media (max-width: 1079px) {
+    #loader {
+        width: 2.5em;
+        bottom: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        z-index: -999;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+        animation: delay-z-index 0.5s;
+    }
+
+    #loader.loading {
+        opacity: 1;
+        z-index: 30;
+    }
+}
+
+@keyframes delay-z-index {
+    from {z-index: 30;}
+    to {z-index: 30;}
 }
 
 @keyframes roll {
