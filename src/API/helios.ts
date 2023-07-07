@@ -20,19 +20,21 @@ class Helios {
         return ToCoordinates(data);
     }
 
-    static async SaveScene(layers: SceneLayer[]): Promise<number> {
-        let _layers: SceneLayer[] = [];
-        for (let i = 0; i < layers.length; i ++) {
-            _layers.push(Object.assign({}, layers[i]))
-            _layers[i].start = ToDateString(_layers[i].start as Date);
-            _layers[i].end = ToDateString(_layers[i].end as Date);
+    static async SaveScene(favorite: Favorite): Promise<number> {
+        let copy: any = Object.assign({}, favorite);
+        copy.created_at = ToDateString(copy.created_at);
+        copy.start = ToDateString(copy.start);
+        copy.end = ToDateString(copy.end);
+        for (let i = 0; i < favorite.layers.length; i ++) {
+            copy.layers[i].start = ToDateString(copy.layers[i].start as Date);
+            copy.layers[i].end = ToDateString(copy.layers[i].end as Date);
         }
         let response = await fetch(Config.helios_api_url + "scene", {
             method: "POST", // *GET, POST, PUT, DELETE, etc.
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(_layers), // body data type must match "Content-Type" header
+            body: JSON.stringify(copy), // body data type must match "Content-Type" header
         });
         let result = await response.json();
         if (result.hasOwnProperty("error")) {
@@ -41,16 +43,16 @@ class Helios {
         return result.id;
     }
 
-    static async LoadScene(id: number): Promise<SceneLayer[]> {
+    static async LoadScene(id: number): Promise<Favorite> {
         let response = await fetch(Config.helios_api_url + "scene/" + id);
         let data = await response.json();
-        return data as SceneLayer[];
+        return Favorites.RestoreDates([data])[0];
     }
 
     static async GetRecentlyShared(): Promise<Favorite[]> {
-        // TODO: Load from API
-        let tmp = new Favorites(null);
-        return tmp.GetFavorites();
+        let response = await fetch(Config.helios_api_url + "scene/latest/10");
+        let data = await response.json();
+        return Favorites.RestoreDates(data);
     }
 }
 

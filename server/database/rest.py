@@ -13,16 +13,26 @@ def init(app: Flask, send_response, parse_date):
         scene = _Get(Scene, id)
         return send_response(scene.as_dict())
 
+    @app.route("/scene/latest/<count>")
+    def get_recent(count: int):
+        with Session(engine) as session:
+            query = session.query(Scene).order_by(Scene.id.desc()).limit(count)
+            return send_response(list(map(lambda s: s.as_dict(), query)))
+
     @app.route("/scene", methods=["POST"])
     def post_scene():
-        layers = request.get_json()
+        data = request.get_json()
+        print(data)
         scene = Scene()
-        for data in layers:
-            data["start"] = parse_date(data["start"])
-            data["end"] = parse_date(data["end"])
-            layer = Layer(**{k: data[k] for k in Layer.settable if k in data})
-            print(layer)
-            scene.layers.append(layer)
+        scene.created_at = parse_date(data["created_at"])
+        scene.start = parse_date(data["start"])
+        scene.end = parse_date(data["end"])
+        scene.layers = []
+        for layer in data["layers"]:
+            layer["start"] = parse_date(data["start"])
+            layer["end"] = parse_date(data["end"])
+            newLayer = Layer(**{k: layer[k] for k in Layer.settable if k in layer})
+            scene.layers.append(newLayer)
         with Session(engine) as session:
             session.add(scene)
             session.commit()

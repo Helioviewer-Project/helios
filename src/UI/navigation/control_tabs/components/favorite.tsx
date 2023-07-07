@@ -3,7 +3,6 @@ import { Favorite } from "../../../../API/favorites";
 import css from "./favorite.css"
 import { GetSourceName } from "../../../../common/sources";
 import { ToDateString } from "../../../../common/dates";
-import IconButton from "../../../components/button/IconButton";
 
 interface FavoriteProps {
     favorite: Favorite;
