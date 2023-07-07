@@ -45,6 +45,7 @@
         background: rgba(0, 0, 0, 0.75);
         color: white;
         height: 80px;
+        z-index: 20;
     }
 
     .content {

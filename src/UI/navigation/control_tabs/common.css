@@ -56,8 +56,6 @@
         bottom: 80px;
         transition: bottom 0.25s;
         display: flex;
-        justify-content: center;
-        align-items: center;
         flex-direction: column;
         width: 80vw;
         border-top: 1px solid #ccc;
@@ -67,6 +65,8 @@
         padding-right: 10vw;
         background: rgba(0, 0, 0, 0.75);
         z-index: 10;
+        max-height: 60vh;
+        overflow-y: auto;
     }
 
     .row {
