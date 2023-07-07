@@ -51,7 +51,7 @@ class App extends React.Component<{}, AppState> {
                     layers: [],
                     showVideoPlayer: true,
                     favorites: FavoritesAPI.GetFavorites(),
-                    recentlyShared: []
+                    recentlyShared: [],
                 };
                 firstRun = false;
             } else {
@@ -66,7 +66,7 @@ class App extends React.Component<{}, AppState> {
 
     async _LoadRecentlyShared() {
         let shared = await Helios.GetRecentlyShared();
-        this.setState({recentlyShared: shared});
+        this.setState({ recentlyShared: shared });
     }
 
     /**
@@ -153,13 +153,24 @@ class App extends React.Component<{}, AppState> {
                     favorites={this.state.favorites}
                     CreateFavorite={() => {
                         FavoritesAPI.AddFavorite();
-                        this.setState({favorites: FavoritesAPI.GetFavorites()});
+                        this.setState({
+                            favorites: FavoritesAPI.GetFavorites(),
+                        });
                     }}
                     OnLoadFavorite={async (fav: Favorite) => {
                         let layerOrder = this.state.layers.length;
                         fav.layers.forEach(async (layer) => {
-                            console.log("Adding layer with layerOrder " + layerOrder);
-                            let newLayer = await scene.AddToScene(layer.source, layer.start as Date, layer.end as Date, layer.cadence, layer.scale, layerOrder++);
+                            console.log(
+                                "Adding layer with layerOrder " + layerOrder
+                            );
+                            let newLayer = await scene.AddToScene(
+                                layer.source,
+                                layer.start as Date,
+                                layer.end as Date,
+                                layer.cadence,
+                                layer.scale,
+                                layerOrder++
+                            );
                             this.setState({
                                 layers: this.state.layers.concat(newLayer),
                             });
@@ -168,7 +179,9 @@ class App extends React.Component<{}, AppState> {
                     OnShareFavorite={async (fav: Favorite) => {
                         let id = await Helios.SaveScene(fav);
                         FavoritesAPI.FlagShared(fav);
-                        this.setState({favorites: FavoritesAPI.GetFavorites()});
+                        this.setState({
+                            favorites: FavoritesAPI.GetFavorites(),
+                        });
                         this._LoadRecentlyShared();
                     }}
                     sharedScenes={this.state.recentlyShared}

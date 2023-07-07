@@ -21,8 +21,16 @@ export default function Navbar(props: NavbarProps): React.JSX.Element {
                     icon="photo_library"
                     text="Layers"
                 />
-                <NavButton onClick={props.onSelectFavorite} icon="favorite" text="Favorites"/>
-                <NavButton onClick={props.onSelectCloud} icon="cloud" text="Shared" />
+                <NavButton
+                    onClick={props.onSelectFavorite}
+                    icon="favorite"
+                    text="Favorites"
+                />
+                <NavButton
+                    onClick={props.onSelectCloud}
+                    icon="cloud"
+                    text="Shared"
+                />
             </div>
         </nav>
     );

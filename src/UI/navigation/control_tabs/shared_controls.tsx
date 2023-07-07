@@ -12,7 +12,9 @@ type SharedControlProps = {
     onLoadSharedItem: (fav: Favorite) => void;
 };
 
-export default function SharedControls(props: SharedControlProps): React.JSX.Element {
+export default function SharedControls(
+    props: SharedControlProps
+): React.JSX.Element {
     const visibilityClass = props.visible ? css.visible : css.invisible;
     return (
         <div
@@ -22,18 +24,33 @@ export default function SharedControls(props: SharedControlProps): React.JSX.Ele
         >
             <CloseButton onClose={props.onClose} />
             <div className={css.separator}>
-                <hr style={{width: "100%"}}/>
-                <p style={{width: "122px"}}>Shared by Others</p>
+                <hr style={{ width: "100%" }} />
+                <p style={{ width: "122px" }}>Shared by Others</p>
             </div>
-            {props.sharedItems.length == 0 ? <p>Nothing to see here.<br/>Try sharing something from your favorites</p> : <></>}
-            {props.sharedItems.map((fav: Favorite, i) =>
+            {props.sharedItems.length == 0 ? (
+                <p>
+                    Nothing to see here.
+                    <br />
+                    Try sharing something from your favorites
+                </p>
+            ) : (
+                <></>
+            )}
+            {props.sharedItems.map((fav: Favorite, i) => (
                 <FavoriteComponent
                     key={i}
                     favorite={fav}
-                    controls={<>
-                        <IconButton icon="add" text="Load" onClick={() => props.onLoadSharedItem(fav)} />
-                    </>}
-            />)}
+                    controls={
+                        <>
+                            <IconButton
+                                icon="add"
+                                text="Load"
+                                onClick={() => props.onLoadSharedItem(fav)}
+                            />
+                        </>
+                    }
+                />
+            ))}
         </div>
     );
 }

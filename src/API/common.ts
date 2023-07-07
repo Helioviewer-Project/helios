@@ -11,4 +11,4 @@ function ToCoordinates(response: Object): Coordinates {
     return new Coordinates(-x, y, z);
 }
 
-export { ToCoordinates }
+export { ToCoordinates };

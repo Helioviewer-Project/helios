@@ -55,7 +55,7 @@ enum ControlTab {
     Animation,
     Settings,
     Favorites,
-    Cloud
+    Cloud,
 }
 
 export default function NavControls({
@@ -74,7 +74,7 @@ export default function NavControls({
     CreateFavorite,
     OnLoadFavorite,
     OnShareFavorite,
-    sharedScenes
+    sharedScenes,
 }: NavControlProps): React.JSX.Element[] {
     let [currentTab, setTab] = useState(ControlTab.None);
     function closeTabs() {
@@ -131,6 +131,6 @@ export default function NavControls({
             onClose={closeTabs}
             sharedItems={sharedScenes}
             onLoadSharedItem={OnLoadFavorite}
-            />
+        />,
     ];
 }

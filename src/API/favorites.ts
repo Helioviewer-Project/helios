@@ -11,7 +11,7 @@ type Favorite = {
     start: Date;
     end: Date;
     shared: boolean;
-}
+};
 
 /**
  * Interface for managing favorites.
@@ -19,7 +19,7 @@ type Favorite = {
  */
 class Favorites {
     /** Handle to the main scene */
-    private scene: Scene
+    private scene: Scene;
     constructor(scene: Scene) {
         this.scene = scene;
     }
@@ -28,7 +28,10 @@ class Favorites {
         let favorites = localStorage.getItem(FAVORITES_KEY) ?? "[]";
         // Restore date objects
         let parsedFavorites: Favorite[] = JSON.parse(favorites);
-        return Favorites.RestoreDates(parsedFavorites).sort((a: Favorite, b: Favorite) => b.created_at.getTime() - a.created_at.getTime());
+        return Favorites.RestoreDates(parsedFavorites).sort(
+            (a: Favorite, b: Favorite) =>
+                b.created_at.getTime() - a.created_at.getTime()
+        );
     }
 
     /**
@@ -46,7 +49,7 @@ class Favorites {
                 layer.start = new Date(layer.start);
                 layer.end = new Date(layer.end);
                 return layer;
-            })
+            });
             return favorite;
         });
     }
@@ -59,8 +62,12 @@ class Favorites {
      * Creates a title from the current scene information
      */
     CreateTitle(favorite: Favorite): string {
-        let layerNames = favorite.layers.map((layer) => GetSourceName(layer.source));
-        return `${layerNames.join(", ")} | ${ToDateString(favorite.start)} to ${ToDateString(favorite.end)}`
+        let layerNames = favorite.layers.map((layer) =>
+            GetSourceName(layer.source)
+        );
+        return `${layerNames.join(", ")} | ${ToDateString(
+            favorite.start
+        )} to ${ToDateString(favorite.end)}`;
     }
 
     AddFavorite() {
@@ -70,7 +77,7 @@ class Favorites {
             layers: this.scene.GetLayers(),
             start: dateRange[0],
             end: dateRange[1],
-            shared: false
+            shared: false,
         };
         let storedFavorites = this.GetFavorites();
         storedFavorites.push(newFavorite);
@@ -84,8 +91,7 @@ class Favorites {
         });
         storedFavorite.shared = true;
         this.SaveFavorites(storedFavorites);
-
     }
 }
 
-export {Favorites, Favorite}
+export { Favorites, Favorite };

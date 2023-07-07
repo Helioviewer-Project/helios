@@ -11,10 +11,10 @@ type ModelInfo = {
 
 type SceneLayer = {
     source: number;
-    start: Date|string;
-    end: Date|string;
+    start: Date | string;
+    end: Date | string;
     cadence: number;
     scale: number;
-}
+};
 
 export { ModelInfo, SceneLayer };

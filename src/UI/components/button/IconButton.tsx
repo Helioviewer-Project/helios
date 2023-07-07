@@ -12,7 +12,14 @@ interface IconButtonProps {
 
 export default function IconButton(props: IconButtonProps) {
     return (
-        <button disabled={props.disabled ?? false} style={props.style} className={`${css.button} ${props.className} ${props.disabled ? css.disabled : ''}`} onClick={props.onClick}>
+        <button
+            disabled={props.disabled ?? false}
+            style={props.style}
+            className={`${css.button} ${props.className} ${
+                props.disabled ? css.disabled : ""
+            }`}
+            onClick={props.onClick}
+        >
             <span className={css.icon + " material-symbols-outlined "}>
                 {props.icon}
             </span>

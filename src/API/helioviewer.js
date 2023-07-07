@@ -163,9 +163,7 @@ class Helioviewer {
             for (const e of data.results) {
                 e.start_time = new Date(e.event_starttime + "Z");
                 e.end_time = new Date(e.event_endtime + "Z");
-                e.coordinates.observer = ToCoordinates(
-                    e.coordinates.observer
-                );
+                e.coordinates.observer = ToCoordinates(e.coordinates.observer);
             }
             return data.results;
         }

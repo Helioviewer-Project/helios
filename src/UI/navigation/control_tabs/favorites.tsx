@@ -25,24 +25,46 @@ function FavoritesControls(props: FavoritesControlsProps): React.JSX.Element {
         >
             <CloseButton onClose={props.onClose} />
             <div className={css.input}>
-                <TextButton text="Save Current View" onClick={() => {
-                    props.onAddFavorite();
-                }} />
+                <TextButton
+                    text="Save Current View"
+                    onClick={() => {
+                        props.onAddFavorite();
+                    }}
+                />
             </div>
             <div className={css.separator}>
-                <hr style={{width: "100%"}}/>
+                <hr style={{ width: "100%" }} />
                 <p>Favorites History</p>
             </div>
             <div className={css.container}>
-                {props.favorites.map((fav, i) => <FavoriteComponent
-                    key={i}
-                    favorite={fav}
-                    controls={<>
-                        <IconButton icon="add" text="Load" onClick={() => props.onLoadFavorite(fav)} />
-                        <IconButton icon="cloud_upload" disabled={fav.shared} text={fav.shared ? "Already Shared" : "Share"} onClick={() => props.onShareFavorite(fav)} />
-                    </>}
-                    />)}
-                {props.favorites.length == 0 ? <p>You don't have any favorites yet</p> : <></>}
+                {props.favorites.map((fav, i) => (
+                    <FavoriteComponent
+                        key={i}
+                        favorite={fav}
+                        controls={
+                            <>
+                                <IconButton
+                                    icon="add"
+                                    text="Load"
+                                    onClick={() => props.onLoadFavorite(fav)}
+                                />
+                                <IconButton
+                                    icon="cloud_upload"
+                                    disabled={fav.shared}
+                                    text={
+                                        fav.shared ? "Already Shared" : "Share"
+                                    }
+                                    onClick={() => props.onShareFavorite(fav)}
+                                />
+                            </>
+                        }
+                    />
+                ))}
+                {props.favorites.length == 0 ? (
+                    <p>You don't have any favorites yet</p>
+                ) : (
+                    <></>
+                )}
             </div>
         </div>
     );

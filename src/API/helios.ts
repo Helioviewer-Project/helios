@@ -24,14 +24,14 @@ class Helios {
         copy.created_at = ToDateString(copy.created_at);
         copy.start = ToDateString(copy.start);
         copy.end = ToDateString(copy.end);
-        for (let i = 0; i < copy.layers.length; i ++) {
+        for (let i = 0; i < copy.layers.length; i++) {
             copy.layers[i].start = ToDateString(copy.layers[i].start as Date);
             copy.layers[i].end = ToDateString(copy.layers[i].end as Date);
         }
         let response = await fetch(Config.helios_api_url + "scene", {
             method: "POST", // *GET, POST, PUT, DELETE, etc.
             headers: {
-              "Content-Type": "application/json",
+                "Content-Type": "application/json",
             },
             body: JSON.stringify(copy), // body data type must match "Content-Type" header
         });
@@ -55,4 +55,4 @@ class Helios {
     }
 }
 
-export { Helios }
+export { Helios };
