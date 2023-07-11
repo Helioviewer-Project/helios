@@ -133,6 +133,7 @@ class ThreeScene {
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
         window.addEventListener("resize", onWindowResize);
+        window.addEventListener("orientationchange", onWindowResize);
     }
 
     /**
