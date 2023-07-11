@@ -4,3 +4,11 @@
     left: 50%;
     transform: translateX(-50%);
 }
+
+@media (max-width: 1079px) {
+    .controls {
+        bottom: 135px;
+        left: 110px;
+        transform: none;
+    }
+}
