@@ -8,6 +8,10 @@
         flex-direction: column;
         justify-content: left;
         width: 95vw;
+        padding-left: 2.5vw;
+        padding-right: 2.5vw;
+        background: rgba(0, 0, 0, 0.75);
+        padding-top: 10px;
     }
 
     .controls {
