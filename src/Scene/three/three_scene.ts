@@ -7,11 +7,12 @@ import {
     Vector3,
 } from "three";
 import { TrackballControls } from "three/examples/jsm/controls/TrackballControls.js";
-import { Tween, Easing, update as TweenUpdate } from "@tweenjs/tween.js";
+import { update as TweenUpdate } from "@tweenjs/tween.js";
 import Config from "../../Configuration.js";
 import HTML from "../../common/html.js";
 import Coordinates from "../../common/coordinates.js";
 import { FocalPointMaintainer } from "./focal_point_maintainer";
+import { HeliosCamera } from "./HeliosCamera";
 
 let enable_debug = true;
 
@@ -23,7 +24,7 @@ class ThreeScene {
     /** Internal threejs scene. */
     private _scene: Scene;
     /** Camera that controls what is displayed in the viewport */
-    private _camera: OrthographicCamera;
+    private _camera: HeliosCamera;
     /** Handle to the underlying renderer */
     private _renderer: WebGLRenderer;
     /** Implementation for panning, zooming, rotating, etc. */
@@ -40,19 +41,16 @@ class ThreeScene {
         this._scene = new Scene();
 
         // Create the camera and set its default position
-        this._camera = new OrthographicCamera(
+        this._camera = new HeliosCamera(new OrthographicCamera(
             window.innerWidth / -2,
             window.innerWidth / 2,
             window.innerHeight / 2,
             window.innerHeight / -2,
             0,
             1000
-        );
-        this._camera.position.x = 0;
-        this._camera.position.y = 0;
-        this._camera.position.z = -100;
-        this._camera.zoom = 160;
-        this._camera.updateProjectionMatrix();
+        ));
+        this._camera.Move(new Vector3(0, 0, -100), new Vector3(0, 0, 0));
+        this._camera.SetZoom(160);
 
         // Initialize the renderer
         this._renderer = new WebGLRenderer();
@@ -64,7 +62,7 @@ class ThreeScene {
 
         // Initialize input controls via TrackballControls
         this._controls = new TrackballControls(
-            this._camera,
+            this._camera.GetCameraInstance(),
             this._renderer.domElement
         );
         this._controls.panSpeed = Config.camera_pan_speed;
@@ -75,7 +73,7 @@ class ThreeScene {
         // Create the focal point maintainer to manage the focus for zooming/panning/rotating
         this._focal_point_maintainer = new FocalPointMaintainer(
             this._scene,
-            this._camera,
+            this._camera.GetCameraInstance(),
             this._controls
         );
         this._controls.addEventListener("start", () =>
@@ -100,13 +98,13 @@ class ThreeScene {
             TweenUpdate(time);
 
             scene_info._controls.update();
-            scene_info._renderer.render(scene_info._scene, scene_info._camera);
+            scene_info._renderer.render(scene_info._scene, scene_info._camera.GetCameraInstance());
             if (enable_debug) {
                 if (scene_info._camera) {
                     let camera_position =
                         document.getElementById("js-camera-position");
                     if (camera_position) {
-                        let pos = scene_info._camera.position;
+                        let pos = scene_info._camera.GetPosition();
                         camera_position.textContent =
                             "(" +
                             pos.x +
@@ -115,7 +113,7 @@ class ThreeScene {
                             ", " +
                             pos.z +
                             "). Zoom: " +
-                            scene_info._camera.zoom;
+                            scene_info._camera.GetZoom();
                     }
                 }
             }
@@ -131,11 +129,7 @@ class ThreeScene {
         let camera = this._camera;
         let renderer = this._renderer;
         function onWindowResize() {
-            camera.left = window.innerWidth / -2;
-            camera.right = window.innerWidth / 2;
-            camera.top = window.innerHeight / 2;
-            camera.bottom = window.innerHeight / -2;
-            camera.updateProjectionMatrix();
+            camera.OnWindowResize();
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
         window.addEventListener("resize", onWindowResize);
@@ -149,37 +143,12 @@ class ThreeScene {
         this._scene.add(model);
     }
 
-    /**
-     * Moves the camera to the given position
-     * @param {Coordinates} position
-     * @param {boolean} skip_tween Determines if smoothing should be skipped or not.
-     */
-    MoveCamera(position: Coordinates, skip_tween: boolean) {
-        let camera = this._camera;
-        if (skip_tween) {
-            camera.position.copy(position.toVector3());
-            camera.up = new Vector3(0, 1, 0);
-        } else {
-            const tween = new Tween(this._camera.position)
-                .to(position, Config.camera_tween_time)
-                .easing(Easing.Cubic.InOut)
-                .onUpdate(() => {
-                    camera.lookAt(new Vector3(0, 0, 0));
-                })
-                .start();
-            const up_tween = new Tween(this._camera.up)
-                .to(new Vector3(0, 1, 0), Config.camera_tween_time)
-                .easing(Easing.Cubic.InOut)
-                .start();
-        }
+    GetCamera(): HeliosCamera {
+        return this._camera;
     }
 
-    /**
-     * Points the camera to the given position
-     * @param {Vector3}
-     */
-    PointCamera(position: Vector3) {
-        this._camera.lookAt(position);
+    GetCameraTarget() {
+        return this._focal_point_maintainer.target;
     }
 
     /**

@@ -10,11 +10,17 @@ import EventManager from "../Events/event_manager.js";
  */
 export default class Scene {
     constructor(viewport_id) {
+        console.log(this);
         /**
          * Threejs implementation of the scene
          * @private
          */
         this._scene = new ThreeScene(viewport_id);
+
+        /**
+         * @type HeliosCamera
+         */
+        this._camera = this._scene.GetCamera();
 
         /**
          * List of callback functions waiting for the time to update
@@ -120,8 +126,12 @@ export default class Scene {
                 scale: scale,
             };
             if (Object.keys(this._models).length == 1) {
-                this._scene.MoveCamera(sun.GetObserverPosition());
-                this._scene.PointCamera(await sun.GetPosition());
+                let sun_position = await sun.GetPosition();
+                this._camera.Move(
+                    sun.GetObserverPosition(),
+                    sun_position,
+                    () => {this._camera.SaveState(sun_position);}
+                );
                 this.SetTime(start);
             }
 
@@ -135,6 +145,10 @@ export default class Scene {
             Loader.stop();
             throw e;
         }
+    }
+
+    ResetCamera() {
+        this._camera.LoadState();
     }
 
     AddModel(model) {
@@ -228,11 +242,8 @@ export default class Scene {
         // If camera is locked on to a specific model, then update its position.
         // This must happen after the model time updates have completed.
         if (this._camera_lock) {
-            this._scene.MoveCamera(
+            this._camera.Jump(
                 this._camera_lock.model.GetObserverPosition(),
-                true
-            );
-            this._scene.PointCamera(
                 await this._camera_lock.model.GetPosition()
             );
         }

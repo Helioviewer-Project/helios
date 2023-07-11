@@ -24,11 +24,13 @@ class FocalPointMaintainer {
     private _center_screen = new Vector2(0, 0);
     /** Raycaster for determining which mesh is in the center of the screen */
     private _raycaster = new Raycaster();
+    public target: Vector3;
 
     constructor(scene: Scene, camera: Camera, controls: TrackballControls) {
         this._scene = scene;
         this._camera = camera;
         this._controls = controls;
+        this.target = new Vector3(0, 0, 0);
     }
 
     /** Represents the state of the camera when interaction started */
@@ -80,6 +82,7 @@ class FocalPointMaintainer {
             let intersection = intersects[i];
             if (intersection.object.type == "Mesh") {
                 this._controls.target = intersection.point;
+                this.target.copy(intersection.point);
                 break;
             }
         }
