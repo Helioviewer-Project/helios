@@ -4,6 +4,7 @@ import css from "./IconButton.css";
 interface IconButtonProps {
     icon: string;
     disabled?: boolean;
+    altText?: string;
     text?: string;
     className?: string;
     style?: Object | null;
@@ -15,6 +16,7 @@ export default function IconButton(props: IconButtonProps) {
         <button
             disabled={props.disabled ?? false}
             style={props.style}
+            aria-label={props.altText}
             className={`${css.button} ${props.className} ${
                 props.disabled ? css.disabled : ""
             }`}

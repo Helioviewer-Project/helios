@@ -11,6 +11,7 @@ import { LoadHelioviewerMovie } from "./UI/helioviewer_movie";
 import AnimationControls from "./UI/video_player/animation";
 import { Favorite, Favorites } from "./API/favorites";
 import { Helios } from "./API/helios";
+import { ExtraControls } from "./UI/extra_controls/extra_controls";
 
 // /**
 //  * When the page first loads, users should see something besides black, so load the first available image
@@ -194,6 +195,9 @@ class App extends React.Component<{}, AppState> {
                     GetMaxFrameCount={() => scene.GetMaxFrameCount()}
                     SetSceneTime={(date) => scene.SetTime(date)}
                 />
+                <ExtraControls
+                    OnResetCamera={() => {scene.ResetCamera()}}
+                    />
             </div>
         );
     }

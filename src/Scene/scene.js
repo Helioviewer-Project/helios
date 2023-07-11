@@ -10,7 +10,6 @@ import EventManager from "../Events/event_manager.js";
  */
 export default class Scene {
     constructor(viewport_id) {
-        console.log(this);
         /**
          * Threejs implementation of the scene
          * @private
