@@ -76,11 +76,13 @@ class FocalPointMaintainer {
         const intersects = this._raycaster.intersectObjects(
             this._scene.children
         );
-        intersects.forEach((intersection) => {
+        for (let i = 0; i < intersects.length; i++) {
+            let intersection = intersects[i];
             if (intersection.object.type == "Mesh") {
                 this._controls.target = intersection.point;
+                break;
             }
-        });
+        }
     }
 }
 

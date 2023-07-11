@@ -5,8 +5,6 @@ import {
     AxesHelper,
     Mesh,
     Vector3,
-    Raycaster,
-    Vector2,
 } from "three";
 import { TrackballControls } from "three/examples/jsm/controls/TrackballControls.js";
 import { Tween, Easing, update as TweenUpdate } from "@tweenjs/tween.js";
