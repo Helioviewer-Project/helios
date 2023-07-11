@@ -83,17 +83,20 @@ class HeliosCamera {
      * Moves the camera to the given position in a smooth animation while pointing towards the given target
      */
     Move(position: Vector3, target: Vector3, onMoveDone: () => void = () => {}) {
+        let easing = Easing.Cubic.Out;
         new Tween(this._camera.position)
             .to(position, Config.camera_tween_time)
-            .easing(Easing.Cubic.InOut)
-            .onUpdate(() => {
-                this._camera.lookAt(target);
-            })
+            .easing(easing)
+            .onUpdate(() => {})
             .onComplete(onMoveDone)
+            .start();
+        new Tween(this._controls.target)
+            .to(target, Config.camera_tween_time)
+            .easing(easing)
             .start();
         new Tween(this._camera.up)
             .to(new Vector3(0, 1, 0), Config.camera_tween_time)
-            .easing(Easing.Cubic.InOut)
+            .easing(easing)
             .start();
     }
 
