@@ -27,30 +27,13 @@ class ThreeScene {
     private _camera: HeliosCamera;
     /** Handle to the underlying renderer */
     private _renderer: WebGLRenderer;
-    /** Implementation for panning, zooming, rotating, etc. */
-    private _controls: TrackballControls;
-    private _focal_point_maintainer: FocalPointMaintainer;
 
     /**
-     * Initializes the scene into the given element
-     *
-     * @param {string} viewport_id HTML ID of the element to use for the viewport
+     * Initializes the scene
      */
-    constructor(viewport_id) {
+    constructor() {
         // Initialize the threejs scene
         this._scene = new Scene();
-
-        // Create the camera and set its default position
-        this._camera = new HeliosCamera(new OrthographicCamera(
-            window.innerWidth / -2,
-            window.innerWidth / 2,
-            window.innerHeight / 2,
-            window.innerHeight / -2,
-            0,
-            1000
-        ));
-        this._camera.Move(new Vector3(0, 0, -100), new Vector3(0, 0, 0));
-        this._camera.SetZoom(160);
 
         // Initialize the renderer
         this._renderer = new WebGLRenderer();
@@ -60,28 +43,17 @@ class ThreeScene {
         let target = HTML.viewport;
         target.appendChild(this._renderer.domElement);
 
-        // Initialize input controls via TrackballControls
-        this._controls = new TrackballControls(
-            this._camera.GetCameraInstance(),
-            this._renderer.domElement
-        );
-        this._controls.panSpeed = Config.camera_pan_speed;
-        this._controls.enabled = true;
-        this._controls.rotateSpeed = 2.3;
-        this._controls.update();
-
-        // Create the focal point maintainer to manage the focus for zooming/panning/rotating
-        this._focal_point_maintainer = new FocalPointMaintainer(
-            this._scene,
-            this._camera.GetCameraInstance(),
-            this._controls
-        );
-        this._controls.addEventListener("start", () =>
-            this._focal_point_maintainer.OnInteractionStart()
-        );
-        this._controls.addEventListener("end", () =>
-            this._focal_point_maintainer.OnInteractionEnd()
-        );
+        // Create the camera and set its default position
+        this._camera = new HeliosCamera(new OrthographicCamera(
+            window.innerWidth / -2,
+            window.innerWidth / 2,
+            window.innerHeight / 2,
+            window.innerHeight / -2,
+            0,
+            1000
+        ), this._scene, this._renderer.domElement);
+        this._camera.Move(new Vector3(0, 0, -100), new Vector3(0, 0, 0));
+        this._camera.SetZoom(160);
 
         // Allow the page to be resized
         this._EnableResizing();
@@ -97,7 +69,7 @@ class ThreeScene {
             requestAnimationFrame(animate);
             TweenUpdate(time);
 
-            scene_info._controls.update();
+            scene_info._camera.update();
             scene_info._renderer.render(scene_info._scene, scene_info._camera.GetCameraInstance());
             if (enable_debug) {
                 if (scene_info._camera) {
@@ -146,10 +118,6 @@ class ThreeScene {
 
     GetCamera(): HeliosCamera {
         return this._camera;
-    }
-
-    GetCameraTarget() {
-        return this._focal_point_maintainer.target;
     }
 
     /**

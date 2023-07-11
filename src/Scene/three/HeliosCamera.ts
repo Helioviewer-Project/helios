@@ -1,6 +1,8 @@
-import { Camera, OrthographicCamera, Vector3 } from "three";
+import { Camera, OrthographicCamera, Scene, Vector3 } from "three";
 import { Tween, Easing } from "@tweenjs/tween.js";
 import Config from "../../Configuration";
+import { TrackballControls } from "three/examples/jsm/controls/TrackballControls";
+import { FocalPointMaintainer } from "./focal_point_maintainer";
 
 type ThreeCamera = OrthographicCamera;
 type SavedCamerastate = {
@@ -13,11 +15,43 @@ type SavedCamerastate = {
  * Interface for working with the threejs camera
  */
 class HeliosCamera {
+
     private _camera: ThreeCamera;
     private _saved_state: SavedCamerastate;
-    constructor(camera: ThreeCamera) {
+    private _scene: Scene;
+    private _controls: TrackballControls;
+    private _canvas: HTMLCanvasElement;
+    private _focal_point_maintainer: FocalPointMaintainer;
+
+    constructor(camera: ThreeCamera, scene: Scene, canvas: HTMLCanvasElement) {
+        console.log(this);
         this._camera = camera;
         this._saved_state = null;
+        this._canvas = canvas;
+        this._scene = scene;
+
+        // Initialize input controls via TrackballControls
+        this._controls = new TrackballControls(
+            this._camera,
+            this._canvas
+        );
+        this._controls.panSpeed = Config.camera_pan_speed;
+        this._controls.enabled = true;
+        this._controls.rotateSpeed = 2.3;
+        this._controls.update();
+
+        // Create the focal point maintainer to manage the focus for zooming/panning/rotating
+        this._focal_point_maintainer = new FocalPointMaintainer(
+            this._scene,
+            this._camera,
+            this._controls
+        );
+        this._controls.addEventListener("start", () =>
+            this._focal_point_maintainer.OnInteractionStart()
+        );
+        this._controls.addEventListener("end", () =>
+            this._focal_point_maintainer.OnInteractionEnd()
+        );
     }
 
     GetCameraInstance(): Camera {
@@ -94,12 +128,15 @@ class HeliosCamera {
             target: target.clone(),
             zoom: this._camera.zoom
         }
+        console.log(this._saved_state);
     }
 
     /**
      * Restores the last saved camera position/target
      */
     LoadState() {
+        console.log("Current position: ", this._camera.position);
+        console.log("Target position: ", this._saved_state.position);
         if (this._saved_state) {
             this.Move(
                 this._saved_state.position,
@@ -113,6 +150,10 @@ class HeliosCamera {
                 })
                 .start();
         }
+    }
+
+    update() {
+        this._controls.update();
     }
 }
 
