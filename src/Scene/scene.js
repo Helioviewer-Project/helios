@@ -129,7 +129,9 @@ export default class Scene {
                 this._camera.Move(
                     sun.GetObserverPosition(),
                     sun_position,
-                    () => {this._camera.SaveState(sun_position);}
+                    () => {
+                        this._camera.SaveState(sun_position);
+                    }
                 );
                 this.SetTime(start);
             }
@@ -359,5 +361,16 @@ export default class Scene {
             });
         }
         return layers;
+    }
+
+    /**
+     * Creates a thumbnail out of the current camera view
+     */
+    async CreateThumbnail() {
+        return this._scene.CreateThumbnailFromCamera();
+    }
+
+    TakeScreenshot() {
+        this._scene.TakeScreenshot();
     }
 }

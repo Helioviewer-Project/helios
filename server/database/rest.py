@@ -27,6 +27,7 @@ def init(app: Flask, send_response, parse_date):
         scene.created_at = parse_date(data["created_at"])
         scene.start = parse_date(data["start"])
         scene.end = parse_date(data["end"])
+        scene.thumbnail = data["thumbnail"]
         scene.layers = []
         for layer in data["layers"]:
             layer["start"] = parse_date(data["start"])

@@ -10,7 +10,18 @@ test('Saving a scene', async () => {
         cadence: 86400,
         scale: 0.6
     }];
-    let result = await Helios.SaveScene(testLayers);
+    global.window = {
+        // This doesn't do a deep copy like structured clone, but it is good enough for this test.
+        structuredClone: (obj) => obj
+    }
+    let result = await Helios.SaveScene({
+        created_at: new Date(),
+        start: new Date(),
+        end: new Date(),
+        shared: false,
+        thumbnail: "Test thumbnail",
+        layers: testLayers
+    });
     expect(result).not.toHaveProperty('error');
     expect(typeof result).toBe('number');
 })

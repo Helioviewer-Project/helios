@@ -34,6 +34,10 @@ class SceneMock {
             scale: 0.6
         }];
     }
+
+    GetTimeRange() {
+      return [new Date(), new Date()];
+    }
 }
 
 test('Get favorites when it is null', () => {
@@ -45,9 +49,9 @@ test('Get favorites when it is null', () => {
 test('Add Favorite', () => {
     let scene = new SceneMock();
     let favorites = new Favorites(scene);
-    favorites.AddFavorite("New Favorite");
+    favorites.AddFavorite("data:thumbnail blob");
     let storedFavorites = favorites.GetFavorites();
     expect(storedFavorites.length).toBe(1);
-    expect(storedFavorites[0].name).toBe("New Favorite");
+    expect(storedFavorites[0].thumbnail).toBe("data:thumbnail blob");
     expect(storedFavorites[0].layers).toStrictEqual(scene.GetLayers());
 })
