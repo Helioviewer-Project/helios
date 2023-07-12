@@ -24,6 +24,11 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
+    - name: Start API server
+      run: |
+        python3 -m pip install -r server/requirements.txt
+        flask --app server/server run &
+
     - name: Build
       run: |
         npm ci
