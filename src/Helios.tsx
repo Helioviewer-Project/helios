@@ -197,9 +197,13 @@ class App extends React.Component<{}, AppState> {
                     SetSceneTime={(date) => scene.SetTime(date)}
                 />
                 <ExtraControls
-                    OnResetCamera={() => {scene.ResetCamera()}}
-                    TakeScreenshot={() => {scene.TakeScreenshot()}}
-                    />
+                    OnResetCamera={() => {
+                        scene.ResetCamera();
+                    }}
+                    TakeScreenshot={() => {
+                        scene.TakeScreenshot();
+                    }}
+                />
             </div>
         );
     }

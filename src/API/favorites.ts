@@ -79,7 +79,7 @@ class Favorites {
             start: dateRange[0],
             end: dateRange[1],
             shared: false,
-            thumbnail: thumbnail
+            thumbnail: thumbnail,
         };
         let storedFavorites = this.GetFavorites();
         storedFavorites.push(newFavorite);

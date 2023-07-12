@@ -15,7 +15,11 @@ export default function FavoriteComponent({
 }: FavoriteProps): React.JSX.Element {
     return (
         <>
-            {favorite.thumbnail ? <img className={css.img} src={favorite.thumbnail} /> : <></>}
+            {favorite.thumbnail ? (
+                <img className={css.img} src={favorite.thumbnail} />
+            ) : (
+                <></>
+            )}
             <table className={css.favorite}>
                 <tbody>
                     <tr>

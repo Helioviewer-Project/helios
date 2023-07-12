@@ -42,14 +42,18 @@ class ThreeScene {
         target.appendChild(this._renderer.domElement);
 
         // Create the camera and set its default position
-        this._camera = new HeliosCamera(new OrthographicCamera(
-            window.innerWidth / -2,
-            window.innerWidth / 2,
-            window.innerHeight / 2,
-            window.innerHeight / -2,
-            0,
-            1000
-        ), this._scene, this._renderer.domElement);
+        this._camera = new HeliosCamera(
+            new OrthographicCamera(
+                window.innerWidth / -2,
+                window.innerWidth / 2,
+                window.innerHeight / 2,
+                window.innerHeight / -2,
+                0,
+                1000
+            ),
+            this._scene,
+            this._renderer.domElement
+        );
         this._camera.Move(new Vector3(0, 0, -100), new Vector3(0, 0, 0));
         this._camera.SetZoom(160);
 
@@ -65,7 +69,10 @@ class ThreeScene {
             TweenUpdate(time);
 
             scene_info._camera.update();
-            scene_info._renderer.render(scene_info._scene, scene_info._camera.GetCameraInstance());
+            scene_info._renderer.render(
+                scene_info._scene,
+                scene_info._camera.GetCameraInstance()
+            );
         }
         animate(0);
     }
@@ -116,12 +123,21 @@ class ThreeScene {
     CreateThumbnailFromCamera(): Promise<string> {
         this._renderer.render(this._scene, this._camera.GetCameraInstance());
         return new Promise<string>((resolve, reject) => {
-            this._renderer.domElement.toBlob(async (blob) => {
-                let base64 = btoa(String.fromCharCode.apply(null, new Uint8Array(await blob.arrayBuffer())));
-                resolve("data:image/jpeg;base64, " + base64);
-                console.log(blob);
-            }, "image/jpeg", 0.5);
-        })
+            this._renderer.domElement.toBlob(
+                async (blob) => {
+                    let base64 = btoa(
+                        String.fromCharCode.apply(
+                            null,
+                            new Uint8Array(await blob.arrayBuffer())
+                        )
+                    );
+                    resolve("data:image/jpeg;base64, " + base64);
+                    console.log(blob);
+                },
+                "image/jpeg",
+                0.5
+            );
+        });
     }
 
     /**
@@ -131,18 +147,27 @@ class ThreeScene {
     CreateScreenshotFromCamera(): Promise<string> {
         this._renderer.render(this._scene, this._camera.GetCameraInstance());
         return new Promise<string>((resolve, reject) => {
-            this._renderer.domElement.toBlob(async (blob) => {
-                let base64 = btoa(String.fromCharCode.apply(null, new Uint8Array(await blob.arrayBuffer())));
-                resolve("data:image/png;base64, " + base64);
-            }, "image/png", 1);
-        })
+            this._renderer.domElement.toBlob(
+                async (blob) => {
+                    let base64 = btoa(
+                        String.fromCharCode.apply(
+                            null,
+                            new Uint8Array(await blob.arrayBuffer())
+                        )
+                    );
+                    resolve("data:image/png;base64, " + base64);
+                },
+                "image/png",
+                1
+            );
+        });
     }
 
     async TakeScreenshot() {
-        var a = document.createElement('a');
+        var a = document.createElement("a");
         let url = await this.CreateScreenshotFromCamera();
         a.href = url;
-        a.download = 'helios.png';
+        a.download = "helios.png";
         a.click();
     }
 

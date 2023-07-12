@@ -129,7 +129,9 @@ export default class Scene {
                 this._camera.Move(
                     sun.GetObserverPosition(),
                     sun_position,
-                    () => {this._camera.SaveState(sun_position);}
+                    () => {
+                        this._camera.SaveState(sun_position);
+                    }
                 );
                 this.SetTime(start);
             }

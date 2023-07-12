@@ -9,13 +9,12 @@ type SavedCamerastate = {
     position: Vector3;
     target: Vector3;
     zoom: number;
-}
+};
 
 /**
  * Interface for working with the threejs camera
  */
 class HeliosCamera {
-
     private _camera: ThreeCamera;
     private _saved_state: SavedCamerastate;
     private _scene: Scene;
@@ -31,10 +30,7 @@ class HeliosCamera {
         this._scene = scene;
 
         // Initialize input controls via TrackballControls
-        this._controls = new TrackballControls(
-            this._camera,
-            this._canvas
-        );
+        this._controls = new TrackballControls(this._camera, this._canvas);
         this._controls.panSpeed = Config.camera_pan_speed;
         this._controls.enabled = true;
         this._controls.rotateSpeed = 2.3;
@@ -82,7 +78,11 @@ class HeliosCamera {
     /**
      * Moves the camera to the given position in a smooth animation while pointing towards the given target
      */
-    Move(position: Vector3, target: Vector3, onMoveDone: () => void = () => {}) {
+    Move(
+        position: Vector3,
+        target: Vector3,
+        onMoveDone: () => void = () => {}
+    ) {
         let easing = Easing.Cubic.Out;
         new Tween(this._camera.position)
             .to(position, Config.camera_tween_time)
@@ -129,8 +129,8 @@ class HeliosCamera {
         this._saved_state = {
             position: this._camera.position.clone(),
             target: target.clone(),
-            zoom: this._camera.zoom
-        }
+            zoom: this._camera.zoom,
+        };
         console.log(this._saved_state);
     }
 
@@ -141,15 +141,12 @@ class HeliosCamera {
         console.log("Current position: ", this._camera.position);
         console.log("Target position: ", this._saved_state.position);
         if (this._saved_state) {
-            this.Move(
-                this._saved_state.position,
-                this._saved_state.target
-            );
+            this.Move(this._saved_state.position, this._saved_state.target);
             new Tween(this._camera)
-                .to({zoom: this._saved_state.zoom}, Config.camera_tween_time)
+                .to({ zoom: this._saved_state.zoom }, Config.camera_tween_time)
                 .easing(Easing.Cubic.InOut)
                 .onUpdate(() => {
-                    this._camera.updateProjectionMatrix()
+                    this._camera.updateProjectionMatrix();
                 })
                 .start();
         }
@@ -160,4 +157,4 @@ class HeliosCamera {
     }
 }
 
-export { HeliosCamera }
+export { HeliosCamera };
