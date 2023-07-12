@@ -21,3 +21,10 @@
     flex-direction: row;
     justify-content: space-between;
 }
+
+.img {
+    width: 140px;
+    height: 140px;
+    margin: 0 auto;
+    object-fit: cover;
+}
