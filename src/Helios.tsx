@@ -203,6 +203,7 @@ class App extends React.Component<{}, AppState> {
                     TakeScreenshot={() => {
                         scene.TakeScreenshot();
                     }}
+                    ToggleAxes={() => scene.ToggleAxesHelper()}
                 />
             </div>
         );

@@ -5,6 +5,7 @@ import IconButton from "../components/button/IconButton";
 interface ExtraControlsProps {
     OnResetCamera: () => void;
     TakeScreenshot: () => void;
+    ToggleAxes: () => boolean;
 }
 
 function ExtraControls(props: ExtraControlsProps): React.JSX.Element {
@@ -19,6 +20,11 @@ function ExtraControls(props: ExtraControlsProps): React.JSX.Element {
                 icon="capture"
                 altText="Take screenshot"
                 onClick={props.TakeScreenshot}
+            />
+            <IconButton
+                icon="device_hub"
+                altText="Toggle Axes"
+                onClick={() => {props.ToggleAxes()}}
             />
         </div>
     );

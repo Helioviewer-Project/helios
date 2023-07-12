@@ -6,12 +6,12 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 7rem;
+    width: 9rem;
 }
 
 @media (max-width: 1079px) {
     .controls {
-        bottom: 135px;
+        bottom: 140px;
         left: 110px;
         transform: none;
     }

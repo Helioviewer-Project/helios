@@ -373,4 +373,8 @@ export default class Scene {
     TakeScreenshot() {
         this._scene.TakeScreenshot();
     }
+
+    ToggleAxesHelper() {
+        return this._scene.ToggleAxesHelper();
+    }
 }
