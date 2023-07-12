@@ -149,12 +149,12 @@ class ThreeScene {
         return new Promise<string>((resolve, reject) => {
             this._renderer.domElement.toBlob(
                 async (blob) => {
-                    let base64 = btoa(
-                        String.fromCharCode.apply(
-                            null,
-                            new Uint8Array(await blob.arrayBuffer())
-                        )
+                    let buffer = await blob.arrayBuffer();
+                    let bintext = String.fromCharCode.apply(
+                        null,
+                        new Uint8Array(buffer)
                     );
+                    let base64 = btoa(bintext);
                     resolve("data:image/png;base64, " + base64);
                 },
                 "image/png",
