@@ -6,15 +6,9 @@ import {
     Mesh,
     Vector3,
 } from "three";
-import { TrackballControls } from "three/examples/jsm/controls/TrackballControls.js";
 import { update as TweenUpdate } from "@tweenjs/tween.js";
-import Config from "../../Configuration.js";
 import HTML from "../../common/html.js";
-import Coordinates from "../../common/coordinates.js";
-import { FocalPointMaintainer } from "./focal_point_maintainer";
 import { HeliosCamera } from "./HeliosCamera";
-
-let enable_debug = true;
 
 /**
  * This class represents the interface for Helios to interact with ThreeJS.
@@ -27,6 +21,8 @@ class ThreeScene {
     private _camera: HeliosCamera;
     /** Handle to the underlying renderer */
     private _renderer: WebGLRenderer;
+    /** Local axes helper */
+    private _axes_helper: AxesHelper;
 
     /**
      * Initializes the scene
@@ -34,6 +30,8 @@ class ThreeScene {
     constructor() {
         // Initialize the threejs scene
         this._scene = new Scene();
+
+        this._axes_helper = new AxesHelper(5);
 
         // Initialize the renderer
         this._renderer = new WebGLRenderer();
@@ -58,10 +56,7 @@ class ThreeScene {
         // Allow the page to be resized
         this._EnableResizing();
 
-        // Enable debug features if the flag is set
-        if (enable_debug) {
-            this._EnableDebug();
-        }
+        this.ToggleAxesHelper();
 
         // Begin the main update loop
         let scene_info = this;
@@ -71,24 +66,6 @@ class ThreeScene {
 
             scene_info._camera.update();
             scene_info._renderer.render(scene_info._scene, scene_info._camera.GetCameraInstance());
-            if (enable_debug) {
-                if (scene_info._camera) {
-                    let camera_position =
-                        document.getElementById("js-camera-position");
-                    if (camera_position) {
-                        let pos = scene_info._camera.GetPosition();
-                        camera_position.textContent =
-                            "(" +
-                            pos.x +
-                            ", " +
-                            pos.y +
-                            ", " +
-                            pos.z +
-                            "). Zoom: " +
-                            scene_info._camera.GetZoom();
-                    }
-                }
-            }
         }
         animate(0);
     }
@@ -132,9 +109,55 @@ class ThreeScene {
         return this._renderer.initTexture;
     }
 
-    _EnableDebug() {
-        const axesHelper = new AxesHelper(5);
-        this._scene.add(axesHelper);
+    /**
+     * Returns a base64 encoded jpeg data URI.
+     * Since this is intended for a thumbnail, the quality is low.
+     */
+    CreateThumbnailFromCamera(): Promise<string> {
+        this._renderer.render(this._scene, this._camera.GetCameraInstance());
+        return new Promise<string>((resolve, reject) => {
+            this._renderer.domElement.toBlob(async (blob) => {
+                let base64 = btoa(String.fromCharCode.apply(null, new Uint8Array(await blob.arrayBuffer())));
+                resolve("data:image/jpeg;base64, " + base64);
+                console.log(blob);
+            }, "image/jpeg", 0.5);
+        })
+    }
+
+    /**
+     * Captures the current camera view into a high quality png
+     * @returns {Promise<string>} Base64 data URI
+     */
+    CreateScreenshotFromCamera(): Promise<string> {
+        this._renderer.render(this._scene, this._camera.GetCameraInstance());
+        return new Promise<string>((resolve, reject) => {
+            this._renderer.domElement.toBlob(async (blob) => {
+                let base64 = btoa(String.fromCharCode.apply(null, new Uint8Array(await blob.arrayBuffer())));
+                resolve("data:image/png;base64, " + base64);
+            }, "image/png", 1);
+        })
+    }
+
+    async TakeScreenshot() {
+        var a = document.createElement('a');
+        let url = await this.CreateScreenshotFromCamera();
+        a.href = url;
+        a.download = 'helios.png';
+        a.click();
+    }
+
+    /**
+     * Toggles the axes helper
+     * @returns {boolean} True if the axes helper is visible, False if not.
+     */
+    ToggleAxesHelper(): boolean {
+        if (this._scene.children.find((e) => e == this._axes_helper)) {
+            this._scene.remove(this._axes_helper);
+            return false;
+        } else {
+            this._scene.add(this._axes_helper);
+            return true;
+        }
     }
 }
 

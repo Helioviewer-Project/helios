@@ -360,4 +360,15 @@ export default class Scene {
         }
         return layers;
     }
+
+    /**
+     * Creates a thumbnail out of the current camera view
+     */
+    async CreateThumbnail() {
+        return this._scene.CreateThumbnailFromCamera();
+    }
+
+    TakeScreenshot() {
+        this._scene.TakeScreenshot();
+    }
 }

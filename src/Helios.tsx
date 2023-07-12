@@ -152,8 +152,9 @@ class App extends React.Component<{}, AppState> {
                         });
                     }}
                     favorites={this.state.favorites}
-                    CreateFavorite={() => {
-                        FavoritesAPI.AddFavorite();
+                    CreateFavorite={async () => {
+                        let thumbnail = await scene.CreateThumbnail();
+                        FavoritesAPI.AddFavorite(thumbnail);
                         this.setState({
                             favorites: FavoritesAPI.GetFavorites(),
                         });
@@ -197,6 +198,7 @@ class App extends React.Component<{}, AppState> {
                 />
                 <ExtraControls
                     OnResetCamera={() => {scene.ResetCamera()}}
+                    TakeScreenshot={() => {scene.TakeScreenshot()}}
                     />
             </div>
         );

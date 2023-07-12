@@ -11,6 +11,7 @@ type Favorite = {
     start: Date;
     end: Date;
     shared: boolean;
+    thumbnail: string;
 };
 
 /**
@@ -70,7 +71,7 @@ class Favorites {
         )} to ${ToDateString(favorite.end)}`;
     }
 
-    AddFavorite() {
+    AddFavorite(thumbnail: string) {
         let dateRange = this.scene.GetTimeRange();
         let newFavorite: Favorite = {
             created_at: new Date(),
@@ -78,6 +79,7 @@ class Favorites {
             start: dateRange[0],
             end: dateRange[1],
             shared: false,
+            thumbnail: thumbnail
         };
         let storedFavorites = this.GetFavorites();
         storedFavorites.push(newFavorite);
