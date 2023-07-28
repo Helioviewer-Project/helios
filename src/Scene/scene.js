@@ -351,7 +351,10 @@ export default class Scene {
      */
     async AddAsset(asset) {
         // Add the asset renderable object to the scene
-        this._scene.AddModel(await asset.GetRenderableModel());
+        let observer = this._models[1].model.data[0].position;
+        let model = await asset.GetRenderableModel();
+        model.lookAt(observer.toVector3());
+        this._scene.AddModel(model);
         // Track the asset
         let id = this._CreateId();
         this._assets[id] = asset;
