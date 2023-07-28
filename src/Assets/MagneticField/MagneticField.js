@@ -13,8 +13,6 @@ class MagneticFieldLineGroup {
         this._data = data;
         this._lines = this._ConstructLineVectors(this._data.fieldlines.lines);
         this._model = this._RenderLines(this._lines);
-        let observer = data.observer;
-        this._model.lookAt(new Vector3(-observer.x.value, observer.z.value, observer.y.value));
     }
 
     /**
@@ -84,7 +82,7 @@ class MagneticFieldLineGroup {
         let vector_list = [];
         let length = line.x.length;
         for (let idx = 0; idx < length; idx++) {
-            vector_list.push(new Vector3(-line.x[idx], line.z[idx], line.y[idx]));
+            vector_list.push(new Vector3(line.y[idx], line.z[idx], line.x[idx]));
         }
         return vector_list;
     }
