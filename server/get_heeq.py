@@ -1,11 +1,8 @@
 from argparse import ArgumentParser
 from sunpy.map import Map
 import sunpy.coordinates
-from astropy.coordinates.sky_coordinate import SkyCoord
+from sunpy.coordinates import transform_with_sun_center
 import astropy.units as u
-import math
-import pickle
-import sys
 import jp2parser
 
 PROGRAM_DESCRIPTION = "Extract observer's HEEQ coordinates from a jp2 file via sunpy"
@@ -38,14 +35,14 @@ def get_heeq_coordinates_from_jp2(jp2_map: Map):
 
 
 def convert_skycoords_to_heeq(base_coords):
-    coords = base_coords.transform_to(REFERENCE_POINT)
-    rsun_coords = SkyCoord(coords, unit="deg,deg,solRad")
-    xyz = rsun_coords.represent_as("cartesian")
-    return {
-        "x": xyz.x.value,
-        "y": xyz.y.value,
-        "z": xyz.z.value
-    }
+    with transform_with_sun_center():
+        coords = base_coords.transform_to(REFERENCE_POINT)
+        coords.representation_type="cartesian"
+        return {
+            "x": coords.x.to(u.solRad).value,
+            "y": coords.y.to(u.solRad).value,
+            "z": coords.z.to(u.solRad).value
+        }
 
 #######################
 # Template code below #
