@@ -9,8 +9,8 @@ class FieldLoader {
      * Register the field loader as an asset handler
      * @constructor
      */
-    constructor() {
-        Scene.RegisterAssetLoader(this.AddTimeSeries.bind(this));
+    constructor(scene) {
+        scene.RegisterAssetLoader(this.AddTimeSeries.bind(this));
     }
 
     /**
@@ -37,5 +37,4 @@ class FieldLoader {
     }
 }
 
-let loader = new FieldLoader();
-export default loader;
+export {FieldLoader}
