@@ -7,7 +7,7 @@ export default function DatasourcePicker({ selected, setSelected }) {
         <Select
             label="Observatory"
             value={selected}
-            onChange={(val) => setSelected(val)}
+            onChange={(val) => setSelected(parseInt(val))}
             options={Object.keys(Sources).map((source) => (
                 <option key={source} value={source}>
                     {Sources[source]}
