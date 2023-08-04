@@ -53,10 +53,11 @@ async function GetMovieData(id) {
     return data;
 }
 
-async function AddMovieToScene(scene, data, addLayer, layerCount) {
+async function AddMovieToScene(scene, data, addLayer) {
     let dates = GetDateRange(data);
     let sources = ParseLayerString(data.layers);
     let cadence = ParseCadence(dates, data);
+    let layerOrder = 1;
     for (const source of sources) {
         let scale = GetImageScaleForResolution(
             Config.default_texture_resolution,
@@ -68,8 +69,9 @@ async function AddMovieToScene(scene, data, addLayer, layerCount) {
             dates[1],
             cadence,
             scale,
-            layerCount + 1
+            layerOrder
         );
+        layerOrder += 1;
         // TODO: Make sure I'm managing layers somehow
         addLayer(layer);
         // TODO: Play movie

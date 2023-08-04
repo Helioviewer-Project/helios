@@ -133,7 +133,6 @@ class ThreeScene {
                         )
                     );
                     resolve("data:image/jpeg;base64, " + base64);
-                    console.log(blob);
                 },
                 "image/jpeg",
                 0.5

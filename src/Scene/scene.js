@@ -194,7 +194,6 @@ export default class Scene {
         for (const id of keys) {
             this._models[id].model.SetLayerOrder(
                 this._models[id].order,
-                keys.length
             );
         }
     }

@@ -23,7 +23,6 @@ class HeliosCamera {
     private _focal_point_maintainer: FocalPointMaintainer;
 
     constructor(camera: ThreeCamera, scene: Scene, canvas: HTMLCanvasElement) {
-        console.log(this);
         this._camera = camera;
         this._saved_state = null;
         this._canvas = canvas;
@@ -131,15 +130,12 @@ class HeliosCamera {
             target: target.clone(),
             zoom: this._camera.zoom,
         };
-        console.log(this._saved_state);
     }
 
     /**
      * Restores the last saved camera position/target
      */
     LoadState() {
-        console.log("Current position: ", this._camera.position);
-        console.log("Target position: ", this._saved_state.position);
         if (this._saved_state) {
             this.Move(this._saved_state.position, this._saved_state.target);
             new Tween(this._camera)

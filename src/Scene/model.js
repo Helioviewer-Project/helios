@@ -3,7 +3,6 @@ import {
     CreatePlaneWithTexture,
     UpdateModelTexture,
     UpdateModelOpacity,
-    UpdateModelLayeringOrder,
     FreeModel,
 } from "./three/model_builder.js";
 
@@ -95,6 +94,7 @@ class Model {
 
         // Update the rotation of the model to the date's observer position
         this._PointToObserver(model, data.position);
+        this._UpdatePositionForLayerOrder();
     }
 
     /**
@@ -181,8 +181,21 @@ class Model {
      * @param {number} index The index of this item in the scene
      */
     async SetLayerOrder(index) {
-        UpdateModelLayeringOrder(await this.GetModel(), index);
         this._layer_order = index;
+        this._UpdatePositionForLayerOrder();
+    }
+
+    async _UpdatePositionForLayerOrder() {
+        // Update the small layering offset for the current frame
+        let observer_position = this.GetObserverPosition().toVector3();
+        let model = await this._model;
+        // Get a vector from the object towards its observer
+        let direction = observer_position.sub(model.position);
+        // Normalize the direction into a unit vector
+        direction.normalize();
+        // Shift the object towards the observer slightly
+        let dp = direction.multiplyScalar(this._layer_order * 0.005);
+        model.position.set(dp.x, dp.y, dp.z);
     }
 
     /**

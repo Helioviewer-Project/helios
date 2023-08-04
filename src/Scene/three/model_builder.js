@@ -4,17 +4,11 @@ import {
     MeshBasicMaterial,
     Mesh,
     ShaderMaterial,
-    Vector2,
-    Matrix4,
     Group,
     BackSide,
-    DoubleSide,
 } from "three";
 
-import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry";
-
 import { LoadMesh } from "./mesh_loader.js";
-import { LoadFont } from "./font_loader.js";
 import {
     vertex_shader as SolarVertexShader,
     fragment_shader as SolarFragmentShader,
@@ -276,24 +270,6 @@ function _IsMarkerModel(model) {
     return model.helios_type == "marker";
 }
 
-/**
- * Updates the layering order of the given model
- * @param {number} order Effectize "Z-index" of the model
- */
-function UpdateModelLayeringOrder(model, order) {
-    if (_IsSolarModel(model)) {
-        model.children[0].material.polygonOffset = true;
-        model.children[0].material.polygonOffsetUnits = (order - 1) * -1000000;
-        model.children[0].material.polygonOffsetFactor = (order - 1) * -1;
-        model.children[1].material.polygonOffset = true;
-        model.children[1].material.polygonOffsetFactor = (order - 1) * 2;
-        model.children[1].material.polygonOffsetUnits = (order - 1) * 1000000;
-    } else if (_IsMarkerModel(model)) {
-        model.material.polygonOffset = true;
-        model.material.polygonOffsetUnits = (order - 1) * 1000000;
-        model.material.polygonOffsetFactor = (order - 1) * 1;
-    }
-}
 
 /**
  * Frees a mesh's geometry and material
@@ -332,7 +308,6 @@ export {
     CreateHemisphere,
     UpdateModelTexture,
     UpdateModelOpacity,
-    UpdateModelLayeringOrder,
     FreeModel,
     LoadCube,
 };
