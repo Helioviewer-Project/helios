@@ -162,9 +162,6 @@ class App extends React.Component<{}, AppState> {
                     OnLoadFavorite={async (fav: Favorite) => {
                         let layerOrder = this.state.layers.length;
                         fav.layers.forEach(async (layer) => {
-                            console.log(
-                                "Adding layer with layerOrder " + layerOrder
-                            );
                             let newLayer = await scene.AddToScene(
                                 layer.source,
                                 layer.start as Date,

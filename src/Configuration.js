@@ -121,7 +121,7 @@ class Config {
         /**
          * Texture load resolution
          */
-        this.default_texture_resolution = 1024;
+        this.default_texture_resolution = 512;
     }
 }
 
