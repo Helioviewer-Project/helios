@@ -1,0 +1,9 @@
+#!/bin/sh
+npm run-script prettier-test
+res=$?
+if [ $res -ne 0 ]; then
+    npm run-script prettier
+    echo ""
+    echo "Prettier made changes, please stage updated files and commit again"
+fi
+exit $res
