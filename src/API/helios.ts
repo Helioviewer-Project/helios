@@ -54,10 +54,16 @@ class Helios {
         return Favorites.RestoreDates(data);
     }
     static async get_field_lines(date){
-        let url =  Config.helios_api_url + "/lines/" + date
-        let response = await fetch(url)
+        let url =  Config.helios_api_url + "/lines/" + date;
+        let response = await fetch(url);
         let data = await response.json();
         return data['path']
+    }
+    static async GetEarthPosition(date){
+        let url =  Config.helios_api_url + "/earth/" + date;
+        let response = await fetch(url);
+        let data = await response.json();
+        return ToCoordinates(data);
     }
 }
 

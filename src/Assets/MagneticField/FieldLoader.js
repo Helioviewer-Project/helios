@@ -1,4 +1,3 @@
-import Scene from "../../Scene/scene.js";
 import MagneticField from "./MagneticField.js";
 import config from "../../Configuration.js";
 
@@ -97,6 +96,9 @@ class LineManager{
             console.log(url);
             if (right_url === url){
                 console.log("sameeeeeeeee");
+                let pos = await Helios.GetEarthPosition(result);
+                let v3 = pos.toVector3();
+                this.lines[i].GetRenderableModel().lookAt(v3)
                 this.scene.AddAsset(this.lines[i]);
             }
         }
