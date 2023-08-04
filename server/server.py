@@ -120,7 +120,7 @@ def event_position():
 def get_field_lines(date):
     server_name = request.host
     file_name = get_nearest_field_lines(date)
-    result = 'https://' + server_name + '/resources/lines/' + file_name
+    result = 'http://' + server_name + ':8000/resources/lines/' + file_name
     return _send_response({'path': result})
   
 
