@@ -270,7 +270,6 @@ function _IsMarkerModel(model) {
     return model.helios_type == "marker";
 }
 
-
 /**
  * Frees a mesh's geometry and material
  */

@@ -126,12 +126,7 @@ class ThreeScene {
             this._renderer.domElement.toBlob(
                 async (blob) => {
                     let buffer = new Uint8Array(await blob.arrayBuffer());
-                    let base64 = btoa(
-                        String.fromCharCode.apply(
-                            null,
-                            buffer
-                        )
-                    );
+                    let base64 = btoa(String.fromCharCode.apply(null, buffer));
                     resolve("data:image/jpeg;base64, " + base64);
                 },
                 "image/jpeg",

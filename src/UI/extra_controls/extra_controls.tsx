@@ -24,7 +24,9 @@ function ExtraControls(props: ExtraControlsProps): React.JSX.Element {
             <IconButton
                 icon="device_hub"
                 altText="Toggle Axes"
-                onClick={() => {props.ToggleAxes()}}
+                onClick={() => {
+                    props.ToggleAxes();
+                }}
             />
         </div>
     );

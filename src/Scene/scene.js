@@ -192,9 +192,7 @@ export default class Scene {
     _SortLayers() {
         let keys = Object.keys(this._models);
         for (const id of keys) {
-            this._models[id].model.SetLayerOrder(
-                this._models[id].order,
-            );
+            this._models[id].model.SetLayerOrder(this._models[id].order);
         }
     }
 
