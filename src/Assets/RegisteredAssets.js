@@ -4,10 +4,10 @@
  * The loading function must meet the specification defined in the README in this folder.
  * The loading function must be async
  */
-import {FieldLoader} from "./MagneticField/FieldLoader.js";
+import { FieldLoader } from "./MagneticField/FieldLoader.js";
 
 function InitializeAssets(scene) {
-    new FieldLoader(scene);
+    scene.RegisterAssetLoader(new FieldLoader());
 }
 
-export {InitializeAssets}
+export { InitializeAssets };

@@ -1,4 +1,12 @@
-import { BufferGeometry, LineBasicMaterial, Line, Vector3, CatmullRomCurve3, Group, Color } from "three";
+import {
+    BufferGeometry,
+    LineBasicMaterial,
+    Line,
+    Vector3,
+    CatmullRomCurve3,
+    Group,
+    Color,
+} from "three";
 
 /**
  * Creates a 3D Representation of a single group of magnetic field lines
@@ -11,6 +19,9 @@ class MagneticFieldLineGroup {
      */
     constructor(data) {
         this._data = data;
+        this._date = new Date(
+            this._data.fieldlines.frame.source_map_obstime.value
+        );
         this._lines = this._ConstructLineVectors(this._data.fieldlines.lines);
         this._model = this._RenderLines(this._lines);
     }
@@ -33,10 +44,10 @@ class MagneticFieldLineGroup {
      */
     _RenderLineCurve(line) {
         const curve = new CatmullRomCurve3(line.line);
-        const points = curve.getPoints( 50 );
-        const geometry = new BufferGeometry().setFromPoints( points );
-        const material = new LineBasicMaterial( { color: line.color } );
-        const curveObject = new Line( geometry, material );
+        const points = curve.getPoints(50);
+        const geometry = new BufferGeometry().setFromPoints(points);
+        const material = new LineBasicMaterial({ color: line.color });
+        const curveObject = new Line(geometry, material);
         return curveObject;
     }
 
@@ -56,7 +67,7 @@ class MagneticFieldLineGroup {
         for (const line of lines) {
             line_vectors.push({
                 line: this._ConstructLineVector(line),
-                color: this._GetColor(line.polarity)
+                color: this._GetColor(line.polarity),
             });
         }
         return line_vectors;
@@ -67,9 +78,9 @@ class MagneticFieldLineGroup {
      */
     _GetColor(polarity) {
         let colortable = {
-            0: new Color('white'),
-            "-1": new Color('blue'),
-            1: new Color('red')
+            0: new Color("white"),
+            "-1": new Color("blue"),
+            1: new Color("red"),
         };
         return colortable[polarity];
     }
@@ -82,7 +93,9 @@ class MagneticFieldLineGroup {
         let vector_list = [];
         let length = line.x.length;
         for (let idx = 0; idx < length; idx++) {
-            vector_list.push(new Vector3(line.y[idx], line.z[idx], line.x[idx]));
+            vector_list.push(
+                new Vector3(line.y[idx], line.z[idx], line.x[idx])
+            );
         }
         return vector_list;
     }
@@ -92,6 +105,23 @@ class MagneticFieldLineGroup {
      */
     GetRenderableModel() {
         return this._model;
+    }
+
+    /**
+     * Updates this object' rotation for the current date
+     */
+    SetTime(now) {
+        console.log(now, this._date);
+        // degrees/day
+        let rotation_speed = 14.713;
+        let dt_s = now.getTime() - this._date.getTime();
+        console.log(dt_s / 86400 / 1000);
+        let angle = (rotation_speed * dt_s) / 86400 / 1000;
+        console.log(angle);
+        this._model.setRotationFromAxisAngle(
+            new Vector3(0, 1, 0),
+            (angle * Math.PI) / 180
+        );
     }
 }
 

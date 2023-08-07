@@ -1,5 +1,6 @@
 import Scene from "../../Scene/scene.js";
 import MagneticField from "./MagneticField.js";
+import config from "../../Configuration.js";
 
 /**
  * This class is intended to be used to load magnetic field data.
@@ -9,9 +10,7 @@ class FieldLoader {
      * Register the field loader as an asset handler
      * @constructor
      */
-    constructor(scene) {
-        scene.RegisterAssetLoader(this.AddTimeSeries.bind(this));
-    }
+    constructor(scene) {}
 
     /**
      * Load magnetic field data using the given parameters.
@@ -33,8 +32,23 @@ class FieldLoader {
      */
     _RenderData(data, scene) {
         let field_instance = new MagneticField(data);
-        scene.AddAsset(field_instance);
+        this._AddAsset(scene, field_instance);
+    }
+
+    _AddAsset(scene, instance) {
+        scene.AddAsset(instance, async (scene, asset) => {
+            // For reference, asset === instance
+            let sun_model = scene.GetSourceWithEarthPerspective();
+            let three_model = await sun_model.GetModel();
+            let asset_model = asset.GetRenderableModel();
+            asset_model.scale.set(25, 25, 25);
+            three_model.add(asset_model);
+        });
+    }
+
+    GetAssociatedSources() {
+        return config.earth_sources;
     }
 }
 
-export {FieldLoader}
+export { FieldLoader };

@@ -214,7 +214,10 @@ function CreateMarkerModel(texture, text) {
 function UpdateModelTexture(group, texture, jp2info, source) {
     // Iterate through the group and update the texture uniform.
     for (const model of group.children) {
-        if (model.material.hasOwnProperty("uniforms")) {
+        if (
+            model.hasOwnProperty("material") &&
+            model.material.hasOwnProperty("uniforms")
+        ) {
             model.material.uniforms.tex.value = texture;
             if (Config.plane_sources.indexOf(source) != -1) {
                 let dimensions = _getPlaneDimensionsFromJp2Info(jp2info);

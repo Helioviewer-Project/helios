@@ -246,6 +246,10 @@ export default class Scene {
         for (const id of ids) {
             await this._models[id].model.SetTime(date);
         }
+        ids = Object.keys(this._assets);
+        for (const id of ids) {
+            this._assets[id].SetTime(date);
+        }
 
         // If camera is locked on to a specific model, then update its position.
         // This must happen after the model time updates have completed.
@@ -342,16 +346,29 @@ export default class Scene {
     }
 
     /**
-     * Add a generic asset to the scene.
-     * The asset instance must adhere to the asset interface specification (see assets folder).
-     * @param {Asset} asset
+     * @callback CustomAssetAdder
+     * @param {Scene} scene
+     * @param {Model} model
      */
-    async AddAsset(asset) {
-        // Add the asset renderable object to the scene
-        let observer = this._models[1].model.data[0].position;
-        let model = await asset.GetRenderableModel();
-        model.lookAt(observer.toVector3());
-        this._scene.AddModel(model);
+
+    /**
+     * Add a generic asset to the scene.
+     * By default, the asset's model is added to the global scene.
+     * If you need finer control on how the model is added, then supply a CustomAssetAdder.
+     *
+     * The asset instance must adhere to the asset interface specification (see assets folder).
+     *
+     * @param {Asset} asset
+     * @param {CustomAssetAdder} customAssetAddFn
+     */
+    async AddAsset(asset, customAssetAddFn) {
+        if (customAssetAddFn) {
+            customAssetAddFn(this, asset);
+        } else {
+            // Add the asset renderable object to the scene
+            let model = await asset.GetRenderableModel();
+            this._scene.AddModel(model);
+        }
         // Track the asset
         let id = this._CreateId();
         this._assets[id] = asset;
@@ -359,7 +376,7 @@ export default class Scene {
 
     /**
      * Registers an asset loader.
-     * This is a function that will be executed when data is requested
+     * @param {AssetLoader} loader Instance which implements the AssetLoader Interface.
      */
     RegisterAssetLoader(loader) {
         this._asset_loaders.push(loader);
@@ -369,7 +386,12 @@ export default class Scene {
         let promises = [];
         // Iterate over all asset loaders and request their data
         for (const loader of this._asset_loaders) {
-            promises.push(loader(start, end, cadence, this));
+            // Check if the sources associated with the asset are in the scene, and trigger a load of the assets that are.
+            let asset_sources = loader.GetAssociatedSources();
+            let scene_sources = this.GetCurrentSources();
+            if (scene_sources.some((id) => asset_sources.includes(id))) {
+                promises.push(loader.AddTimeSeries(start, end, cadence, this));
+            }
         }
         // Wait for all assets to finish loading
         for (const promise of promises) {
@@ -419,5 +441,24 @@ export default class Scene {
 
     ToggleAxesHelper() {
         return this._scene.ToggleAxesHelper();
+    }
+
+    /**
+     * Returns a list of the current sources IDs in the scene.
+     */
+    GetCurrentSources() {
+        let models = Object.entries(this._models);
+        return models.map((m) => m[1].model.source);
+    }
+
+    /**
+     * Returns a model from an observatory along the sun-earth line that has been added to the scene.
+     */
+    GetSourceWithEarthPerspective() {
+        let models = Object.entries(this._models);
+        let available_earth_sources = models.filter((m) =>
+            Config.earth_sources.includes(m[1].model.source)
+        );
+        return available_earth_sources[0][1].model;
     }
 }
