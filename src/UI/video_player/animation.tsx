@@ -137,7 +137,7 @@ class AnimationControls extends React.Component<
         this.Pause();
         this._InitializeAnimationRangeFromInputs();
         // Only start the animation if it's not already running
-        if (this._interval == 0) {
+        if (this._interval == 0 && this.state.speed != 0) {
             let animator = this;
             this._interval = window.setInterval(() => {
                 animator._TickFrame();
@@ -209,7 +209,19 @@ class AnimationControls extends React.Component<
     UpdateSpeed(newVal: string) {
         let tentativeValue = parseFloat(newVal);
         if (!isNaN(tentativeValue)) {
-            this.setState({ speed: tentativeValue });
+            this.setState({ speed: tentativeValue }, () => {
+                // If animation is ongoing, then pause/play to update animation to the new speed
+                if (this.IsPlaying()) {
+                    this.Pause();
+                    this.Play();
+                }
+            });
+        } else {
+            this.setState({ speed: 0 }, () => {
+                if (this.IsPlaying()) {
+                    this.Pause();
+                }
+            });
         }
     }
 
@@ -251,7 +263,7 @@ class AnimationControls extends React.Component<
                     labelClass={css.fps_label}
                     label="FPS"
                     type="number"
-                    value={this.state.speed}
+                    value={this.state.speed.toString()}
                     onChange={(val) => this.UpdateSpeed(val)}
                 />
 
