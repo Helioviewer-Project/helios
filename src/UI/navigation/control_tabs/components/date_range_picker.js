@@ -22,7 +22,6 @@ export default function DateRangePicker({ value, setValue }) {
                 currentRange.end,
                 newFrameCount
             );
-            console.log(currentRange.cadence);
             setValue(currentRange);
             setFrameCount(newFrameCount);
         } else {

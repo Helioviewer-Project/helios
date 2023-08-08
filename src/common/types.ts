@@ -1,3 +1,5 @@
+import Model from "../Scene/model";
+
 // See scene.js JSDoc reference for this type.
 type ModelInfo = {
     id: number;
@@ -7,6 +9,7 @@ type ModelInfo = {
     order: number;
     cadence: number;
     scale: number;
+    model: Model;
 };
 
 type SceneLayer = {

@@ -29,7 +29,7 @@ export default function LayerControl({
     // Register this event listener so that the model time is updated whenever the scene changes
     useEffect(() => {
         let id = RegisterTimeListener((date) => {
-            setModelTime(date);
+            setModelTime(Layer.model.current_time);
         });
         setListenerId(id);
     }, []);
