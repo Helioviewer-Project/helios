@@ -22,12 +22,14 @@ export default function DateRangePicker({ value, setValue }) {
                 currentRange.end,
                 newFrameCount
             );
+            console.log(currentRange.cadence);
             setValue(currentRange);
             setFrameCount(newFrameCount);
         } else {
             setFrameCount("");
         }
     }
+
     return (
         <>
             <div className={input_css.container}>
@@ -38,6 +40,7 @@ export default function DateRangePicker({ value, setValue }) {
                     onChange={([date]) => {
                         currentRange.start = ToUTCDate(date);
                         setValue(currentRange);
+                        updateCadence(frameCount);
                     }}
                 />
                 <label className={input_css.label}>Start</label>
@@ -50,6 +53,7 @@ export default function DateRangePicker({ value, setValue }) {
                     onChange={([date]) => {
                         currentRange.end = ToUTCDate(date);
                         setValue(currentRange);
+                        updateCadence(frameCount);
                     }}
                 />
                 <label className={input_css.label}>End</label>
