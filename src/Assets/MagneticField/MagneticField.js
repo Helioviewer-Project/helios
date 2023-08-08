@@ -111,13 +111,10 @@ class MagneticFieldLineGroup {
      * Updates this object' rotation for the current date
      */
     SetTime(now) {
-        console.log(now, this._date);
         // degrees/day
         let rotation_speed = 14.713;
         let dt_s = now.getTime() - this._date.getTime();
-        console.log(dt_s / 86400 / 1000);
         let angle = (rotation_speed * dt_s) / 86400 / 1000;
-        console.log(angle);
         this._model.setRotationFromAxisAngle(
             new Vector3(0, 1, 0),
             (angle * Math.PI) / 180

@@ -39,8 +39,6 @@ def generate_field_lines(car_rot: int):
     crot = a.jsoc.PrimeKey('CAR_ROT', car_rot)
     result = Fido.search(time, series, crot,
                     a.jsoc.Notify('m243006@usna.edu'))
-    # print(os.getcwd())
-    #downloads the files
     files = Fido.fetch(result)
     print(files)
 
@@ -48,7 +46,6 @@ def generate_field_lines(car_rot: int):
     aia = sunpy.map.Map(r'C:\Users\m243006\Desktop\Nasa Internship\Test\Testing\2023_06_27__16_46_23_700__SDO_HMI_HMI_magnetogram.jp2')
     dtime = aia.date
     carrot = 'hmi.synoptic_mr_polfil_720s.' + str(car_rot) + '.Mr_polfil.fits'
-    # hmi_map = sunpy.map.Map(carrot)
     hmi_map = sunpy.map.Map(files)
     final_hmi_map = hmi_map.resample([360, 144] * u.pixel)
     pfsspy.utils.fix_hmi_meta(final_hmi_map)
@@ -65,8 +62,6 @@ def generate_field_lines(car_rot: int):
     ax = fig.add_subplot(111, projection='3d')
     tracer = tracing.FortranTracer()
     r = 1.1 * const.R_sun
-    # lat = np.linspace(-np.pi/2, np.pi/2, 8, endpoint=True)
-    # lon = np.linspace(0, np.pi, 8, endpoint=True)
     lat = np.linspace(-np.pi/2, np.pi/2, 8, endpoint=True)
     lon = np.linspace( -np.pi, np.pi, 8, endpoint=True)
     lat, lon = np.meshgrid(lat, lon, indexing='ij')
@@ -122,7 +117,6 @@ def generate_field_lines(car_rot: int):
                 hgs.representation_type='cartesian'
                 b_along_fline = field_line.b_along_fline * u.G
                 b_along_fline = b_along_fline.value
-                # b_along_fline = field_line.b_along_fline.to(b_unit).value
                 fieldlines["lines"].append({"x":hgs.x.to(d_unit).value.tolist(),
                                                 "y": hgs.y.to(d_unit).value.tolist(),
                                                 "z": hgs.z.to(d_unit).value.tolist(),
@@ -138,15 +132,8 @@ def generate_field_lines(car_rot: int):
 
 
     output1 = {'fieldlines': fieldlines}
-    # print(fieldlines['lines'][0])
     filename1 = "lines" + str(car_rot) + ".json"
-     
-    # DateData = {fieldlines['frame']['source_map_obstime']['value']: filename1}
 
-    # # Store data (serialize)
-    # with open('DateData.pickle', 'wb') as handle:
-    #     pickle.dump(DateData, handle, protocol=pickle.HIGHEST_PROTOCOL)
-    
    # Load existing data from the file, if any
     try:
         with open('DateData.pickle', 'rb') as handle:
@@ -174,18 +161,13 @@ def generate_field_lines(car_rot: int):
     # Open the pickle file in write mode
     with open('ListOfDates.pickle', 'wb') as handle:
          pickle.dump(my_list, handle, protocol=pickle.HIGHEST_PROTOCOL)
-        
-
     
     with open(filename1, "w") as outfile:
         json.dump(output1, outfile)
     return output1
 def generate_all_field_lines():
-    # 176 total I used just 2 here becasaue I had it downloaded  
-    22
     car_rots_start = 2097
     car_rots_end = 2272
-
     for i in range(car_rots_start, car_rots_end):
         generate_field_lines(i)
    

@@ -12,7 +12,7 @@ class FieldLoader {
      * @constructor
      */
     constructor(scene) {
-        this.field_instances = [];
+        this.field_instances = {};
     }
 
     /**
@@ -23,9 +23,6 @@ class FieldLoader {
      * @param {Scene} scene scene instance (not threejs scene)
      */
     async AddTimeSeries(start, end, cadence, scene) {
-        //list of car rot,every 27 days apart,
-        //url
-        //for each date 
         let currentDate = new Date(start);
 
         let endDate = new Date(end)
@@ -33,22 +30,21 @@ class FieldLoader {
         let url = await Helios.get_field_lines(result1);
         let resultFinal= await fetch(url);
         let data1= await resultFinal.json();
-        this._RenderData(data1, scene);
+        let l = url.slice(-9);
+        let number = parseInt(l);
+        this._RenderData(data1, scene, number);
         while (currentDate <= endDate) {
-            // Convert the string to a Date object
             let date = currentDate
-            // Get the day of the month
             let day = date.getDate();
-            // Add 27 days to the current day
             date.setDate(day + 27);
             let result = ToAPIDate(date);
-            // console.log(result);
             let url = await Helios.get_field_lines(result);
-            // console.log(url)
             currentDate = date;
             let resultFinal= await fetch(url);
             let data = await resultFinal.json();
-            this._RenderData(data, scene);
+            let l = url.slice(-9);
+            let number = parseInt(l);
+            this._RenderData(data, scene, number);
         }
         let LineMa = new LineManager(this.field_instances, scene);
         
@@ -60,9 +56,34 @@ class FieldLoader {
      * @param {Object} data Magnetic field data
      * @param {Scene} scene Threejs scene
      */
-    _RenderData(data, scene) {
+    _RenderData(data, scene, number ) {
         let field_instance = new MagneticField(data);
-        this._AddAsset(scene, field_instance);
+        this.field_instances[number] = field_instance;
+    }
+
+
+
+    GetAssociatedSources() {
+        return config.earth_sources;
+    }
+}
+class LineManager{
+    constructor(MagneticFieldInstances, scene) {
+        this.scene = scene;
+        this.lines = MagneticFieldInstances;
+        this.previousModel = 0;
+        scene.RegisterTimeUpdateListener(this.listener.bind(this)) //ask about this 
+    }
+    async listener(CurrDate){
+        let utcDate = new Date(CurrDate);
+        let millisecondsSinceReference = utcDate - new Date('1853-11-09T16:00:00Z');
+        let carringtonRotations = millisecondsSinceReference / (27.2753 * 24 * 60 * 60 * 1000);
+        let approximatedRotation = Math.round(carringtonRotations);
+        if (this.previousModel != 0)
+            this.lines[this.previousModel].GetRenderableModel().removeFromParent();
+        this.lines[approximatedRotation].GetRenderableModel();
+        this._AddAsset(this.scene, this.lines[approximatedRotation]);
+        this.previousModel = approximatedRotation;
     }
 
     _AddAsset(scene, instance) {
@@ -74,34 +95,6 @@ class FieldLoader {
             asset_model.scale.set(25, 25, 25);
             three_model.add(asset_model);
         });
-    }
-
-    GetAssociatedSources() {
-        return config.earth_sources;
-    }
-}
-class LineManager{
-    constructor(MagneticFieldInstances, scene) {
-        this.scene = scene;
-        this.lines = MagneticFieldInstances;
-        scene.RegisterTimeUpdateListener(this.listener.bind(this)) //ask about this 
-    }
-    async listener(CurrDate){
-        let result = ToAPIDate(CurrDate);
-        let right_url = await Helios.get_field_lines(result);
-        for (let i = 0; i < this.lines.length; i++) {
-            let date = this.lines[i]['_data']['fieldlines']['frame']['source_map_obstime']['value'];
-            let url = await Helios.get_field_lines(date);
-            console.log(right_url);
-            console.log(url);
-            if (right_url === url){
-                console.log("sameeeeeeeee");
-                let pos = await Helios.GetEarthPosition(result);
-                let v3 = pos.toVector3();
-                this.lines[i].GetRenderableModel().lookAt(v3)
-                this.scene.AddAsset(this.lines[i]);
-            }
-        }
     }
 }
 export { FieldLoader };
