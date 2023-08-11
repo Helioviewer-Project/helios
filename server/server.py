@@ -1,5 +1,6 @@
 from flask import Flask, request, make_response,url_for
-
+from datetime import date
+from dateutil.relativedelta import relativedelta
 from flask_cors import CORS
 from helios_exceptions import HeliosException
 from datetime import datetime
@@ -9,6 +10,7 @@ from get_heeq import convert_skycoords_to_heeq
 import json
 import logging
 import sunpy 
+import os
 
 logging.basicConfig(filename="helios_server.log", level=logging.DEBUG)
 
@@ -118,13 +120,54 @@ def event_position():
 
 
 
+
+@app.route("/lines/gong/<date>")
+def get_field_lines_gong(date):
+    # date_object1 =  _parse_date(date) 
+    date_object = _parse_date(date)
+    date_object1 = date_object - relativedelta(months=1)
+    m = date_object.month 
+    y = date_object.year
+    d = date_object.day
+    minutes = int(date_object.strftime("%M"))
+    directory = "../resources/gong/" + str(y) + "/" + date_object1.strftime("%m") + '/'
+    substring = date_object1.strftime("%Y_%m_%d__%H")
+    # 2023-07-28 20001400.json
+    # Iterate over all files in the directory
+    results = []
+    results1 = []
+    for filename in os.listdir(directory):
+        results.append(filename)
+        if substring in filename:
+            results1.append(filename)
+
+    server_name = request.host
+    if (len(results1)>1):
+        min = int(results1[0][15:17])
+        min1 = int(results1[1][15:17])
+        delta = abs(minutes - min)
+        delta1 = abs(minutes - min1)
+        if(delta> delta1):
+            filename = results1[1]
+        else:
+            filename = results1[0]
+    else:
+        filename = results1[0]
+
+    rightdate = datetime.strptime(filename[0:-5], "%Y_%m_%d__%H_%M_%S")
+    formated_time = rightdate.strftime("%Y-%m-%dT%H:%M:%S")
+    
+    result = 'http://' + server_name + ':8000/resources/gong/' + str(y) + "/" + date_object1.strftime("%m") + '/' + filename
+    return _send_response({'path': result , 'date': formated_time}) 
+    
+
 @app.route("/lines/<date>")
 def get_field_lines(date):
     server_name = request.host
     file_name = get_nearest_field_lines(date)
     result = 'http://' + server_name + ':8000/resources/lines/' + file_name
     return _send_response({'path': result})
-
+    
 @app.route("/earth/<date>")
 def get_earth(date):
     return convert_skycoords_to_heeq(sunpy.coordinates.get_earth(date))
