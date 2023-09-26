@@ -3,7 +3,7 @@ import { ThreeScene } from "./three/three_scene";
 import ModelFactory from "./model_factory.js";
 import { GetImageScaleForResolution } from "../common/resolution_lookup.js";
 import Loader from "../UI/loader.js";
-import EventManager from "../Events/event_manager.js";
+import { FieldLoader } from "../Assets/MagneticField/FieldLoaderGong.js";
 
 /**
  * Manages the full 3js scene that is rendered.
@@ -110,16 +110,28 @@ export default class Scene {
         try {
             // Start the loading animation
             Loader.start();
-            let sun = await ModelFactory.CreateSolarModel(
-                source,
-                start,
-                end,
-                cadence,
-                scale,
-                this._scene.GetTextureInitFunction()
-            );
-            let model = await sun.GetModel();
-            this._scene.AddModel(model);
+            if (source < 100000) {
+                let sun = await ModelFactory.CreateSolarModel(
+                    source,
+                    start,
+                    end,
+                    cadence,
+                    scale,
+                    this._scene.GetTextureInitFunction()
+                );
+                this._scene.AddModel(await sun.GetModel());
+
+                sun.SetTime(this._current_time);
+                var model = sun;
+            } else if (source === 100001) {
+                let loader = new FieldLoader();
+                var model = await loader.AddTimeSeries(
+                    start,
+                    end,
+                    cadence,
+                    this
+                );
+            }
 
             let id = this._CreateId();
             this._models[id] = {
@@ -127,27 +139,25 @@ export default class Scene {
                 source: source,
                 startTime: start,
                 endTime: end,
-                model: sun,
+                model: model,
                 order: layer_order,
                 cadence: cadence,
                 scale: scale,
             };
+
             if (Object.keys(this._models).length == 1) {
-                let sun_position = await sun.GetPosition();
-                this._camera.Move(
-                    sun.GetObserverPosition(),
-                    sun_position,
-                    () => {
-                        this._camera.SaveState(sun_position);
-                    }
-                );
+                let camera_target = await model.GetPosition();
+                let camera_position = (
+                    await model.GetObserverPosition()
+                ).toVector3();
+                this._camera.Move(camera_position, camera_target, () => {
+                    this._camera.SaveState(camera_target);
+                });
                 this.SetTime(start);
             }
 
-            sun.SetTime(this._current_time);
             this._SortLayers();
 
-            await this._LoadAssets(start, end, cadence);
             // End the loading animation
             Loader.stop();
             this._UpdateEvents();
@@ -211,8 +221,6 @@ export default class Scene {
      * @param {number} id Identifier of model to remove
      */
     async RemoveFromScene(id) {
-        let model_to_remove = await this._models[id].model.GetModel();
-        this._scene.RemoveModel(model_to_remove);
         // Free assets related to the model
         this._models[id].model.dispose();
         delete this._models[id];
@@ -346,12 +354,6 @@ export default class Scene {
     }
 
     /**
-     * @callback CustomAssetAdder
-     * @param {Scene} scene
-     * @param {Model} model
-     */
-
-    /**
      * Add a generic asset to the scene.
      * By default, the asset's model is added to the global scene.
      * If you need finer control on how the model is added, then supply a CustomAssetAdder.
@@ -359,19 +361,26 @@ export default class Scene {
      * The asset instance must adhere to the asset interface specification (see assets folder).
      *
      * @param {Asset} asset
-     * @param {CustomAssetAdder} customAssetAddFn
+     * @returns {number} Asset ID
      */
-    async AddAsset(asset, customAssetAddFn) {
-        if (customAssetAddFn) {
-            customAssetAddFn(this, asset);
-        } else {
-            // Add the asset renderable object to the scene
-            let model = await asset.GetRenderableModel();
-            this._scene.AddModel(model);
-        }
+    async AddAsset(asset) {
+        // Add the asset renderable object to the scene
+        let model = await asset.GetRenderableModel();
+        this._scene.AddModel(model);
         // Track the asset
         let id = this._CreateId();
         this._assets[id] = asset;
+        return id;
+    }
+
+    /**
+     * Removes an asset that has been previously added to the scene
+     * @param {number} id
+     */
+    async DeleteAsset(id) {
+        let model = await this._assets[id].GetRenderableModel();
+        model.removeFromParent();
+        delete this._assets[id];
     }
 
     /**

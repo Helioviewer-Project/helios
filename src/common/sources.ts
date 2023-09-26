@@ -33,6 +33,8 @@ const Sources = {
     31: "STEREO-B COR2-B",
     34: "Yohkoh SXT thin-Al",
     35: "Yohkoh SXT white-light",
+    // Sources over 100,000 are reserved for non-helioviewer assets
+    100001: "PFSS (GONG)",
 };
 
 function GetSourceName(source: number): string {

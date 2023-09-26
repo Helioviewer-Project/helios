@@ -211,6 +211,7 @@ class Model {
     dispose() {
         // Free the model's mesh
         this.GetModel().then((model) => {
+            model.removeFromParent();
             FreeModel(model);
         });
         // Free all the image textures

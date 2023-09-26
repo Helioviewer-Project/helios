@@ -2,6 +2,7 @@ import MagneticField from "./MagneticField.js";
 import config from "../../Configuration.js";
 
 import { Helios } from "../../API/helios";
+import { Vector3 } from "three";
 /**
  * This class is intended to be used to load magnetic field data.
  */
@@ -27,6 +28,7 @@ class FieldLoader {
         let url = await Helios.get_field_lines_gong(currentDate);
         let resultFinal = await fetch(url.path);
         let data1 = await resultFinal.json();
+        data1.date = new Date(data1.date);
         this._RenderData(data1, scene);
         while (currentDate <= endDate) {
             let date = currentDate;
@@ -36,9 +38,10 @@ class FieldLoader {
             currentDate = date;
             let resultFinal = await fetch(url.path);
             let data = await resultFinal.json();
+            data.date = new Date(data.date);
             this._RenderData(data, scene);
         }
-        new LineManager(this.field_instances, scene);
+        return new LineManager(this.field_instances, scene);
     }
 
     /**
@@ -60,9 +63,11 @@ class LineManager {
         this.scene = scene;
         this.lines = MagneticFieldInstances;
         this.previousModel = 0;
-        scene.RegisterTimeUpdateListener(this.listener.bind(this)); //ask about this
+        this.current_time = this.lines[0].data.date;
+        this._current_asset = -1;
     }
-    async listener(date) {
+
+    async SetTime(date) {
         let chosen_index = 0;
         let dt = Math.abs(date - this.lines[0].data.date);
         // To choose the nearest date, iterate over all dates and select
@@ -78,16 +83,47 @@ class LineManager {
                 dt = delta;
             }
         }
-        if (this.previousModel != 0) {
-            this.previousModel.removeFromParent();
-        }
+
         this.lines[chosen_index].mag.GetRenderableModel();
         this._AddAsset(this.scene, this.lines[chosen_index].mag);
         this.previousModel = this.lines[chosen_index].mag;
+        this.current_time = this.lines[chosen_index].data.date;
     }
 
-    _AddAsset(scene, instance) {
-        scene.AddAsset(instance);
+    SetLayerOrder() {}
+
+    GetFrameCount() {
+        return this.lines.length;
+    }
+
+    GetPosition() {
+        return new Vector3(0, 0, 0);
+    }
+
+    async GetObserverPosition() {
+        return await Helios.GetEarthPosition(this.current_time);
+    }
+
+    SetOpacity(opacity) {
+        this.previousModel.SetOpacity(opacity);
+    }
+
+    _RemoveAsset() {
+        if (this._current_asset != -1) {
+            this.scene.DeleteAsset(this._current_asset);
+        }
+    }
+
+    async _AddAsset(scene, instance) {
+        this._RemoveAsset();
+        this._current_asset = await scene.AddAsset(instance);
+    }
+
+    dispose() {
+        this._RemoveAsset();
+        for (const field of this.lines) {
+            field.mag.dispose();
+        }
     }
 }
 export { FieldLoader };

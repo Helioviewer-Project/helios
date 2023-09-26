@@ -65,8 +65,8 @@ class Helios {
         let data = await response.json();
         return data;
     }
-    static async GetEarthPosition(date) {
-        let url = Config.helios_api_url + "/earth/" + date;
+    static async GetEarthPosition(date: Date) {
+        let url = Config.helios_api_url + "/earth/" + ToDateString(date);
         let response = await fetch(url);
         let data = await response.json();
         return ToCoordinates(data);

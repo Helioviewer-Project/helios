@@ -7,6 +7,7 @@ import {
     Group,
     Color,
 } from "three";
+import { FreeModel } from "../../Scene/three/model_builder";
 
 /**
  * Creates a 3D Representation of a single group of magnetic field lines
@@ -47,6 +48,7 @@ class MagneticFieldLineGroup {
         const points = curve.getPoints(50);
         const geometry = new BufferGeometry().setFromPoints(points);
         const material = new LineBasicMaterial({ color: line.color });
+        material.transparent = true;
         const curveObject = new Line(geometry, material);
         return curveObject;
     }
@@ -107,11 +109,16 @@ class MagneticFieldLineGroup {
         return this._model;
     }
 
-    /**
-     * Updates this object' rotation for the current date
-     */
-    SetTime(now) {
-        // degrees/day
+    SetTime(date) {}
+
+    SetOpacity(opacity) {
+        this._model.children.forEach((line) => {
+            line.material.opacity = opacity;
+        });
+    }
+
+    dispose() {
+        FreeModel(this._model);
     }
 }
 
