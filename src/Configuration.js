@@ -1,3 +1,5 @@
+import { Sources } from "./common/sources";
+
 /**
  * Helios configuration. Stores read only information
  * that controls specific Helios behavior.
@@ -33,8 +35,8 @@ class Config {
         /**
          * Helios API server url
          */
-        this.helios_api_url = "https://api.gl.helioviewer.org/";
-        // this.helios_api_url = "http://localhost:5000/";
+        // this.helios_api_url = "https://api.gl.helioviewer.org/";
+        this.helios_api_url = "http://localhost/";
 
         /**
          * HTML ID of the element to use for the 3js viewport
@@ -98,6 +100,13 @@ class Config {
             77: 512, // 77
             78: 1024, // 78-83
         };
+
+        /**
+         * Source IDs associated with observatories from earth
+         */
+        this.earth_sources = Object.entries(Sources)
+            .filter((entry) => !entry[1].startsWith("STEREO"))
+            .map((entry) => parseInt(entry[0]));
 
         /**
          * Naming of sources is slightly different between helioviewer and helios.

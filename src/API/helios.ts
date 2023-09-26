@@ -1,5 +1,5 @@
 import Config from "../Configuration.js";
-import { ToDateString } from "../common/dates";
+import { ToAPIDate, ToDateString } from "../common/dates";
 import { ToCoordinates } from "./common";
 import { Favorite, Favorites } from "./favorites";
 
@@ -52,6 +52,24 @@ class Helios {
         let response = await fetch(Config.helios_api_url + "scene/latest/10");
         let data = await response.json();
         return Favorites.RestoreDates(data);
+    }
+    static async get_field_lines(date){
+        let url =  Config.helios_api_url + "/lines/" + date;
+        let response = await fetch(url);
+        let data = await response.json();
+        return data['path']
+    }
+    static async get_field_lines_gong(date){
+        let url =  Config.helios_api_url + "/lines/gong/" + date;
+        let response = await fetch(url);
+        let data = await response.json();
+        return data
+    }
+    static async GetEarthPosition(date){
+        let url =  Config.helios_api_url + "/earth/" + date;
+        let response = await fetch(url);
+        let data = await response.json();
+        return ToCoordinates(data);
     }
 }
 

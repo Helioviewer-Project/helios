@@ -1,6 +1,6 @@
 import Configuration from '../src/Configuration.js';
 import { Helios } from '../src/API/helios';
-Configuration.helios_api_url = 'http://127.0.0.1:5000/';
+Configuration.helios_api_url = 'http://127.0.0.1/';
 
 test('Saving a scene', async () => {
     let testLayers = [{
@@ -32,4 +32,9 @@ test('Loading a scene', async () => {
     expect(result).toHaveProperty('id');
     expect(result).toHaveProperty('layers');
     expect(result['layers'].length).toBeGreaterThan(0);
+})
+test('Test the date', async () => {
+    let result = await Helios.get_field_lines('2023-06-27T16:46:33.000')
+    expect(result).toBe("https://127.0.0.1/resources/lines/lines2273.json");
+   
 })
