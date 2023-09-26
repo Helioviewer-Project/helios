@@ -112,13 +112,6 @@ class MagneticFieldLineGroup {
      */
     SetTime(now) {
         // degrees/day
-        let rotation_speed = 14.713;
-        let dt_s = now.getTime() - this._date.getTime();
-        let angle = (rotation_speed * dt_s) / 86400 / 1000;
-        this._model.setRotationFromAxisAngle(
-            new Vector3(0, 1, 0),
-            (angle * Math.PI) / 180
-        );
     }
 }
 

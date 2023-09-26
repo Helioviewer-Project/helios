@@ -87,14 +87,7 @@ class LineManager {
     }
 
     _AddAsset(scene, instance) {
-        scene.AddAsset(instance, async (scene, asset) => {
-            // For reference, asset === instance
-            let sun_model = scene.GetSourceWithEarthPerspective();
-            let three_model = await sun_model.GetModel();
-            let asset_model = asset.GetRenderableModel();
-            asset_model.scale.set(25, 25, 25);
-            three_model.add(asset_model);
-        });
+        scene.AddAsset(instance);
     }
 }
 export { FieldLoader };
