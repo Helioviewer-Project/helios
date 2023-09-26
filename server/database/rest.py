@@ -2,6 +2,7 @@ from database.models import Model, Layer, Scene
 from flask import Flask, request
 from ._db import engine
 from sqlalchemy.orm import Session
+from sqlalchemy import text
 
 def _Get(model: Model, id: int) -> dict:
     with Session(engine) as session:
@@ -39,3 +40,20 @@ def init(app: Flask, send_response, parse_date):
             session.commit()
             print(scene)
         return send_response({"id": scene.id})
+
+    @app.route("/lines/gong/<date>")
+    def get_field_lines_gong(date):
+        date = parse_date(date)
+        date_str = date.strftime("%Y-%m-%d %H:%M:%S")
+        with Session(engine) as session:
+            result = session.execute(text(f"""
+                SELECT s.path, s.date as timestamp FROM (
+                    SELECT * FROM (SELECT path, date FROM pfss WHERE date <= "{date_str}" ORDER BY date DESC LIMIT 1)
+                    UNION ALL
+                    SELECT * FROM (SELECT path, date FROM pfss WHERE date > "{date_str}" ORDER BY date ASC LIMIT 1)
+                ) s
+                ORDER BY ABS(julianday(s.date) - julianday("{date_str}"))
+                LIMIT 1;
+            """))
+            row = list(result)
+            return send_response({"path": row[0][0], "date": row[0][1]})

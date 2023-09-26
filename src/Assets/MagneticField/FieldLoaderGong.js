@@ -3,6 +3,7 @@ import config from "../../Configuration.js";
 
 import { Helios } from "../../API/helios";
 import { Vector3 } from "three";
+import { ToUTCDate } from "../../common/dates";
 /**
  * This class is intended to be used to load magnetic field data.
  */
@@ -15,31 +16,24 @@ class FieldLoader {
         this.field_instances = [];
     }
 
-    //   *
-    //  @param {date} start Start time of data to add
-
-    //  * @param {date} end   End time of data to add
-    //  * @param {cadence} Amount of time to skip between data points
-    //  * @param {Scene} scene scene instance (not threejs scene)
-    //  */
+    /**
+     * @param {date} start Start time of data to add
+     * @param {date} end   End time of data to add
+     * @param {cadence} Amount of time to skip between data points
+     * @param {Scene} scene scene instance (not threejs scene)
+     */
     async AddTimeSeries(start, end, cadence, scene) {
-        let currentDate = new Date(start);
-        let endDate = new Date(end);
-        let url = await Helios.get_field_lines_gong(currentDate);
-        let resultFinal = await fetch(url.path);
-        let data1 = await resultFinal.json();
-        data1.date = new Date(data1.date);
-        this._RenderData(data1, scene);
-        while (currentDate <= endDate) {
-            let date = currentDate;
+        let date = new Date(start);
+        while (date <= end) {
+            let url = await Helios.get_field_lines_gong(date);
+            let resultFinal = await fetch(
+                window.location.origin + "/" + url.path
+            );
+            let data = await resultFinal.json();
+            data.date = ToUTCDate(new Date(data.date));
+            this._RenderData(data, scene);
             let sec = date.getSeconds();
             date.setSeconds(sec + cadence);
-            let url = await Helios.get_field_lines_gong(date);
-            currentDate = date;
-            let resultFinal = await fetch(url.path);
-            let data = await resultFinal.json();
-            data.date = new Date(data.date);
-            this._RenderData(data, scene);
         }
         return new LineManager(this.field_instances, scene);
     }
