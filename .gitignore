@@ -5,6 +5,7 @@ jsdir
 node_modules
 out
 resources/lib
+resources/pfss
 *.swp
 *.swo
 .vscode

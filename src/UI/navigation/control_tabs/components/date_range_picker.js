@@ -35,6 +35,7 @@ export default function DateRangePicker({ value, setValue }) {
                 <Flatpickr
                     className={input_css.input}
                     data-enable-time
+                    options={{ time_24hr: true }}
                     value={ToLocalDate(currentRange.start)}
                     onChange={([date]) => {
                         currentRange.start = ToUTCDate(date);
@@ -48,6 +49,7 @@ export default function DateRangePicker({ value, setValue }) {
                 <Flatpickr
                     className={input_css.input}
                     data-enable-time
+                    options={{ time_24hr: true }}
                     value={ToLocalDate(currentRange.end)}
                     onChange={([date]) => {
                         currentRange.end = ToUTCDate(date);

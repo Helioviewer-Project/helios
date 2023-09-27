@@ -53,18 +53,19 @@ class Helios {
         let data = await response.json();
         return Favorites.RestoreDates(data);
     }
-    static async get_field_lines(date) {
-        let url = Config.helios_api_url + "/lines/" + date;
-        let response = await fetch(url);
-        let data = await response.json();
-        return data["path"];
-    }
-    static async get_field_lines_gong(date: Date) {
-        let url = Config.helios_api_url + "lines/gong/" + ToDateString(date);
+
+    static async get_field_lines_gong(
+        date: Array<Date>
+    ): Promise<Array<Object>> {
+        // Construct a query string in the form date=<date1>&date=<date2>...
+        let date_strings = date.map((d) => "date=" + ToDateString(d));
+        let query_params = date_strings.join("&");
+        let url = Config.helios_api_url + "pfss/gong?" + query_params;
         let response = await fetch(url);
         let data = await response.json();
         return data;
     }
+
     static async GetEarthPosition(date: Date) {
         let url = Config.helios_api_url + "/earth/" + ToDateString(date);
         let response = await fetch(url);
