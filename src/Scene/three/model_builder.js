@@ -276,7 +276,7 @@ function _IsMarkerModel(model) {
 /**
  * Frees a mesh's geometry and material
  */
-function _FreeMesh(mesh) {
+function _FreeObject(mesh) {
     mesh.geometry.dispose();
     mesh.material.dispose();
 }
@@ -298,8 +298,8 @@ function _FreeGroup(group) {
 function FreeModel(object) {
     if (object.type == "Group") {
         _FreeGroup(object);
-    } else if (object.type == "Mesh") {
-        _FreeMesh(object);
+    } else {
+        _FreeObject(object);
     }
 }
 
