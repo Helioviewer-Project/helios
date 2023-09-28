@@ -34,7 +34,7 @@ test('Loading a scene', async () => {
     expect(result['layers'].length).toBeGreaterThan(0);
 })
 test('Test the date', async () => {
-    let result = await Helios.get_field_lines('2023-06-27T16:46:33.000')
+    let result = await Helios.get_field_lines_gong([new Date()])
     expect(Array.isArray(result)).toBe(true);
 
 })
