@@ -57,8 +57,10 @@ def init(app: Flask, send_response, parse_date):
             # Put results into a set to remove duplicates.
             # There may be duplicate results when the requested dates return the same gong file
             query_results = set([future.result() for future in futures])
+            # Remove "Nones" (if there is any None, they will all be None because it means the database is empty)
+            without_nones = filter(lambda x: x is not None, query_results)
             # Put deduped results back into a list and sort
-            sorted_result = sorted(list(query_results), key=lambda x: x.date)
+            sorted_result = sorted(without_nones, key=lambda x: x.date)
             # Load json for each result and return
             json_futures = [executor.submit(LoadJson, pfss.path) for pfss in sorted_result]
             json_data = [future.result() for future in json_futures]

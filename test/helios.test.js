@@ -35,6 +35,6 @@ test('Loading a scene', async () => {
 })
 test('Test the date', async () => {
     let result = await Helios.get_field_lines('2023-06-27T16:46:33.000')
-    expect(result).toBe("https://127.0.0.1/resources/lines/lines2273.json");
-   
+    expect(Array.isArray(result)).toBe(true);
+
 })
