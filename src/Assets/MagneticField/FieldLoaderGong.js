@@ -56,6 +56,7 @@ class LineManager {
         this.previousModel = 0;
         this.current_time = this.lines[0].date;
         this._current_asset = -1;
+        this.SetTime(scene.GetTime());
     }
 
     /**
