@@ -23,12 +23,19 @@ def handle_user_exception(e):
 def _send_response(data):
     if data is None:
         data = {"error": "Nothing to return"}
-    response = make_response(json.dumps(data))
-    if "error" in data:
-        response.status_code = 400
-    response.mimetype = 'application/json'
-    response.access_control_allow_origin = "*"
-    return response
+    elif type(data) is dict:
+        response = make_response(json.dumps(data))
+        if "error" in data:
+            response.status_code = 400
+        response.mimetype = 'application/json'
+        response.access_control_allow_origin = "*"
+        return response
+    elif type(data) is bytes:
+        response = make_response(data)
+        response.mimetype = 'application/json'
+        response.content_encoding = "gzip"
+        response.access_control_allow_origin = "*"
+        return response
 
 def _parse_date(date_str: str):
     try:

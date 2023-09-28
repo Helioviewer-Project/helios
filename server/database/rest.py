@@ -4,6 +4,7 @@ from flask import Flask, request
 from ._db import engine
 from sqlalchemy.orm import Session
 from sqlalchemy import text
+import gzip
 import concurrent.futures
 import json
 
@@ -64,4 +65,6 @@ def init(app: Flask, send_response, parse_date):
             # Load json for each result and return
             json_futures = [executor.submit(LoadJson, pfss.path) for pfss in sorted_result]
             json_data = [future.result() for future in json_futures]
-            return send_response(json_data)
+            # This data can be pretty big, so gzip it before sending it.
+            gzipped = gzip.compress(json.dumps(json_data).encode('utf-8'))
+            return send_response(gzipped)
