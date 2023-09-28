@@ -1,6 +1,6 @@
 import Configuration from '../src/Configuration.js';
 import { Helios } from '../src/API/helios';
-Configuration.helios_api_url = 'http://127.0.0.1/';
+Configuration.helios_api_url = 'http://127.0.0.1:5000/';
 
 test('Saving a scene', async () => {
     let testLayers = [{
