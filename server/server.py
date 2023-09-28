@@ -5,7 +5,6 @@ from flask_cors import CORS
 from helios_exceptions import HeliosException
 from datetime import datetime
 from database import rest as database_endpoints
-from api.LinePlotter import get_nearest_field_lines
 from get_heeq import convert_skycoords_to_heeq
 import json
 import logging
@@ -117,13 +116,6 @@ def event_position():
     units = request.args["units"]
     from api.event_position import get_event_position
     return _exec(lambda : get_event_position(coord_system, units, coord1, coord2, coord3, date, observatory))
-
-@app.route("/lines/<date>")
-def get_field_lines(date):
-    server_name = request.host
-    file_name = get_nearest_field_lines(date)
-    result = 'http://' + server_name + ':8000/resources/lines/' + file_name
-    return _send_response({'path': result})
 
 @app.route("/earth/<date>")
 def get_earth(date):
