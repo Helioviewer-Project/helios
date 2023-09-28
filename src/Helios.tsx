@@ -12,6 +12,7 @@ import AnimationControls from "./UI/video_player/animation";
 import { Favorite, Favorites } from "./API/favorites";
 import { Helios } from "./API/helios";
 import { ExtraControls } from "./UI/extra_controls/extra_controls";
+import { InitializeAssets } from "./Assets/RegisteredAssets";
 
 // /**
 //  * When the page first loads, users should see something besides black, so load the first available image
@@ -25,6 +26,8 @@ import { ExtraControls } from "./UI/extra_controls/extra_controls";
 
 // Defined in main HTML, not React
 const scene = new Scene("js-helios-viewport");
+InitializeAssets(scene);
+
 const FavoritesAPI = new Favorites(scene);
 
 type AppState = {

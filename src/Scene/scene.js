@@ -3,7 +3,7 @@ import { ThreeScene } from "./three/three_scene";
 import ModelFactory from "./model_factory.js";
 import { GetImageScaleForResolution } from "../common/resolution_lookup.js";
 import Loader from "../UI/loader.js";
-import EventManager from "../Events/event_manager.js";
+import { FieldLoader } from "../Assets/MagneticField/FieldLoaderGong.js";
 
 /**
  * Manages the full 3js scene that is rendered.
@@ -32,6 +32,14 @@ export default class Scene {
          * @private
          */
         this._models = {};
+
+        /**
+         * Generic assets being managed by the scene.
+         * @TODO existing sun models should conform to the asset interface spec.
+         */
+        this._assets = {};
+
+        this._asset_loaders = [];
 
         /**
          * Current model count used for creating IDs
@@ -102,42 +110,54 @@ export default class Scene {
         try {
             // Start the loading animation
             Loader.start();
-            let sun = await ModelFactory.CreateSolarModel(
-                source,
-                start,
-                end,
-                cadence,
-                scale,
-                this._scene.GetTextureInitFunction()
-            );
-            let model = await sun.GetModel();
-            this._scene.AddModel(model);
+            if (source < 100000) {
+                let sun = await ModelFactory.CreateSolarModel(
+                    source,
+                    start,
+                    end,
+                    cadence,
+                    scale,
+                    this._scene.GetTextureInitFunction()
+                );
+                this._scene.AddModel(await sun.GetModel());
 
-            let id = this._count++;
+                sun.SetTime(this._current_time);
+                var model = sun;
+            } else if (source === 100001) {
+                let loader = new FieldLoader();
+                var model = await loader.AddTimeSeries(
+                    start,
+                    end,
+                    cadence,
+                    this
+                );
+            }
+
+            let id = this._CreateId();
             this._models[id] = {
                 id: id,
                 source: source,
                 startTime: start,
                 endTime: end,
-                model: sun,
+                model: model,
                 order: layer_order,
                 cadence: cadence,
                 scale: scale,
             };
+
             if (Object.keys(this._models).length == 1) {
-                let sun_position = await sun.GetPosition();
-                this._camera.Move(
-                    sun.GetObserverPosition(),
-                    sun_position,
-                    () => {
-                        this._camera.SaveState(sun_position);
-                    }
-                );
+                let camera_target = await model.GetPosition();
+                let camera_position = (
+                    await model.GetObserverPosition()
+                ).toVector3();
+                this._camera.Move(camera_position, camera_target, () => {
+                    this._camera.SaveState(camera_target);
+                });
                 this.SetTime(start);
             }
 
-            sun.SetTime(this._current_time);
             this._SortLayers();
+
             // End the loading animation
             Loader.stop();
             this._UpdateEvents();
@@ -201,8 +221,6 @@ export default class Scene {
      * @param {number} id Identifier of model to remove
      */
     async RemoveFromScene(id) {
-        let model_to_remove = await this._models[id].model.GetModel();
-        this._scene.RemoveModel(model_to_remove);
         // Free assets related to the model
         this._models[id].model.dispose();
         delete this._models[id];
@@ -235,6 +253,10 @@ export default class Scene {
         let ids = Object.keys(this._models);
         for (const id of ids) {
             await this._models[id].model.SetTime(date);
+        }
+        ids = Object.keys(this._assets);
+        for (const id of ids) {
+            this._assets[id].SetTime(date);
         }
 
         // If camera is locked on to a specific model, then update its position.
@@ -332,6 +354,61 @@ export default class Scene {
     }
 
     /**
+     * Add a generic asset to the scene.
+     * By default, the asset's model is added to the global scene.
+     * If you need finer control on how the model is added, then supply a CustomAssetAdder.
+     *
+     * The asset instance must adhere to the asset interface specification (see assets folder).
+     *
+     * @param {Asset} asset
+     * @returns {number} Asset ID
+     */
+    async AddAsset(asset) {
+        // Add the asset renderable object to the scene
+        let model = await asset.GetRenderableModel();
+        this._scene.AddModel(model);
+        // Track the asset
+        let id = this._CreateId();
+        this._assets[id] = asset;
+        return id;
+    }
+
+    /**
+     * Removes an asset that has been previously added to the scene
+     * @param {number} id
+     */
+    async DeleteAsset(id) {
+        let model = await this._assets[id].GetRenderableModel();
+        model.removeFromParent();
+        delete this._assets[id];
+    }
+
+    /**
+     * Registers an asset loader.
+     * @param {AssetLoader} loader Instance which implements the AssetLoader Interface.
+     */
+    RegisterAssetLoader(loader) {
+        this._asset_loaders.push(loader);
+    }
+
+    async _LoadAssets(start, end, cadence) {
+        let promises = [];
+        // Iterate over all asset loaders and request their data
+        for (const loader of this._asset_loaders) {
+            // Check if the sources associated with the asset are in the scene, and trigger a load of the assets that are.
+            let asset_sources = loader.GetAssociatedSources();
+            let scene_sources = this.GetCurrentSources();
+            if (scene_sources.some((id) => asset_sources.includes(id))) {
+                promises.push(loader.AddTimeSeries(start, end, cadence, this));
+            }
+        }
+        // Wait for all assets to finish loading
+        for (const promise of promises) {
+            await promise;
+        }
+    }
+
+    /**
      * A single layer in the scene with information needed to recreate the scene
      * @typedef {Object} SceneLayer
      * @property {number} source - Source ID.
@@ -373,5 +450,24 @@ export default class Scene {
 
     ToggleAxesHelper() {
         return this._scene.ToggleAxesHelper();
+    }
+
+    /**
+     * Returns a list of the current sources IDs in the scene.
+     */
+    GetCurrentSources() {
+        let models = Object.entries(this._models);
+        return models.map((m) => m[1].model.source);
+    }
+
+    /**
+     * Returns a model from an observatory along the sun-earth line that has been added to the scene.
+     */
+    GetSourceWithEarthPerspective() {
+        let models = Object.entries(this._models);
+        let available_earth_sources = models.filter((m) =>
+            Config.earth_sources.includes(m[1].model.source)
+        );
+        return available_earth_sources[0][1].model;
     }
 }

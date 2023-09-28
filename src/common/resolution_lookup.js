@@ -1,6 +1,9 @@
 import Config from "../Configuration.js";
 
 function _GetResolutionIndex(source_id) {
+    if (source_id >= 100000) {
+        return 0;
+    }
     if (Config.source_resolutions.hasOwnProperty(source_id)) {
         return source_id;
     } else {

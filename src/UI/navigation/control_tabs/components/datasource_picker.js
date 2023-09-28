@@ -5,7 +5,7 @@ import Select from "../../../components/input/select";
 export default function DatasourcePicker({ selected, setSelected }) {
     return (
         <Select
-            label="Observatory"
+            label="Data Source"
             value={selected}
             onChange={(val) => setSelected(parseInt(val))}
             options={Object.keys(Sources).map((source) => (

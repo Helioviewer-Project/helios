@@ -214,7 +214,10 @@ function CreateMarkerModel(texture, text) {
 function UpdateModelTexture(group, texture, jp2info, source) {
     // Iterate through the group and update the texture uniform.
     for (const model of group.children) {
-        if (model.material.hasOwnProperty("uniforms")) {
+        if (
+            model.hasOwnProperty("material") &&
+            model.material.hasOwnProperty("uniforms")
+        ) {
             model.material.uniforms.tex.value = texture;
             if (Config.plane_sources.indexOf(source) != -1) {
                 let dimensions = _getPlaneDimensionsFromJp2Info(jp2info);
@@ -273,7 +276,7 @@ function _IsMarkerModel(model) {
 /**
  * Frees a mesh's geometry and material
  */
-function _FreeMesh(mesh) {
+function _FreeObject(mesh) {
     mesh.geometry.dispose();
     mesh.material.dispose();
 }
@@ -295,8 +298,8 @@ function _FreeGroup(group) {
 function FreeModel(object) {
     if (object.type == "Group") {
         _FreeGroup(object);
-    } else if (object.type == "Mesh") {
-        _FreeMesh(object);
+    } else {
+        _FreeObject(object);
     }
 }
 

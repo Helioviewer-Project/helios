@@ -1,10 +1,16 @@
-from flask import Flask, request, make_response
+from flask import Flask, request, make_response,url_for
+from datetime import date
+from dateutil.relativedelta import relativedelta
 from flask_cors import CORS
 from helios_exceptions import HeliosException
 from datetime import datetime
 from database import rest as database_endpoints
+from get_heeq import convert_skycoords_to_heeq
 import json
 import logging
+import sunpy
+import os
+
 logging.basicConfig(filename="helios_server.log", level=logging.DEBUG)
 
 app = Flask("Helios")
@@ -110,5 +116,16 @@ def event_position():
     units = request.args["units"]
     from api.event_position import get_event_position
     return _exec(lambda : get_event_position(coord_system, units, coord1, coord2, coord3, date, observatory))
+
+@app.route("/earth/<date>")
+def get_earth(date):
+    return convert_skycoords_to_heeq(sunpy.coordinates.get_earth(date))
+
+
+
+
+
+
+
 
 database_endpoints.init(app, _send_response, _parse_date)
