@@ -23,11 +23,12 @@ def parse_args():
 def get_file_list(path: str) -> list:
     file_list = []
     for (dirpath, dirname, files) in os.walk(path):
-        file_list += list(map(lambda fname: str(Path(f"{dirpath}/{fname}").resolve()), files))
+        json_files = filter(lambda fname: fname.endswith(".json.gz"), files)
+        file_list += list(map(lambda fname: str(Path(f"{dirpath}/{fname}").resolve()), json_files))
     return file_list
 
 def extract_date_from_filename(fname) -> datetime:
-    date_string = fname[-25:-5]
+    date_string = fname[-28:-8]
     return datetime.strptime(date_string, "%Y_%m_%d__%H_%M_%S")
 
 def extract_lod_from_filename(fname:str) -> int:
