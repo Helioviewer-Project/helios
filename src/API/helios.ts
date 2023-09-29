@@ -55,12 +55,18 @@ class Helios {
     }
 
     static async get_field_lines_gong(
-        date: Array<Date>
+        date: Array<Date>,
+        detail: number = 50
     ): Promise<Array<Object>> {
         // Construct a query string in the form date=<date1>&date=<date2>...
         let date_strings = date.map((d) => "date=" + ToDateString(d));
         let query_params = date_strings.join("&");
-        let url = Config.helios_api_url + "pfss/gong?" + query_params;
+        let url =
+            Config.helios_api_url +
+            "pfss/gong?detail=" +
+            detail +
+            "&" +
+            query_params;
         let response = await fetch(url);
         let data = await response.json();
         return data;
