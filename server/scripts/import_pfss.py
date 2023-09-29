@@ -1,9 +1,10 @@
 try:
     from database._db import engine
     from database.models import GongPFSS
-except ImportError:
-    import sys
+except Exception as e:
+    print(e)
     print("Please run as a module from the parent folder via `python -m scripts.import_pfss`")
+    import sys
     sys.exit(1)
 
 import os
@@ -36,11 +37,15 @@ def add_files_to_db(files: list):
     with Session(engine) as session:
         for filepath in files:
             # TODO: Add HMI support
-            pfss = GongPFSS()
-            pfss.date = extract_date_from_filename(filepath)
-            pfss.path = filepath
-            pfss.lod = extract_lod_from_filename(os.path.basename(filepath))
-            session.add(pfss)
+            # First check if this file already exists in the database
+            already_exists = session.query(GongPFSS).where(GongPFSS.path == filepath).count() == 1
+            # If it doesn't exist, then add it.
+            if not already_exists:
+                pfss = GongPFSS()
+                pfss.date = extract_date_from_filename(filepath)
+                pfss.path = filepath
+                pfss.lod = extract_lod_from_filename(os.path.basename(filepath))
+                session.add(pfss)
         session.commit()
 
 if __name__ == "__main__":
