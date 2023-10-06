@@ -46,8 +46,8 @@ To parse the file, use little endian for all data items.\n
 bytes [0:3] - signed int number of lines
 
 Starting at file offset 4, for each line:
-bytes [0:3] - signed int number of points in the line
-bytes [4:7] - signed int, polarity. -1, 0, or 1
+bytes [0:3] - signed int, polarity. -1, 0, or 1
+bytes [4:7] - signed int number of points in the line
 
 Starting at byte 8 in each line:
 bytes [0:3] - float x position - solRad
