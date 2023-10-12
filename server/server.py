@@ -20,12 +20,12 @@ CORS(app)
 def handle_user_exception(e):
     return _send_response({"error": str(e)})
 
-def _send_response(data):
+def _send_response(data, mime = "application/json"):
     if data is None:
         data = {"error": "Nothing to return"}
     elif type(data) is bytes:
         response = make_response(data)
-        response.mimetype = 'application/json'
+        response.mimetype = mime
         response.content_encoding = "gzip"
         response.access_control_allow_origin = "*"
         return response
@@ -33,7 +33,7 @@ def _send_response(data):
         response = make_response(json.dumps(data))
         if "error" in data:
             response.status_code = 400
-        response.mimetype = 'application/json'
+        response.mimetype = mime
         response.access_control_allow_origin = "*"
         return response
 

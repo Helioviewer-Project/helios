@@ -1,15 +1,18 @@
-from database.models import Model, Layer, Scene, GongPFSS
-from database.query import QueryGong
-from flask import Flask, request
-from ._db import engine
-from sqlalchemy.orm import Session
-from sqlalchemy import text
 import gzip
 import concurrent.futures
-import json
+import struct
+from datetime import timezone
 
-def LoadPfss(pfss: GongPFSS, detail: int) -> dict:
-    return pfss.load(detail)
+from flask import Flask, request
+from sqlalchemy.orm import Session
+
+from database.models import Model, Layer, Scene
+from database.query import QueryGong
+from ._db import engine
+
+def _ReadFile(fname: str) -> bytes:
+    with open(fname, "rb") as fp:
+        return fp.read()
 
 def _Get(model: Model, id: int) -> dict:
     with Session(engine) as session:
@@ -65,15 +68,18 @@ def init(app: Flask, send_response, parse_date):
             without_nones = filter(lambda x: x is not None, query_results)
             # Put deduped results back into a list and sort
             sorted_result = sorted(without_nones, key=lambda x: x.date)
-            print(sorted_result)
-            # Load json for each result and return
-            json_futures = [executor.submit(LoadPfss, pfss, detail_percent) for pfss in sorted_result]
-            json_data = [future.result() for future in json_futures]
-            binary = json.dumps(json_data).encode('utf-8')
-            # This data can be pretty big, so gzip it before sending it.
-            # compresslevel=1 (worst) is very fast compared to compresslevel=9 (best) and the resulting binary size is comparable.
-            # Using level=1 gives the best time to UX. level=9 would only save a few megabytes while increasing load time by 4x
-            # During testing, 178MB of data compressed to 74MB at level=1 in ~5 seconds.
-            # During testing, 178MB of data compressed to 69MB at level=9 in ~20 seconds.
-            gzipped = gzip.compress(binary, compresslevel=1)
-            return send_response(gzipped)
+            # Load data for each result
+            data_futures = [executor.submit(_ReadFile, pfss.path) for pfss in sorted_result]
+            data = [future.result() for future in data_futures]
+            # Build file bundle
+            bytes = bytearray()
+            bytes += struct.pack("<i", len(data))
+            for idx, binary in enumerate(data):
+                unix_time = int(sorted_result[idx].date.replace(tzinfo=timezone.utc).timestamp())
+                # Add timestamp as 64 bit unix time.
+                bytes += struct.pack("<Q", unix_time)
+                # Add length of the binary
+                bytes += struct.pack("<I", len(binary))
+                bytes += binary
+            gzipped = gzip.compress(bytes, compresslevel=1)
+            return send_response(gzipped, mime="application/octet-stream")

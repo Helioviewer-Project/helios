@@ -20,10 +20,8 @@ class MagneticFieldLineGroup {
      */
     constructor(data) {
         this._data = data;
-        this._date = new Date(
-            this._data.fieldlines.frame.source_map_obstime.value
-        );
-        this._lines = this._ConstructLineVectors(this._data.fieldlines.lines);
+        this._date = data.date;
+        this._lines = this._ConstructLineVectors(this._data.lines);
         this._model = this._RenderLines(this._lines);
     }
 

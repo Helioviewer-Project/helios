@@ -1,14 +1,22 @@
+import gzip
 import json
 import struct
 from argparse import ArgumentParser, RawTextHelpFormatter
 
 def convert(fname: str):
-    with open(fname, "r") as fp:
-        data = json.load(fp)
+    data = parse_pfss_json(fname)
     delete_unused_fields(data)
     binify_data(data)
-    write_bin(data, "test.bin")
+    out_name = fname.replace(".gz", "").replace(".json", ".bin")
+    write_bin(data, out_name)
     return data
+
+def parse_pfss_json(fname: str) -> dict:
+    with open(fname, "rb") as fp:
+        if fname.endswith("gz"):
+            return json.loads(gzip.decompress(fp.read()).decode('utf-8'))
+        else:
+            return json.load(fp)
 
 def delete_unused_fields(json: dict):
     for line in json['fieldlines']['lines']:
@@ -27,17 +35,19 @@ def binify_data(json: dict):
 
 def write_bin(json: dict, fname: str):
     n_lines = len(json['fieldlines']['lines'])
+    data = bytearray()
+    data += (struct.pack("<i", n_lines))
+    for line in json['fieldlines']['lines']:
+        n_points = len(line['x'])
+        data += (struct.pack("<i", int(line['polarity'])))
+        data += (struct.pack("<i", n_points))
+        for idx in range(n_points):
+            data += (line['x'][idx])
+            data += (line['y'][idx])
+            data += (line['z'][idx])
+            data += (line['b_mag'][idx])
     with open(fname, "wb") as fp:
-        fp.write(struct.pack("<i", n_lines))
-        for line in json['fieldlines']['lines']:
-            n_points = len(line['x'])
-            fp.write(struct.pack("<i", int(line['polarity'])))
-            fp.write(struct.pack("<i", n_points))
-            for idx in range(n_points):
-                fp.write(line['x'][idx])
-                fp.write(line['y'][idx])
-                fp.write(line['z'][idx])
-                fp.write(line['b_mag'][idx])
+        fp.write(data)
 
 if __name__ == "__main__":
     parser = ArgumentParser(description="""Compresses pfss json into a transferrable binary format\n\n
