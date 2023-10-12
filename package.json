@@ -40,7 +40,6 @@
   "dependencies": {
     "@tweenjs/tween.js": "^18.6.4",
     "css-modal": "^1.5.0",
-    "jspack": "^0.0.4",
     "three": "^0.145.0"
   }
 }
