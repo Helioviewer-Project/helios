@@ -77,6 +77,7 @@ class App extends React.Component<{}, AppState> {
         });
 
         this.AddLayer = this.AddLayer.bind(this);
+        this.ApplyNewDateRange = this.ApplyNewDateRange.bind(this);
         this._LoadHelioviewerMovieFromQueryParameters();
         this._LoadRecentlyShared();
     }
@@ -86,12 +87,30 @@ class App extends React.Component<{}, AppState> {
         this.setState({ recentlyShared: shared });
     }
 
+    async ApplyNewDateRange(range: DateRange) {
+        // Update the state with the new range
+        this.setState({ dateRange: range });
+        // Update all layers with the new range.
+        this.state.layers.forEach(async (model) => {
+            console.log(`Adding new layer to replace id ${model.id}`);
+            // Add existing layers with the new date range.
+            this.AddLayer(model.source, range, () => {
+                this.RemoveLayer(model.id);
+            });
+        });
+    }
+
     /**
      * Adds a new model layer to the current scene
      * @param source Source for the new layer
      * @param dateRange Range to import data over
+     * @param cb Callback executed after state is updated with the new layer.
      */
-    async AddLayer(source: number, dateRange: DateRange) {
+    async AddLayer(
+        source: number,
+        dateRange: DateRange,
+        cb: () => void = () => {}
+    ) {
         if (dateRange.start > dateRange.end) {
             alert("Start time must be before end time");
         } else {
@@ -107,19 +126,24 @@ class App extends React.Component<{}, AppState> {
                 image_scale,
                 this.state.layers.length
             );
-            this.setState({
-                layers: this.state.layers.concat(layer),
-            });
+            console.log(`Adding layer with id ${layer.id}`);
+            this.setState(
+                {
+                    layers: this.state.layers.concat(layer),
+                },
+                cb
+            );
         }
     }
 
-    RemoveLayer = (layerId: number) => {
+    RemoveLayer(layerId: number) {
+        console.log(`Deleting layer ${layerId} from scene`);
         scene.RemoveFromScene(layerId);
         this.setState({
             // Remove the layer by filtering for all layers that don't match the id we're removing
             layers: this.state.layers.filter((val) => val.id != layerId),
         });
-    };
+    }
 
     /**
      * If the query parameters match movie=string, then attempt to load the movie from that movie ID string.
@@ -201,7 +225,7 @@ class App extends React.Component<{}, AppState> {
                     sharedScenes={this.state.recentlyShared}
                     dateRange={this.state.dateRange}
                     SetDateRange={(newRange) =>
-                        this.setState({ dateRange: newRange })
+                        this.ApplyNewDateRange(newRange)
                     }
                     AddLayer={(sourceId: number) =>
                         this.AddLayer(sourceId, this.state.dateRange)
