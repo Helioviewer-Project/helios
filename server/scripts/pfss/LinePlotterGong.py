@@ -2,13 +2,16 @@
 This script is used to generate field line traces for Helios.
 
 This is a long running script. To run it, provide a date in ISO format.
-The script will begin producing binary files in `data/gong/<year>/<month>/<day>/*.bin`.
+The script will begin producing binary files in
+`data/gong/<year>/<month>/<day>/*.bin`.
 It works from the day you gave and starts working backwards to 1995.
 
-The binary files can be read into python with the pfss.py script packaged with this script (not the pfsspy library).
+The binary files can be read into python with the packaged pfss.py script.
+Not the pfsspy library.
 
-The binary format was chosen to reduce the required bandwidth to send PFSS data to the web browser.
-Storing all the line points in JSON used ~10x more space, and FITS tables took ~4x more space.
+The binary format was chosen to reduce the bandwidth for sending line traces
+to the web browser. Storing all the line points in JSON used ~10x more space,
+and FITS tables took ~4x more space.
 """
 import os
 import time
@@ -214,6 +217,8 @@ def get_nearest_field_lines(CheckingDateTime):
 # Call the function with the desired CheckingDateTime value
 if __name__ == "__main__":
     parser = ArgumentParser(description=__doc__, formatter_class=RawTextHelpFormatter)
-    parser.add_argument("start_date", type=date.fromisoformat, help="Date to begin processing")
+    parser.add_argument(
+        "start_date", type=date.fromisoformat, help="Date to begin processing"
+    )
     args = parser.parse_args()
     generate_all_field_lines(args.start_date)
