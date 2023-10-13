@@ -1,9 +1,22 @@
+"""
+This script is used to generate field line traces for Helios.
+
+This is a long running script. To run it, provide a date in ISO format.
+The script will begin producing binary files in `data/gong/<year>/<month>/<day>/*.bin`.
+It works from the day you gave and starts working backwards to 1995.
+
+The binary files can be read into python with the pfss.py script packaged with this script (not the pfsspy library).
+
+The binary format was chosen to reduce the required bandwidth to send PFSS data to the web browser.
+Storing all the line points in JSON used ~10x more space, and FITS tables took ~4x more space.
+"""
 import os
 import time
 import logging
 import concurrent.futures
 from datetime import date, datetime
 from pathlib import Path
+from argparse import ArgumentParser, RawTextHelpFormatter
 
 import numpy as np
 import pfsspy
@@ -156,26 +169,30 @@ def generate_field_lines(start_date, end_date):
     result = Fido.search(a.Time(start_date, end_date), a.Instrument("GONG"))
     files = Fido.fetch(result)
 
-    # pfsspy is the slow part and it's already using multiprocessing.
-    # Attempting to add more multiprocessing actually slows it down
     # Use process pool to spin up a process to work on the files in parallel
-    # with concurrent.futures.ProcessPoolExecutor() as executor:
-    #     futures = [
-    #         executor.submit(generate_field_lines_for_map, gong_map)
-    #         for gong_map in files
-    #     ]
-    #     # Wait for all files to be processed
-    #     [future.result() for future in futures]
-    for file in files:
-        generate_field_lines_for_map(file)
+    with concurrent.futures.ProcessPoolExecutor() as executor:
+        futures = [
+            executor.submit(generate_field_lines_for_map, gong_map)
+            for gong_map in files
+        ]
+        # Wait for all files to be processed
+        [future.result() for future in futures]
 
     delete_files(files)
 
     return "Done"
 
 
-def generate_all_field_lines():
-    end_date = date(2023, 10, 12)
+def generate_all_field_lines(start: datetime):
+    """
+    Traces GONG maps starting from the given date and working backwards to 1995.
+
+    Parameters
+    ----------
+    start: `datetime`
+        The date used to begin processing.
+    """
+    end_date = start
     start_date = end_date - relativedelta(days=1)
     target_date = date(1995, 1, 1)
     while start_date >= target_date:
@@ -196,4 +213,7 @@ def get_nearest_field_lines(CheckingDateTime):
 
 # Call the function with the desired CheckingDateTime value
 if __name__ == "__main__":
-    generate_all_field_lines()
+    parser = ArgumentParser(description=__doc__, formatter_class=RawTextHelpFormatter)
+    parser.add_argument("start_date", type=date.fromisoformat, help="Date to begin processing")
+    args = parser.parse_args()
+    generate_all_field_lines(args.start_date)
