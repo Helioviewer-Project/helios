@@ -203,6 +203,9 @@ class App extends React.Component<{}, AppState> {
                     SetDateRange={(newRange) =>
                         this.setState({ dateRange: newRange })
                     }
+                    AddLayer={(sourceId: number) =>
+                        this.AddLayer(sourceId, this.state.dateRange)
+                    }
                 />
                 <AnimationControls
                     visible={this.state.showVideoPlayer}

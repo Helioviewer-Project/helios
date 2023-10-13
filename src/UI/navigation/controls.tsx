@@ -48,6 +48,8 @@ type NavControlProps = {
     /** The application level date range being observed */
     dateRange: DateRange;
     SetDateRange: (DateRange) => void;
+    /** Add a new layer to the scene */
+    AddLayer: (sourceId: number) => void;
 };
 
 enum ControlTab {
@@ -78,6 +80,7 @@ export default function NavControls({
     sharedScenes,
     dateRange,
     SetDateRange,
+    AddLayer,
 }: NavControlProps): React.JSX.Element[] {
     let [currentTab, setTab] = useState(ControlTab.None);
     function closeTabs() {
@@ -117,6 +120,7 @@ export default function NavControls({
             UnregisterTimeListener={UnregisterTimeListener}
             UpdateModelOpacity={UpdateModelOpacity}
             RemoveModel={RemoveModel}
+            AddLayer={AddLayer}
         />,
 
         <FavoritesControls
