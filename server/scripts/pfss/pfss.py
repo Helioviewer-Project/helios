@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 import struct
 
+
 @dataclass
 class PFSSLine:
     polarity: int = 0
@@ -31,6 +32,7 @@ class PFSSLine:
             data += struct.pack(">f", self.b_mag[i])
         return data
 
+
 @dataclass
 class PFSS:
     date: datetime = datetime.now()
@@ -47,7 +49,9 @@ class PFSS:
         """
         data = bytearray()
         n_lines = len(self.lines)
-        data += struct.pack(">Q", int(self.date.replace(tzinfo=timezone.utc).timestamp()))
+        data += struct.pack(
+            ">Q", int(self.date.replace(tzinfo=timezone.utc).timestamp())
+        )
         data += struct.pack(">I", n_lines)
         for line in self.lines:
             data += line.as_bin()
@@ -61,10 +65,12 @@ class PFSS:
         with open(fname, "wb") as fp:
             fp.write(data)
 
+
 class Unpacker:
     """
     This class tracks a pointer to a bytearray for sequential parsing
     """
+
     def __init__(self, buffer: bytearray):
         self.ptr = 0
         self.buffer = buffer
@@ -79,9 +85,10 @@ class Unpacker:
             struct.pack/unpack format string (must be only 1 value)
         """
         n_bytes = struct.calcsize(format)
-        value = struct.unpack(format, self.buffer[self.ptr:self.ptr + n_bytes])[0]
+        value = struct.unpack(format, self.buffer[self.ptr : self.ptr + n_bytes])[0]
         self.ptr += n_bytes
         return value
+
 
 def LoadPfss(fname: str) -> PFSS:
     """
