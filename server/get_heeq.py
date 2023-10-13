@@ -1,8 +1,10 @@
 from argparse import ArgumentParser
+
 from sunpy.map import Map
 import sunpy.coordinates
 from sunpy.coordinates import transform_with_sun_center
 import astropy.units as u
+
 import jp2parser
 
 PROGRAM_DESCRIPTION = "Extract observer's HEEQ coordinates from a jp2 file via sunpy"

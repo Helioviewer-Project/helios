@@ -18,6 +18,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
@@ -26,14 +29,21 @@ jobs:
 
     - name: Start API server
       run: |
-        python3 -m pip install -r server/requirements.txt
-        flask --app server/server run &
+        cd server
+        python -m pip install -r requirements.txt
+        python -m flask --app server run &
+        cd ..
 
-    - name: Build
+    - name: Make sure package can be built
       run: |
         npm ci
         sh build.sh
-        npm run test
+
+    - name: Run javascript unit tests
+      run: npm run test
+
+    - name: Run python unit tests
+      run: cd server && python -m pytest && cd ..
 
     - name: Make sure code conforms to prettier standards
       run: |

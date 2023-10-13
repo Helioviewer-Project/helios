@@ -1,52 +1,54 @@
-import {Favorites} from "../src/API/favorites";
+import { Favorites } from "../src/API/favorites";
 
 class LocalStorageMock {
     constructor() {
-      this.store = {};
+        this.store = {};
     }
 
     clear() {
-      this.store = {};
+        this.store = {};
     }
 
     getItem(key) {
-      return this.store[key] || null;
+        return this.store[key] || null;
     }
 
     setItem(key, value) {
-      this.store[key] = String(value);
+        this.store[key] = String(value);
     }
 
     removeItem(key) {
-      delete this.store[key];
+        delete this.store[key];
     }
 }
 
-global.localStorage = new LocalStorageMock;
+global.localStorage = new LocalStorageMock();
 
 class SceneMock {
     GetLayers() {
-        return [{
-            source: 8,
-            start: new Date("2023-01-01"),
-            end: new Date("2023-01-02"),
-            cadence: 60,
-            scale: 0.6
-        }];
+        return [
+            {
+                source: 8,
+                start: new Date("2023-01-01"),
+                end: new Date("2023-01-02"),
+                cadence: 60,
+                scale: 0.6,
+            },
+        ];
     }
 
     GetTimeRange() {
-      return [new Date(), new Date()];
+        return [new Date(), new Date()];
     }
 }
 
-test('Get favorites when it is null', () => {
+test("Get favorites when it is null", () => {
     let favorites = new Favorites(new SceneMock());
     let emptyFavorites = favorites.GetFavorites();
     expect(emptyFavorites).toStrictEqual([]);
 });
 
-test('Add Favorite', () => {
+test("Add Favorite", () => {
     let scene = new SceneMock();
     let favorites = new Favorites(scene);
     favorites.AddFavorite("data:thumbnail blob");
@@ -54,4 +56,4 @@ test('Add Favorite', () => {
     expect(storedFavorites.length).toBe(1);
     expect(storedFavorites[0].thumbnail).toBe("data:thumbnail blob");
     expect(storedFavorites[0].layers).toStrictEqual(scene.GetLayers());
-})
+});

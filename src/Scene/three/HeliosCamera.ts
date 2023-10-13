@@ -1,7 +1,7 @@
 import { Camera, OrthographicCamera, Scene, Vector3 } from "three";
 import { Tween, Easing } from "@tweenjs/tween.js";
 import Config from "../../Configuration";
-import { TrackballControls } from "three/examples/jsm/controls/TrackballControls";
+import { TrackballControls } from "three/examples/jsm/controls/TrackballControls.js";
 import { FocalPointMaintainer } from "./focal_point_maintainer";
 
 type ThreeCamera = OrthographicCamera;

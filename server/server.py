@@ -1,15 +1,14 @@
-from flask import Flask, request, make_response,url_for
-from datetime import date
-from dateutil.relativedelta import relativedelta
-from flask_cors import CORS
-from helios_exceptions import HeliosException
 from datetime import datetime
-from database import rest as database_endpoints
-from get_heeq import convert_skycoords_to_heeq
 import json
 import logging
+
 import sunpy
-import os
+from flask import Flask, request, make_response,url_for
+from flask_cors import CORS
+
+from helios_exceptions import HeliosException
+from database import rest as database_endpoints
+from get_heeq import convert_skycoords_to_heeq
 
 logging.basicConfig(filename="helios_server.log", level=logging.DEBUG)
 
@@ -20,12 +19,12 @@ CORS(app)
 def handle_user_exception(e):
     return _send_response({"error": str(e)})
 
-def _send_response(data):
+def _send_response(data, mime = "application/json"):
     if data is None:
         data = {"error": "Nothing to return"}
     elif type(data) is bytes:
         response = make_response(data)
-        response.mimetype = 'application/json'
+        response.mimetype = mime
         response.content_encoding = "gzip"
         response.access_control_allow_origin = "*"
         return response
@@ -33,7 +32,7 @@ def _send_response(data):
         response = make_response(json.dumps(data))
         if "error" in data:
             response.status_code = 400
-        response.mimetype = 'application/json'
+        response.mimetype = mime
         response.access_control_allow_origin = "*"
         return response
 

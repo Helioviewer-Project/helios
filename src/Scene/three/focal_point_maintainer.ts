@@ -1,5 +1,5 @@
 import { Camera, Quaternion, Scene, Vector3, Vector2, Raycaster } from "three";
-import { TrackballControls } from "three/examples/jsm/controls/TrackballControls";
+import { TrackballControls } from "three/examples/jsm/controls/TrackballControls.js";
 
 type CameraState = {
     position: Vector3;
