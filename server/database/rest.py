@@ -1,13 +1,12 @@
 import gzip
 import concurrent.futures
 import struct
-from datetime import timezone
 
 from flask import Flask, request
 from sqlalchemy.orm import Session
 
-from database.models import Model, Layer, Scene
-from database.query import QueryGong
+from .models import Model, Layer, Scene
+from .query import QueryGong
 from ._db import engine
 
 def _ReadFile(fname: str) -> bytes:
@@ -64,6 +63,7 @@ def init(app: Flask, send_response, parse_date):
             # Put results into a set to remove duplicates.
             # There may be duplicate results when the requested dates return the same gong file
             query_results = set([future.result() for future in futures])
+            print(query_results)
             # Remove "Nones" (if there is any None, they will all be None because it means the database is empty)
             without_nones = filter(lambda x: x is not None, query_results)
             # Put deduped results back into a list and sort
@@ -73,13 +73,10 @@ def init(app: Flask, send_response, parse_date):
             data = [future.result() for future in data_futures]
             # Build file bundle
             bytes = bytearray()
-            bytes += struct.pack("<i", len(data))
-            for idx, binary in enumerate(data):
-                unix_time = int(sorted_result[idx].date.replace(tzinfo=timezone.utc).timestamp())
-                # Add timestamp as 64 bit unix time.
-                bytes += struct.pack("<Q", unix_time)
+            bytes += struct.pack(">i", len(data))
+            for binary in data:
                 # Add length of the binary
-                bytes += struct.pack("<I", len(binary))
+                bytes += struct.pack(">I", len(binary))
                 bytes += binary
             gzipped = gzip.compress(bytes, compresslevel=1)
             return send_response(gzipped, mime="application/octet-stream")

@@ -6,7 +6,7 @@ from datetime import datetime
 from typing import Union
 import json
 
-def QueryGong(date: datetime, lod: int = 32) -> Union[GongPFSS, None]:
+def QueryGong(date: datetime, lod: int = 33) -> Union[GongPFSS, None]:
     date_str = date.strftime("%Y-%m-%d %H:%M:%S")
     with Session(engine) as session:
         sql = text(f"""

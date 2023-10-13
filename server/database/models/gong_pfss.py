@@ -17,24 +17,6 @@ class GongPFSS(Model):
     def __repr__(self) -> str:
         return f"GONG(id={self.id}, path={self.path})"
 
-    def load(self, detail: int = 50) -> dict:
-        """
-        Loads the pfss data from this instance from disk.
-        detail should be a number between 0 and 100.
-        This represents the percentage of the pfss lines that should be loaded.
-        100 means load all lines (approx 1000). 50 means load 50% of the lines (approx 500)
-        """
-        # Limit detail to 0 and 100
-        detail = 0 if detail < 0 else detail
-        detail = 100 if detail > 100 else detail
-        # Load the file
-        with open(self.path, "rb") as fp:
-            json_bytes = gzip.decompress(fp.read())
-            pfss = json.loads(json_bytes)
-
-        stride = math.ceil(100 / detail)
-        pfss['fieldlines']['lines'] = pfss['fieldlines']['lines'][::stride]
-        return pfss
 
     def as_dict(self):
         return {
