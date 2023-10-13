@@ -27,13 +27,18 @@ jobs:
     - name: Start API server
       run: |
         python3 -m pip install -r server/requirements.txt
-        flask --app server/server run &
+        python -m flask --app server/server run &
 
-    - name: Build
+    - name: Make sure package can be built
       run: |
         npm ci
         sh build.sh
-        npm run test
+
+    - name: Run javascript unit tests
+      run: npm run test
+
+    - name: Run python unit tests
+      run: cd server && python -m pytest && cd ..
 
     - name: Make sure code conforms to prettier standards
       run: |
