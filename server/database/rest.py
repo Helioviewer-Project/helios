@@ -63,7 +63,6 @@ def init(app: Flask, send_response, parse_date):
             # Put results into a set to remove duplicates.
             # There may be duplicate results when the requested dates return the same gong file
             query_results = set([future.result() for future in futures])
-            print(query_results)
             # Remove "Nones" (if there is any None, they will all be None because it means the database is empty)
             without_nones = filter(lambda x: x is not None, query_results)
             # Put deduped results back into a list and sort
