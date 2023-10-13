@@ -17,6 +17,7 @@
       "jsx": "react",
       "esModuleInterop": true,
       "sourceMap": true,
+      "moduleResolution": "Bundler",
       "target": "ES2020"
     }
   }

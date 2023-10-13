@@ -8,8 +8,8 @@
     "docs": "typedoc",
     "view-docs": "open docs/index.html",
     "build": "./build.sh",
-    "prettier": "prettier --write src",
-    "prettier-test": "prettier --check src"
+    "prettier": "prettier --write src test",
+    "prettier-test": "prettier --check src test"
   },
   "author": "Daniel Garcia-Briseno",
   "license": "MIT",
