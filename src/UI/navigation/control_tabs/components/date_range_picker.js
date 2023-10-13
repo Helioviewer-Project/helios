@@ -1,11 +1,19 @@
 import { ToLocalDate, ToUTCDate } from "../../../../common/dates";
 import Flatpickr from "react-flatpickr";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useId, useState } from "react";
 import Input from "../../../components/input/input";
 import input_css from "../../../components/input/input.css";
 
 function frames2cadence(start, end, frames) {
-    return (end - start) / frames / 1000;
+    let cadence = (end - start) / frames / 1000;
+    // Handle special case where cadence is 0 because end/start are the same.
+    // While cadence should technically be 0, it means the parts of the application
+    // that iterate from start to end will add 0 between each frame, effectively
+    // causing infinite loops trying to iterate over start to end.
+    if (cadence == 0) {
+        return 1;
+    }
+    return cadence;
 }
 
 export default function DateRangePicker({ value, setValue }) {
@@ -29,10 +37,14 @@ export default function DateRangePicker({ value, setValue }) {
         }
     }
 
+    const startInputId = useId();
+    const endInputId = useId();
+
     return (
         <>
             <div className={input_css.container}>
                 <Flatpickr
+                    id={startInputId}
                     className={input_css.input}
                     data-enable-time
                     options={{ time_24hr: true }}
@@ -43,10 +55,14 @@ export default function DateRangePicker({ value, setValue }) {
                         updateCadence(frameCount);
                     }}
                 />
-                <label className={input_css.label}>Start</label>
+                ;
+                <label htmlFor={startInputId} className={input_css.label}>
+                    Start
+                </label>
             </div>
             <div className={input_css.container}>
                 <Flatpickr
+                    id={endInputId}
                     className={input_css.input}
                     data-enable-time
                     options={{ time_24hr: true }}
@@ -57,7 +73,9 @@ export default function DateRangePicker({ value, setValue }) {
                         updateCadence(frameCount);
                     }}
                 />
-                <label className={input_css.label}>End</label>
+                <label htmlFor={endInputId} className={input_css.label}>
+                    End
+                </label>
             </div>
             <Input
                 label="Number of Frames"
