@@ -39,7 +39,7 @@ def trace_lines(map: sunpy.map.Map, level_of_detail: int) -> list:
     pfss_in = pfsspy.Input(map, nrho, rss)
     pfss_out = pfsspy.pfss(pfss_in)
     pfss_out.bunit
-    tracer = tracing.FortranTracer(max_steps=1000)
+    tracer = tracing.FortranTracer()
     r = 1.1 * const.R_sun
     lat = np.linspace(-np.pi / 2, np.pi / 2, level_of_detail, endpoint=True)
     lon = np.linspace(-np.pi, np.pi, level_of_detail, endpoint=True)
