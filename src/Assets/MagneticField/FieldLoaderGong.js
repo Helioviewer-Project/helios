@@ -3,7 +3,6 @@ import config from "../../Configuration.js";
 
 import { Helios } from "../../API/helios";
 import { Vector3 } from "three";
-import { ToUTCDate } from "../../common/dates";
 
 /**
  * This class is intended to be used to load magnetic field data.
@@ -41,7 +40,7 @@ class FieldLoader {
      */
     _RenderData(data) {
         let mag = new MagneticField(data);
-        let field_instance = { mag: mag, date: ToUTCDate(new Date(data.date)) };
+        let field_instance = { mag: mag, date: data.date };
         this.field_instances.push(field_instance);
     }
 
