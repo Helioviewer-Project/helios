@@ -9,6 +9,11 @@ const UnpackTable = {
     "<Q": { len: 8, littleEndian: true, fn: DataView.prototype.getBigUint64 },
     "<q": { len: 8, littleEndian: true, fn: DataView.prototype.getBigInt64 },
     "<f": { len: 4, littleEndian: true, fn: DataView.prototype.getFloat32 },
+    ">I": { len: 4, littleEndian: false, fn: DataView.prototype.getUint32 },
+    ">i": { len: 4, littleEndian: false, fn: DataView.prototype.getInt32 },
+    ">Q": { len: 8, littleEndian: false, fn: DataView.prototype.getBigUint64 },
+    ">q": { len: 8, littleEndian: false, fn: DataView.prototype.getBigInt64 },
+    ">f": { len: 4, littleEndian: false, fn: DataView.prototype.getFloat32 },
 };
 
 /**
