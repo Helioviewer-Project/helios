@@ -64,7 +64,7 @@ class Helios {
         let query_params = date_strings.join("&");
         let url =
             Config.helios_api_url +
-            "pfss/gong?detail=" +
+            "pfss/gong/?detail=" +
             detail +
             "&" +
             query_params;
