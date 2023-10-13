@@ -18,7 +18,7 @@ from sunpy.coordinates import frames, get_earth, transform_with_sun_center
 from sunpy.net import Fido, attrs as a
 from pfsspy import tracing
 
-import compress_pfss
+from scripts.pfss.pfss import PFSS, PFSSLine
 
 log = logging.getLogger("sunpy")
 log.setLevel("WARNING")
@@ -57,7 +57,7 @@ def trace_lines(map: sunpy.map.Map, level_of_detail: int) -> list:
     return tracer.trace(seeds, pfss_out)
 
 
-def build_field_lines_json(field_lines: list, date: datetime) -> dict:
+def build_field_lines_json(field_lines: list, date: datetime) -> PFSS:
     # HGS observer time = 2018-08-11 00:00:00
     # Representation is x, y, z
     # Distance units in solar radii
@@ -67,7 +67,7 @@ def build_field_lines_json(field_lines: list, date: datetime) -> dict:
     d_unit = u.solRad
 
     # Create the fieldlines dictionary
-    fieldlines = {"date": date, "lines": []}
+    fieldlines = PFSS(date=date, lines=[])
     this_field_line = -1
     for field_line in field_lines:
         flc = field_line.coords
@@ -79,23 +79,23 @@ def build_field_lines_json(field_lines: list, date: datetime) -> dict:
                 hgs.representation_type = "cartesian"
                 b_along_fline = field_line.b_along_fline * u.G
                 b_along_fline = b_along_fline.value
-                fieldlines["lines"].append(
-                    {
-                        "x": hgs.x.to(d_unit).value.tolist(),
-                        "y": hgs.y.to(d_unit).value.tolist(),
-                        "z": hgs.z.to(d_unit).value.tolist(),
-                        "polarity": field_line.polarity,
-                        "b_mag": np.sqrt(
+                fieldlines.lines.append(
+                    PFSSLine(
+                        polarity=field_line.polarity,
+                        x=hgs.x.to(d_unit).value.tolist(),
+                        y=hgs.y.to(d_unit).value.tolist(),
+                        z=hgs.z.to(d_unit).value.tolist(),
+                        b_mag=np.sqrt(
                             b_along_fline[:, 0] ** 2
                             + b_along_fline[:, 1] ** 2
                             + b_along_fline[:, 2] ** 2
                         ).tolist(),
-                    }
+                    )
                 )
     return fieldlines
 
 
-def save_field_lines(lines: dict, level_of_detail: int):
+def save_field_lines(lines: PFSS, level_of_detail: int):
     """
     Saves the generated line dict
 
@@ -112,19 +112,20 @@ def save_field_lines(lines: dict, level_of_detail: int):
     """
 
     # Make the path to write the file to based on the date.
-    date = lines["date"]
     directory_path = os.path.join(
-        "data", "gong", str(date.year), "%02d" % date.month, "%02d" % date.day
+        "data",
+        "gong",
+        str(lines.date.year),
+        "%02d" % lines.date.month,
+        "%02d" % lines.date.day,
     )
     os.makedirs(directory_path, exist_ok=True)
     fname = (
         f"{directory_path}/lod_{level_of_detail}__"
-        + date.strftime("%Y_%m_%d__%H_%M_%S")
+        + lines.date.strftime("%Y_%m_%d__%H_%M_%S")
         + ".bin"
     )
-    # Compress the line data
-    compress_pfss.binify_data(lines)
-    compress_pfss.write_bin(lines, fname)
+    lines.save(fname)
 
 
 def delete_files(files: list):
@@ -147,8 +148,7 @@ def process_field_lines(final_gong_map: sunpy.map.Map, date: datetime, lod: int)
 def generate_field_lines_for_map(map: sunpy.map.Map):
     # put this in a loop for to go over all of the files
     gong_map = sunpy.map.Map(map)
-    final_gong_map = gong_map.resample([720, 288] * u.pixel)
-    process_field_lines(final_gong_map, gong_map.date.datetime, 33)
+    process_field_lines(gong_map, gong_map.date.datetime, 33)
 
 
 def generate_field_lines(start_date, end_date):
@@ -159,15 +159,15 @@ def generate_field_lines(start_date, end_date):
     # pfsspy is the slow part and it's already using multiprocessing.
     # Attempting to add more multiprocessing actually slows it down
     # Use process pool to spin up a process to work on the files in parallel
-    with concurrent.futures.ProcessPoolExecutor() as executor:
-        futures = [
-            executor.submit(generate_field_lines_for_map, gong_map)
-            for gong_map in files
-        ]
-        # Wait for all files to be processed
-        [future.result() for future in futures]
-    # for file in files:
-    #     generate_field_lines_for_map(file)
+    # with concurrent.futures.ProcessPoolExecutor() as executor:
+    #     futures = [
+    #         executor.submit(generate_field_lines_for_map, gong_map)
+    #         for gong_map in files
+    #     ]
+    #     # Wait for all files to be processed
+    #     [future.result() for future in futures]
+    for file in files:
+        generate_field_lines_for_map(file)
 
     delete_files(files)
 

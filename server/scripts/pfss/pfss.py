@@ -23,7 +23,7 @@ class PFSSLine:
         """
         n_points = len(self.x)
         data = bytearray()
-        data += struct.pack(">i", self.polarity)
+        data += struct.pack(">i", int(self.polarity))
         data += struct.pack(">I", n_points)
         for i in range(n_points):
             data += struct.pack(">f", self.x[i])
