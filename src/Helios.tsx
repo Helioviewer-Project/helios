@@ -5,8 +5,7 @@ import NavControls from "./UI/navigation/controls";
 import { GetImageScaleForResolution } from "./common/resolution_lookup.js";
 import config from "./Configuration.js";
 import TimeDisplay from "./UI/time_display.js";
-import { DataSource, DateRange } from "./UI/navigation/control_tabs/data";
-import { ModelInfo } from "./common/types";
+import { DateRange, ModelInfo } from "./common/types";
 import { LoadHelioviewerMovie } from "./UI/helioviewer_movie";
 import AnimationControls from "./UI/video_player/animation";
 import { Favorite, Favorites } from "./API/favorites";
@@ -30,12 +29,25 @@ InitializeAssets(scene);
 
 const FavoritesAPI = new Favorites(scene);
 
+function getDefaultDateRange(): DateRange {
+    let now = new Date();
+    let yesterday = new Date();
+    yesterday.setDate(now.getDate() - 1);
+    let cadence = 86400;
+    return {
+        start: yesterday,
+        end: now,
+        cadence: cadence,
+    };
+}
+
 type AppState = {
     sceneTime: Date;
     layers: ModelInfo[];
     showVideoPlayer: boolean;
     favorites: Favorite[];
     recentlyShared: Favorite[];
+    dateRange: DateRange;
 };
 
 /**
@@ -56,6 +68,7 @@ class App extends React.Component<{}, AppState> {
                     showVideoPlayer: true,
                     favorites: FavoritesAPI.GetFavorites(),
                     recentlyShared: [],
+                    dateRange: getDefaultDateRange(),
                 };
                 firstRun = false;
             } else {
@@ -133,7 +146,6 @@ class App extends React.Component<{}, AppState> {
                     onTimeChange={(time) => scene.SetTime(time)}
                 />
                 <NavControls
-                    onAddData={this.AddLayer}
                     Layers={this.state.layers}
                     GetSceneTime={() => scene.GetTime()}
                     GetSceneTimeRange={() => scene.GetTimeRange()}
@@ -187,6 +199,10 @@ class App extends React.Component<{}, AppState> {
                         this._LoadRecentlyShared();
                     }}
                     sharedScenes={this.state.recentlyShared}
+                    dateRange={this.state.dateRange}
+                    SetDateRange={(newRange) =>
+                        this.setState({ dateRange: newRange })
+                    }
                 />
                 <AnimationControls
                     visible={this.state.showVideoPlayer}

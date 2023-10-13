@@ -20,4 +20,16 @@ type SceneLayer = {
     scale: number;
 };
 
-export { ModelInfo, SceneLayer };
+/**
+ * Represents a range of time that can be iterated over
+ */
+interface DateRange {
+    /** Start of time range. */
+    start: Date;
+    /** End of time range. */
+    end: Date;
+    /** Number of seconds between each time step. */
+    cadence: number;
+}
+
+export { ModelInfo, SceneLayer, DateRange };
