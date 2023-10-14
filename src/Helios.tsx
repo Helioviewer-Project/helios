@@ -5,8 +5,7 @@ import NavControls from "./UI/navigation/controls";
 import { GetImageScaleForResolution } from "./common/resolution_lookup.js";
 import config from "./Configuration.js";
 import TimeDisplay from "./UI/time_display.js";
-import { DataSource, DateRange } from "./UI/navigation/control_tabs/data";
-import { ModelInfo } from "./common/types";
+import { DateRange, ModelInfo } from "./common/types";
 import { LoadHelioviewerMovie } from "./UI/helioviewer_movie";
 import AnimationControls from "./UI/video_player/animation";
 import { Favorite, Favorites } from "./API/favorites";
@@ -30,12 +29,25 @@ InitializeAssets(scene);
 
 const FavoritesAPI = new Favorites(scene);
 
+function getDefaultDateRange(): DateRange {
+    let now = new Date();
+    let yesterday = new Date();
+    yesterday.setDate(now.getDate() - 1);
+    let cadence = 86400;
+    return {
+        start: yesterday,
+        end: now,
+        cadence: cadence,
+    };
+}
+
 type AppState = {
     sceneTime: Date;
     layers: ModelInfo[];
     showVideoPlayer: boolean;
     favorites: Favorite[];
     recentlyShared: Favorite[];
+    dateRange: DateRange;
 };
 
 /**
@@ -56,6 +68,7 @@ class App extends React.Component<{}, AppState> {
                     showVideoPlayer: true,
                     favorites: FavoritesAPI.GetFavorites(),
                     recentlyShared: [],
+                    dateRange: getDefaultDateRange(),
                 };
                 firstRun = false;
             } else {
@@ -64,6 +77,7 @@ class App extends React.Component<{}, AppState> {
         });
 
         this.AddLayer = this.AddLayer.bind(this);
+        this.ApplyNewDateRange = this.ApplyNewDateRange.bind(this);
         this._LoadHelioviewerMovieFromQueryParameters();
         this._LoadRecentlyShared();
     }
@@ -73,12 +87,30 @@ class App extends React.Component<{}, AppState> {
         this.setState({ recentlyShared: shared });
     }
 
+    async ApplyNewDateRange(range: DateRange) {
+        // Update the state with the new range
+        this.setState({ dateRange: range });
+        // Update all layers with the new range.
+        this.state.layers.forEach(async (model) => {
+            console.log(`Adding new layer to replace id ${model.id}`);
+            // Add existing layers with the new date range.
+            this.AddLayer(model.source, range, () => {
+                this.RemoveLayer(model.id);
+            });
+        });
+    }
+
     /**
      * Adds a new model layer to the current scene
      * @param source Source for the new layer
      * @param dateRange Range to import data over
+     * @param cb Callback executed after state is updated with the new layer.
      */
-    async AddLayer(source: number, dateRange: DateRange) {
+    async AddLayer(
+        source: number,
+        dateRange: DateRange,
+        cb: () => void = () => {}
+    ) {
         if (dateRange.start > dateRange.end) {
             alert("Start time must be before end time");
         } else {
@@ -94,19 +126,24 @@ class App extends React.Component<{}, AppState> {
                 image_scale,
                 this.state.layers.length
             );
-            this.setState({
-                layers: this.state.layers.concat(layer),
-            });
+            console.log(`Adding layer with id ${layer.id}`);
+            this.setState(
+                {
+                    layers: this.state.layers.concat(layer),
+                },
+                cb
+            );
         }
     }
 
-    RemoveLayer = (layerId: number) => {
+    RemoveLayer(layerId: number) {
+        console.log(`Deleting layer ${layerId} from scene`);
         scene.RemoveFromScene(layerId);
         this.setState({
             // Remove the layer by filtering for all layers that don't match the id we're removing
             layers: this.state.layers.filter((val) => val.id != layerId),
         });
-    };
+    }
 
     /**
      * If the query parameters match movie=string, then attempt to load the movie from that movie ID string.
@@ -133,7 +170,6 @@ class App extends React.Component<{}, AppState> {
                     onTimeChange={(time) => scene.SetTime(time)}
                 />
                 <NavControls
-                    onAddData={this.AddLayer}
                     Layers={this.state.layers}
                     GetSceneTime={() => scene.GetTime()}
                     GetSceneTimeRange={() => scene.GetTimeRange()}
@@ -187,6 +223,13 @@ class App extends React.Component<{}, AppState> {
                         this._LoadRecentlyShared();
                     }}
                     sharedScenes={this.state.recentlyShared}
+                    dateRange={this.state.dateRange}
+                    SetDateRange={(newRange) =>
+                        this.ApplyNewDateRange(newRange)
+                    }
+                    AddLayer={(sourceId: number) =>
+                        this.AddLayer(sourceId, this.state.dateRange)
+                    }
                 />
                 <AnimationControls
                     visible={this.state.showVideoPlayer}

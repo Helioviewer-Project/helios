@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import Navbar from "./navbar";
-import { DataControls } from "./control_tabs/data";
-import { ModelInfo } from "../../common/types";
+import { RangeControls } from "./control_tabs/range_controls";
+import { DateRange, ModelInfo } from "../../common/types";
 import LayerControls from "./control_tabs/layers";
 import { FavoritesControls } from "./control_tabs/favorites";
 import { Favorite } from "../../API/favorites";
 import SharedControls from "./control_tabs/shared_controls";
 
 type NavControlProps = {
-    onAddData: (DataSource, DateRange) => void;
     /**
      * Current layers in the scene
      */
@@ -46,11 +45,16 @@ type NavControlProps = {
     OnLoadFavorite: (fav: Favorite) => void;
     OnShareFavorite: (fav: Favorite) => void;
     sharedScenes: Favorite[];
+    /** The application level date range being observed */
+    dateRange: DateRange;
+    SetDateRange: (DateRange) => void;
+    /** Add a new layer to the scene */
+    AddLayer: (sourceId: number) => void;
 };
 
 enum ControlTab {
     None,
-    Data,
+    Range,
     Layers,
     Animation,
     Settings,
@@ -59,7 +63,6 @@ enum ControlTab {
 }
 
 export default function NavControls({
-    onAddData,
     Layers,
     GetSceneTime,
     GetSceneTimeRange,
@@ -75,6 +78,9 @@ export default function NavControls({
     OnLoadFavorite,
     OnShareFavorite,
     sharedScenes,
+    dateRange,
+    SetDateRange,
+    AddLayer,
 }: NavControlProps): React.JSX.Element[] {
     let [currentTab, setTab] = useState(ControlTab.None);
     function closeTabs() {
@@ -91,17 +97,18 @@ export default function NavControls({
         <Navbar
             key={0}
             isActive={currentTab != ControlTab.None}
-            onSelectData={() => selectTab(ControlTab.Data)}
+            onSelectRange={() => selectTab(ControlTab.Range)}
             onSelectLayers={() => selectTab(ControlTab.Layers)}
             onSelectFavorite={() => selectTab(ControlTab.Favorites)}
             onSelectCloud={() => selectTab(ControlTab.Cloud)}
         />,
 
-        <DataControls
+        <RangeControls
             key={1}
             onClose={closeTabs}
-            visible={currentTab === ControlTab.Data}
-            onAddData={onAddData}
+            visible={currentTab === ControlTab.Range}
+            dateRange={dateRange}
+            setDateRange={SetDateRange}
         />,
 
         <LayerControls
@@ -113,6 +120,7 @@ export default function NavControls({
             UnregisterTimeListener={UnregisterTimeListener}
             UpdateModelOpacity={UpdateModelOpacity}
             RemoveModel={RemoveModel}
+            AddLayer={AddLayer}
         />,
 
         <FavoritesControls

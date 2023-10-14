@@ -55,7 +55,6 @@ export default function DateRangePicker({ value, setValue }) {
                         updateCadence(frameCount);
                     }}
                 />
-                ;
                 <label htmlFor={startInputId} className={input_css.label}>
                     Start
                 </label>
@@ -78,7 +77,7 @@ export default function DateRangePicker({ value, setValue }) {
                 </label>
             </div>
             <Input
-                label="Number of Frames"
+                label="Number of steps"
                 type="number"
                 value={frameCount}
                 onChange={updateCadence}
