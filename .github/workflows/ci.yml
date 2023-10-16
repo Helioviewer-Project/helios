@@ -31,7 +31,7 @@ jobs:
       run: |
         cd server
         python -m pip install -r requirements.txt
-        python -m flask --app main run &
+        python -m flask --app main run --debug &
         cd ..
 
     - name: Make sure package can be built
