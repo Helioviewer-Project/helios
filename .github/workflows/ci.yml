@@ -18,15 +18,9 @@ jobs:
     services:
       database:
         image: mariadb
-        environment:
+        env:
           MARIADB_ROOT_PASSWORD: ${{ env.DB_PASSWORD }}
           MARIADB_DATABASE: helios
-        healthcheck:
-          test: ["CMD", "healthcheck.sh", "--connect"]
-          interval: 5s
-          timeout: 10s
-          retries: 3
-          start_period: 5s
 
     strategy:
       matrix:
