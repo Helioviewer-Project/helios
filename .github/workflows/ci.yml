@@ -21,6 +21,8 @@ jobs:
         env:
           MARIADB_ROOT_PASSWORD: ${{ env.DB_PASSWORD }}
           MARIADB_DATABASE: helios
+        ports:
+          - 3306:3306
 
     strategy:
       matrix:
