@@ -1,0 +1,5 @@
+Host pfss
+  HostName {pfss_host}
+  User ec2-user
+  IdentityFile /run/secrets/pfss_key.pem
+  IdentitiesOnly yes

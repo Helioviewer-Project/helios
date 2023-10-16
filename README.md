@@ -11,7 +11,20 @@ Helios is an adaptation of [Helioviewer](https://helioviewer.org) which uses 3js
 It works by getting image and positional data from the Helioviewer API, and rendering them in a 3D scene.
 You can interact with a demo [here](https://gl.helioviewer.org).
 
-## How To Run It
+## Development Quickstart
+The application has been containerized with docker compose.
+The fastest way to get this application running on your pc is to get [get docker](https://docs.docker.com/get-docker/).
+Then once it's installed and running, execute:
+
+```
+docker compose -f compose.devel.yaml up
+```
+
+If you plan to work on the flask API locally, you must also change `src/Configuration.js:helios_api_url` to `http://localhost:5000/`
+
+## Development Without Docker
+If you want to do development without docker, you need nodejs/npm and python installed.
+
 1. clone the repository
 ```
 git clone https://github.com/dgarciabriseno/helios.git
@@ -35,6 +48,8 @@ python3 -m http.server # runs on port 8000 by default
 ```
 
 5. See it in browser by going to [http://localhost:8000](http://localhost:8000)
+
+6. If you plan to work on the flask API locally, you must also change `src/Configuration.js:helios_api_url` to `http://localhost:5000/`
 
 ### Making Changes
 Use `npx webpack watch` to automatically rebuild changes as you make them.

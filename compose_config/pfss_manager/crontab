@@ -1,0 +1,1 @@
+*/5 * * * * /app/sync_pfss.sh /var/lib/pfss /app

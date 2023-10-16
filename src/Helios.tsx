@@ -77,6 +77,7 @@ class App extends React.Component<{}, AppState> {
         });
 
         this.AddLayer = this.AddLayer.bind(this);
+        this.RemoveLayer = this.RemoveLayer.bind(this);
         this.ApplyNewDateRange = this.ApplyNewDateRange.bind(this);
         this._LoadHelioviewerMovieFromQueryParameters();
         this._LoadRecentlyShared();
