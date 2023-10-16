@@ -69,7 +69,6 @@ class Helios {
             "&" +
             query_params;
         let response = await fetch(url);
-        console.log(await response.text());
         let reader = response.body.getReader();
         return await ParsePfssBundle(reader);
     }
