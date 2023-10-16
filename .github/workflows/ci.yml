@@ -8,9 +8,24 @@ on:
       - '*.*'
   workflow_dispatch:
 
+env:
+  DB_PASSWORD: gh-actions
+  CONFIG_FILE_PATH: ../.github/workflows/ci.config.ini
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    services:
+      image: mariadb
+      environment:
+        MARIADB_ROOT_PASSWORD: ${{ env.DB_PASSWORD }}
+        MARIADB_DATABASE: helios
+      healthcheck:
+        test: ["CMD", "healthcheck.sh", "--connect"]
+        interval: 5s
+        timeout: 10s
+        retries: 3
+        start_period: 5s
 
     strategy:
       matrix:
