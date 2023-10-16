@@ -15,7 +15,7 @@ def QueryGong(date: datetime, lod: int = 33) -> Union[GongPFSS, None]:
                 UNION ALL
                 SELECT * FROM (SELECT id, path, date FROM pfss WHERE date > '{date_str}' AND lod = {lod} ORDER BY date ASC LIMIT 1) q2
             ) s
-            ORDER BY ABS(DATEDIFF(s.date, '{date_str}'))
+            ORDER BY ABS(TIMEDIFF(s.date, '{date_str}'))
             LIMIT 1;
         """)
         sql.columns(GongPFSS.id, GongPFSS.path, GongPFSS.date)
