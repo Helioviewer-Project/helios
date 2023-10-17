@@ -1,4 +1,10 @@
-from .models import Model
+import logging
+
 from sqlalchemy import create_engine
-engine = create_engine("sqlite+pysqlite:///data.sqlite", echo=True)
+
+from .models import Model
+import conf
+
+logging.getLogger('sqlalchemy.engine').setLevel(logging.WARN)
+engine = create_engine(conf.get('database', 'connection_string'), echo=True, pool_pre_ping=True)
 Model.metadata.create_all(engine)

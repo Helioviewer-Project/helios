@@ -8,9 +8,21 @@ on:
       - '*.*'
   workflow_dispatch:
 
+env:
+  DB_PASSWORD: gh-actions
+  CONFIG_FILE_PATH: ../.github/workflows/ci.config.ini
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    services:
+      database:
+        image: mariadb
+        env:
+          MARIADB_ROOT_PASSWORD: ${{ env.DB_PASSWORD }}
+          MARIADB_DATABASE: helios
+        ports:
+          - 3306:3306
 
     strategy:
       matrix:
@@ -31,7 +43,7 @@ jobs:
       run: |
         cd server
         python -m pip install -r requirements.txt
-        python -m flask --app server run &
+        python -m flask --app main run --debug &
         cd ..
 
     - name: Make sure package can be built

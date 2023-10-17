@@ -1,0 +1,98 @@
+services:
+  database:
+    image: mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD_FILE: /run/secrets/db_password
+      MARIADB_DATABASE: helios
+    secrets:
+      - db_password
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect"]
+      interval: 5s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    volumes:
+      - database-storage:/var/lib/mysql
+  api:
+    depends_on:
+      database:
+        condition: service_healthy
+    ports:
+      - 5000:80
+    environment:
+      CONFIG_FILE_PATH: /run/secrets/config_file
+    secrets:
+      - config_file
+    volumes:
+      - pfss-data:/var/lib/pfss
+    build:
+      context: .
+      dockerfile_inline: |
+        FROM python:3.11
+        RUN pip install --no-cache-dir gunicorn pymysql
+        WORKDIR /app
+        COPY server /app
+        COPY compose_config/api/gunicorn_conf.py /app
+        RUN pip install --no-cache-dir -r requirements.txt
+        CMD ["gunicorn", "--conf", "gunicorn_conf.py", "--bind", "0.0.0.0:80", "main:app"]
+  web:
+    depends_on:
+      - api
+    ports:
+      - 8080:80
+    build:
+      context: .
+      dockerfile_inline: |
+        FROM httpd:2.4
+        COPY dist/ /usr/local/apache2/htdocs
+  # This service downloads pfss files from the server that makes them
+  # into a shared folder that the api service can access.
+  pfss_manager:
+    depends_on:
+      database:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile_inline: |
+        FROM alpine
+        RUN apk add --no-cache python3 py3-pip rsync bash openssh
+        RUN python -m pip install --no-cache-dir sqlalchemy pymysql
+        WORKDIR /app
+        COPY server /app
+        COPY compose_config/pfss_manager/sync_pfss.sh /app
+        COPY compose_config/pfss_manager/ssh_config /root/.ssh/config
+        COPY compose_config/pfss_manager/crontab /app
+        RUN crontab /app/crontab
+        CMD ["/usr/sbin/crond", "-f", "-d", "0"]
+    environment:
+      CONFIG_FILE_PATH: /run/secrets/config_file
+      PFSS_SSH_KEY: /run/secrets/pfss_key.pem
+    secrets:
+      - config_file
+      - pfss_key.pem
+      - pfss_host
+    volumes:
+      - pfss-data:/var/lib/pfss
+  # debugger:
+  #   build:
+  #     context: .
+  #     dockerfile_inline: |
+  #       FROM alpine
+  #       RUN apk add --no-cache mariadb
+  #       CMD ["tail", "-F", "/dev/null"]
+
+
+secrets:
+  db_password:
+    file: ./compose_config/database/db_password
+  config_file:
+    file: ./compose_config/api/config.ini
+  pfss_host:
+    file: ./compose_config/pfss_manager/pfss_host
+  pfss_key.pem:
+    file: ./compose_config/pfss_manager/pfss_key.pem
+
+volumes:
+  pfss-data:
+  database-storage:

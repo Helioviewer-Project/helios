@@ -1,0 +1,74 @@
+services:
+  database:
+    image: mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD_FILE: /run/secrets/db_password
+      MARIADB_DATABASE: helios
+    secrets:
+      - db_password
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect"]
+      interval: 5s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    volumes:
+      - database-storage:/var/lib/mysql
+  api:
+    depends_on:
+      database:
+        condition: service_healthy
+    ports:
+      - 5000:80
+    environment:
+      CONFIG_FILE_PATH: /run/secrets/config_file
+    secrets:
+      - config_file
+    volumes:
+      - type: bind
+        source: server
+        target: /app
+    build:
+      context: .
+      dockerfile_inline: |
+        FROM python:3.11
+        RUN pip install --no-cache-dir gunicorn pymysql
+        WORKDIR /app
+        COPY compose_config/api/gunicorn_conf.py /gunicorn.py
+        RUN echo "pip install -r requirements.txt && FLASK_DEBUG=1 python -m flask --app main run -h 0.0.0.0 -p 80" > /cmd.sh
+        ENTRYPOINT ["sh", "/cmd.sh"]
+  web:
+    depends_on:
+      - api
+    ports:
+      - 8000:80
+    image: httpd:2.4
+    volumes:
+      - type: bind
+        source: .
+        target: /usr/local/apache2/htdocs
+  # Runs npm webpack on local environment
+  webpack:
+    build:
+      context: .
+      dockerfile_inline: |
+        FROM alpine:3.18
+        WORKDIR /app
+        RUN apk add --no-cache npm
+        RUN echo "npm install && npx webpack watch" > /cmd.sh
+        ENTRYPOINT ["sh", "/cmd.sh"]
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+
+secrets:
+  db_password:
+    file: ./compose_config/database/db_password.example
+  config_file:
+    file: ./compose_config/api/config.example.ini
+  pfss_host:
+    file: ./compose_config/pfss_manager/pfss_host.example
+
+volumes:
+  database-storage:

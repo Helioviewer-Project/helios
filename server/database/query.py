@@ -11,11 +11,11 @@ def QueryGong(date: datetime, lod: int = 33) -> Union[GongPFSS, None]:
     with Session(engine) as session:
         sql = text(f"""
             SELECT s.id, s.path, s.date FROM (
-                SELECT * FROM (SELECT id, path, date FROM pfss WHERE date <= "{date_str}" AND lod = {lod} ORDER BY date DESC LIMIT 1)
+                SELECT * FROM (SELECT id, path, date FROM pfss WHERE date <= '{date_str}' AND lod = {lod} ORDER BY date DESC LIMIT 1) q1
                 UNION ALL
-                SELECT * FROM (SELECT id, path, date FROM pfss WHERE date > "{date_str}" AND lod = {lod} ORDER BY date ASC LIMIT 1)
+                SELECT * FROM (SELECT id, path, date FROM pfss WHERE date > '{date_str}' AND lod = {lod} ORDER BY date ASC LIMIT 1) q2
             ) s
-            ORDER BY ABS(julianday(s.date) - julianday("{date_str}"))
+            ORDER BY ABS(TIMEDIFF(s.date, '{date_str}'))
             LIMIT 1;
         """)
         sql.columns(GongPFSS.id, GongPFSS.path, GongPFSS.date)

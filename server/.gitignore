@@ -2,3 +2,4 @@ __pycache__
 venv
 helios_server.log
 data.sqlite
+config.ini
