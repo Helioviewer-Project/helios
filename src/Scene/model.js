@@ -14,7 +14,7 @@ import Config from "../Configuration.js";
  * Representation of an animatable sun created from image and
  * positional information
  */
-class Model {
+class SolarModel {
     /**
      * Construct a sun model from a dataset
      *
@@ -221,4 +221,4 @@ class Model {
     }
 }
 
-export default Model;
+export default SolarModel;

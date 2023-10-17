@@ -1,38 +1,5 @@
 import { Object3D } from "three";
-import Model from "../Scene/model";
 import Coordinates from "./coordinates";
-
-// See scene.js JSDoc reference for this type.
-type ModelInfo = {
-    id: number;
-    source: number;
-    startTime: Date;
-    endTime: Date;
-    order: number;
-    cadence: number;
-    scale: number;
-    model: Model;
-};
-
-type SceneLayer = {
-    source: number;
-    start: Date | string;
-    end: Date | string;
-    cadence: number;
-    scale: number;
-};
-
-/**
- * Represents a range of time that can be iterated over
- */
-interface DateRange {
-    /** Start of time range. */
-    start: Date;
-    /** End of time range. */
-    end: Date;
-    /** Number of seconds between each time step. */
-    cadence: number;
-}
 
 /**
  * A model represents generic 3D model information that can be rendered.
@@ -40,6 +7,12 @@ interface DateRange {
  *
  */
 interface Model {
+    /**
+     * The current time being rendered by the model.
+     * This may be different than the scene time.
+     */
+    current_time: Date;
+
     /**
      * Optionally get the threejs model to render in the scene.
      * If an object is returned, it will be added to the scene.
@@ -75,7 +48,7 @@ interface Model {
      * The model will face this coordinate when rendered.
      * @returns x, y, z coordinate object
      */
-    GetObserverPosition: () => Coordinates;
+    GetObserverPosition: () => Promise<Coordinates>;
 
     /**
      * The model should update its opacity based on the given value (0 to 1)
@@ -89,6 +62,38 @@ interface Model {
      * If the rendering is self-managed, this should also remove the model from the scene.
      */
     dispose: () => void;
+}
+
+// See scene.js JSDoc reference for this type.
+type ModelInfo = {
+    id: number;
+    source: number;
+    startTime: Date;
+    endTime: Date;
+    order: number;
+    cadence: number;
+    scale: number;
+    model: Model;
+};
+
+type SceneLayer = {
+    source: number;
+    start: Date | string;
+    end: Date | string;
+    cadence: number;
+    scale: number;
+};
+
+/**
+ * Represents a range of time that can be iterated over
+ */
+interface DateRange {
+    /** Start of time range. */
+    start: Date;
+    /** End of time range. */
+    end: Date;
+    /** Number of seconds between each time step. */
+    cadence: number;
 }
 
 export { Model, ModelInfo, SceneLayer, DateRange };
