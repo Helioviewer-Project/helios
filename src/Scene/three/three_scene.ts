@@ -96,8 +96,10 @@ class ThreeScene {
      * Adds a model to the scene
      * @param {Mesh} 3js mesh to add to the scene
      */
-    AddModel(model: Mesh) {
-        this._scene.add(model);
+    AddModel(model: Mesh | null) {
+        if (model) {
+            this._scene.add(model);
+        }
     }
 
     GetCamera(): HeliosCamera {

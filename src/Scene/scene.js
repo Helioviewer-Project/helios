@@ -3,7 +3,6 @@ import { ThreeScene } from "./three/three_scene";
 import ModelFactory from "./model_factory.js";
 import { GetImageScaleForResolution } from "../common/resolution_lookup.js";
 import Loader from "../UI/loader.js";
-import { FieldLoader } from "../Assets/MagneticField/FieldLoaderGong.js";
 
 /**
  * Manages the full 3js scene that is rendered.
@@ -110,28 +109,16 @@ export default class Scene {
         try {
             // Start the loading animation
             Loader.start();
-            if (source < 100000) {
-                let sun = await ModelFactory.CreateSolarModel(
-                    source,
-                    start,
-                    end,
-                    cadence,
-                    scale,
-                    this._scene.GetTextureInitFunction()
-                );
-                this._scene.AddModel(await sun.GetModel());
-
-                sun.SetTime(this._current_time);
-                var model = sun;
-            } else if (source === 100001) {
-                let loader = new FieldLoader();
-                var model = await loader.AddTimeSeries(
-                    start,
-                    end,
-                    cadence,
-                    this
-                );
-            }
+            let model = await ModelFactory.CreateModel(
+                source,
+                start,
+                end,
+                cadence,
+                scale,
+                this._scene.GetTextureInitFunction(),
+                this
+            );
+            this._scene.AddModel(await model.GetModel());
 
             let id = this._CreateId();
             this._models[id] = {

@@ -1,5 +1,6 @@
 import MagneticField from "./MagneticField.js";
 import config from "../../Configuration.js";
+import { Model } from "../../common/types";
 
 import { Helios } from "../../API/helios";
 import { Vector3 } from "three";
@@ -8,6 +9,7 @@ import { Vector3 } from "three";
  * This class is intended to be used to load magnetic field data.
  */
 class FieldLoader {
+    private field_instances;
     /**
      * Register the field loader as an asset handler
      * @constructor
@@ -48,14 +50,25 @@ class FieldLoader {
         return config.earth_sources;
     }
 }
-class LineManager {
+
+class LineManager implements Model {
+    private scene;
+    private lines;
+    private previousModel: MagneticField;
+    private _current_asset: number;
+    public current_time: Date;
+
     constructor(MagneticFieldInstances, scene) {
         this.scene = scene;
         this.lines = MagneticFieldInstances;
-        this.previousModel = 0;
+        this.previousModel = null;
         this.current_time = this.lines[0].date;
         this._current_asset = -1;
         this.SetTime(scene.GetTime());
+    }
+
+    GetModel() {
+        return null;
     }
 
     /**
