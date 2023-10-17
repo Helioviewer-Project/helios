@@ -41,4 +41,17 @@ function GetSourceName(source: number): string {
     return Sources[source];
 }
 
-export { Sources, GetSourceName };
+function GetSourceFromName(name: string): number {
+    let source = Object.entries(Sources).filter(
+        (entry) => entry[1].indexOf(name) != -1
+    );
+    if (source.length < 1) {
+        throw `Couldn't find source "${name}"`;
+    } else if (source.length > 1) {
+        throw `Found multiple sources for "${name}", please use a less ambiguous name`;
+    } else {
+        return parseInt(source[0][0]);
+    }
+}
+
+export { Sources, GetSourceName, GetSourceFromName };

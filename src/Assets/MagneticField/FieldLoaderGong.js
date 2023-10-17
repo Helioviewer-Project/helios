@@ -58,6 +58,10 @@ class LineManager {
         this.SetTime(scene.GetTime());
     }
 
+    GetModel() {
+        return null;
+    }
+
     /**
      * Returns the time difference between the given date and the magnetic field data at the given index
      * @param {Date} date

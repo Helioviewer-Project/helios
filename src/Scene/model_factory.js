@@ -1,12 +1,62 @@
 import Database from "../Images/database.js";
+import { GetSourceFromName } from "../common/sources";
 import Model from "./model.js";
 import { LoadTexture } from "./three/texture_loader.js";
+import { FieldLoader } from "../Assets/MagneticField/FieldLoaderGong.js";
 
 /**
  * The model factory is used to build 3D models that can be added
  * to a 3js scene
  */
 class ModelFactory {
+    /**
+     * Returns a Model for the given parameters.
+     *
+     * @param {number} source Telescope source ID
+     * @param {Date} start Beginning of time range to query
+     * @param {Date} end End of time range to query
+     * @param {number} cadence Number of seconds between each image
+     * @param {number} scale Image scale that will be requested
+     * @param {Function} gpu_load_texture Function to initialize the texture on the GPU.
+     * @param {Scene} scene Helios scene instance
+     * @returns {Model} Model representing the sun, or null if no data is available
+     */
+    async CreateModel(
+        source,
+        start,
+        end,
+        cadence,
+        scale,
+        gpu_load_texture,
+        scene
+    ) {
+        if (source < 100000) {
+            return await this.CreateSolarModel(
+                source,
+                start,
+                end,
+                cadence,
+                scale,
+                gpu_load_texture
+            );
+        } else if (source === GetSourceFromName("PFSS (GONG)")) {
+            return await this.CreatePFSSModel(start, end, cadence, scene);
+        }
+    }
+
+    /**
+     * Creates the model for PFSS lines
+     * @param {Date} start
+     * @param {Date} end
+     * @param {number} cadence
+     * @param {Scene} scene
+     */
+    async CreatePFSSModel(start, end, cadence, scene) {
+        let loader = new FieldLoader();
+        let model = await loader.AddTimeSeries(start, end, cadence, scene);
+        return model;
+    }
+
     /**
      * Returns a Solar Model for the given parameters. Or null if there are no images available
      * for the given time range
@@ -17,7 +67,7 @@ class ModelFactory {
      * @param {number} cadence Number of seconds between each image
      * @param {number} scale Image scale that will be requested
      * @param {Function} gpu_load_texture Function to initialize the texture on the GPU.
-     * @returns {Model} Model representing the sun, or null if no data is available
+     * @returns {Model} Model representing data to be rendered.
      */
     async CreateSolarModel(
         source,
