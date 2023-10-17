@@ -1,7 +1,7 @@
 import MagneticField from "./MagneticField.js";
 import config from "../../Configuration.js";
 
-import { Helios } from "../../API/helios";
+import { Helios } from "../../API/helios.js";
 import { Vector3 } from "three";
 
 /**

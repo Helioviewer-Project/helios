@@ -2,7 +2,7 @@ import Database from "../Images/database.js";
 import { GetSourceFromName } from "../common/sources";
 import Model from "./model.js";
 import { LoadTexture } from "./three/texture_loader.js";
-import { FieldLoader } from "../Assets/MagneticField/FieldLoaderGong.js";
+import { FieldLoader } from "../Models/MagneticField/FieldLoaderGong.js";
 
 /**
  * The model factory is used to build 3D models that can be added
