@@ -25,6 +25,13 @@ type AnimationControlProps = {
      * @returns Sets the time in the scene
      */
     SetSceneTime: (Date) => void;
+
+    /**
+     * Listener function to register when time changes within the scene from a different source.
+     * When the callback is executed, this component will update to the new time.
+     * @param fn
+     */
+    OnSceneTimeUpdated: (fn: (d: Date) => void) => void;
 };
 
 type AnimationControlState = {
@@ -32,6 +39,8 @@ type AnimationControlState = {
     speed: number;
     /** Current play status */
     playing: boolean;
+    /** The current frame index for the slider */
+    current_frame: number;
 };
 
 /**
@@ -43,19 +52,19 @@ class AnimationControls extends React.Component<
     AnimationControlProps,
     AnimationControlState
 > {
-    _start_time: Date;
-    _end_time: Date;
-    _current_time: Date;
-    _cadence: number;
-    _frame_delay: number;
-    _interval: number;
-    _current_frame: number;
+    private _start_time: Date;
+    private _end_time: Date;
+    private _current_time: Date;
+    private _cadence: number;
+    private _frame_delay: number;
+    private _interval: number;
 
     constructor(props: AnimationControlProps) {
         super(props);
         this.state = {
             speed: 15,
             playing: false,
+            current_frame: 0,
         };
 
         /**
@@ -89,24 +98,38 @@ class AnimationControls extends React.Component<
         this._frame_delay = 1000;
 
         /**
-         * Represents the current "frame" of the scene.
-         * (frame is in quotes because they are really just timestamps that characterize steps that will cover all data in the scene.)
-         */
-        this._current_frame = 0;
-
-        /**
          * Interval for the animation thread
          * @private
          */
         this._interval = 0;
+
+        /**
+         * Register listener to update state slider when scene time changes.
+         */
+        this.props.OnSceneTimeUpdated((date: Date) => {
+            try {
+                this.SetFrameForDate(date);
+            } catch (err) {
+                // Being called with no models is expected, and not an issue.
+                // Other errors should be raised.
+                if (err !== "No models in the scene") {
+                    throw err;
+                }
+            }
+        });
     }
 
     /**
      * Sets the start/end animation times and the current time.
      */
     _InitializeAnimationRangeFromInputs() {
-        this._current_time = this.props.GetSceneTime();
+        let sceneTime = this.props.GetSceneTime();
         let range = this.props.GetSceneTimeRange();
+        if (sceneTime < range[0] || sceneTime > range[1]) {
+            this._current_time = range[0];
+        } else {
+            this._current_time = sceneTime;
+        }
         this._start_time = range[0];
         this._end_time = range[1];
         // The delay between each frame is computed by inverting FPS to get
@@ -182,9 +205,10 @@ class AnimationControls extends React.Component<
      * Animation frame tick, called to update to the next frame
      */
     _TickFrame() {
-        this._current_frame += 1;
-        this._current_time = this._GetNextFrameTime();
-        this._UpdateScene();
+        this.setState({ current_frame: this.state.current_frame + 1 }, () => {
+            this._current_time = this._GetNextFrameTime();
+            this._UpdateScene();
+        });
     }
 
     /**
@@ -198,7 +222,7 @@ class AnimationControls extends React.Component<
         nextTime.setSeconds(nextTime.getSeconds() + this._cadence);
         // If nextTime is over end time, then go back to start time
         if (nextTime > this._end_time) {
-            this._current_frame = 0;
+            this.setState({ current_frame: 0 });
             return new Date(this._start_time);
         } else {
             // Otherwise, return this as the next date
@@ -242,7 +266,29 @@ class AnimationControls extends React.Component<
         this._current_time = newTime;
         // Tell the scene to use the new time
         this._UpdateScene();
-        this._current_frame = frame;
+        this.setState({ current_frame: frame });
+    }
+
+    /**
+     * Updates the current frame index to be as close as possible to the given date.
+     * @param date
+     */
+    SetFrameForDate(date: Date) {
+        // Get the full time range for scene
+        let range = this.props.GetSceneTimeRange();
+        // Determine the length of that time span
+        let timespan = range[1].getTime() - range[0].getTime();
+        // Determine how far into that timespan the given date would be. as a percentage
+        let givenOffset = date.getTime() - range[0].getTime();
+        let percentOffset = givenOffset / timespan;
+
+        // Using the percentage, calculate the frame index.
+        let nFrames = this.props.GetMaxFrameCount();
+        let targetFrame = Math.round(percentOffset * nFrames);
+        // Clamp the value between 0 and nFrames
+        const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
+        targetFrame = clamp(targetFrame, 0, nFrames);
+        this.setState({ current_frame: targetFrame });
     }
 
     render() {
@@ -272,7 +318,7 @@ class AnimationControls extends React.Component<
                         className={css.progress}
                         frameCount={this.props.GetMaxFrameCount()}
                         SetFrame={(n) => this.SetSpecificFrame(n)}
-                        currentFrame={this._current_frame}
+                        currentFrame={this.state.current_frame}
                     />
 
                     <button
