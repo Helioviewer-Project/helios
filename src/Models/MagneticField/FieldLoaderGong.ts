@@ -5,11 +5,16 @@ import { Model } from "../../common/types";
 import { Helios } from "../../API/helios";
 import { Vector3 } from "three";
 
+interface FieldInstance {
+    mag: MagneticField;
+    date: Date;
+}
+
 /**
  * This class is intended to be used to load magnetic field data.
  */
 class FieldLoader {
-    private field_instances;
+    private field_instances: FieldInstance[];
     /**
      * Register the field loader as an asset handler
      * @constructor
@@ -42,7 +47,7 @@ class FieldLoader {
      */
     _RenderData(data) {
         let mag = new MagneticField(data);
-        let field_instance = { mag: mag, date: data.date };
+        let field_instance: FieldInstance = { mag: mag, date: data.date };
         this.field_instances.push(field_instance);
     }
 
@@ -53,15 +58,13 @@ class FieldLoader {
 
 class LineManager implements Model {
     private scene;
-    private lines;
-    private previousModel: MagneticField;
+    private lines: FieldInstance[];
     private _current_asset: number;
     public current_time: Date;
 
     constructor(MagneticFieldInstances, scene) {
         this.scene = scene;
         this.lines = MagneticFieldInstances;
-        this.previousModel = null;
         this.current_time = this.lines[0].date;
         this._current_asset = -1;
         this.SetTime(scene.GetTime());
@@ -76,8 +79,8 @@ class LineManager implements Model {
      * @param {Date} date
      * @param {number} index
      */
-    get_dt(date, index) {
-        return Math.abs(date - this.lines[index].date);
+    get_dt(date: Date, index: number) {
+        return Math.abs(date.getTime() - this.lines[index].date.getTime());
     }
 
     /**
@@ -129,7 +132,6 @@ class LineManager implements Model {
     async SetTime(date) {
         let chosen_index = this.FindNearestLineData(date);
         this._AddAsset(this.scene, this.lines[chosen_index].mag);
-        this.previousModel = this.lines[chosen_index].mag;
         this.current_time = this.lines[chosen_index].date;
     }
 
@@ -147,8 +149,10 @@ class LineManager implements Model {
         return await Helios.GetEarthPosition(this.current_time);
     }
 
-    SetOpacity(opacity) {
-        this.previousModel.SetOpacity(opacity);
+    SetOpacity(opacity: number) {
+        this.lines.forEach((instance) => {
+            instance.mag.SetOpacity(opacity);
+        });
     }
 
     _RemoveAsset() {

@@ -19,8 +19,8 @@ class MagneticFieldLineGroup {
      * @param {Object} data Data for the magnetic field
      */
     constructor(data) {
-        this._data = data;
         this._date = data.date;
+        this._data = data;
         this._lines = this._ConstructLineVectors(this._data.lines);
         this._model = this._RenderLines(this._lines);
     }
@@ -34,6 +34,7 @@ class MagneticFieldLineGroup {
         for (const line of line_vectors) {
             group.add(this._RenderLineCurve(line));
         }
+        group.renderOrder = 10000;
         return group;
     }
 
@@ -45,8 +46,10 @@ class MagneticFieldLineGroup {
         const curve = new CatmullRomCurve3(line.line);
         const points = curve.getPoints(50);
         const geometry = new BufferGeometry().setFromPoints(points);
-        const material = new LineBasicMaterial({ color: line.color });
-        material.transparent = true;
+        const material = new LineBasicMaterial({
+            color: line.color,
+            transparent: true,
+        });
         const curveObject = new Line(geometry, material);
         return curveObject;
     }
