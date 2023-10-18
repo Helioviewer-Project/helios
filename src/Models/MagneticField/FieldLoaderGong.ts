@@ -173,4 +173,4 @@ class LineManager implements Model {
         }
     }
 }
-export { FieldLoader };
+export { FieldLoader, FieldInstance };
