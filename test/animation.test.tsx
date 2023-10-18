@@ -5,7 +5,7 @@
 import React from "react";
 import { describe, it, expect } from "@jest/globals";
 import { render, act, RenderResult } from "@testing-library/react";
-import AnimationControls from "./animation";
+import AnimationControls from "@UI/video_player/animation";
 
 interface TestHarness {
     UpdateAnimationDate: (date: Date) => void;
