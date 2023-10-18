@@ -4,7 +4,7 @@ import React from "react";
 import NavControls from "./UI/navigation/controls";
 import { GetImageScaleForResolution } from "./common/resolution_lookup.js";
 import config from "./Configuration.js";
-import TimeDisplay from "./UI/time_display.js";
+import TimeDisplay from "./UI/time_display";
 import { DateRange, ModelInfo } from "./common/types";
 import { LoadHelioviewerMovie } from "./UI/helioviewer_movie";
 import AnimationControls from "./UI/video_player/animation";
@@ -40,7 +40,6 @@ function getDefaultDateRange(): DateRange {
 }
 
 type AppState = {
-    sceneTime: Date;
     layers: ModelInfo[];
     showVideoPlayer: boolean;
     favorites: Favorite[];
@@ -57,22 +56,13 @@ class App extends React.Component<{}, AppState> {
         super(props);
         // Register the listener to update the React state any time the scene time changes.
         // This happens either from data loading or animation
-        let firstRun = true;
-        scene.RegisterTimeUpdateListener((newTime) => {
-            if (firstRun) {
-                this.state = {
-                    sceneTime: newTime,
-                    layers: [],
-                    showVideoPlayer: true,
-                    favorites: FavoritesAPI.GetFavorites(),
-                    recentlyShared: [],
-                    dateRange: getDefaultDateRange(),
-                };
-                firstRun = false;
-            } else {
-                this.setState({ sceneTime: newTime });
-            }
-        });
+        this.state = {
+            layers: [],
+            showVideoPlayer: true,
+            favorites: FavoritesAPI.GetFavorites(),
+            recentlyShared: [],
+            dateRange: getDefaultDateRange(),
+        };
 
         this.AddLayer = this.AddLayer.bind(this);
         this.RemoveLayer = this.RemoveLayer.bind(this);
@@ -165,8 +155,10 @@ class App extends React.Component<{}, AppState> {
         return (
             <div>
                 <TimeDisplay
-                    time={this.state.sceneTime}
                     onTimeChange={(time) => scene.SetTime(time)}
+                    sceneListener={(fn) => {
+                        scene.RegisterTimeUpdateListener(fn);
+                    }}
                 />
                 <NavControls
                     Layers={this.state.layers}
@@ -236,7 +228,12 @@ class App extends React.Component<{}, AppState> {
                     GetSceneTime={() => scene.GetTime()}
                     GetSceneTimeRange={() => scene.GetTimeRange()}
                     GetMaxFrameCount={() => scene.GetMaxFrameCount()}
-                    SetSceneTime={(date) => scene.SetTime(date)}
+                    SetSceneTime={(date) => {
+                        scene.SetTime(date);
+                    }}
+                    OnSceneTimeUpdated={(fn) =>
+                        scene.RegisterTimeUpdateListener(fn)
+                    }
                 />
                 <ExtraControls
                     OnResetCamera={() => {

@@ -19,6 +19,7 @@ class MoviePlayerFacade extends React.Component<PlayerProps, {}> {
     render(): React.ReactNode {
         return (
             <input
+                aria-label={"animation progress"}
                 className={this.props.className}
                 type="range"
                 min={0}
