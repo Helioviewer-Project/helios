@@ -2,7 +2,7 @@ class Datasource {
     public observatory: string;
     public dataset: string;
 
-    constructor(observatory: string, dataset: string): Datasource {
+    constructor(observatory: string, dataset: string) {
         this.observatory = observatory;
         this.dataset = dataset;
     }
