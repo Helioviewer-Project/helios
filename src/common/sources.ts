@@ -1,49 +1,66 @@
-const Sources = {
-    8: "SDO AIA 94",
-    9: "SDO AIA 131",
-    10: "SDO AIA 171",
-    11: "SDO AIA 193",
-    12: "SDO AIA 211",
-    13: "SDO AIA 304",
-    14: "SDO AIA 335",
-    15: "SDO AIA 1600",
-    16: "SDO AIA 1700",
-    17: "SDO AIA 4500",
-    18: "SDO HMI Int",
-    19: "SDO HMI Mag",
-    4: "SOHO LASCO C2",
-    5: "SOHO LASCO C3",
-    0: "SOHO EIT 171",
-    1: "SOHO EIT 195",
-    2: "SOHO EIT 284",
-    3: "SOHO EIT 304",
-    7: "SOHO MDI Continuum",
-    6: "SOHO MDI Magnetogram",
-    20: "STEREO-A EUVI-A 171",
-    21: "STEREO-A EUVI-A 195",
-    22: "STEREO-A EUVI-A 284",
-    23: "STEREO-A EUVI-A 304",
-    28: "STEREO-A COR1-A",
-    29: "STEREO-A COR2-A",
-    24: "STEREO-B EUVI-B 171",
-    25: "STEREO-B EUVI-B 195",
-    26: "STEREO-B EUVI-B 284",
-    27: "STEREO-B EUVI-B 304",
-    30: "STEREO-B COR1-B",
-    31: "STEREO-B COR2-B",
-    34: "Yohkoh SXT thin-Al",
-    35: "Yohkoh SXT white-light",
-    // Sources over 100,000 are reserved for non-helioviewer assets
-    100001: "PFSS (GONG)",
+class Datasource {
+    public observatory: string;
+    public dataset: string;
+
+    constructor(observatory: string, dataset: string): Datasource {
+        this.observatory = observatory;
+        this.dataset = dataset;
+    }
+
+    public get name(): string {
+        return `${this.observatory} ${this.dataset}`;
+    }
+}
+
+type SourceMap = {
+    [key: number]: Datasource;
+};
+
+const Sources: SourceMap = {
+    100001: new Datasource("GONG", "PFSS"),
+    8: new Datasource("SDO", "AIA 94"),
+    9: new Datasource("SDO", "AIA 131"),
+    10: new Datasource("SDO", "AIA 171"),
+    11: new Datasource("SDO", "AIA 193"),
+    12: new Datasource("SDO", "AIA 211"),
+    13: new Datasource("SDO", "AIA 304"),
+    14: new Datasource("SDO", "AIA 335"),
+    15: new Datasource("SDO", "AIA 1600"),
+    16: new Datasource("SDO", "AIA 1700"),
+    17: new Datasource("SDO", "AIA 4500"),
+    18: new Datasource("SDO", "HMI Int"),
+    19: new Datasource("SDO", "HMI Mag"),
+    4: new Datasource("SOHO", "LASCO C2"),
+    5: new Datasource("SOHO", "LASCO C3"),
+    0: new Datasource("SOHO", "EIT 171"),
+    1: new Datasource("SOHO", "EIT 195"),
+    2: new Datasource("SOHO", "EIT 284"),
+    3: new Datasource("SOHO", "EIT 304"),
+    7: new Datasource("SOHO", "MDI Continuum"),
+    6: new Datasource("SOHO", "MDI Magnetogram"),
+    28: new Datasource("STEREO-A", "COR1"),
+    29: new Datasource("STEREO-A", "COR2"),
+    20: new Datasource("STEREO-A", "EUVI 171"),
+    21: new Datasource("STEREO-A", "EUVI 195"),
+    22: new Datasource("STEREO-A", "EUVI 284"),
+    23: new Datasource("STEREO-A", "EUVI 304"),
+    30: new Datasource("STEREO-B", "COR1"),
+    31: new Datasource("STEREO-B", "COR2"),
+    24: new Datasource("STEREO-B", "EUVI 171"),
+    25: new Datasource("STEREO-B", "EUVI 195"),
+    26: new Datasource("STEREO-B", "EUVI 284"),
+    27: new Datasource("STEREO-B", "EUVI 304"),
+    34: new Datasource("Yohkoh SXT", "thin-Al"),
+    35: new Datasource("Yohkoh SXT", "white-light"),
 };
 
 function GetSourceName(source: number): string {
-    return Sources[source];
+    return Sources[source].name;
 }
 
 function GetSourceFromName(name: string): number {
     let source = Object.entries(Sources).filter(
-        (entry) => entry[1].indexOf(name) != -1
+        (entry) => entry[1].name.indexOf(name) != -1
     );
     if (source.length < 1) {
         throw `Couldn't find source "${name}"`;

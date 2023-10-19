@@ -104,7 +104,7 @@ class Config {
          * Source IDs associated with observatories from earth
          */
         this.earth_sources = Object.entries(Sources)
-            .filter((entry) => !entry[1].startsWith("STEREO"))
+            .filter((entry) => !entry[1].name.startsWith("STEREO"))
             .map((entry) => parseInt(entry[0]));
 
         /**
