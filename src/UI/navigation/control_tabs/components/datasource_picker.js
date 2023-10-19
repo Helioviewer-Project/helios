@@ -10,7 +10,7 @@ export default function DatasourcePicker({ selected, setSelected }) {
             onChange={(val) => setSelected(parseInt(val))}
             options={Object.keys(Sources).map((source) => (
                 <option key={source} value={source}>
-                    {Sources[source]}
+                    {Sources[source].name}
                 </option>
             ))}
         />
