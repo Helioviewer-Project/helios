@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
-from sqlalchemy import Integer, DateTime, Text
+from sqlalchemy import Integer, DateTime, VARCHAR
 
 from .base import Model
 
@@ -8,7 +8,7 @@ class GongPFSS(Model):
     __tablename__ = "pfss"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     date: Mapped[DateTime] = mapped_column(DateTime, index=True)
-    path: Mapped[Text] = mapped_column(Text, unique=True)
+    path: Mapped[VARCHAR] = mapped_column(VARCHAR(255), unique=True)
     lod: Mapped[int] = mapped_column(Integer)
     def __repr__(self) -> str:
         return f"GONG(id={self.id}, path={self.path})"
