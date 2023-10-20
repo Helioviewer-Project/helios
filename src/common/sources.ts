@@ -10,6 +10,11 @@ class Datasource {
     public get name(): string {
         return `${this.observatory} ${this.dataset}`;
     }
+
+    public IsInternal(): boolean {
+        let sourceId = GetSourceFromName(this.name);
+        return sourceId >= 100000;
+    }
 }
 
 type SourceMap = {
