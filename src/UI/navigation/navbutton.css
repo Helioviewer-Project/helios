@@ -19,6 +19,7 @@
 
 .icon {
     font-size: 24pt;
+    max-width: 32px;
 }
 
 .text {

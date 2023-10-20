@@ -3,39 +3,7 @@ import Helioviewer from "../API/helioviewer.js";
 import { HelioviewerToHelios } from "../common/helioviewer_source_map.js";
 import { parseDate } from "../common/dates";
 import { Sources } from "./navigation/control_tabs/components/datasource_picker.js";
-import React, { useState } from "react";
 import { GetImageScaleForResolution } from "../common/resolution_lookup.js";
-import Scene from "../Scene/scene.js";
-
-function HelioviewerMovie({ scene, addLayer }) {
-    const [movieId, setMovieId] = useState("");
-
-    async function loadMovie() {
-        LoadHelioviewerMovie(scene, movieId);
-    }
-
-    return [
-        <label key={0} htmlFor="js-helioviewer-movie">
-            Load Movie
-        </label>,
-        <input
-            key={1}
-            value={movieId}
-            onChange={(e) => setMovieId(e.target.value)}
-            id="js-helioviewer-movie"
-            type="text"
-            placeholder="Movie ID"
-        />,
-        <button
-            key={2}
-            onClick={loadMovie}
-            type="button"
-            id="js-helioviewer-movie-load"
-        >
-            Load
-        </button>,
-    ];
-}
 
 /**
  * Adds the given movie to the scene
@@ -45,7 +13,7 @@ function HelioviewerMovie({ scene, addLayer }) {
  */
 async function LoadHelioviewerMovie(scene, movieId, onLayerCreated) {
     let data = await GetMovieData(movieId);
-    AddMovieToScene(scene, data, onLayerCreated);
+    await AddMovieToScene(scene, data, onLayerCreated);
 }
 
 async function GetMovieData(id) {
@@ -126,7 +94,7 @@ function MatchLayerToSource(layer, source_list) {
         // Filter the option list down via that element
         // by checking if the text contains it.
         filtered_sources = filtered_sources.filter(
-            (e) => e[1].indexOf(str_to_check) >= 0
+            (e) => e[1].name.indexOf(str_to_check) >= 0
         );
         // If the element is a number exit the loop
         // The element is a number if parsing it does not result in NaN
@@ -168,4 +136,4 @@ function ParseCadence(dates, data) {
     return seconds / data.numFrames;
 }
 
-export { HelioviewerMovie, LoadHelioviewerMovie };
+export { LoadHelioviewerMovie };

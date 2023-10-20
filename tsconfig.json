@@ -4,7 +4,8 @@
     "compilerOptions": {
       "baseUrl": "./",
       "paths": {
-        "@common/*": ["src/common/*"]
+        "@common/*": ["src/common/*"],
+        "@UI/*": ["src/UI/*"]
       },
       // Tells TypeScript to read JS files, as
       // normally they are ignored as source files

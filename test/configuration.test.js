@@ -13,3 +13,13 @@ test("Earth sources is the expected list", () => {
         34, 35, 100001,
     ]);
 });
+
+/**
+ * It's common to change the api url to localhost for testing.
+ * This test makes sure it doesn't get checked in that way.
+ */
+test("Helios API URL is correct", () => {
+    expect(Configuration.helios_api_url).toBe(
+        "https://api.gl.helioviewer.org/"
+    );
+});

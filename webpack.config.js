@@ -12,7 +12,8 @@ module.exports = {
     extensions: [".ts", ".tsx", ".js", ".css"],
     alias: {
       three: path.resolve('./node_modules/three'),
-      "@common": path.resolve(__dirname, 'src/common')
+      "@common": path.resolve(__dirname, 'src/common'),
+      "@UI": path.resolve(__dirname, 'src/UI')
     },
   },
   module: {

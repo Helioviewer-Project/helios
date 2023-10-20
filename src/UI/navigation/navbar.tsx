@@ -8,6 +8,8 @@ type NavbarProps = {
     onSelectLayers: () => void;
     onSelectFavorite: () => void;
     onSelectCloud: () => void;
+    showJhvButton: boolean;
+    openInJhelioviewer: () => void;
 };
 
 /**
@@ -40,6 +42,13 @@ export default function Navbar(props: NavbarProps): React.JSX.Element {
                     onClick={props.onSelectCloud}
                     icon="cloud"
                     text="Shared"
+                />
+                <NavButton
+                    onClick={props.openInJhelioviewer}
+                    icon="https://raw.githubusercontent.com/Helioviewer-Project/JHelioviewer-SWHV/7a771ecc98fd3b438de88418ccc0e0516a61d31d/docs/user-manual/hvImage_160x160.png"
+                    text="Send"
+                    visible={props.showJhvButton}
+                    title="Send scene to JHelioviewer"
                 />
             </div>
         </nav>
