@@ -1,4 +1,4 @@
-import { test } from "@jest/globals";
+import { test, jest, expect } from "@jest/globals";
 import { OpenInJHelioviewer } from "@common/jhelioviewer";
 import { DOMParser } from "xmldom";
 import { XMLHttpRequest } from "xmlhttprequest";
@@ -22,9 +22,16 @@ Object.defineProperty(XMLHttpRequest.prototype, "responseXML", {
 test.failing("Opening a scene in JHelioviewer", () => {
     let layer = {
         source: 13, // AIA 304
-        start: new Date("2023-01-01"),
-        end: new Date("2023-01-02"),
+        startTime: new Date("2023-01-01"),
+        endTime: new Date("2023-01-02"),
         cadence: 3600,
     };
     OpenInJHelioviewer([layer]);
+});
+
+test("Opening a scene in JHelioviewer fails if no layers are given", () => {
+    global.alert = jest.fn();
+    OpenInJHelioviewer([]);
+    expect(alert.mock.calls.length).toBe(1);
+    expect(alert.mock.calls[0][0]).toContain("Nothing to open");
 });

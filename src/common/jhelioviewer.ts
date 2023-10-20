@@ -1,17 +1,17 @@
 import { JhvRequestBuilder } from "jhvrequest";
-import { SceneLayer } from "@common/types";
+import { ModelInfo } from "@common/types";
 import { Sources } from "./sources";
 import { ToDateString } from "./dates";
 
-async function OpenInJHelioviewer(Layers: SceneLayer[]): void {
+async function OpenInJHelioviewer(Layers: ModelInfo[]): Promise<void> {
     let requestBuilder = new JhvRequestBuilder();
-    if (Layers.length < 0) {
+    if (Layers.length == 0) {
         alert("Nothing to open.");
         return;
     }
     requestBuilder.SetTimeRange(
-        ToDateString(Layers[0].start as Date),
-        ToDateString(Layers[0].end as Date)
+        ToDateString(Layers[0].startTime),
+        ToDateString(Layers[0].endTime)
     );
     requestBuilder.SetCadence(Layers[0].cadence);
 

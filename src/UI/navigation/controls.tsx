@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "./navbar";
 import { RangeControls } from "./control_tabs/range_controls";
 import { DateRange, ModelInfo } from "../../common/types";
@@ -6,6 +6,8 @@ import LayerControls from "./control_tabs/layers";
 import { FavoritesControls } from "./control_tabs/favorites";
 import { Favorite } from "../../API/favorites";
 import SharedControls from "./control_tabs/shared_controls";
+import { OpenInJHelioviewer } from "@common/jhelioviewer";
+import { IsJhvRunning } from "jhvrequest";
 
 type NavControlProps = {
     /**
@@ -83,6 +85,13 @@ export default function NavControls({
     AddLayer,
 }: NavControlProps): React.JSX.Element[] {
     let [currentTab, setTab] = useState(ControlTab.None);
+    let [showJhvButton, setShowJhvButton] = useState(false);
+    useEffect(() => {
+        // Check if JHelioviewer becomes active
+        setInterval(async () => {
+            setShowJhvButton(await IsJhvRunning());
+        }, 5000);
+    }, []);
     function closeTabs() {
         setTab(ControlTab.None);
     }
@@ -101,6 +110,8 @@ export default function NavControls({
             onSelectLayers={() => selectTab(ControlTab.Layers)}
             onSelectFavorite={() => selectTab(ControlTab.Favorites)}
             onSelectCloud={() => selectTab(ControlTab.Cloud)}
+            showJhvButton={showJhvButton}
+            openInJhelioviewer={() => OpenInJHelioviewer(Layers)}
         />,
 
         <RangeControls
