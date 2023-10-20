@@ -15,11 +15,8 @@ Object.defineProperty(XMLHttpRequest.prototype, "responseXML", {
     set: function () {},
 });
 
-// This test will fail in CI because JHelioviewer won't be running.
-// But it should pass locally if you have JHelioviewer running and you manually
-// accept the samp request in JHelioviewer. If you have JHelioviewer running
-// but you don't accept the request, this will time out.
-test.failing("Opening a scene in JHelioviewer", async () => {
+test("Opening a scene in JHelioviewer fails when it's not running", async () => {
+    global.alert = jest.fn();
     let layer = {
         source: 13, // AIA 304
         startTime: new Date("2023-01-01"),
@@ -27,6 +24,10 @@ test.failing("Opening a scene in JHelioviewer", async () => {
         cadence: 3600,
     };
     await OpenInJHelioviewer([layer]);
+    expect(alert.mock.calls.length).toBe(1);
+    expect(alert.mock.calls[0][0]).toContain(
+        "Couldn't send layers to JHelioviewer"
+    );
 });
 
 test("Opening a scene in JHelioviewer fails if no layers are given", async () => {

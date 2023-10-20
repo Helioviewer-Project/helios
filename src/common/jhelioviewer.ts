@@ -26,7 +26,7 @@ async function OpenInJHelioviewer(Layers: ModelInfo[]): Promise<void> {
     try {
         await requestBuilder.Build().Send();
     } catch (e) {
-        if (e.indexOf("No Hub") != -1) {
+        if (e.indexOf("No hub") != -1) {
             alert("Couldn't send layers to JHelioviewer, is it open?");
         }
     }
