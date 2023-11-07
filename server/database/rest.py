@@ -58,7 +58,7 @@ def init(app: Flask, send_response, parse_date):
         except Exception:
             detail_percent = 50
         dates = map(lambda date: parse_date(date), date_inputs)
-        with concurrent.futures.ProcessPoolExecutor() as executor:
+        with concurrent.futures.ThreadPoolExecutor() as executor:
             futures = [executor.submit(QueryGong, date) for date in dates]
             # Put results into a set to remove duplicates.
             # There may be duplicate results when the requested dates return the same gong file
