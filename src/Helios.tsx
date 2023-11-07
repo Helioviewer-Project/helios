@@ -11,6 +11,7 @@ import AnimationControls from "./UI/video_player/animation";
 import { Favorite, Favorites } from "./API/favorites";
 import { Helios } from "./API/helios";
 import { ExtraControls } from "./UI/extra_controls/extra_controls";
+import { Preferences } from "@API/preferences";
 
 // /**
 //  * When the page first loads, users should see something besides black, so load the first available image
@@ -104,7 +105,7 @@ class App extends React.Component<{}, AppState> {
             alert("Start time must be before end time");
         } else {
             let image_scale = GetImageScaleForResolution(
-                config.default_texture_resolution,
+                Preferences.resolution,
                 source
             );
             let layer = await scene.AddToScene(
