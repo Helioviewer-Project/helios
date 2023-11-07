@@ -13,7 +13,8 @@ module.exports = {
     alias: {
       three: path.resolve('./node_modules/three'),
       "@common": path.resolve(__dirname, 'src/common'),
-      "@UI": path.resolve(__dirname, 'src/UI')
+      "@UI": path.resolve(__dirname, 'src/UI'),
+      "@API": path.resolve(__dirname, 'src/API')
     },
   },
   module: {

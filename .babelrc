@@ -7,7 +7,8 @@
           "root": ["."],
           "alias": {
             "@UI": "./src/UI",
-            "@common": "./src/common"
+            "@common": "./src/common",
+            "@API": "./src/API"
           }
         }
       ]]

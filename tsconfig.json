@@ -5,7 +5,8 @@
       "baseUrl": "./",
       "paths": {
         "@common/*": ["src/common/*"],
-        "@UI/*": ["src/UI/*"]
+        "@UI/*": ["src/UI/*"],
+        "@API/*": ["src/API/*"]
       },
       // Tells TypeScript to read JS files, as
       // normally they are ignored as source files
