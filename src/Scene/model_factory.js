@@ -39,7 +39,7 @@ class ModelFactory {
                 scale,
                 gpu_load_texture
             );
-        } else if (source === GetSourceFromName("PFSS (GONG)")) {
+        } else if (source === GetSourceFromName("GONG PFSS")) {
             return await this.CreatePFSSModel(start, end, cadence, scene);
         }
     }
