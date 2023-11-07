@@ -8,6 +8,7 @@ type NavbarProps = {
     onSelectLayers: () => void;
     onSelectFavorite: () => void;
     onSelectCloud: () => void;
+    onSelectPreferences: () => void;
     showJhvButton: boolean;
     openInJhelioviewer: () => void;
 };
@@ -42,6 +43,11 @@ export default function Navbar(props: NavbarProps): React.JSX.Element {
                     onClick={props.onSelectCloud}
                     icon="cloud"
                     text="Shared"
+                />
+                <NavButton
+                    onClick={props.onSelectPreferences}
+                    icon="Settings"
+                    text="Settings"
                 />
                 <NavButton
                     onClick={props.openInJhelioviewer}

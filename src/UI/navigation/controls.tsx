@@ -8,6 +8,7 @@ import { Favorite } from "../../API/favorites";
 import SharedControls from "./control_tabs/shared_controls";
 import { OpenInJHelioviewer } from "@common/jhelioviewer";
 import { IsJhvRunning } from "jhvrequest";
+import PreferenceControls from "./control_tabs/preference_controls";
 
 type NavControlProps = {
     /**
@@ -61,6 +62,7 @@ enum ControlTab {
     Animation,
     Settings,
     Favorites,
+    Preferences,
     Cloud,
 }
 
@@ -110,6 +112,7 @@ export default function NavControls({
             onSelectLayers={() => selectTab(ControlTab.Layers)}
             onSelectFavorite={() => selectTab(ControlTab.Favorites)}
             onSelectCloud={() => selectTab(ControlTab.Cloud)}
+            onSelectPreferences={() => {selectTab(ControlTab.Preferences)}}
             showJhvButton={showJhvButton}
             openInJhelioviewer={() => OpenInJHelioviewer(Layers)}
         />,
@@ -151,5 +154,11 @@ export default function NavControls({
             sharedItems={sharedScenes}
             onLoadSharedItem={OnLoadFavorite}
         />,
+
+        <PreferenceControls
+            key={5}
+            visible={currentTab === ControlTab.Preferences}
+            onClose={closeTabs}
+            />
     ];
 }
