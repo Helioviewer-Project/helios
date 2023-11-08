@@ -3,6 +3,7 @@
  */
 interface UserPreferences {
     resolution: number;
+    imageFormat: string;
 }
 
 /**
@@ -10,7 +11,8 @@ interface UserPreferences {
  * These values are used when a user has not changed their preferences.
  */
 const defaultPreferences: UserPreferences = {
-    resolution: 256,
+    resolution: 1024,
+    imageFormat: "jpg",
 };
 
 /**
@@ -106,6 +108,14 @@ class Preferences {
 
     static set resolution(value: number) {
         this.SetPreference("resolution", value);
+    }
+
+    static get imageFormat(): string {
+        return this.GetPreference("imageFormat");
+    }
+
+    static set imageFormat(value: string) {
+        this.SetPreference("imageFormat", value);
     }
 }
 

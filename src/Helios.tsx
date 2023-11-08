@@ -114,6 +114,7 @@ class App extends React.Component<{}, AppState> {
                 dateRange.end,
                 dateRange.cadence,
                 image_scale,
+                Preferences.imageFormat,
                 this.state.layers.length
             );
             console.log(`Adding layer with id ${layer.id}`);
@@ -199,6 +200,7 @@ class App extends React.Component<{}, AppState> {
                                 layer.end as Date,
                                 layer.cadence,
                                 layer.scale,
+                                Preferences.imageFormat,
                                 layerOrder++
                             );
                             this.setState({

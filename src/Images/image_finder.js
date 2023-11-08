@@ -32,16 +32,17 @@ class ImageFinder {
      * @param {Date} end End time of range to query
      * @param {number} cadence Number of seconds between each image
      * @param {number} scale Image scale of images to download
+     * @param {string} format Image format to use
      * @returns {UrlInfo[]}
      */
-    async GetImages(source, start, end, cadence, scale) {
+    async GetImages(source, start, end, cadence, scale, format) {
         // Use Helioviewer API to query for image ids
         let images = await Helioviewer.QueryImages(source, start, end, cadence);
         // Iterate over image IDs and query GetImageURL to create
         // a list of URLs.
         let url_info = [];
         for (const image of images) {
-            let url = Helioviewer.GetImageURL(image.id, scale);
+            let url = Helioviewer.GetImageURL(image.id, scale, format);
 
             // ignore duplicates
             if (this._isNewUrl(url_info, url)) {

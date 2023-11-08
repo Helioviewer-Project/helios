@@ -223,11 +223,18 @@ class Helioviewer {
      *
      * @param {number} id The ID of the image to get
      * @param {number} scale The image scale to request in the URL
+     * @param {string} format Image format (png, jpg, or webp)
      * @returns {string} URL of the image
      */
-    GetImageURL(id, scale) {
+    GetImageURL(id, scale, format = "jpg") {
         let url =
-            this.GetApiUrl() + "downloadImage/?id=" + id + "&scale=" + scale;
+            this.GetApiUrl() +
+            "downloadImage/?id=" +
+            id +
+            "&scale=" +
+            scale +
+            "&type=" +
+            format;
         return url;
     }
 

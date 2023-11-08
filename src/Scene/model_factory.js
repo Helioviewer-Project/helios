@@ -17,6 +17,7 @@ class ModelFactory {
      * @param {Date} end End of time range to query
      * @param {number} cadence Number of seconds between each image
      * @param {number} scale Image scale that will be requested
+     * @param {string} format Image format
      * @param {Function} gpu_load_texture Function to initialize the texture on the GPU.
      * @param {Scene} scene Helios scene instance
      * @returns {Model} Model representing the sun, or null if no data is available
@@ -27,6 +28,7 @@ class ModelFactory {
         end,
         cadence,
         scale,
+        format,
         gpu_load_texture,
         scene
     ) {
@@ -37,6 +39,7 @@ class ModelFactory {
                 end,
                 cadence,
                 scale,
+                format,
                 gpu_load_texture
             );
         } else if (source === GetSourceFromName("GONG PFSS")) {
@@ -66,6 +69,7 @@ class ModelFactory {
      * @param {Date} end End of time range to query
      * @param {number} cadence Number of seconds between each image
      * @param {number} scale Image scale that will be requested
+     * @param {string} format Image format
      * @param {Function} gpu_load_texture Function to initialize the texture on the GPU.
      * @returns {Model} Model representing data to be rendered.
      */
@@ -75,6 +79,7 @@ class ModelFactory {
         end,
         cadence,
         scale,
+        format,
         gpu_load_texture
     ) {
         /*
@@ -90,7 +95,8 @@ class ModelFactory {
                 start,
                 end,
                 cadence,
-                scale
+                scale,
+                format
             );
         } catch (e) {
             throw "Failed to create model: " + e;
