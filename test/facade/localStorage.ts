@@ -17,4 +17,4 @@ global.localStorage = {
     setItem: (key: string, value: string) => {
         storage[key] = value;
     },
-}
+};

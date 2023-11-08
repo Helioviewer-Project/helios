@@ -28,10 +28,7 @@ async function AddMovieToScene(scene, data, addLayer) {
     let cadence = ParseCadence(dates, data);
     let layerOrder = 1;
     for (const source of sources) {
-        let scale = GetImageScaleForResolution(
-            Preferences.resolution,
-            source
-        );
+        let scale = GetImageScaleForResolution(Preferences.resolution, source);
         let layer = await scene.AddToScene(
             source,
             dates[0],

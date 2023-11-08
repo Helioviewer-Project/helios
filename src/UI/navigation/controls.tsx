@@ -112,7 +112,9 @@ export default function NavControls({
             onSelectLayers={() => selectTab(ControlTab.Layers)}
             onSelectFavorite={() => selectTab(ControlTab.Favorites)}
             onSelectCloud={() => selectTab(ControlTab.Cloud)}
-            onSelectPreferences={() => {selectTab(ControlTab.Preferences)}}
+            onSelectPreferences={() => {
+                selectTab(ControlTab.Preferences);
+            }}
             showJhvButton={showJhvButton}
             openInJhelioviewer={() => OpenInJHelioviewer(Layers)}
         />,
@@ -159,6 +161,6 @@ export default function NavControls({
             key={5}
             visible={currentTab === ControlTab.Preferences}
             onClose={closeTabs}
-            />
+        />,
     ];
 }

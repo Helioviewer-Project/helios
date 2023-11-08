@@ -2,21 +2,21 @@
  * Preferences schema
  */
 interface UserPreferences {
-    resolution: number
-};
+    resolution: number;
+}
 
 /**
  * Default user preferences.
  * These values are used when a user has not changed their preferences.
  */
 const defaultPreferences: UserPreferences = {
-    resolution: 256
+    resolution: 256,
 };
 
 /**
  * Key used to access preferences saved in localStorage
  */
-const PREFERENCES_KEY = 'preferences';
+const PREFERENCES_KEY = "preferences";
 
 /**
  * Manages user preferences/settings.
@@ -50,7 +50,7 @@ class Preferences {
             return this._userPreferences;
         }
 
-        let stringifiedPreferences = localStorage.getItem(PREFERENCES_KEY)
+        let stringifiedPreferences = localStorage.getItem(PREFERENCES_KEY);
         if (stringifiedPreferences == null) {
             return {};
         } else {
@@ -101,13 +101,12 @@ class Preferences {
     }
 
     static get resolution(): number {
-        return this.GetPreference('resolution');
+        return this.GetPreference("resolution");
     }
 
     static set resolution(value: number) {
-        this.SetPreference('resolution', value);
+        this.SetPreference("resolution", value);
     }
 }
 
-
-export { Preferences }
+export { Preferences };
