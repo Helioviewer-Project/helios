@@ -4,6 +4,7 @@ import { HelioviewerToHelios } from "../common/helioviewer_source_map.js";
 import { parseDate } from "../common/dates";
 import { Sources } from "./navigation/control_tabs/components/datasource_picker.js";
 import { GetImageScaleForResolution } from "../common/resolution_lookup.js";
+import { Preferences } from "@API/preferences";
 
 /**
  * Adds the given movie to the scene
@@ -27,10 +28,7 @@ async function AddMovieToScene(scene, data, addLayer) {
     let cadence = ParseCadence(dates, data);
     let layerOrder = 1;
     for (const source of sources) {
-        let scale = GetImageScaleForResolution(
-            Config.default_texture_resolution,
-            source
-        );
+        let scale = GetImageScaleForResolution(Preferences.resolution, source);
         let layer = await scene.AddToScene(
             source,
             dates[0],

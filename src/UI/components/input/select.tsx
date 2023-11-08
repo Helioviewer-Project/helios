@@ -6,16 +6,19 @@ type SelectProps = {
     value: any;
     onChange: (value: any) => void;
     options: React.JSX.Element[];
+    title?: string;
+    className?: string;
 };
 
 export default function Select(props: SelectProps): React.JSX.Element {
     return (
-        <div className={css.container}>
+        <div className={`${css.container}`}>
             <select
                 id={window.btoa(props.label)}
                 value={props.value}
                 onChange={(e) => props.onChange(e.target.value)}
-                className={css.input}
+                className={`${css.input} ${props.className}`}
+                title={props.title ?? ""}
             >
                 {props.options}
             </select>
