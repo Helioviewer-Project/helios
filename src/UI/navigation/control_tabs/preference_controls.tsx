@@ -18,11 +18,14 @@ const resolutionOptions = [
     { label: "Best (slowest: 4k)", value: 4096 },
 ];
 
+const imageFormatOptions = ["jpg", "png", "webp"];
+
 export default function PreferenceControls(
     props: PreferenceControlProps
 ): React.JSX.Element {
     const visibilityClass = props.visible ? css.visible : css.invisible;
     const [resolution, setResolution] = useState(Preferences.resolution);
+    const [imageFormat, setImageFormat] = useState(Preferences.imageFormat);
     return (
         <div
             tabIndex={-1}
@@ -44,7 +47,23 @@ export default function PreferenceControls(
                         {val.label}
                     </option>
                 ))}
-                title="Determines the image resolution to use for rendering. Higher resolutions will require more bandwidth and will take longer to load. The app may crash on devices which can't support the higher resolutions."
+                title="Higher resolutions will require more bandwidth and will take longer to load. The app may crash on devices which can't support the higher resolutions."
+            />
+
+            <Select
+                className={preferencesCss.option}
+                label="Format"
+                value={imageFormat}
+                onChange={(value: string) => {
+                    setImageFormat(value);
+                    Preferences.imageFormat = value;
+                }}
+                options={imageFormatOptions.map((val) => (
+                    <option key={val} value={val}>
+                        {val}
+                    </option>
+                ))}
+                title="JPG typically provides the best compression/bandwidth ratio. WEBP is sometimes better than JPG, but not always. PNG is lossless and will use the most bandwidth."
             />
         </div>
     );

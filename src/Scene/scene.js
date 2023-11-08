@@ -93,6 +93,7 @@ export default class Scene {
      * @param {Date} end End of time range to query
      * @param {number} cadence Number of seconds between each image
      * @param {number} scale Image scale that will be requested
+     * @param {string} format Image format
      * @param {number} layer_order Layer order of the image in the scene.
      *
      * @typedef {Object} ModelInfo
@@ -105,7 +106,7 @@ export default class Scene {
      * @param {number} scale Requested image scale
      * @returns {ModelInfo} Newly added model information
      */
-    async AddToScene(source, start, end, cadence, scale, layer_order) {
+    async AddToScene(source, start, end, cadence, scale, format, layer_order) {
         try {
             // Start the loading animation
             Loader.start();
@@ -115,6 +116,7 @@ export default class Scene {
                 end,
                 cadence,
                 scale,
+                format,
                 this._scene.GetTextureInitFunction(),
                 this
             );

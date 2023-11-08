@@ -21,9 +21,10 @@ class Database {
      * @param {Date} end End of time range to query
      * @param {number} cadence Number of seconds between each image
      * @param {number} scale Image scale that will be requested
+     * @param {string} format Image format
      * @return {HeliosImage[]}
      */
-    async GetImages(source, start, end, cadence, scale) {
+    async GetImages(source, start, end, cadence, scale, format) {
         // Initialize array of objects that will be returned
         let results = [];
 
@@ -34,7 +35,8 @@ class Database {
                 start,
                 end,
                 cadence,
-                scale
+                scale,
+                format
             );
 
             // For each image, get their observer's position in space
