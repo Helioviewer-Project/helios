@@ -1,6 +1,6 @@
 import { describe, it, expect, jest } from "@jest/globals";
-import { render, act } from "@testing-library/react";
 import { LoadHelioviewerMovie } from "@UI/helioviewer_movie";
+import "./facade/localStorage";
 
 describe("Helioviewer Movie", () => {
     it("should load movie details", async () => {
