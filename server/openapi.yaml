@@ -1,0 +1,80 @@
+openapi: 3.1.0
+info:
+  version: 1.4.0
+  title: Helios API
+  summary: API for use with https://gl.helioviewer.org
+  contact:
+    name: The Helioviewer Project
+    url: https://github.com/Helioviewer-Project/helios
+    email: helioviewerdevelopment@nasa.onmicrosoft.com
+paths:
+  /observer/position:
+    description: Returns the observer position for a specific jpeg2000 image.
+    get:
+      tags:
+        - ephemeris
+      summary: Get observer coordinates
+      parameters:
+        - name: id
+          in: query
+          description: Helioviewer JPEG 2000 Image ID
+          required: true
+          example: 150131197
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Observer coordinate
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Coordinate'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+    Coordinate:
+      description: |
+        A coordinate to be used with the Helios web application. This coordinate
+        has been transformed into a common reference coordinate system with
+        sun at the origin. This coordinate system is the coordinate frame
+        defined by `sunpy.coordinates.get_earth("2018-08-11 00:00:00")`.
+
+        <br/>
+        All coordinates returned by this API are converted to this coordinate
+        system by the code:
+
+        ```python
+        with transform_with_sun_center():
+          coords = base_coords.transform_to(sunpy.coordinates.get_earth("2018-08-11 00:00:00"))
+          coords.representation_type="cartesian"
+          return {
+              "x": coords.x.to(u.solRad).value,
+              "y": coords.y.to(u.solRad).value,
+              "z": coords.z.to(u.solRad).value
+          }
+        ```
+      type: object
+      properties:
+        x:
+          type: number
+          format: float
+          description: HGS X in solar radii
+        y:
+          type: number
+          format: float
+          description: HGS Y in solar radii
+        z:
+          type: number
+          format: float
+          description: HGS Z in solar radii

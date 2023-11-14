@@ -1,3 +1,4 @@
+import json
 import pytest
 
 from main import app
@@ -7,6 +8,27 @@ from api.ephemeris.horizons import Horizons
 @pytest.fixture
 def client():
     return app.test_client()
+
+def test_observer_position_ok(client):
+    response = client.get("/observer/position?id=150131197")
+    assert response.status_code == 200
+    data = json.loads(response.data)
+    assert "x" in data
+    assert "y" in data
+    assert "z" in data
+
+def test_observer_position_no_parameters(client):
+    response = client.get("/observer/position")
+    assert response.status_code == 400
+    data = json.loads(response.data)
+    assert "error" in data
+    assert "Missing param" in data['error']
+
+def test_observer_position_invalid_id(client):
+    response = client.get("/observer/position?id=0")
+    assert response.status_code == 400
+    data = json.loads(response.data)
+    assert "Couldn't find image" in data["error"]
 
 def test_ephemeris_no_provider(client):
     response = client.get("/ephemeris/shouldbreak/SDO")

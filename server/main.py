@@ -3,12 +3,13 @@ import json
 import logging
 
 import sunpy
-from flask import Flask, request, make_response,url_for
+from flask import Flask, request, make_response, send_file
 from flask_cors import CORS
 
 from helios_exceptions import HeliosException
 from database import rest as database_endpoints
 from get_heeq import convert_skycoords_to_heeq
+from meta.mimetype import MimeType
 import api.ephemeris as ephemeris
 
 logging.basicConfig(filename="helios_server.log", level=logging.DEBUG)
@@ -18,14 +19,40 @@ CORS(app)
 
 @app.errorhandler(HeliosException)
 def handle_user_exception(e):
+    """
+    This server is designed so whenever a HeliosException is thrown, the message
+    placed in the exception will be returned as JSON to the caller.
+    HeliosExceptions can be raised for a variety of reasons determined by
+    the application developer as a way to communicate a condition to the user.
+    """
     return _send_response({"error": str(e)})
 
-def _send_response(data, mime = "application/json"):
+def _send_response(data: bytes | dict, mime: MimeType = MimeType.JSON):
+    """
+    Wrap up the given data and send it to the user with the appropriate HTTP status.
+
+    If the type of data is `bytes`, this function assumes the content is gzipped
+    and will set the content-encoding to gzip. If you're returning binary data,
+    gzip it to conserve bandwidth and set the appropriate mime type.
+
+    If the type of data is `dict`, the content is json encoded and sent.
+
+    If the data is `dict` and it contains a key: 'error', then it is assumed
+    that an error message is being returned, and the HTTP status code is set to
+    400 to indicate a bad request.
+
+    Parameters
+    ----------
+    data: `Any`
+        The data to send to the user.
+    mime: `MimeType`
+        The MIME type to send with the response. Defaults to 'application/json'
+    """
     if data is None:
         data = {"error": "Nothing to return"}
     elif type(data) is bytes:
         response = make_response(data)
-        response.mimetype = mime
+        response.mimetype = mime.value
         response.content_encoding = "gzip"
         response.access_control_allow_origin = "*"
         return response
@@ -33,22 +60,30 @@ def _send_response(data, mime = "application/json"):
         response = make_response(json.dumps(data))
         if "error" in data:
             response.status_code = 400
-        response.mimetype = mime
+        response.mimetype = mime.value
         response.access_control_allow_origin = "*"
         return response
 
-def _parse_date(date_str: str):
+def _parse_date(date_str: str) -> datetime:
+    """
+    Parses the given date into a datetime.
+    TODO: This could leverage sunpy to accept a wider variety of date formats.
+    `HeliosException` is raised if the date fails to parse.
+    """
     try:
         return datetime.fromisoformat(date_str)
     except ValueError as e:
         raise HeliosException(str(e))
 
-def _validate_input(parameter_list):
+def _validate_input(parameter_list: list[str]):
     """
     Validates that the HTTP request contains all the expected parameters
-    :param parameter_list: List of strings of names of the parameters needed
-    :type parameter_list: List[str]
-    :raises HeliosException: Error returned to user on failure
+    `HeliosException` is raised if any parameter is missing
+
+    Parameters
+    ----------
+    parameter_list: `list[str]`
+        List of strings of names of the parameters needed
     """
     # Create a list of any parameters missing from the list
     missing_list = []
@@ -60,6 +95,18 @@ def _validate_input(parameter_list):
         raise HeliosException("Missing parameters {}".format(",".join(missing_list)))
 
 def _exec(fn):
+    """
+    TODO: This should be a decorator
+    Wraps the given function with general error handling mechanisms.
+    If the function called is successful, the data returned by the function
+    is returned in the HTTP Response.
+
+    If the function raises a HeliosException, the exception message is extracted
+    and sent in the HTTP response.
+
+    If the function raises any other Exception, the exception is captured,
+    logged locally, and a generic error message is sent to the user.
+    """
     try:
         return _send_response(fn())
     # The design here is any known error we should report to the user should be
@@ -74,12 +121,25 @@ def _exec(fn):
         return _send_response({"error": "An internal error occurred, please file an issue with the timestamp at https://github.com/Helioviewer-Project/helios",
             "timestamp": str(datetime.now())})
 
+@app.get("/openapi/spec/")
+def get_openapi_spec():
+    return send_file("openapi.yaml")
 
+@app.get("/openapi/")
+def get_openapi_page():
+    return send_file("html/openapi.html")
 
-# This takes the path to a local jp2 file and returns x, y, z (i.e. HEEQ) coordinates
-# relative to a know reference point. See get_heeq.py for details
-@app.route("/observer/position")
+@app.get("/test/")
+def gettest():
+    return {
+        "Yo": "wassup"
+    }
+
+@app.get("/observer/position")
 def position_from_jp2():
+    """
+    Returns the observer position for a specific jpeg2000 image.
+    """
     _validate_input(["id"])
     from api.observer_position import get_observer_position
     return _exec(lambda : get_observer_position(request.args["id"]))
