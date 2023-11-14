@@ -9,6 +9,7 @@ from flask_cors import CORS
 from helios_exceptions import HeliosException
 from database import rest as database_endpoints
 from get_heeq import convert_skycoords_to_heeq
+import api.ephemeris as ephemeris
 
 logging.basicConfig(filename="helios_server.log", level=logging.DEBUG)
 
@@ -127,8 +128,13 @@ def event_position():
 def get_earth(date):
     return convert_skycoords_to_heeq(sunpy.coordinates.get_earth(date))
 
-
-
+@app.route("/ephemeris/<provider>/<body>")
+def get_positions(provider: str, body: str):
+    def fn():
+        date_inputs = request.args.getlist('date')
+        dates = map(lambda date: _parse_date(date), date_inputs)
+        return ephemeris.Get(provider, body, dates)
+    return _exec(lambda: fn())
 
 
 
