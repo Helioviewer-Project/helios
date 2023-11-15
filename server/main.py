@@ -1,15 +1,12 @@
 from datetime import datetime
-import json
 import logging
 
-import sunpy
 from flask import request
 from flask_cors import CORS
 from flask_openapi3 import OpenAPI, Info
 
 from helios_exceptions import HeliosException
 from database import rest as database_endpoints
-from get_heeq import convert_skycoords_to_heeq
 from routes.common.validation import ExpectQueryParameters
 from routes.common.response import SendResponse
 from routes.common.dates import ParseDate
@@ -44,15 +41,6 @@ def get_events():
 
     from api.events import lookup_hek_events
     return lookup_hek_events(start, end)
-
-@app.route("/psp")
-def psp_position():
-    ExpectQueryParameters(["start", "end"])
-    start = ParseDate(request.args["start"])
-    end = ParseDate(request.args["end"])
-
-    from api.psp_position import get_psp_position
-    return get_psp_position(start, end)
 
 # This endpoint is used to convert between coordinate data from the HEK
 @app.route("/event/position")
