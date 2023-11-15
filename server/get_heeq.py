@@ -18,6 +18,26 @@ PROGRAM_ARGS = [
 REFERENCE_POINT = sunpy.coordinates.get_earth("2018-08-11 00:00:00")
 
 class Coordinate(BaseModel):
+    """
+    A coordinate to be used with the Helios web application. This coordinate
+    has been transformed into a common reference coordinate system with
+    sun at the origin. This coordinate system is the coordinate frame
+    defined by `sunpy.coordinates.get_earth("2018-08-11 00:00:00")`.
+
+    <br/>
+    All coordinates returned by this API are converted to this coordinate
+    system by the code:
+
+    ```python
+    with transform_with_sun_center():
+        coords = base_coords.transform_to(sunpy.coordinates.get_earth("2018-08-11 00:00:00"))
+        coords.representation_type="cartesian"
+        return {
+            "x": coords.x.to(u.solRad).value,
+            "y": coords.y.to(u.solRad).value,
+            "z": coords.z.to(u.solRad).value
+        }
+    """
     x: float
     y: float
     z: float
@@ -26,6 +46,13 @@ class Coordinate(BaseModel):
         if name not in ['x', 'y', 'z']:
             raise KeyError(name)
         return getattr(self, name)
+
+    def as_dict(self):
+        return {
+            'x': self.x,
+            'y': self.y,
+            'z': self.z
+        }
 
 def main(jp2: str):
     heeq_coords = get_heeq_coordinates_from_jp2_file(jp2)

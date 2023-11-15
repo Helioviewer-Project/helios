@@ -2,10 +2,11 @@ from datetime import datetime
 
 from flask_openapi3 import OpenAPI
 from pydantic import BaseModel, Field
+import sunpy.coordinates
 
 from . import tags as Tags
 from helios_exceptions import HeliosExceptionResponse
-from get_heeq import Coordinate
+from get_heeq import Coordinate, convert_skycoords_to_heeq
 import api.ephemeris as ephemeris
 
 class Jp2IdPathParameters(BaseModel):
@@ -20,6 +21,9 @@ class EphemerisQueryParameters(BaseModel):
 
 class EphemerisResponse(BaseModel):
     positions: list[Coordinate] = Field(description="One coordinate for each date given")
+
+class DatePath(BaseModel):
+    date: datetime
 
 def register(app: OpenAPI):
     @app.get("/observer/position/<id>",
@@ -45,3 +49,12 @@ def register(app: OpenAPI):
              })
     def get_positions(path: EphemerisPathParameters, query: EphemerisQueryParameters):
         return ephemeris.Get(path.provider, path.body, query.dates)
+
+    @app.get("/earth/<date>",
+             summary="Get earth's coordinate at a specific date",
+             tags=[Tags.Ephemeris],
+             responses={
+                 200: Coordinate
+             })
+    def get_earth(path: DatePath):
+        return convert_skycoords_to_heeq(sunpy.coordinates.get_earth(path.date)).as_dict()

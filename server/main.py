@@ -77,9 +77,5 @@ def event_position():
     from api.event_position import get_event_position
     return get_event_position(coord_system, units, coord1, coord2, coord3, date, observatory)
 
-@app.route("/earth/<date>")
-def get_earth(date):
-    return convert_skycoords_to_heeq(sunpy.coordinates.get_earth(date))
-
 ephemeris_routes.register(app)
 database_endpoints.init(app, SendResponse, ParseDate)
