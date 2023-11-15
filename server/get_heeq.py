@@ -1,4 +1,5 @@
 from argparse import ArgumentParser
+from pydantic import BaseModel
 
 from sunpy.map import Map
 import sunpy.coordinates
@@ -15,6 +16,16 @@ PROGRAM_ARGS = [
 ]
 
 REFERENCE_POINT = sunpy.coordinates.get_earth("2018-08-11 00:00:00")
+
+class Coordinate(BaseModel):
+    x: float
+    y: float
+    z: float
+
+    def __getitem__(self, name):
+        if name not in ['x', 'y', 'z']:
+            raise KeyError(name)
+        return getattr(self, name)
 
 def main(jp2: str):
     heeq_coords = get_heeq_coordinates_from_jp2_file(jp2)
@@ -36,15 +47,15 @@ def get_heeq_coordinates_from_jp2(jp2_map: Map):
     return convert_skycoords_to_heeq(jp2_map.observer_coordinate)
 
 
-def convert_skycoords_to_heeq(base_coords):
+def convert_skycoords_to_heeq(base_coords) -> Coordinate:
     with transform_with_sun_center():
         coords = base_coords.transform_to(REFERENCE_POINT)
         coords.representation_type="cartesian"
-        return {
-            "x": coords.x.to(u.solRad).value,
-            "y": coords.y.to(u.solRad).value,
-            "z": coords.z.to(u.solRad).value
-        }
+        return Coordinate(
+            x=coords.x.to(u.solRad).value,
+            y=coords.y.to(u.solRad).value,
+            z=coords.z.to(u.solRad).value
+        )
 
 #######################
 # Template code below #
