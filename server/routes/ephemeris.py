@@ -38,7 +38,7 @@ def register(app: OpenAPI):
         Returns the observer position for a specific jpeg2000 image.
         """
         from api.observer_position import get_observer_position
-        return get_observer_position(path.id)
+        return get_observer_position(path.id).model_dump()
 
     @app.get("/ephemeris/<provider>/<body>",
              summary="Get general coordinates",

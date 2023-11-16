@@ -1,8 +1,6 @@
 from datetime import datetime
 from typing import Iterable
 
-from astropy.coordinates import SkyCoord
-
 from .horizons import Horizons
 from helios_exceptions import HeliosException
 
@@ -11,7 +9,7 @@ _providers = {
     'horizons': Horizons
 }
 
-def Get(provider: str, body: str, dates: Iterable[datetime]) -> SkyCoord:
+def Get(provider: str, body: str, dates: Iterable[datetime]) -> list[dict]:
     try:
         # Use lower case so any variation of PrOvIdEr will execute the
         # selected provider.
