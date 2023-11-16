@@ -3,9 +3,8 @@ from argparse import ArgumentParser
 from datetime import datetime
 from enum import Enum
 from coordinate_lookup import get_observer_coordinate
-from get_heeq import convert_skycoords_to_heeq, dms_to_degrees
+from get_heeq import convert_skycoords_to_heeq, Coordinate
 from helios_exceptions import HeliosException
-import json
 import sunpy
 from sunpy.coordinates import get_earth
 from numpy import isnan
@@ -27,7 +26,7 @@ class CoordinateSystem(Enum):
     Stonyhurst = "UTC-HGS-TOPO"
     Projective = "UTC-HPC-TOPO"
     Carrington = "UTC-HGC-TOPO"
-    Radial = "UTC-HRC-TOPO" 
+    Radial = "UTC-HRC-TOPO"
 
     @staticmethod
     def from_str(string):
@@ -77,8 +76,8 @@ def _generate_result(observer_heeq, event_stonyhurst, msg):
     Generates a consistent return result
     """
     result = {"observer": observer_heeq, "notes": msg, "event": {
-        "lat": dms_to_degrees((event_stonyhurst.lat - sunpy.coordinates.sun.B0(event_stonyhurst.obstime)).dms),
-        "lon": dms_to_degrees(event_stonyhurst.lon.dms)
+        "lat": (event_stonyhurst.lat - sunpy.coordinates.sun.B0(event_stonyhurst.obstime)).deg,
+        "lon": event_stonyhurst.lon.deg
     }}
     if isnan(result["event"]["lat"]):
         result["event"]["lat"] = 0
@@ -141,7 +140,7 @@ def process_carrington_coordinates(x, y, z, date, observatory, units):
     return _generate_result(observer_heeq, event_stonyhurst)
 
 
-def get_event_coordinates(coordinate_system, coord1, coord2, coord3, date, observatory, units):
+def get_event_coordinates(coordinate_system, coord1, coord2, coord3, date, observatory, units) -> Coordinate:
     try:
         if (type(coordinate_system) != CoordinateSystem):
             coordinate_system = CoordinateSystem.from_str(coordinate_system)

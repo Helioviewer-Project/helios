@@ -1,6 +1,6 @@
 from argparse import ArgumentParser
-from pydantic import BaseModel
 
+from pydantic import BaseModel
 from sunpy.map import Map
 import sunpy.coordinates
 from sunpy.coordinates import transform_with_sun_center
@@ -42,17 +42,14 @@ class Coordinate(BaseModel):
     y: float
     z: float
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
     def __getitem__(self, name):
         if name not in ['x', 'y', 'z']:
             raise KeyError(name)
         return getattr(self, name)
 
-    def as_dict(self):
-        return {
-            'x': self.x,
-            'y': self.y,
-            'z': self.z
-        }
 
 def main(jp2: str):
     heeq_coords = get_heeq_coordinates_from_jp2_file(jp2)
