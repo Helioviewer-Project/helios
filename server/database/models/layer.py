@@ -1,9 +1,13 @@
-from .base import Model
-from .scene import Scene
+from datetime import datetime
+from typing import Optional
+
+from pydantic import BaseModel, Field
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 from sqlalchemy import Integer, DateTime, ForeignKey, Float
+
+from .base import Model
 
 class Layer(Model):
     __tablename__ = "layers"
@@ -14,7 +18,7 @@ class Layer(Model):
     cadence: Mapped[int] = mapped_column(Integer)
     scale: Mapped[float] = mapped_column(Float)
     scene_id = mapped_column(ForeignKey("scenes.id"))
-    scene: Mapped[Scene] = relationship(back_populates="layers")
+    scene: Mapped["Scene"] = relationship(back_populates="layers")
     def __repr__(self) -> str:
         return f"Layer(scene={self.scene_id!r}, id={self.id!r}, source={self.source!r}, dates: {self.start!r} to {self.end!r})"
 
@@ -25,3 +29,12 @@ class Layer(Model):
         'cadence',
         'scale'
     )
+
+class LayerData(BaseModel):
+    id: Optional[int] = None
+    scene_id: Optional[int] = None
+    source: int
+    start: datetime
+    end: datetime
+    cadence: int
+    scale: float

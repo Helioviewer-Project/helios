@@ -10,4 +10,10 @@ def serialize(item) -> any:
 class Model(DeclarativeBase):
     def as_dict(self):
        return {c.name: serialize(getattr(self, c.name)) for c in self.__table__.columns}
-    pass
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        instance = cls()
+        for key,value in data.items():
+            setattr(instance, key, value)
+        return instance

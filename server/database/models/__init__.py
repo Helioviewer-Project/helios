@@ -1,4 +1,4 @@
 from .base import Model
-from .layer import Layer
-from .scene import Scene
+from .layer import Layer, LayerData
+from .scene import Scene, SceneData
 from .gong_pfss import GongPFSS

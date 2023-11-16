@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 
 from flask_cors import CORS
 from flask_openapi3 import OpenAPI, Info
@@ -26,12 +27,14 @@ def handle_user_exception(e):
     """
     return SendResponse({"error": str(e)})
 
-# @app.errorhandler(Exception)
-# def handle_internal_error(e: Exception):
-#     logging.error(e)
-#     return SendResponse({"error": "An internal error occurred, please file an issue with the timestamp at https://github.com/Helioviewer-Project/helios",
-#         "timestamp": str(datetime.now())}, status=500)
+@app.errorhandler(Exception)
+def handle_internal_error(e: Exception):
+    logging.error(e)
+    if not app.debug:
+        return SendResponse({"error": "An internal error occurred, please file an issue with the timestamp at https://github.com/Helioviewer-Project/helios",
+            "timestamp": str(datetime.now())}, status=500)
+    # else: let flask print out the debug message
 
 ephemeris_routes.register(app)
 event_routes.register(app)
-database_endpoints.init(app, SendResponse, ParseDate)
+database_endpoints.register(app)

@@ -1,9 +1,14 @@
-from .base import Model
-from typing import List
+from typing import List, Optional
+from datetime import datetime
+
+from pydantic import BaseModel
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 from sqlalchemy import Integer, DateTime, Text
+
+from .base import Model
+from .layer import LayerData
 
 class Scene(Model):
     __tablename__ = "scenes"
@@ -21,3 +26,11 @@ class Scene(Model):
         out = super().as_dict()
         out["layers"] = [l.as_dict() for l in self.layers]
         return out
+
+class SceneData(BaseModel):
+    id: Optional[int] = None
+    created_at: datetime = datetime.now().isoformat()
+    start: datetime
+    end: datetime
+    thumbnail: str
+    layers: list[LayerData]
