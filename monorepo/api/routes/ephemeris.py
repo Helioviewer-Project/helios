@@ -60,4 +60,5 @@ def register(app: OpenAPI):
                  200: Coordinate
              })
     def get_earth(path: DatePath):
-        return convert_skycoords_to_heeq(sunpy.coordinates.get_earth(path.date)).as_dict()
+        data = convert_skycoords_to_heeq(sunpy.coordinates.get_earth(path.date))
+        return data.model_dump()

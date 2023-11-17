@@ -47,3 +47,11 @@ def test_ephemeris_horizons(client, monkeypatch):
         assert response.json[0]['x'] == 1
         assert response.json[0]['y'] == 2
         assert response.json[0]['z'] == 3
+
+def test_get_earth(client):
+    response = client.get("/earth/2023-01-01 00:00:00")
+    data = response.json
+    print(data)
+    assert data['x'] == pytest.approx(-166.2722)
+    assert data['y'] == pytest.approx(130.1701)
+    assert data['z'] == pytest.approx(-10.9540)
