@@ -1,19 +1,25 @@
-Welcome to the Helios's Internal API documentation.
-This information covers the classes that make up
-the Helios application.
-
-You can find the overall design for Helios [here](https://bit.ly/3PtWmLp)
-It includes the dependencies between each class.
+# Helios
+Welcome! Helios is a next-gen web client supported by The Helioviewer Project.
+It is a 3D web client for viewing data provided by [Helioviewer](https://helioviewer.org)
+You can access Helios [here](https://gl.helioviewer.org)
 
 ## Overview
+Helios uses threejs to render full disk images on a hemisphere (because observatories) only see one side...
+If you've used [JHelioviewer](https://www.jhelioviewer.org/) then you're already familiar with how this works.
 
-Helios is an adaptation of [Helioviewer](https://helioviewer.org) which uses 3js to render solar images in 3D.
-It works by getting image and positional data from the Helioviewer API, and rendering them in a 3D scene.
-You can interact with a demo [here](https://gl.helioviewer.org).
+The advantage of Helios is that it runs in a browser, meaning it will run on
+all of your devices to make sharing easy and accessible.
+
+Helios is interoperable with Helioviewer.org and JHelioviewer.
+Any videos made in Helioviewer can be opened in either Helios or JHelioviewer.
+Similarly, any data loaded in Helios can also be opened in JHelioviewer with
+the click of a button.
+
+If you're interested in contributing to this project, see the details below.
 
 ## Development Quickstart
-The application has been containerized with docker compose.
-The fastest way to get this application running on your pc is to get [get docker](https://docs.docker.com/get-docker/).
+The development environment for Helios has been containerized with docker compose.
+The fastest way to get this application running on your system is to get [get docker](https://docs.docker.com/get-docker/).
 Then once it's installed and running, execute:
 
 ```
@@ -24,7 +30,8 @@ If you plan to work on the flask API locally, you must also change `src/Configur
 
 ## Development Without Docker (not recommended)
 If you want to do development without docker, you need nodejs/npm and python installed.
-It's doable, but it's a hassle since you have to manage at least 3 different processes.
+It's doable, but it's a hassle since you have to manage at least 3 different processes:
+The back end API server, the front end client server, and the javascript bundler.
 
 1. clone the repository
 ```
@@ -64,4 +71,4 @@ If running without docker, use `npx webpack watch` to automatically rebuild js c
 Running flask in debug mode will automatically update API changes as you make them.
 
 ## Development Guide
-Information on the program architecture and guides for certain tasks are available on the [wiki](https://github.com/Helioviewer-Project/helios/wiki)
+Information on the application's architecture and guides for certain tasks are available on the [wiki](https://github.com/Helioviewer-Project/helios/wiki)
