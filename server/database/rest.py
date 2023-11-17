@@ -55,7 +55,10 @@ def register(app: OpenAPI):
 
     @app.get("/scene/latest/<count>",
              summary="Get a list of the latest scenes",
-             tags=[Tags.Scene])
+             tags=[Tags.Scene],
+             responses={
+                 200: GetRecentResponse
+             })
     def get_recent(path: GetRecentPathParameters):
         with Session(engine) as session:
             query = session.query(Scene).order_by(Scene.id.desc()).limit(path.count)
