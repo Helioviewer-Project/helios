@@ -42,6 +42,7 @@ class GetGongPFSSQueryParameters(BaseModel):
 
 def register(app: OpenAPI):
     @app.get("/scene/<id>",
+             operation_id="GetScene",
              summary="Get metadata for the given scene",
              tags=[Tags.Scene],
              responses={
@@ -54,6 +55,7 @@ def register(app: OpenAPI):
         return scene.as_dict()
 
     @app.get("/scene/latest/<count>",
+             operation_id="GetRecentlyShared",
              summary="Get a list of the latest scenes",
              tags=[Tags.Scene],
              responses={
@@ -68,6 +70,7 @@ def register(app: OpenAPI):
             return response.model_dump()
 
     @app.post("/scene",
+              operation_id="SaveScene",
               summary="Upload a new scene",
               tags=[Tags.Scene],
               responses={
@@ -85,6 +88,7 @@ def register(app: OpenAPI):
         return PostSceneResponse(id=id).model_dump()
 
     @app.get("/pfss/gong/",
+             operation_id="GetGongFieldLines",
              summary="Field lines generated from GONG data",
              tags=[Tags.PFSS],
              responses={

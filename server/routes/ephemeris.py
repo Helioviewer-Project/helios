@@ -27,6 +27,7 @@ class DatePath(BaseModel):
 
 def register(app: OpenAPI):
     @app.get("/observer/position/<id>",
+             operation_id="GetJp2Observer",
              summary="Get observer coordinates for an image",
              tags=[Tags.Ephemeris],
              responses={
@@ -41,6 +42,7 @@ def register(app: OpenAPI):
         return get_observer_position(path.id).model_dump()
 
     @app.get("/ephemeris/<provider>/<body>",
+             operation_id="GetBodyPosition",
              summary="Get general coordinates",
              tags=[Tags.Ephemeris],
              responses={
@@ -51,6 +53,7 @@ def register(app: OpenAPI):
         return ephemeris.Get(path.provider, path.body, query.dates)
 
     @app.get("/earth/<date>",
+             operation_id="GetEarthPosition",
              summary="Get earth's coordinate at a specific date",
              tags=[Tags.Ephemeris],
              responses={

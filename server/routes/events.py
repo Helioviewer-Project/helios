@@ -16,6 +16,7 @@ class EventResponse(BaseModel):
 
 def register(app: OpenAPI):
     @app.get("/event",
+             operation_id="GetEvents",
              summary="Get a list of events between the given dates",
              tags=[Tags.Event],
              responses={
