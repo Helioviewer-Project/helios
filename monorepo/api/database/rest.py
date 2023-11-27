@@ -77,7 +77,7 @@ def register(app: OpenAPI):
                   200: PostSceneResponse
               })
     def post_scene(body: SceneData):
-        data = body.model_dump(exclude=['created_at'])
+        data = body.model_dump(exclude=['created_at', 'thumbnail'])
         data['layers'] = list(map(lambda layer: Layer.from_dict(layer), data['layers']))
         scene = Scene.from_dict(data)
         scene.created_at = datetime.now()
