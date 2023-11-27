@@ -47,6 +47,7 @@ jobs:
         echo $PWD
         which python
         python -c "import main"
+        python -m flask --app main run
 
     - name: Make sure package can be built
       run: |
