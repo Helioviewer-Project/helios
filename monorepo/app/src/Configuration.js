@@ -35,7 +35,7 @@ class Config {
         /**
          * Helios API server url
          */
-        this.helios_api_url = "http://localhost:5000/";
+        this.helios_api_url = "https://api.gl.helioviewer.org/";
 
         /**
          * HTML ID of the element to use for the 3js viewport
