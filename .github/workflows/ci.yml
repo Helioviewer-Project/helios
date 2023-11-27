@@ -44,7 +44,9 @@ jobs:
         cd monorepo/api
         python -m pip install -r requirements.txt
         python -m flask --version
-        python -m flask --app main run --debug
+        echo $PWD
+        which python
+        python -c "import main"
 
     - name: Make sure package can be built
       run: |
