@@ -10,7 +10,7 @@ on:
 
 env:
   DB_PASSWORD: gh-actions
-  CONFIG_FILE_PATH: ../.github/workflows/ci.config.ini
+  HELIOS_DB_CONFIG: ../.github/workflows/ci.config.ini
 
 jobs:
   build:
