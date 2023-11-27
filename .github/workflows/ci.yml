@@ -41,7 +41,7 @@ jobs:
 
     - name: Start API server
       run: |
-        cd monorepo/api
+        cd monorepo/server
         python -m pip install -r requirements.txt
         python -m flask --app main run --debug &
 
@@ -58,7 +58,7 @@ jobs:
 
     - name: Run python unit tests
       run: |
-        cd monorepo/api
+        cd monorepo/server
         python -m pytest
 
     - name: Make sure code conforms to prettier standards
