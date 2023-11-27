@@ -16,6 +16,7 @@ from configparser import ConfigParser
 _parser = ConfigParser()
 if "CONFIG_FILE_PATH" in os.environ:
     print("Reading config from environment")
+    print(f"Config path: {os.environ['CONFIG_FILE_PATH']}")
     _parser.read(os.environ["CONFIG_FILE_PATH"])
 elif os.path.exists("config.ini"):
     print("Reading config from config.ini")
