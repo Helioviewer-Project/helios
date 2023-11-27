@@ -48,6 +48,7 @@ jobs:
 
     - name: Make sure package can be built
       run: |
+        cd monorepo/app
         npm ci
         sh build.sh
 
