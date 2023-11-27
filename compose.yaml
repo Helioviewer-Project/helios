@@ -21,7 +21,7 @@ services:
     ports:
       - 5000:80
     environment:
-      HELIOS_DB_CONFIG: /run/secrets/config_file
+      CONFIG_FILE_PATH: /run/secrets/config_file
     secrets:
       - config_file
     volumes:
@@ -66,7 +66,7 @@ services:
         RUN crontab /app/crontab
         CMD ["/usr/sbin/crond", "-f", "-d", "0"]
     environment:
-      HELIOS_DB_CONFIG: /run/secrets/config_file
+      CONFIG_FILE_PATH: /run/secrets/config_file
       PFSS_SSH_KEY: /run/secrets/pfss_key.pem
     secrets:
       - config_file

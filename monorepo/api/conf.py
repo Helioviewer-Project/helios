@@ -1,8 +1,8 @@
 """
 Interface for getting application configuration variables.
 
-This configuration first looks at HELIOS_DB_CONFIG for the ini file.
-If there's no HELIOS_DB_CONFIG in the environment, then it looks for config.ini.
+This configuration first looks at CONFIG_FILE_PATH for the ini file.
+If there's no CONFIG_FILE_PATH in the environment, then it looks for config.ini.
 If there's no config.ini, then the default config.example.ini is used.
 """
 import os
@@ -10,14 +10,14 @@ import re
 from configparser import ConfigParser
 
 # Select the config file to use.
-# Order is environment HELIOS_DB_CONFIG
+# Order is environment CONFIG_FILE_PATH
 # Then look for config.ini
 # Then default to config.example.ini
 _parser = ConfigParser()
-if "HELIOS_DB_CONFIG" in os.environ:
+if "CONFIG_FILE_PATH" in os.environ:
     print("Reading config from environment")
-    print(f"Config path: {os.environ['HELIOS_DB_CONFIG']}")
-    _parser.read(os.environ["HELIOS_DB_CONFIG"])
+    print(f"Config path: {os.environ['CONFIG_FILE_PATH']}")
+    _parser.read(os.environ["CONFIG_FILE_PATH"])
 elif os.path.exists("config.ini"):
     print("Reading config from config.ini")
     _parser.read("config.ini")
