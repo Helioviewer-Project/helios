@@ -41,7 +41,7 @@ jobs:
 
     - name: Start API server
       run: |
-        cd server
+        cd monorepo/api
         python -m pip install -r requirements.txt
         python -m flask --app main run --debug &
         cd ..
