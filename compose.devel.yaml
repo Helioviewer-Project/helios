@@ -26,7 +26,7 @@ services:
       - config_file
     volumes:
       - type: bind
-        source: server
+        source: ./monorepo/api
         target: /app
     build:
       context: .
@@ -45,7 +45,7 @@ services:
     image: httpd:2.4
     volumes:
       - type: bind
-        source: .
+        source: ./monorepo/app
         target: /usr/local/apache2/htdocs
   # Runs npm webpack on local environment
   webpack:
@@ -59,7 +59,7 @@ services:
         ENTRYPOINT ["sh", "/cmd.sh"]
     volumes:
       - type: bind
-        source: .
+        source: ./monorepo/app
         target: /app
 
 secrets:
@@ -67,8 +67,6 @@ secrets:
     file: ./compose_config/database/db_password.example
   config_file:
     file: ./compose_config/api/config.example.ini
-  pfss_host:
-    file: ./compose_config/pfss_manager/pfss_host.example
 
 volumes:
   database-storage:
