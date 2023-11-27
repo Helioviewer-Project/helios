@@ -43,6 +43,7 @@ jobs:
       run: |
         cd monorepo/api
         python -m pip install -r requirements.txt
+        ls -a *
         python -m flask --app main run --debug &
 
     - name: Make sure package can be built
