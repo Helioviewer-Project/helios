@@ -15,10 +15,13 @@ from configparser import ConfigParser
 # Then default to config.example.ini
 _parser = ConfigParser()
 if "CONFIG_FILE_PATH" in os.environ:
+    print("Reading config from environment")
     _parser.read(os.environ["CONFIG_FILE_PATH"])
 elif os.path.exists("config.ini"):
+    print("Reading config from config.ini")
     _parser.read("config.ini")
 else:
+    print("Reading config from config.example.ini")
     _parser.read("config.example.ini")
 
 
