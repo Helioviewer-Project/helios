@@ -11,7 +11,7 @@ class Helios {
      * @returns Coordinates
      */
     static async GetJp2Observer(id) {
-        let api_url = Config.helios_api_url + "observer/position?id=" + id;
+        let api_url = Config.helios_api_url + "observer/position/" + id;
         let result = await fetch(api_url);
         let data = await result.json();
         if (data.hasOwnProperty("error")) {
@@ -52,7 +52,7 @@ class Helios {
     static async GetRecentlyShared(): Promise<Favorite[]> {
         let response = await fetch(Config.helios_api_url + "scene/latest/10");
         let data = await response.json();
-        return Favorites.RestoreDates(data);
+        return Favorites.RestoreDates(data.scenes);
     }
 
     static async get_field_lines_gong(
