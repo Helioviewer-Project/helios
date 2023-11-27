@@ -14,7 +14,7 @@ from routes import events as event_routes
 logging.basicConfig(filename="helios_server.log", level=logging.DEBUG)
 
 info = Info(title="Helios", version="1.4.0")
-app = OpenAPI("Helios", info=info)
+app = OpenAPI("Helios", info=info, doc_ui=False)
 CORS(app)
 
 @app.errorhandler(HeliosException)
