@@ -44,7 +44,6 @@ jobs:
         cd monorepo/api
         python -m pip install -r requirements.txt
         python -m flask --app main run --debug &
-        cd ..
 
     - name: Make sure package can be built
       run: |
@@ -53,11 +52,16 @@ jobs:
         sh build.sh
 
     - name: Run javascript unit tests
-      run: npm run test
+      run: |
+        cd monorepo/app
+        npm run test
 
     - name: Run python unit tests
-      run: cd server && python -m pytest && cd ..
+      run: |
+        cd monorepo/api
+        python -m pytest
 
     - name: Make sure code conforms to prettier standards
       run: |
+        cd monorepo/app
         npm run prettier-test
