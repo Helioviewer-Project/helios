@@ -10,7 +10,7 @@ on:
 
 env:
   DB_PASSWORD: gh-actions
-  CONFIG_FILE_PATH: ../.github/workflows/ci.config.ini
+  CONFIG_FILE_PATH: ../../.github/workflows/ci.config.ini
 
 jobs:
   build:
@@ -41,22 +41,27 @@ jobs:
 
     - name: Start API server
       run: |
-        cd server
+        cd monorepo/server
         python -m pip install -r requirements.txt
         python -m flask --app main run --debug &
-        cd ..
 
     - name: Make sure package can be built
       run: |
+        cd monorepo/app
         npm ci
         sh build.sh
 
     - name: Run javascript unit tests
-      run: npm run test
+      run: |
+        cd monorepo/app
+        npm run test
 
     - name: Run python unit tests
-      run: cd server && python -m pytest && cd ..
+      run: |
+        cd monorepo/server
+        python -m pytest
 
     - name: Make sure code conforms to prettier standards
       run: |
+        cd monorepo/app
         npm run prettier-test
